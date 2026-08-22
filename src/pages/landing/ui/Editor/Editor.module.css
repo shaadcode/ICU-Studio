@@ -1,0 +1,11 @@
+.copyControlsContainer {
+  transition: border-color 0.2s;
+  padding: 5px;
+  background-color: var(--mantine-color-gray-0);
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-gray-3);
+
+  &:hover {
+    border-color: var(--mantine-color-gray-5);
+  }
+}

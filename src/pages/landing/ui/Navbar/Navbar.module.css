@@ -1,0 +1,11 @@
+.navbarContainer {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1;
+  grid-template-rows: auto auto 1fr auto;
+  height: 100%;
+}
+
+.tabLabel {
+  text-transform: capitalize;
+}

@@ -1,0 +1,9 @@
+{
+  "controls": {
+    "jsonPropertyCopy": "json property copy",
+    "oneLineCopy": "one line copy",
+    "prettyCopy": "pretty copy",
+    "simpleCopy": "simple copy",
+    "tFunctionCopy": "t function copy"
+  }
+}

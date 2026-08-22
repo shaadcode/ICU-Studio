@@ -1,0 +1,9 @@
+{
+  "controls": {
+    "jsonPropertyCopy": "کپی به صورت کلید json",
+    "oneLineCopy": "کپی در یک خط",
+    "prettyCopy": "کپی زیبا",
+    "simpleCopy": "کپی ساده",
+    "tFunctionCopy": "کپی به صورت تابع t"
+  }
+}

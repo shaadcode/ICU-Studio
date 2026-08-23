@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { playwright } from '@vitest/browser-playwright';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 
-const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 // eslint-disable-next-line node/prefer-global/process
 const host = process.env.TAURI_DEV_HOST;
@@ -18,6 +18,7 @@ export default defineConfig({
   //
   // 1. prevent Vite from obscuring rust errors
   clearScreen: false,
+  cacheDir: './.cache',
   resolve: {
     tsconfigPaths: true,
   },
@@ -39,26 +40,46 @@ export default defineConfig({
       : undefined,
   },
   test: {
-    projects: [{
-      extends: true,
-      test: {
-        name: 'storybook',
-        browser: {
-          enabled: true,
-          headless: true,
-          provider: playwright({}),
-          instances: [{
-            browser: 'chromium',
-          }],
+    projects: [
+      {
+        extends: true,
+        cacheDir: './.cache/unit-tests',
+        resolve: {
+          tsconfigPaths: true,
+        },
+        test: {
+          name: 'unit',
+          environment: 'node',
+          include: ['**/*.{test,spec}.ts'],
+          exclude: ['**/node_modules/**', '**/.git/**', './.next/**', './cache/**'],
         },
       },
-      plugins: [
-      // The plugin will run tests for the stories defined in your Storybook config
-      // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-        storybookTest({
-          configDir: path.join(dirname, '.storybook'),
-        }),
-      ],
-    }],
+      {
+        extends: true,
+        cacheDir: './.cache/sb-tests',
+        resolve: {
+          tsconfigPaths: true,
+        },
+        plugins: [
+        // The plugin will run tests for the stories defined in your Storybook config
+          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+          storybookTest({
+            disableAddonDocs: true,
+            configDir: path.join(dirname, '.storybook'),
+          }),
+        ],
+        test: {
+          name: 'storybook',
+          setupFiles: ['./vitest.storybook.setup.mjs'],
+          exclude: ['**/node_modules/**', '**/.git/**', './.next/**', './cache/**'],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
+    ],
   },
 });

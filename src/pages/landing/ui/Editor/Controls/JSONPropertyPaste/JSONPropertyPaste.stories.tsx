@@ -1,21 +1,17 @@
-import { expect } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import JsonPropertyCopy from './JSONPropertyCopy';
+import JsonPropertyPaste from './JSONPropertyPaste';
 import MockRichTextEditor from '@/shared/lib/mantine/MockRichTextEditor';
 
 const meta = {
-  component: JsonPropertyCopy,
-} satisfies Meta<typeof JsonPropertyCopy>;
+  component: JsonPropertyPaste,
+} satisfies Meta<typeof JsonPropertyPaste>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  play: async () => {
-    await expect(5 + 5).toEqual(10);
-  },
   decorators: [
     Story => <MockRichTextEditor control={<Story />} />,
   ],

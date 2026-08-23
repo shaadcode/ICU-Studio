@@ -1,9 +1,16 @@
 {
   "controls": {
+    "jsonPastePlaceholder": "Enter your json text (even if it's somewhat invalid)",
     "jsonPropertyCopy": "json property copy",
+    "jsonPropertyPaste": "json property paste",
     "oneLineCopy": "one line copy",
+    "oneLinePaste": "one line paste",
     "prettyCopy": "pretty copy",
+    "prettyPaste": "pretty paste",
     "simpleCopy": "simple copy",
-    "tFunctionCopy": "t function copy"
-  }
+    "simplePaste": "simple paste",
+    "tFunctionCopy": "t function copy",
+    "tFunctionPaste": "t function paste"
+  },
+  "placeholder": "type your ICU message ..."
 }

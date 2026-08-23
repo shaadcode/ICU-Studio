@@ -1,4 +1,6 @@
 {
-  "template": "template",
-  "search": "search"
+  "copy": "copy",
+  "paste": "paste",
+  "search": "search",
+  "template": "template"
 }

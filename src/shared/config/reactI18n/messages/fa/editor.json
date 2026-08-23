@@ -1,9 +1,16 @@
 {
   "controls": {
+    "jsonPastePlaceholder": "متن json خود را وارد کنید(حتی تا حدودی نامعتبر)",
     "jsonPropertyCopy": "کپی به صورت کلید json",
+    "jsonPropertyPaste": "چسباندن به صورت کلید json",
     "oneLineCopy": "کپی در یک خط",
+    "oneLinePaste": "چسباندن در یک خط",
     "prettyCopy": "کپی زیبا",
+    "prettyPaste": "چسباندن زیبا",
     "simpleCopy": "کپی ساده",
-    "tFunctionCopy": "کپی به صورت تابع t"
-  }
+    "simplePaste": "چسباندن ساده",
+    "tFunctionCopy": "چسباندن به صورت تابع t",
+    "tFunctionPaste": "چسباندن به صورت تابع t"
+  },
+  "placeholder": "پیام ICU را در اینجا وارد کنید ..."
 }

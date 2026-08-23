@@ -12,6 +12,7 @@ const config: StorybookConfig = {
     '@storybook/addon-docs',
     '@storybook/addon-designs',
     'storybook-addon-pseudo-states',
+    'storybook-addon-test-codegen',
     '@storybook/addon-themes',
     '@github-ui/storybook-addon-performance-panel',
   ],

@@ -1,4 +1,4 @@
-.copyControlsContainer {
+/* .copyControlsContainer {
   transition: border-color 0.2s;
   padding: 5px;
   background-color: var(--mantine-color-gray-0);
@@ -8,4 +8,4 @@
   &:hover {
     border-color: var(--mantine-color-gray-5);
   }
-}
+} */

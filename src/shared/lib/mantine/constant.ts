@@ -1,0 +1,1 @@
+export const BOUNCE_UPDATE_EDITOR = 1000;

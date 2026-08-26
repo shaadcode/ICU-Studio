@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import ICUEditor from '../../Editor';
 import OneLineCopy from './OneLineCopy';
-import MockRichTextEditor from '@/shared/lib/mantine/MockRichTextEditor';
 
 const meta = {
   component: OneLineCopy,
@@ -13,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   decorators: [
-    Story => <MockRichTextEditor control={<Story />} />,
+    Story => <ICUEditor custom={{ toolBarChildren: <Story /> }} />,
   ],
 };

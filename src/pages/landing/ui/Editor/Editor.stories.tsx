@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import Editor from './Editor';
+import ICUEditor from './Editor';
 
 const meta = {
-  component: Editor,
-} satisfies Meta<typeof Editor>;
+  component: ICUEditor,
+} satisfies Meta<typeof ICUEditor>;
 
 export default meta;
 

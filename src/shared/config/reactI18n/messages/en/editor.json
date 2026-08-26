@@ -1,5 +1,6 @@
 {
   "controls": {
+    "formatMessage": "formatting message",
     "jsonPastePlaceholder": "Enter your json text (even if it's somewhat invalid)",
     "jsonPropertyCopy": "json property copy",
     "jsonPropertyPaste": "json property paste",

@@ -1,5 +1,6 @@
 {
   "controls": {
+    "formatMessage": "فرمت کردن پیام",
     "jsonPastePlaceholder": "متن json خود را وارد کنید(حتی تا حدودی نامعتبر)",
     "jsonPropertyCopy": "کپی به صورت کلید json",
     "jsonPropertyPaste": "چسباندن به صورت کلید json",

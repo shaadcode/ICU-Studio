@@ -1,8 +1,8 @@
 import { expect } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import ICUEditor from '../../Editor';
 import JsonPropertyCopy from './JSONPropertyCopy';
-import MockRichTextEditor from '@/shared/lib/mantine/MockRichTextEditor';
 
 const meta = {
   component: JsonPropertyCopy,
@@ -17,6 +17,7 @@ export const Default: Story = {
     await expect(5 + 5).toEqual(10);
   },
   decorators: [
-    Story => <MockRichTextEditor control={<Story />} />,
+    Story => <ICUEditor custom={{ toolBarChildren: <Story /> }} />,
+
   ],
 };

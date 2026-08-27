@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
-import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Box, Group, Divider } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
@@ -10,6 +9,7 @@ import type { Editor, UseEditorOptions } from '@tiptap/react';
 
 import classes from './Editor.module.css';
 import { textToHtml } from '@/shared/lib/icu/textToHtml';
+import { StarterKitForICUEditor } from '@/shared/lib/tiptap';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
 import PrettyCopyControl from './Controls/PrettyCopy/PrettyCopy';
 import OneLineCopyControl from './Controls/OneLineCopy/OneLineCopy';
@@ -37,20 +37,19 @@ type Props = {
 const ICUEditor = (props: Props) => {
   const tCommon = useTranslations('common');
   const t = useTranslations('editor');
-
   const updateContent = useDebouncedCallback((editor: Editor) => {
     const prevCursorPosition = editor.state.selection.$anchor.pos;
     const html = textToHtml(editor.getText());
     editor.commands.setContent(
       html.outerHTML,
-      { parseOptions: { preserveWhitespace: true } },
+      { parseOptions: { preserveWhitespace: 'full' } },
     );
     editor.commands.setTextSelection(prevCursorPosition);
   }, BOUNCE_UPDATE_EDITOR);
 
   const editor = useEditor({
-    content: '',
     shouldRerenderOnTransaction: true,
+    parseOptions: { preserveWhitespace: 'full' },
     onUpdate: ({ editor }) => {
       updateContent(editor);
     },
@@ -59,7 +58,7 @@ const ICUEditor = (props: Props) => {
       props.custom?.onMount?.({ editor });
     },
     extensions: [
-      StarterKit,
+      StarterKitForICUEditor,
       Placeholder.configure({ placeholder: t('placeholder') }),
       SpanMark,
     ],

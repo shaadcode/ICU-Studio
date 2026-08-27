@@ -11,6 +11,7 @@ export const NODE_CLASSES = {
   comma: 'comma',
   indent: 'indent',
   rawText: 'raw-text',
+  tagValue: 'tag-value',
   stemOption: 'stem-option',
   offsetValue: 'offset-value',
   offsetColon: 'offset-colon',
@@ -26,12 +27,17 @@ export const NODE_CLASSES = {
   dateArgumentName: 'date-argument-name',
   timeArgumentName: 'time-argument-name',
   skeletonSeparator: 'skeleton-separator',
+  leftAngleOpenTag: 'left-angle-open-tag',
   dedicatedFormatter: 'dedicated-formatter',
+  rightAngleOpenTag: 'right-angle-open-tag',
+  leftAngleCloseTag: 'left-angle-close-tag',
   numberArgumentName: 'number-argument-name',
   optionDelimiterEnd: `option-delimiter end`,
+  rightAngleCloseTag: 'right-angle-close-tag',
   stemOptionSeparator: 'stem-option-separator',
   selectOrdinalKeyword: 'selectOrdinal-keyword',
   optionDelimiterStart: `option-delimiter start`,
+  dateTimeSkeletonPattern: 'date-time-skeleton-pattern',
   argumentNameDelimiterEnd: `argument-name-delimiter end`,
   argumentNameDelimiterStart: `argument-name-delimiter start`,
 } as const;
@@ -41,6 +47,7 @@ export type SpanDataAttrs = 'class' | 'data-reference-id';
 type ExtendedValidPluralRule = LiteralUnion<'one' | 'two' | 'few' | 'zero' | 'many' | 'other', string>;
 
 export const createHtml = (parsedMessage: Array<MessageFormatElement>) => {
+  // console.log(parsedMessage);
   const { rootSpan, ...methods } = rootSpanMethods();
   const traverse = (
     elems: Array<MessageFormatElement>,
@@ -139,8 +146,17 @@ export const createHtml = (parsedMessage: Array<MessageFormatElement>) => {
       if (isRichNumberSkeleton(item.style)) {
         methods.addComma();
         methods.addSkeletonSeparator();
-        item.style.tokens.forEach((token) => {
-          methods.addStem({ value: token.stem });
+
+        const tokens = item.style.tokens;
+        tokens.forEach((token, tokenIndex) => {
+          const tokenOptions = token.options;
+          // add space
+          if (tokenIndex < tokens.length - 1 && !tokenOptions.length) {
+            methods.addStem({ value: `${token.stem} ` });
+          } else {
+            methods.addStem({ value: token.stem });
+          }
+
           if (token.options.length) {
             token.options.forEach((stemOption) => {
               methods.addStemOptionSeparator();
@@ -149,6 +165,7 @@ export const createHtml = (parsedMessage: Array<MessageFormatElement>) => {
           }
         });
       }
+
       if (isSimpleNumberSkeleton(item.style)) {
         methods.addComma();
         methods.addDedicatedFormatter({ value: item.style });
@@ -164,15 +181,7 @@ export const createHtml = (parsedMessage: Array<MessageFormatElement>) => {
       if (isRichDateTimeSkeleton(item.style)) {
         methods.addComma();
         methods.addSkeletonSeparator();
-        // item.style.tokens.forEach((token) => {
-        //   methods.addStem({ value: token.stem });
-        //   if (token.options.length) {
-        //     token.options.forEach((stemOption) => {
-        //       methods.addStemOptionSeparator();
-        //       methods.addStemOption({ value: stemOption });
-        //     });
-        //   }
-        // });
+        methods.addDateTimeSkeletonPattern({ value: item.style.pattern });
       }
       if (isSimpleDateTimeSkeleton(item.style)) {
         methods.addComma();
@@ -190,13 +199,28 @@ export const createHtml = (parsedMessage: Array<MessageFormatElement>) => {
         methods.addComma();
         methods.addDedicatedFormatter({ value: item.style });
       }
+
+      if (isRichDateTimeSkeleton(item.style)) {
+        methods.addComma();
+        methods.addSkeletonSeparator();
+        methods.addDateTimeSkeletonPattern({ value: item.style.pattern });
+      }
       methods.addArgumentNameDelimiterEnd();
+    }
+
+    if (item.type === TYPE.tag) {
+      methods.addLeftAngleOpenTag();
+      methods.addTagValue({ value: item.value });
+      methods.addRightAngleOpenTag();
+      traverse(item.children);
+      methods.addLeftAngleCloseTag();
+      methods.addTagValue({ value: item.value });
+      methods.addRightAngleCloseTag();
     }
 
     return item;
   });
 
   traverse(parsedMessage);
-
   return rootSpan;
 };

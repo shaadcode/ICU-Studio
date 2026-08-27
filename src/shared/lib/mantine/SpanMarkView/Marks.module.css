@@ -24,7 +24,10 @@ span[class='date-argument-name'] {
   margin-inline: 5px;
 }
 
-span[class='stem'],
+span[class='stem'] {
+  color: var(--mantine-color-blue-5);
+}
+
 span[class='dedicated-formatter'] {
   color: var(--mantine-color-blue-5);
   margin-inline: 5px;
@@ -32,12 +35,39 @@ span[class='dedicated-formatter'] {
 
 span[class='stem-option'] {
   color: var(--mantine-color-blue-5);
-  margin-inline: 5px;
+  margin-inline-end: 5px;
 }
 
 span[class='stem-option-separator'] {
   color: var(--mantine-color-blue-5);
-  margin-inline: 5px;
+}
+
+span[class='date-time-skeleton-pattern'] {
+  color: var(--mantine-color-blue-5);
+}
+
+span[class='date-time-skeleton-pattern'] {
+  color: var(--mantine-color-blue-5);
+}
+
+span[class='left-angle-open-tag'] {
+  color: var(--mantine-color-blue-3);
+}
+
+span[class='right-angle-open-tag'] {
+  color: var(--mantine-color-blue-3);
+}
+
+span[class='right-angle-close-tag'] {
+  color: var(--mantine-color-blue-3);
+}
+
+span[class='left-angle-close-tag'] {
+  color: var(--mantine-color-blue-3);
+}
+
+span[class='tag-value'] {
+  color: var(--mantine-color-blue-9);
 }
 
 span[class='skeleton-separator'] {

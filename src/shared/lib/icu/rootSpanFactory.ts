@@ -4,6 +4,9 @@ import { NODE_CLASSES } from '@/pages/landing/ui/Editor/Controls/FormatMessage/c
 
 type SharedParamsMethods = {
   depth?: number;
+  /**
+   * just for space and \n
+   */
   appendValue?: string;
   value?: string | number;
   referenceId?: CreateSpanElemParams['referenceId'];
@@ -53,6 +56,16 @@ export const rootSpanMethods = () => {
       className: NODE_CLASSES.selectKeyword,
       value: `select${params?.appendValue ?? ''}`,
     })),
+    addTagValue: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      className: NODE_CLASSES.tagValue,
+      value: `${params?.value}${params?.appendValue ?? ''}`,
+    })),
+    addRightAngleOpenTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      value: `>${params?.appendValue ?? ''}`,
+      className: NODE_CLASSES.rightAngleOpenTag,
+    })),
     addStemOption: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       referenceId: params?.referenceId,
       className: NODE_CLASSES.stemOption,
@@ -78,10 +91,20 @@ export const rootSpanMethods = () => {
       value: `}${params?.appendValue ?? ''}`,
       className: NODE_CLASSES.optionDelimiterEnd,
     })),
+    addRightAngleCloseTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      value: `>${params?.appendValue ?? ''}`,
+      className: NODE_CLASSES.rightAngleCloseTag,
+    })),
     addOffsetValue: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       referenceId: params?.referenceId,
       className: NODE_CLASSES.offsetValue,
       value: `${params?.value}${params?.appendValue ?? ''}`,
+    })),
+    addLeftAngleOpenTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      className: NODE_CLASSES.leftAngleOpenTag,
+      value: '<' + `${params?.appendValue ?? ''}`,
     })),
     addStemOptionSeparator: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       referenceId: params?.referenceId,
@@ -108,6 +131,12 @@ export const rootSpanMethods = () => {
       value: `{${params?.appendValue ?? ''}`,
       className: NODE_CLASSES.optionDelimiterStart,
     })),
+    addLeftAngleCloseTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      className: NODE_CLASSES.leftAngleCloseTag,
+      value: '</' + `${params?.appendValue ?? ''}`,
+    })),
+
     addNumberArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       referenceId: params?.referenceId,
       className: NODE_CLASSES.numberArgumentName,
@@ -137,6 +166,11 @@ export const rootSpanMethods = () => {
       className: NODE_CLASSES.indent,
       referenceId: params?.referenceId,
       value: `${'    '.repeat(params?.depth ?? 1)}${params?.appendValue ?? ''}`,
+    })),
+    addDateTimeSkeletonPattern: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      referenceId: params?.referenceId,
+      className: NODE_CLASSES.dateTimeSkeletonPattern,
+      value: `${params?.value}${params?.appendValue ?? ''}`,
     })),
   };
 };

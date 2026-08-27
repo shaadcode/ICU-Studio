@@ -5,12 +5,25 @@ import type { Decorator, ReactRenderer } from '@storybook/react-vite';
 
 import ICUEditor from '../../../Editor';
 
-export const createSimpleFormatMessageDecorator = (content: string): Decorator => Story => (
+type Options = {
+  withSetContent?: true;
+};
+
+export const createSimpleFormatMessageDecorator = (content: string, opts?: Options): Decorator => Story => (
   <ICUEditor
     custom={{
       toolBarChildren: <Story />,
-      customEditorConfig: { content },
-      onMount: ({ editor }) => (window as any).__testEditor = editor,
+      customEditorConfig: { content: opts?.withSetContent ? undefined : content },
+      onMount: ({ editor }) => {
+        (window as any).__testEditor = editor;
+
+        if (opts?.withSetContent) {
+          editor.commands.setContent(
+            content,
+            { parseOptions: { preserveWhitespace: 'full' } },
+          );
+        }
+      },
     }}
   />
 );
@@ -18,6 +31,7 @@ export const createSimpleFormatMessageDecorator = (content: string): Decorator =
 export const createSimpleFormatMessageTest = (message: string): PlayFunction<ReactRenderer, object> => async ({ canvas, userEvent }) => {
   const editor = (window as any)['__testEditor'] as Editor;
   await userEvent.click(await canvas.findByRole('button', { name: 'formatting message' }));
+  const content = editor.getText();
 
-  expect(editor.getText()).toEqual(message);
+  expect(content).toEqual(message);
 };

@@ -1,6 +1,10 @@
 {
   "copy": "copy",
+  "error": "error",
   "paste": "paste",
   "search": "search",
-  "template": "template"
+  "snippets": " snippets",
+  "template": "template",
+  "valid": "valid",
+  "value": "value"
 }

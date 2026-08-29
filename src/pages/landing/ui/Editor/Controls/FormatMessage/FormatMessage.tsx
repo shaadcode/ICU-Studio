@@ -1,21 +1,23 @@
 import { useTranslations } from 'use-intl';
 import { IconSparkles2 } from '@tabler/icons-react';
-import { parse } from '@formatjs/icu-messageformat-parser';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
-import { createHtml } from './createHtml';
+import { minimalParser } from '@/shared/lib/icu';
+import { extendSetContent } from '@/shared/lib/tiptap';
+import { extractInfoAndHtml } from '@/shared/lib/icu/createHtml/createHtml';
 
 const FormatMessageControl = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const handleFormat = () => {
+    if (!editor) {
+      throw new Error('editor is undefined');
+    }
+
     const rawMessage = editor?.getText() ?? '';
-    const parsed = parse(rawMessage);
-    const html = createHtml(parsed);
-    editor?.commands.setContent(
-      html.outerHTML,
-      { parseOptions: { preserveWhitespace: 'full' } },
-    );
+    const parsed = minimalParser(rawMessage);
+    const html = extractInfoAndHtml(parsed, { withFormatting: true });
+    extendSetContent(editor)(html.outerHTML);
   };
   return (
     <RichTextEditor.Control

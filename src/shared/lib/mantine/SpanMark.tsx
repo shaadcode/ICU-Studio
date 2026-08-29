@@ -2,7 +2,7 @@ import type { Attribute } from '@tiptap/react';
 import { Mark, ReactMarkViewRenderer } from '@tiptap/react';
 
 import SpanMarkView from './SpanMarkView/SpanMarkView';
-import type { SpanDataAttrs } from '@/pages/landing/ui/Editor/Controls/FormatMessage/createHtml';
+import type { SpanDataAttrs } from '../icu/createHtml/createHtml';
 
 const setAttribute = <
   AttrName extends SpanDataAttrs,

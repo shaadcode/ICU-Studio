@@ -1,0 +1,9 @@
+.badgeLabel {
+  text-transform: capitalize;
+  user-select: none;
+  font-size: var(--mantine-font-size-xs);
+}
+
+.badgeRoot {
+  cursor: help;
+}

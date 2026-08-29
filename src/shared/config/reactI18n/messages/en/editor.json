@@ -13,5 +13,46 @@
     "tFunctionCopy": "t function copy",
     "tFunctionPaste": "t function paste"
   },
-  "placeholder": "type your ICU message ..."
+  "livePreview": "live preview",
+  "messageFormatEnum": {
+    "0": "literal",
+    "1": "argument",
+    "2": "number",
+    "3": "date",
+    "4": "time",
+    "5": "select",
+    "6": "plural",
+    "7": "pound",
+    "8": "tag"
+  },
+  "parsingErrors": {
+    "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "Duplicate selectors in plural or selectordinal argument (e.g. '{foo, plural, one {#} one {#}}')",
+    "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "Duplicate selectors in select argument (e.g. '{foo, select, apple {apple} apple {apple}}')",
+    "EMPTY_ARGUMENT": "Argument is empty (e.g. '{}')",
+    "EXPECT_ARGUMENT_CLOSING_BRACE": "Argument is unclosed (e.g. '{0')",
+    "EXPECT_ARGUMENT_STYLE": "Argument style is expected (e.g. '{foo, number, }')",
+    "EXPECT_ARGUMENT_TYPE": "Argument type is expected (e.g. '{foo,}')",
+    "EXPECT_DATE_TIME_SKELETON": "A date time skeleton following the :: is expected (e.g. '{foo, date, ::}')",
+    "EXPECT_NUMBER_SKELETON": "A number skeleton following the :: is expected (e.g. '{foo, number, ::}')",
+    "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE": "Expecting an offset value in plural or selectordinal argument (e.g '{foo, plural, offset}')",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR": "Expecting a selector in plural or selectordinal argument (e.g '{foo, plural}')",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT": "Expecting a message fragment after the plural or selectordinal selector (e.g. '{foo, plural, one}')",
+    "EXPECT_SELECT_ARGUMENT_OPTIONS": "Missing select argument options (e.g. '{foo, select}')",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR": "Expecting a selector in select argument (e.g '{foo, select}')",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT": "Expecting a message fragment after the select selector (e.g. '{foo, select, apple}')",
+    "INVALID_ARGUMENT_TYPE": "Unsupported argument type (e.g. '{foo,foo}')",
+    "INVALID_DATE_TIME_SKELETON": "The date time skeleton is invalid",
+    "INVALID_NUMBER_SKELETON": "The number skeleton is invalid",
+    "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE": "Offset value in plural or selectordinal is invalid (e.g. '{foo, plural, offset: x}')",
+    "INVALID_PLURAL_ARGUMENT_SELECTOR": "Selector in plural or selectordinal is malformed (e.g. '{foo, plural, =x {#}}')",
+    "INVALID_TAG": "The tag is malformed (e.g. '<bold!>foo</bold!>')",
+    "INVALID_TAG_NAME": "The tag name is invalid (e.g. '<123>foo</123>')",
+    "MALFORMED_ARGUMENT": "Argument is malformed (e.g. '{foo!}')",
+    "MISSING_OTHER_CLAUSE": "Plural or select argument must have other clause",
+    "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE": "Unmatched apostrophes in the argument style (e.g. '{foo, number, 'test)'",
+    "UNCLOSED_TAG": "The opening tag has unmatched closing tag (e.g. '<bold>foo')",
+    "UNMATCHED_CLOSING_TAG": "The closing tag does not match the opening tag (e.g. '<bold>foo</italic>')"
+  },
+  "placeholder": "type your ICU message ...",
+  "testVariables": "test variables"
 }

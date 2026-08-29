@@ -51,18 +51,17 @@ export const initialGlobals = {
 export const decorators = [
   (Story: any, ctx: any) => {
     const locale = getStorybookLocale(ctx);
-
     return (
       <IntlProvider
-        locale="en"
+        locale={locale}
         messages={allLocalesMessages[locale]}
 
         onError={(error) => {
           throw new Error(error.message);
         }}
       >
-        <MantineProvider theme={theme}>
-          <ColorSchemeScript />
+        <MantineProvider theme={theme} forceColorScheme="light">
+          <ColorSchemeScript forceColorScheme="light" />
           <Center p="xl" w="100%">
             <Story />
           </Center>

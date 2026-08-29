@@ -1,5 +1,6 @@
 import { expect } from 'storybook/test';
 import type { Editor } from '@tiptap/react';
+// import type { Editor } from '@tiptap/react';
 import type { PlayFunction } from 'storybook/internal/csf';
 import type { Decorator, ReactRenderer } from '@storybook/react-vite';
 
@@ -20,7 +21,7 @@ export const createSimpleFormatMessageDecorator = (content: string, opts?: Optio
         if (opts?.withSetContent) {
           editor.commands.setContent(
             content,
-            { parseOptions: { preserveWhitespace: 'full' } },
+            { emitUpdate: false, parseOptions: { preserveWhitespace: 'full' } },
           );
         }
       },

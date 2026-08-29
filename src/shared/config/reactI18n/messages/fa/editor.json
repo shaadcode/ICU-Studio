@@ -13,5 +13,46 @@
     "tFunctionCopy": "چسباندن به صورت تابع t",
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
-  "placeholder": "پیام ICU را در اینجا وارد کنید ..."
+  "livePreview": "پیشنمایش زنده",
+  "messageFormatEnum": {
+    "0": "متن ثابت (literal)",
+    "1": "متغیر (argument)",
+    "2": "عدد (number)",
+    "3": "تاریخ (date)",
+    "4": "زمان (time)",
+    "5": "انتخاب (select)",
+    "6": "جمع (plural)",
+    "7": "علامت # (pound)",
+    "8": "برچسب (tag)"
+  },
+  "parsingErrors": {
+    "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "selector تکراری در آرگومان plural یا selectordinal (مثال: {foo, plural, one {#} one {#}})",
+    "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "selector تکراری در آرگومان select (مثال: {foo, select, apple {apple} apple {apple}})",
+    "EMPTY_ARGUMENT": "آرگومان خالی است (مثال: `{}')",
+    "EXPECT_ARGUMENT_CLOSING_BRACE": "آرگومان بسته نشده است (مثال: `{0`)",
+    "EXPECT_ARGUMENT_STYLE": "سبک آرگومان مشخص نشده است (مثال: '{foo, number, }')",
+    "EXPECT_ARGUMENT_TYPE": "نوع آرگومان مشخص نشده است (مثال: '{foo,}')",
+    "EXPECT_DATE_TIME_SKELETON": "قالب تاریخ و زمان بعد از '::' مشخص نشده است (مثال: '{foo, date, ::}')",
+    "EXPECT_NUMBER_SKELETON": "قالب عدد بعد از '::' مشخص نشده است (مثال: '{foo, number, ::}')",
+    "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE": "مقدار offset در آرگومان plural یا selectordinal مشخص نشده است (مثال: '{foo, plural, offset}')",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR": "selector در آرگومان plural یا selectordinal مشخص نشده است (مثال: '{foo, plural}')",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT": "بخش پیام بعد از selector در آرگومان plural یا selectordinal مشخص نشده است (مثال: '{foo, plural, one}')",
+    "EXPECT_SELECT_ARGUMENT_OPTIONS": "گزینه‌های آرگومان select مشخص نشده است (مثال: '{foo, select}')",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR": "selector در آرگومان select مشخص نشده است (مثال: '{foo, select}')",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT": "بخش پیام بعد از selector در آرگومان select مشخص نشده است (مثال: '{foo, select, apple}')",
+    "INVALID_ARGUMENT_TYPE": "نوع آرگومان پشتیبانی نمی‌شود (مثال: '{foo,foo}')",
+    "INVALID_DATE_TIME_SKELETON": "قالب تاریخ و زمان نامعتبر است",
+    "INVALID_NUMBER_SKELETON": "قالب عدد نامعتبر است",
+    "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE": "مقدار offset در آرگومان plural یا selectordinal نامعتبر است (مثال: '{foo, plural, offset: x}')",
+    "INVALID_PLURAL_ARGUMENT_SELECTOR": "selector در آرگومان plural یا selectordinal نادرست است (مثال: '{foo, plural, =x {#}}')",
+    "INVALID_TAG": "برچسب نادرست است (مثال: '<bold!>foo</bold!>')",
+    "INVALID_TAG_NAME": "نام برچسب نامعتبر است (مثال: '<123>foo</123>')",
+    "MALFORMED_ARGUMENT": "آرگومان نادرست است (مثال: '{foo!}')",
+    "MISSING_OTHER_CLAUSE": "گزینه‌های plural یا select باید دارای بخش other باشند",
+    "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE": "نقل قول بسته نشده در سبک آرگومان (مثال: '{foo, number, 'test')",
+    "UNCLOSED_TAG": "برچسب باز بسته نشده است (مثال: '<bold>foo')",
+    "UNMATCHED_CLOSING_TAG": "برچسب بسته‌شونده با برچسب بازشونده مطابقت ندارد (مثال: '<bold>foo</italic>')"
+  },
+  "placeholder": "پیام ICU را در اینجا وارد کنید ...",
+  "testVariables": "آزمایش متغیر ها"
 }

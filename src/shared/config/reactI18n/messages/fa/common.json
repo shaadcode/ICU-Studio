@@ -1,6 +1,10 @@
 {
   "copy": "کپی",
+  "error": "خطا",
   "paste": "چسباندن",
   "search": "جست و جو",
-  "template": "قالب ها"
+  "snippets": "الگو ها",
+  "template": "قالب ها",
+  "valid": "معتبر",
+  "value": "مقدار"
 }

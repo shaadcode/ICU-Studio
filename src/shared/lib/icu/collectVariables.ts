@@ -1,6 +1,8 @@
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import { isTagElement, isDateElement, isTimeElement, isNumberElement, isPluralElement, isSelectElement, isArgumentElement } from '@formatjs/icu-messageformat-parser';
 
+import type { MessageElementsType } from './types';
+
 /**
  * for format.js lib
  * Collect all variables in an AST to Record<string, TYPE>
@@ -32,7 +34,5 @@ export const collectVariables = (ast: Array<MessageFormatElement>, vars = /* @__
     }
   });
 
-  return {
-    keys: Array.from(vars.keys()),
-  };
+  return Array.from(vars.entries()) as ReadonlyArray<[string, MessageElementsType]>;
 };

@@ -1,0 +1,1 @@
+export const BOUNCE_UPDATE_VARIABLE_VALUE = 500;

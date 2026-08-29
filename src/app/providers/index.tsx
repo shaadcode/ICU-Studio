@@ -23,8 +23,8 @@ const Providers = ({ children }: Props) => {
       }}
     >
       <DirectionProvider>
-        <MantineProvider theme={theme}>
-          <ColorSchemeScript />
+        <MantineProvider theme={theme} forceColorScheme="light">
+          <ColorSchemeScript forceColorScheme="light" />
           {children}
         </MantineProvider>
       </DirectionProvider>

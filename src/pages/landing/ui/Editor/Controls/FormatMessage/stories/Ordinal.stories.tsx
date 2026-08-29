@@ -5,7 +5,7 @@ import { createSimpleFormatMessageTest, createSimpleFormatMessageDecorator } fro
 
 const meta = {
   component: FormatMessageControl,
-  title: 'Editor/FormatMessage/ordinal',
+  title: 'Editor/Controls/FormatMessage/ordinal',
 } satisfies Meta<typeof FormatMessageControl>;
 
 export default meta;

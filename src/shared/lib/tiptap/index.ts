@@ -1,3 +1,9 @@
+import { indent } from './indent';
+import { extendSetContent } from './extendSetContent';
 import { StarterKitForICUEditor } from './starterKitIcu';
 
-export { StarterKitForICUEditor };
+export {
+  indent,
+  extendSetContent,
+  StarterKitForICUEditor,
+};

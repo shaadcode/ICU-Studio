@@ -5,7 +5,7 @@ import { createSimpleFormatMessageTest, createSimpleFormatMessageDecorator } fro
 
 const meta = {
   component: FormatMessageControl,
-  title: 'Editor/FormatMessage/pluralization',
+  title: 'Editor/Controls/FormatMessage/pluralization',
 } satisfies Meta<typeof FormatMessageControl>;
 
 export default meta;

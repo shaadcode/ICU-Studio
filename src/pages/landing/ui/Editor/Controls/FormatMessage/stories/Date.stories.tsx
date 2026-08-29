@@ -5,7 +5,7 @@ import { createSimpleFormatMessageTest, createSimpleFormatMessageDecorator } fro
 
 const meta = {
   component: FormatMessageControl,
-  title: 'Editor/FormatMessage/date',
+  title: 'Editor/Controls/FormatMessage/date',
 } satisfies Meta<typeof FormatMessageControl>;
 
 export default meta;

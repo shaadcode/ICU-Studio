@@ -5,7 +5,7 @@ import { createSimpleFormatMessageTest, createSimpleFormatMessageDecorator } fro
 
 const meta = {
   component: FormatMessage,
-  title: 'Editor/FormatMessage/simple-variable',
+  title: 'Editor/Controls/FormatMessage/simple-variable',
 } satisfies Meta<typeof FormatMessage>;
 
 export default meta;

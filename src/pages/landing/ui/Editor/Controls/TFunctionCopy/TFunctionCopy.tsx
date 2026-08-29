@@ -5,9 +5,12 @@ import { IconCheck, IconFunction } from '@tabler/icons-react';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './TFunctionCopy.module.css';
+import { icuEditorStore } from '@/pages/landing/config/store';
 import { collectVariables } from '@/shared/lib/icu/collectVariables';
 
 const TFunctionCopyControl = () => {
+  const parserError = icuEditorStore.use.parserError();
+
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
@@ -25,6 +28,7 @@ const TFunctionCopyControl = () => {
 
   return (
     <RichTextEditor.Control
+      disabled={!!parserError}
       className={classes['control']}
       title={t('controls.tFunctionCopy')}
       aria-label={t('controls.tFunctionCopy')}

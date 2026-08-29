@@ -6,11 +6,13 @@ import { IconCheck, IconSparkles } from '@tabler/icons-react';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './PrettyCopy.module.css';
+import { icuEditorStore } from '@/pages/landing/config/store';
 
 const PrettyCopyControl = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
+  const parserError = icuEditorStore.use.parserError();
 
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();
@@ -22,6 +24,7 @@ const PrettyCopyControl = () => {
 
   return (
     <RichTextEditor.Control
+      disabled={!!parserError}
       className={classes['control']}
       title={t('controls.prettyCopy')}
       aria-label={t('controls.prettyCopy')}

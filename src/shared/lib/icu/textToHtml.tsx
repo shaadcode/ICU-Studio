@@ -1,10 +1,13 @@
 import { parse } from '@formatjs/icu-messageformat-parser';
 
-import { createHtml } from '@/pages/landing/ui/Editor/Controls/FormatMessage/createHtml';
+import { extractInfoAndHtml } from './createHtml/createHtml';
 
-export const textToHtml = (text: string) => {
+type Options = {
+  withFormatting?: true;
+};
+export const textToHtml = (text: string, opts?: Options) => {
   const parsed = parse(text);
-  const html = createHtml(parsed);
+  const html = extractInfoAndHtml(parsed, { withFormatting: opts?.withFormatting });
 
   return html;
 };

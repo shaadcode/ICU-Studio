@@ -65,7 +65,8 @@ enum ErrorKind {
   /** The opening tag has unmatched closing tag. (e.g. `<bold>foo`) */
   UNCLOSED_TAG = 27,
 }
-export type MessageElementsType = StringToNumber<`${TYPE}`>;
+export type MessageElementsTypeKeyword = keyof typeof TYPE;
+export type MessageElementsTypeEnum = StringToNumber<`${TYPE}`>;
 export type ParserError = {
   kind: ErrorKind;
   location: Location;

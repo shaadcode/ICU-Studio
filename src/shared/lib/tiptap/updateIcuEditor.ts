@@ -1,8 +1,8 @@
 import type { Editor } from '@tiptap/react';
 
+import { createHtml, minimalParser } from '../icu';
 import { extendSetContent } from './extendSetContent';
 import type { ICUEditorStore } from '@/pages/landing/config/store';
-import { createHtml, minimalParser, collectVariables } from '../icu';
 
 type Params = {
   editor: Editor;
@@ -23,10 +23,9 @@ export const updateIcuEditor = (params: Params) => {
   const html = createHtml(parsedMessage, { withFormatting: true });
   params.setValidationError(undefined);
   if (html.children.length) {
-    const variables = collectVariables(parsedMessage);
     extendSetContent(params.editor)(html.outerHTML);
     params.setParsedMessage(parsedMessage);
-    params.setVariables(variables);
+    params.setVariables(parsedMessage);
     params.editor.commands.setTextSelection(prevCursorPosition);
   }
 };

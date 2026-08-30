@@ -13,6 +13,7 @@
     "tFunctionCopy": "t function copy",
     "tFunctionPaste": "t function paste"
   },
+  "format": "format",
   "livePreview": "live preview",
   "messageFormatEnum": {
     "0": "literal",
@@ -25,6 +26,7 @@
     "7": "pound",
     "8": "tag"
   },
+  "offset": "offset",
   "parsingErrors": {
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "Duplicate selectors in plural or selectordinal argument (e.g. '{foo, plural, one {#} one {#}}')",
     "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "Duplicate selectors in select argument (e.g. '{foo, select, apple {apple} apple {apple}}')",
@@ -54,5 +56,7 @@
     "UNMATCHED_CLOSING_TAG": "The closing tag does not match the opening tag (e.g. '<bold>foo</italic>')"
   },
   "placeholder": "type your ICU message ...",
-  "testVariables": "test variables"
+  "pluralType": "plural type",
+  "testVariables": "test variables",
+  "variableType": "variable type"
 }

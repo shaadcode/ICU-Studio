@@ -1,0 +1,8 @@
+.badgeLabel {
+  font-size: var(--mantine-font-size-sm);
+  text-transform: capitalize;
+}
+
+.badgeRoot {
+  border-radius: var(--mantine-radius-md);
+}

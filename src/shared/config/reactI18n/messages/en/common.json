@@ -1,6 +1,7 @@
 {
   "copy": "copy",
   "error": "error",
+  "number": "number",
   "paste": "paste",
   "search": "search",
   "snippets": " snippets",

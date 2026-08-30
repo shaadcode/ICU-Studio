@@ -1,0 +1,13 @@
+.root {
+  background-color: var(--mantine-color-red-1);
+}
+
+.label {
+  color: var(--mantine-color-dark-8);
+}
+
+.control {
+  &::before {
+    /* background-color: white  !important; */
+  }
+}

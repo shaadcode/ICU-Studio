@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import { isString } from 'es-toolkit';
 import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { Group, Accordion, TextInput } from '@mantine/core';
+import { Group, Accordion, SegmentedControl } from '@mantine/core';
 
+import classes from './TestSelectField.module.css';
 import VariableName from '../../VariableName/VariableName';
 import VariableType from '../../VariableType/VariableType';
 import { icuEditorStore } from '@/pages/landing/config/store';
@@ -15,27 +15,22 @@ type Props = {
   data: ICUEditorStore['variables'][number];
 };
 
-const TestSimpleVariableField = (props: Props) => {
+const TestSelectField = (props: Props) => {
   const variable = props.data;
   const value = isString(variable.value) ? variable.value : 'unknown';
-  const t = useTranslations('editor.messageFormatEnum');
-  const tCommon = useTranslations('common');
   const updateVariableInitialValue = icuEditorStore.use.actions().updateVariableInitialValue;
-
+  const t = useTranslations('editor.messageFormatEnum');
   const handleSetVariableValue = useDebouncedCallback((fieldValue: string) => {
     updateVariableInitialValue(variable.name, fieldValue);
   }, BOUNCE_UPDATE_VARIABLE_VALUE);
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { variable: value ?? '' },
+    initialValues: {
+      variable: value ?? '',
+    },
     onValuesChange: ({ variable }) => handleSetVariableValue(variable),
-
   });
-
-  useEffect(() => {
-    form.getInputNode('variable')?.focus();
-  }, []);
 
   return (
     <Accordion.Item value={`${variable.name}-${variable.enumType}`}>
@@ -47,9 +42,9 @@ const TestSimpleVariableField = (props: Props) => {
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
-        <TextInput
-          key={form.key('variable')}
-          placeholder={tCommon('value')}
+        <SegmentedControl
+          classNames={{ innerLabel: classes['presetLabel'] }}
+          data={(variable.config?.conditions as string[]) ?? []}
           {...form.getInputProps('variable')}
         />
       </Accordion.Panel>
@@ -57,4 +52,4 @@ const TestSimpleVariableField = (props: Props) => {
   );
 };
 
-export default TestSimpleVariableField;
+export default TestSelectField;

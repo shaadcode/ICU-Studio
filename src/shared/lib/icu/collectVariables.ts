@@ -1,38 +1,86 @@
-import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
+import type { DistributedOmit } from 'type-fest';
+import type { PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import { isTagElement, isDateElement, isTimeElement, isNumberElement, isPluralElement, isSelectElement, isArgumentElement } from '@formatjs/icu-messageformat-parser';
 
-import type { MessageElementsType } from './types';
+import { formatMessageElementsKeywordByEnum } from './constants';
+import type { MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
 
-/**
- * for format.js lib
- * Collect all variables in an AST to Record<string, TYPE>
- * @param ast AST to collect variables from
- * @param vars Record of variable name to variable type
- */
-export const collectVariables = (ast: Array<MessageFormatElement>, vars = /* @__PURE__ */ new Map()) => {
+export type VariableInfo = {
+  name: string;
+  enumType: MessageElementsTypeEnum;
+  keywordType: MessageElementsTypeKeyword;
+  config?: {
+    // for Plural
+    offset?: number;
+    // for select
+    conditions?: string[];
+    style?: NumberElement['style'];
+    pluralType?: PluralElement['pluralType'];
+  };
+};
+
+export const collectVariables = (
+  ast: Array<MessageFormatElement>,
+  vars = /* @__PURE__ */ new Map<string, VariableInfo>(),
+) => {
   ast.forEach((el) => {
-    if (isArgumentElement(el) || isDateElement(el) || isTimeElement(el) || isNumberElement(el)) {
-      if (vars.has(el.value)) {
-        const existingType = vars.get(el.value);
-        if (existingType !== el.type && existingType !== 6 && existingType !== 5) {
-          throw new Error(`Variable ${el.value} has conflicting types`);
-        }
-      } else {
-        vars.set(el.value, el.type);
+    const enumType = el.type;
+    const keywordType = formatMessageElementsKeywordByEnum[enumType];
+
+    const assignObj = (value: DistributedOmit<VariableInfo, 'enumType' | 'keywordType'>): VariableInfo => ({
+      ...value,
+      enumType,
+      keywordType,
+    });
+    if (
+      isArgumentElement(el)
+      || isDateElement(el)
+      || isTimeElement(el)
+      || isNumberElement(el)
+    ) {
+      // if (vars.has(el.value)) {
+      //   const existingVariable = vars.get(el.value);
+      //   if (existingVariable?.enumType !== el.type
+      //     && existingVariable?.enumType !== 6
+      //     && existingVariable?.enumType !== 5) {
+      //     throw new Error(`Variable ${el.value} has conflicting types`);
+      //   }
+      // } else {
+      // }
+
+      if (isArgumentElement(el)) {
+        vars.set(el.value, assignObj({ name: el.value }));
       }
+
+      if (isNumberElement(el)) {
+        vars.set(el.value, assignObj({ name: el.value, config: { style: el.style } }));
+      }
+      // vars.set(el.value, assignObj({ name: el.value }));
     }
     if (isPluralElement(el) || isSelectElement(el)) {
-      vars.set(el.value, el.type);
+      if (isPluralElement(el)) {
+        vars.set(el.value, assignObj({
+          name: el.value,
+          config: { offset: el.offset, pluralType: el.pluralType },
+        }));
+      }
+      if (isSelectElement(el)) {
+        vars.set(el.value, assignObj({
+          name: el.value,
+          config: { conditions: Object.keys(el.options) },
+        }));
+      }
+
       Object.keys(el.options).forEach((k) => {
         // @ts-expect-error
         collectVariables(el.options[k].value, vars);
       });
     }
     if (isTagElement(el)) {
-      vars.set(el.value, el.type);
+      vars.set(el.value, assignObj({ name: el.value }));
       collectVariables(el.children, vars);
     }
   });
 
-  return Array.from(vars.entries()) as ReadonlyArray<[string, MessageElementsType]>;
+  return Array.from(vars.entries()) as ReadonlyArray<[string, VariableInfo]>;
 };

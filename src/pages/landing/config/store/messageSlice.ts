@@ -1,64 +1,81 @@
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
-import type { collectVariables } from '@/shared/lib/icu';
-import type { MessageElementsType } from '@/shared/lib/icu/types';
+import { collectVariables } from '@/shared/lib/icu';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
+import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
+import type { MessageElementsTypeEnum } from '@/shared/lib/icu/types';
 
 export type ICUEditorMessageSlice = {
   readonly message: string | undefined;
   actions: ICUEditorMessageSliceActions;
-  variablesValues: Record<string, string>;
-  variables: ReturnType<typeof collectVariables>;
+  // variablesValues: Record<string, string>;
   parsedMessage: undefined | Array<MessageFormatElement>;
+  variables: Array<VariableInfo & { value: string | number | ((chunks: string) => string) }>;
 
 };
 
 type ICUEditorMessageSliceActions = {
+  setVariables: (value: Array<MessageFormatElement>) => void;
   setMessage: (value: ICUEditorMessageSlice['message']) => void;
-  setVariables: (value: ICUEditorMessageSlice['variables']) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
-  initialVariablesValues: (variables: ICUEditorMessageSlice['variables']) => void;
-  setVariablesValues: (callback: (prevValue: ICUEditorMessageSlice['variablesValues']) => ICUEditorMessageSlice['variablesValues']) => void;
+  updateVariableInitialValue: (valueName: string, value: string | number) => void;
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
   variables: [],
   message: undefined,
-  variablesValues: {},
   parsedMessage: undefined,
   actions: {
+    setVariables: setVariablesHandler(set),
     setMessage: value => set({ message: value }),
-    setVariables: value => set({ variables: value }),
     setParsedMessage: value => set({ parsedMessage: value }),
-    setVariablesValues: callback => set({
-      variablesValues: callback(get().variablesValues),
-    }),
-    initialVariablesValues: (variables) => {
-      const initializedVariablesValues = variables.reduce((prevAcc, currentValue) => {
-        const [variableName, typeEnum] = currentValue;
-        const addProperty = (value: string | number | ((chunks: any) => string)) => ({
-          ...prevAcc,
-          [variableName]: value,
-        });
+    updateVariableInitialValue: (varName, value) => {
+      const variables = get().variables;
+      const result = variables.map((variable) => {
+        if (variable.name === varName) {
+          return { ...variable, value };
+        }
 
-        const typesMap = {
-          2: () => addProperty('14'),
-          1: () => addProperty('john'),
-          5: () => addProperty('other'),
-          6: () => addProperty('other'),
-          3: () => addProperty(new Date().toISOString()),
-          4: () => addProperty(new Date().toISOString()),
-          8: () => addProperty(chunks => `<span>${chunks}</span>`),
-        } as const satisfies Record<Exclude<MessageElementsType, 7 | 0>, () => object>;
+        return variable;
+      });
 
-        // @ts-expect-error
-        const handler = typesMap[typeEnum] as undefined | (() => object);
-
-        return handler ? handler() : prevAcc;
-      }, {});
-
-      return set({ variablesValues: initializedVariablesValues });
+      return set({ variables: result });
     },
   },
 });
+
+type Variable = ICUEditorMessageSlice['variables'][number];
+
+function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[0]) {
+  return (parsedMessage: Parameters<ICUEditorMessageSliceActions['setVariables']>[0]): ReturnType<ICUEditorMessageSliceActions['setVariables']> => {
+    const rawVariables = collectVariables(parsedMessage);
+    const initializedVariablesValues = rawVariables
+      .map((variable) => {
+        const [, info] = variable;
+
+        if (info.enumType === 0 || info.enumType === 7) {
+          return {};
+        }
+        const addProperty = (initialValue: Variable['value']): Variable => ({
+          ...info,
+          value: initialValue,
+        });
+
+        const typesMap = {
+          0: () => ({}),
+          7: () => ({}),
+          6: () => addProperty(1),
+          2: () => addProperty(5),
+          1: () => addProperty('john'),
+          3: () => addProperty(new Date().toISOString()),
+          4: () => addProperty(new Date().toISOString()),
+          5: () => addProperty(info.config?.conditions?.[0] ?? 'unknown'),
+          8: () => addProperty((chunks: any) => `<span>${chunks}</span>`),
+        } as const satisfies Record<MessageElementsTypeEnum, () => object>;
+        return typesMap[info.enumType]();
+      }) as ICUEditorMessageSlice['variables'];
+    // console.log(parsedMessage);
+    return set({ variables: initializedVariablesValues });
+  };
+}

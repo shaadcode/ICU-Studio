@@ -1,0 +1,4 @@
+.presetLabel {
+  text-transform: capitalize;
+  font-size: var(--mantine-font-size-sm);
+}

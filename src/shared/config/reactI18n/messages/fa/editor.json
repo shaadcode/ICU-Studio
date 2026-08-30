@@ -13,6 +13,7 @@
     "tFunctionCopy": "چسباندن به صورت تابع t",
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
+  "format": "فرمت",
   "livePreview": "پیشنمایش زنده",
   "messageFormatEnum": {
     "0": "متن ثابت (literal)",
@@ -25,6 +26,7 @@
     "7": "علامت # (pound)",
     "8": "برچسب (tag)"
   },
+  "offset": "مقدار پایه",
   "parsingErrors": {
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "selector تکراری در آرگومان plural یا selectordinal (مثال: {foo, plural, one {#} one {#}})",
     "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "selector تکراری در آرگومان select (مثال: {foo, select, apple {apple} apple {apple}})",
@@ -54,5 +56,7 @@
     "UNMATCHED_CLOSING_TAG": "برچسب بسته‌شونده با برچسب بازشونده مطابقت ندارد (مثال: '<bold>foo</italic>')"
   },
   "placeholder": "پیام ICU را در اینجا وارد کنید ...",
-  "testVariables": "آزمایش متغیر ها"
+  "pluralType": "نوع پلورال",
+  "testVariables": "آزمایش متغیر ها",
+  "variableType": "نوع متغیر"
 }

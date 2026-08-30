@@ -15,9 +15,12 @@ const FormatMessageControl = () => {
     }
 
     const rawMessage = editor?.getText() ?? '';
-    const parsed = minimalParser(rawMessage);
-    const html = extractInfoAndHtml(parsed, { withFormatting: true });
-    extendSetContent(editor)(html.outerHTML);
+    const [, parsedMessage] = minimalParser(rawMessage);
+
+    if (parsedMessage) {
+      const html = extractInfoAndHtml(parsedMessage, { withFormatting: true });
+      extendSetContent(editor)(html.outerHTML);
+    }
   };
   return (
     <RichTextEditor.Control

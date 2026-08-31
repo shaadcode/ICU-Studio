@@ -53,7 +53,8 @@ export const pluralToHtml = (params: Params) => {
 
     if (optionIndex === entriesOptions.length - 1) {
       methods.addArgumentNameDelimiterEnd({
-        formattingChars: { prepend: indent(depth) } });
+        formattingChars: { prepend: indent(depth) },
+      });
     }
   });
 };

@@ -1,5 +1,5 @@
 import type { DistributedOmit } from 'type-fest';
-import type { PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
+import type { DateElement, TimeElement, PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import { isTagElement, isDateElement, isTimeElement, isNumberElement, isPluralElement, isSelectElement, isArgumentElement } from '@formatjs/icu-messageformat-parser';
 
 import { formatMessageElementsKeywordByEnum } from './constants';
@@ -14,7 +14,9 @@ export type VariableInfo = {
     offset?: number;
     // for select
     conditions?: string[];
-    style?: NumberElement['style'];
+    dateStyle?: DateElement['style'];
+    timeStyle?: TimeElement['style'];
+    numberStyle?: NumberElement['style'];
     pluralType?: PluralElement['pluralType'];
   };
 };
@@ -53,7 +55,15 @@ export const collectVariables = (
       }
 
       if (isNumberElement(el)) {
-        vars.set(el.value, assignObj({ name: el.value, config: { style: el.style } }));
+        vars.set(el.value, assignObj({ name: el.value, config: { numberStyle: el.style } }));
+      }
+
+      if (isTimeElement(el)) {
+        vars.set(el.value, assignObj({ name: el.value, config: { timeStyle: el.style } }));
+      }
+
+      if (isDateElement(el)) {
+        vars.set(el.value, assignObj({ name: el.value, config: { dateStyle: el.style } }));
       }
       // vars.set(el.value, assignObj({ name: el.value }));
     }

@@ -1,0 +1,21 @@
+.accordionRoot {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--mantine-spacing-md);
+}
+
+.accordionItem {
+  height: fit-content;
+}
+
+.previewTitleContainer {
+  background-color: var(--mantine-color-yellow-1);
+  border: 1px solid var(--mantine-color-yellow-7);
+  padding: var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  justify-content: space-between;
+}
+
+.previewTitle {
+  text-transform: capitalize;
+}

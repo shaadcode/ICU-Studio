@@ -1,6 +1,9 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/tiptap/styles.css';
+import '@mantine/dates/styles.css';
+
+import './../src/App.css';
 import type { Locale } from 'use-intl';
 import { IntlProvider } from 'use-intl';
 import { Center, MantineProvider, ColorSchemeScript } from '@mantine/core';

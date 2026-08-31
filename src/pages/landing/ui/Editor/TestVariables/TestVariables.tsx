@@ -1,71 +1,96 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { attempt } from 'es-toolkit';
 import { useTranslations } from 'use-intl';
-import { Text, Stack, Accordion } from '@mantine/core';
 import { IntlMessageFormat } from 'intl-messageformat';
+import { notifications } from '@mantine/notifications';
 // import { IntlMessageFormat } from 'intl-messageformat';
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
+import { Text, Stack, Paper, Group, Accordion } from '@mantine/core';
 
+import classes from './TestVariables.module.css';
+import CopyMessageButton from './CopyMessageButton';
+import TestDateField from './Elements/Date/TestDateField';
+import TestTimeField from './Elements/Time/TestTimeField';
 import { icuEditorStore } from '@/pages/landing/config/store';
 import TestPluralField from './Elements/Plural/TestPluralField';
 import TestSelectField from './Elements/Select/TestSelectField';
 import TestNumberField from './Elements/Number/TestNumberField';
 import TestSimpleVariableField from './Elements/SimpleVariable/SimpleVariable';
+import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 const TestVariables = () => {
   const t = useTranslations('editor');
   const variables = icuEditorStore.use.variables() ?? [];
   const parsedMessage = icuEditorStore.use.parsedMessage() ?? [];
+  const keyValueVariables = variables.reduce((prevAcc, value) => ({ ...prevAcc, [value.name]: value.value }), {});
 
-  const items = variables.map((element, i) => {
-    const components: Record<`${TYPE}`, () => React.JSX.Element> = {
+  const message = (() => {
+    const [, printedMessage] = attempt(() => new IntlMessageFormat(parsedMessage).format(keyValueVariables));
+
+    if (!printedMessage) {
+      notifications.show({
+        message: 'error',
+      });
+      return '';
+    }
+    return (printedMessage ?? '') as string | Array<string>;
+  })();
+
+  const items = variables.map((element) => {
+    const components = {
       0: () => <></>,
-      3: () => <></>,
-      4: () => <></>,
       7: () => <></>,
       8: () => <></>,
-      2: () => <TestNumberField data={element} />,
-      5: () => <TestSelectField data={element} />,
-      6: () => <TestPluralField data={element} />,
-      1: () => <TestSimpleVariableField data={element} />,
-
-    };
+      3: TestDateField,
+      4: TestTimeField,
+      2: TestNumberField,
+      5: TestSelectField,
+      6: TestPluralField,
+      1: TestSimpleVariableField,
+    } as const satisfies Record<`${TYPE}`, (props: any) => React.JSX.Element>;
 
     const Component = components[element.enumType];
 
-    return Component ? <Component key={i} /> : null;
+    return Component
+      ? (
+          <Component
+            data={element}
+            key={`${element.name}-${element.enumType}`}
+          />
+        )
+      : null;
   });
-  useEffect(() => {
-    try {
-      console.log(variables);
-      const keyValueVariables = variables.reduce((prevAcc, value) => {
-        if (value.name) {
-          return { ...prevAcc, [value.name]: value.value };
-        } else {
-          return prevAcc;
-        }
-      }, {});
-      console.log(new IntlMessageFormat(parsedMessage).format(keyValueVariables));
-    } catch (error) {
-      console.log(error);
-    }
-  }, [variables]);
+
+  if (!variables.length) {
+    return null;
+  }
 
   return (
     <Stack>
-      <Text>
-        {t('testVariables')}
-      </Text>
+      <Paper p="lg" withBorder shadow="xs">
+        <Stack>
+          <Group className={classes['previewTitleContainer']}>
+            <Text className={classes['previewTitle']}>
+              {t('livePreview')}
+            </Text>
+            <CopyMessageButton />
+          </Group>
+          <Text mod={{ 'data-testid': 'preview-value' }}>
+            {message}
+          </Text>
+        </Stack>
+      </Paper>
 
-      <Accordion order={4}>
+      <Accordion
+        order={4}
+        transitionDuration={TEST_VARIABLES_ACCORDION_TRANSITION_DURATION}
+        classNames={{
+          root: classes['accordionRoot'],
+          item: classes['accordionItem'],
+        }}
+      >
         {items}
       </Accordion>
-
-      <Text>
-        {t('livePreview')}
-      </Text>
-      <Text>
-        {'preview\r'}
-      </Text>
     </Stack>
   );
 };

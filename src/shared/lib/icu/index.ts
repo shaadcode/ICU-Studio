@@ -1,11 +1,11 @@
 import { minimalParser } from './minimalParser';
-import { extractInfoAndHtml } from './createHtml/createHtml';
 import { collectVariables } from './collectVariables';
 import { createSpanElement } from './createSpanElement';
+import { extractInfoAndHtml } from './createHtml/createHtml';
 
 export {
-  extractInfoAndHtml as createHtml,
   minimalParser,
   collectVariables,
   createSpanElement,
+  extractInfoAndHtml as createHtml,
 };

@@ -1,5 +1,7 @@
 {
   "copy": "copy",
+  "date": "date",
+  "dateAndTime": "date and time",
   "error": "error",
   "number": "number",
   "paste": "paste",

@@ -14,6 +14,8 @@
     "tFunctionPaste": "t function paste"
   },
   "format": "format",
+  "lastWeek": "last week",
+  "lastYear": "last year",
   "livePreview": "live preview",
   "messageFormatEnum": {
     "0": "literal",
@@ -26,6 +28,8 @@
     "7": "pound",
     "8": "tag"
   },
+  "nextWeek": "next week",
+  "nextYear": "next year",
   "offset": "offset",
   "parsingErrors": {
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "Duplicate selectors in plural or selectordinal argument (e.g. '{foo, plural, one {#} one {#}}')",
@@ -58,5 +62,9 @@
   "placeholder": "type your ICU message ...",
   "pluralType": "plural type",
   "testVariables": "test variables",
-  "variableType": "variable type"
+  "today": "today",
+  "tomorrow": "tomorrow",
+  "variableName": "variable name",
+  "variableType": "variable type",
+  "yesterday": "yesterday"
 }

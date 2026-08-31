@@ -5,9 +5,9 @@ import classes from './VariableType.module.css';
 import type { MessageElementsTypeKeyword } from '@/shared/lib/icu/types';
 
 const colors = {
-  blue: ['number'],
   green: ['argument'],
   red: ['plural', 'select'],
+  blue: ['number', 'date', 'time'],
 } as Record<string, ReadonlyArray<MessageElementsTypeKeyword>>;
 
 type Props = {

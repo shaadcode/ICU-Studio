@@ -11,3 +11,8 @@
 body {
   font-family: Montserrat, sans-serif;
 }
+
+::selection {
+  background-color: var(--mantine-color-yellow-6) !important;
+  color: var(--mantine-color-dark-7) !important;
+}

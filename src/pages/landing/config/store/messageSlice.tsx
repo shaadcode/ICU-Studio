@@ -1,3 +1,6 @@
+import React from 'react';
+import { Badge } from '@mantine/core';
+import type { ReactNode } from 'react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
@@ -9,17 +12,15 @@ import type { MessageElementsTypeEnum } from '@/shared/lib/icu/types';
 export type ICUEditorMessageSlice = {
   readonly message: string | undefined;
   actions: ICUEditorMessageSliceActions;
-  // variablesValues: Record<string, string>;
   parsedMessage: undefined | Array<MessageFormatElement>;
-  variables: Array<VariableInfo & { value: string | number | ((chunks: string) => string) }>;
-
+  variables: Array<VariableInfo & { value: Date | string | number | ((chunks: ReactNode) => React.JSX.Element) }>;
 };
 
 type ICUEditorMessageSliceActions = {
   setVariables: (value: Array<MessageFormatElement>) => void;
   setMessage: (value: ICUEditorMessageSlice['message']) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
-  updateVariableInitialValue: (valueName: string, value: string | number) => void;
+  updateVariableInitialValue: (valueName: string, value: Date | string | number) => void;
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
@@ -67,11 +68,11 @@ function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEdi
           7: () => ({}),
           6: () => addProperty(1),
           2: () => addProperty(5),
-          1: () => addProperty('john'),
-          3: () => addProperty(new Date().toISOString()),
-          4: () => addProperty(new Date().toISOString()),
+          3: () => addProperty(new Date()),
+          4: () => addProperty(new Date()),
+          1: () => addProperty(`[${info.name}]`),
           5: () => addProperty(info.config?.conditions?.[0] ?? 'unknown'),
-          8: () => addProperty((chunks: any) => `<span>${chunks}</span>`),
+          8: () => addProperty(chunks => <Badge component="span">{chunks}</Badge>),
         } as const satisfies Record<MessageElementsTypeEnum, () => object>;
         return typesMap[info.enumType]();
       }) as ICUEditorMessageSlice['variables'];

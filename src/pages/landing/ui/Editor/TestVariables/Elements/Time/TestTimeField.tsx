@@ -1,10 +1,12 @@
-import { isNumber } from 'es-toolkit';
+import dayjs from 'dayjs';
+import { isDate } from 'es-toolkit';
 import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
 import { isObject } from 'es-toolkit/compat';
+import { DateTimePicker } from '@mantine/dates';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { Group, Tooltip, Accordion, NumberInput } from '@mantine/core';
-import type { NumberElement } from '@formatjs/icu-messageformat-parser';
+import { Group, Tooltip, Accordion } from '@mantine/core';
+import type { TimeElement } from '@formatjs/icu-messageformat-parser';
 
 import InfoBadge from '../../InfoBadge/InfoBadge';
 import VariableName from '../../VariableName/VariableName';
@@ -17,19 +19,20 @@ type Props = {
   data: ICUEditorStore['variables'][number];
 };
 
-const TestNumberField = (props: Props) => {
+const TestTimeField = (props: Props) => {
   const variable = props.data;
-  const value = isNumber(variable.value) ? variable.value : -1;
-
+  const value = isDate(variable.value) ? variable.value : new Date();
   const t = useTranslations('editor');
   const tCommon = useTranslations('common');
   const updateVariableInitialValue = icuEditorStore.use.actions().updateVariableInitialValue;
-  const handleSetVariableValue = useDebouncedCallback((fieldValue: number) => {
-    updateVariableInitialValue(variable.name, fieldValue);
+  const handleSetVariableValue = useDebouncedCallback((fieldValue: Date) => {
+    updateVariableInitialValue(
+      variable.name,
+      fieldValue,
+    );
   }, BOUNCE_UPDATE_VARIABLE_VALUE);
 
   const form = useForm({
-    mode: 'uncontrolled',
     initialValues: { variable: value },
     onValuesChange: ({ variable }) => handleSetVariableValue(variable),
   });
@@ -41,16 +44,17 @@ const TestNumberField = (props: Props) => {
           <VariableName value={variable.name} />
           {/* @ts-expect-error */}
           <VariableType value={t(`messageFormatEnum.${String(variable.enumType)}`)} />
-          <NumberSkeletons style={variable.config?.numberStyle} />
+          <TimeSkeletons style={variable.config?.timeStyle} />
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
         <Group>
-          <NumberInput
-            w={75}
-            placeholder={tCommon('number')}
-            styles={{ input: { height: '41px' } }}
-            {...form.getInputProps('variable')}
+          <DateTimePicker
+            value={value}
+            placeholder={tCommon('dateAndTime')}
+            valueFormat={date => dayjs(date).format('dddd, MMMM D [at] h:mm A')}
+
+            onChange={date => date && form.setFieldValue('variable', new Date(date))}
           />
         </Group>
       </Accordion.Panel>
@@ -58,27 +62,32 @@ const TestNumberField = (props: Props) => {
   );
 };
 
-export default TestNumberField;
+export default TestTimeField;
 
-function NumberSkeletons({ style }: { style: NumberElement['style'] }) {
+function TimeSkeletons({ style }: { style: TimeElement['style'] }) {
   const t = useTranslations('editor');
 
   if (!style) {
     return <></>;
   }
   if (isObject(style)) {
-    const badges = style.tokens.map(token => (
-      <Tooltip key={token.stem} label={t('format')}>
-        <InfoBadge color="blue" variant="outline">
-          {token.stem}
-          {!!token.options.length && ': '}
-          {token
-            .options
-            .map(opt => `${opt}`)}
-        </InfoBadge>
-      </Tooltip>
-    ));
-    return badges;
+    return (
+      <>
+        <Tooltip label={t('format')}>
+          <InfoBadge color="blue" variant="outline">
+            {style.pattern}
+          </InfoBadge>
+        </Tooltip>
+
+        {Object.entries(style.parsedOptions).map(([option, value]) => (
+          <InfoBadge key={option} color="blue" variant="outline">
+            {option}
+            {': '}
+            {value}
+          </InfoBadge>
+        ))}
+      </>
+    );
   }
 
   return (

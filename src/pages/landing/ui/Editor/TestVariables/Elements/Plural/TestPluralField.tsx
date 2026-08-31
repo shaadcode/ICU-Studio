@@ -1,9 +1,11 @@
+import { useRef } from 'react';
 import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
 import { isNumber, isString } from 'es-toolkit';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { Group, Badge, Accordion, NumberInput, SegmentedControl } from '@mantine/core';
+import { Group, Accordion, NumberInput, SegmentedControl } from '@mantine/core';
 
+import InfoBadge from '../../InfoBadge/InfoBadge';
 import classes from './TestPluralField.module.css';
 import VariableName from '../../VariableName/VariableName';
 import VariableType from '../../VariableType/VariableType';
@@ -16,6 +18,7 @@ type Props = {
 };
 
 const TestPluralField = (props: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const variable = props.data;
   const value = isString(variable.value)
     ? variable.value
@@ -30,9 +33,10 @@ const TestPluralField = (props: Props) => {
   }, BOUNCE_UPDATE_VARIABLE_VALUE);
 
   const form = useForm({
-    mode: 'uncontrolled',
+    mode: 'controlled',
     initialValues: { variable: value ?? '' },
     onValuesChange: ({ variable }) => handleSetVariableValue(variable),
+    enhanceGetInputProps: () => ({ onFocus: () => inputRef.current?.select() }),
   });
 
   return (
@@ -42,40 +46,29 @@ const TestPluralField = (props: Props) => {
           <VariableName value={variable.name} />
           {/* @ts-expect-error */}
           <VariableType value={t(`messageFormatEnum.${String(variable.enumType)}`)} />
-          <Badge
-            color="orange"
-            variant="light"
-            classNames={{
-              root: classes['badgeRoot'],
-              label: classes['badgeLabel'],
-            }}
-          >
+          <InfoBadge color="orange">
             {t('offset')}
             {': '}
             {variable.config?.offset ?? 'unknown'}
-          </Badge>
-          <Badge
-            color="blue"
-            variant="light"
-            classNames={{
-              root: classes['badgeRoot'],
-              label: classes['badgeLabel'],
-            }}
-          >
+          </InfoBadge>
+
+          <InfoBadge color="blue">
             {t('pluralType')}
             {': '}
             {variable.config?.pluralType ?? 'unknown'}
-          </Badge>
+          </InfoBadge>
         </Group>
       </Accordion.Control>
       <Accordion.Panel>
         <Group>
           <SegmentedControl
             data={[0, 1, 2, 5, 10, 100]}
+            classNames={{ innerLabel: classes['presetLabel'] }}
             {...form.getInputProps('variable')}
           />
           <NumberInput
             w={75}
+            ref={inputRef}
             placeholder={tCommon('number')}
             styles={{ input: { height: '41px' } }}
             {...form.getInputProps('variable')}

@@ -14,6 +14,8 @@
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
   "format": "فرمت",
+  "lastWeek": "هفته قبل",
+  "lastYear": "سال قبل",
   "livePreview": "پیشنمایش زنده",
   "messageFormatEnum": {
     "0": "متن ثابت (literal)",
@@ -26,6 +28,8 @@
     "7": "علامت # (pound)",
     "8": "برچسب (tag)"
   },
+  "nextWeek": "هفته بعد",
+  "nextYear": "سال بعد",
   "offset": "مقدار پایه",
   "parsingErrors": {
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "selector تکراری در آرگومان plural یا selectordinal (مثال: {foo, plural, one {#} one {#}})",
@@ -58,5 +62,9 @@
   "placeholder": "پیام ICU را در اینجا وارد کنید ...",
   "pluralType": "نوع پلورال",
   "testVariables": "آزمایش متغیر ها",
-  "variableType": "نوع متغیر"
+  "today": "امروز",
+  "tomorrow": "فردا",
+  "variableName": "نام متغیر",
+  "variableType": "نوع متغیر",
+  "yesterday": "دیروز"
 }

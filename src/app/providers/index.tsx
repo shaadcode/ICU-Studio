@@ -1,8 +1,10 @@
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 import type { ReactNode } from 'react';
 import { IntlProvider } from 'use-intl';
+import { DatesProvider } from '@mantine/dates';
 import { MantineProvider, DirectionProvider, ColorSchemeScript } from '@mantine/core';
 
 import { theme } from '@/shared/config/mantine/theme';
@@ -22,12 +24,14 @@ const Providers = ({ children }: Props) => {
         throw new Error(error.message);
       }}
     >
-      <DirectionProvider>
-        <MantineProvider theme={theme} forceColorScheme="light">
-          <ColorSchemeScript forceColorScheme="light" />
-          {children}
-        </MantineProvider>
-      </DirectionProvider>
+      <DatesProvider settings={{ locale: 'en' }}>
+        <DirectionProvider>
+          <MantineProvider theme={theme} forceColorScheme="light">
+            <ColorSchemeScript forceColorScheme="light" />
+            {children}
+          </MantineProvider>
+        </DirectionProvider>
+      </DatesProvider>
     </IntlProvider>
   );
 };

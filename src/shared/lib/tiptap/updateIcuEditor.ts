@@ -17,6 +17,8 @@ export const updateIcuEditor = (params: Params) => {
   params.setMessage(message);
   const [error, parsedMessage] = minimalParser(message);
   if (!parsedMessage) {
+    params.setVariables([]);
+
     return params.setValidationError(error);
   }
 

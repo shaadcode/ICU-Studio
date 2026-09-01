@@ -1,0 +1,34 @@
+.rollingNumberChar {
+  &:nth-child(2) {
+    text-transform: uppercase;
+  }
+}
+
+.rollingNumberRoot {
+  span {
+    font-size: 14px;
+  }
+
+  padding-inline: 5px;
+  border-end-end-radius: 7px;
+  border-end-start-radius: 7px;
+
+  &[data-variable-type='argument'] {
+    border-bottom: 1px solid var(--mantine-color-green-6);
+  }
+
+  &[data-variable-type='tag'] {
+    border-bottom: 1px solid var(--mantine-color-dark-6);
+  }
+
+  &[data-variable-type='plural'],
+  &[data-variable-type='select'] {
+    border-bottom: 1px solid var(--mantine-color-red-6);
+  }
+
+  &[data-variable-type='number'],
+  &[data-variable-type='date'],
+  &[data-variable-type='time'] {
+    border-bottom: 1px solid var(--mantine-color-blue-6);
+  }
+}

@@ -10,6 +10,16 @@
     "prettyPaste": "چسباندن زیبا",
     "simpleCopy": "کپی ساده",
     "simplePaste": "چسباندن ساده",
+    "snippets": {
+      "date": "تاریخ",
+      "number": "عدد",
+      "plural": "جمع",
+      "pound": "جای‌نشان عدد",
+      "select": "انتخاب",
+      "simpleVariable": "متغیر ساده",
+      "tag": "برچسب",
+      "time": "زمان"
+    },
     "tFunctionCopy": "چسباندن به صورت تابع t",
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
@@ -27,6 +37,17 @@
     "6": "جمع (plural)",
     "7": "علامت # (pound)",
     "8": "برچسب (tag)"
+  },
+  "messageFormatEnumKeyword": {
+    "literal": "متن ثابت",
+    "argument": "متغیر",
+    "number": "عدد",
+    "date": "تاریخ",
+    "time": "زمان",
+    "select": "انتخاب",
+    "plural": "جمع",
+    "pound": "علامت #",
+    "tag": "برچسب"
   },
   "nextWeek": "هفته بعد",
   "nextYear": "سال بعد",

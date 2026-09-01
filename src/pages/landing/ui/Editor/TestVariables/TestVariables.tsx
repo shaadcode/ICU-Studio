@@ -1,11 +1,12 @@
-import React from 'react';
 import { attempt } from 'es-toolkit';
+import React, { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { IntlMessageFormat } from 'intl-messageformat';
 import { notifications } from '@mantine/notifications';
 // import { IntlMessageFormat } from 'intl-messageformat';
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
-import { Text, Stack, Paper, Group, Accordion } from '@mantine/core';
+import { IconLayoutNavbarCollapse } from '@tabler/icons-react';
+import { Text, Stack, Paper, Group, Title, Accordion, ActionIcon } from '@mantine/core';
 
 import classes from './TestVariables.module.css';
 import CopyMessageButton from './CopyMessageButton';
@@ -20,8 +21,10 @@ import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/manti
 
 const TestVariables = () => {
   const t = useTranslations('editor');
+  const tCommon = useTranslations('common');
   const variables = icuEditorStore.use.variables() ?? [];
   const parsedMessage = icuEditorStore.use.parsedMessage() ?? [];
+  const [openVariableAccordion, setOpenVariableAccordion] = useState<string[]>([]);
   const keyValueVariables = variables.reduce((prevAcc, value) => ({ ...prevAcc, [value.name]: value.value }), {});
 
   const message = (() => {
@@ -81,13 +84,35 @@ const TestVariables = () => {
         </Stack>
       </Paper>
 
+      <Group wrap="nowrap" justify="space-between">
+        <Title order={3} tt="capitalize">{tCommon('variable', { count: 'plural' })}</Title>
+
+        <Group wrap="nowrap">
+          <ActionIcon
+            color="dark.4"
+            variant="subtle"
+            disabled={!openVariableAccordion.length}
+
+            onClick={() => setOpenVariableAccordion([])}
+          >
+            <IconLayoutNavbarCollapse />
+          </ActionIcon>
+        </Group>
+
+      </Group>
+
       <Accordion
+        multiple
         order={4}
+        value={openVariableAccordion}
         transitionDuration={TEST_VARIABLES_ACCORDION_TRANSITION_DURATION}
         classNames={{
           root: classes['accordionRoot'],
           item: classes['accordionItem'],
+          content: classes['accordionContent'],
         }}
+
+        onChange={setOpenVariableAccordion}
       >
         {items}
       </Accordion>

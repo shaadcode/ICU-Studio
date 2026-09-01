@@ -10,6 +10,16 @@
     "prettyPaste": "pretty paste",
     "simpleCopy": "simple copy",
     "simplePaste": "simple paste",
+    "snippets": {
+      "date": "date",
+      "number": "number",
+      "plural": "plural",
+      "pound": "pound",
+      "select": "select",
+      "simpleVariable": "simple variable",
+      "tag": "tag",
+      "time": "time"
+    },
     "tFunctionCopy": "t function copy",
     "tFunctionPaste": "t function paste"
   },
@@ -27,6 +37,17 @@
     "6": "plural",
     "7": "pound",
     "8": "tag"
+  },
+  "messageFormatEnumKeyword": {
+    "literal": "literal",
+    "argument": "argument",
+    "number": "number",
+    "date": "date",
+    "time": "time",
+    "select": "select",
+    "plural": "plural",
+    "pound": "pound",
+    "tag": "tag"
   },
   "nextWeek": "next week",
   "nextYear": "next year",

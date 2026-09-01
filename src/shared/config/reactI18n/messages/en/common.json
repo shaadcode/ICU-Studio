@@ -7,7 +7,9 @@
   "paste": "paste",
   "search": "search",
   "snippets": " snippets",
+  "tag": "tag",
   "template": "template",
   "valid": "valid",
-  "value": "value"
+  "value": "value",
+  "variable": "{count, select,single {variable}plural {variables}other {}}"
 }

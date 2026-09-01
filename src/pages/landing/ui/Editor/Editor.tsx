@@ -10,16 +10,25 @@ import { Box, Group, Stack, Divider } from '@mantine/core';
 import classes from './Editor.module.css';
 import { icuEditorStore } from '../../config/store';
 import TestVariables from './TestVariables/TestVariables';
+import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
 import { StarterKitForICUEditor } from '@/shared/lib/tiptap';
+import DateSnippet from './Controls/Snippets/Date/DateSnippet';
+import TimeSnippet from './Controls/Snippets/Time/TimeSnippet';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
 import PrettyCopyControl from './Controls/PrettyCopy/PrettyCopy';
+import PoundSnippet from './Controls/Snippets/Pound/PoundSnippet';
 import ValidationStatus from './ValidationStatus/ValidationStatus';
 import OneLineCopyControl from './Controls/OneLineCopy/OneLineCopy';
+import NumberSnippet from './Controls/Snippets/Number/NumberSnippet';
+import SelectSnippet from './Controls/Snippets/Select/SelectSnippet';
+import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
 import { SpanMark, BOUNCE_UPDATE_EDITOR } from '@/shared/lib/mantine';
 import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
+import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
+import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 
 type Props = {
 /**
@@ -96,11 +105,11 @@ const ICUEditor = (props: Props) => {
         <RichTextEditor.Toolbar
           sticky
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
           }}
         >
-          <Group>
+          <Group style={{ justifySelf: 'flex-start' }}>
             <Box className={classes['copyControlsContainer']}>
               <Divider label={tCommon('copy')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
@@ -122,11 +131,19 @@ const ICUEditor = (props: Props) => {
             <Box className={classes['copyControlsContainer']}>
               <Divider label={tCommon('snippets')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
-                <JSONPropertyPasteControl />
+                <SimpleVariableSnippet />
+                <NumberSnippet />
+                <DateSnippet />
+                <TimeSnippet />
+                <SelectSnippet />
+                <PluralSnippet />
+                <PoundSnippet />
+                <TagSnippet />
               </RichTextEditor.ControlsGroup>
             </Box>
           </Group>
-          <Group>
+
+          <Group style={{ justifySelf: 'flex-end' }}>
             {/* <FormatMessageControl /> */}
             <ValidationStatus />
 
@@ -135,6 +152,8 @@ const ICUEditor = (props: Props) => {
               <RichTextEditor.Redo />
             </RichTextEditor.ControlsGroup>
           </Group>
+          <Divider mx="-16px" style={{ gridColumn: '1/3' }} />
+          <VariableStatistic />
         </RichTextEditor.Toolbar>
         <RichTextEditor.Content />
 

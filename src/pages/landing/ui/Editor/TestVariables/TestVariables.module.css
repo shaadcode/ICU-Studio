@@ -6,7 +6,20 @@
 
 .accordionItem {
   height: fit-content;
+  border-block: 1px solid var(--mantine-color-gray-2);
+
+  &:nth-child(n + 1) {
+    border-bottom: none;
+  }
+
+  &:nth-last-child(-n + 2) {
+    border-bottom: 1px solid var(--mantine-color-gray-2);
+  }
 }
+
+/* .accordionContent {
+  border-inline: 1px solid var(--mantine-color-gray-2);
+} */
 
 .previewTitleContainer {
   background-color: var(--mantine-color-yellow-1);

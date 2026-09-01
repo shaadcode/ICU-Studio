@@ -7,7 +7,10 @@
   "paste": "چسباندن",
   "search": "جست و جو",
   "snippets": "الگو ها",
+  "tag": "برچسب",
   "template": "قالب ها",
   "valid": "معتبر",
-  "value": "مقدار"
+  "value": "مقدار",
+  "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}"
+
 }

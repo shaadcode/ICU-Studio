@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { isNumber } from 'es-toolkit';
 import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
@@ -12,6 +13,7 @@ import VariableType from '../../VariableType/VariableType';
 import { icuEditorStore } from '@/pages/landing/config/store';
 import type { ICUEditorStore } from '@/pages/landing/config/store';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
+import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 type Props = {
   data: ICUEditorStore['variables'][number];
@@ -20,7 +22,7 @@ type Props = {
 const TestNumberField = (props: Props) => {
   const variable = props.data;
   const value = isNumber(variable.value) ? variable.value : -1;
-
+  const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('editor');
   const tCommon = useTranslations('common');
   const updateVariableInitialValue = icuEditorStore.use.actions().updateVariableInitialValue;
@@ -32,11 +34,17 @@ const TestNumberField = (props: Props) => {
     mode: 'uncontrolled',
     initialValues: { variable: value },
     onValuesChange: ({ variable }) => handleSetVariableValue(variable),
+    enhanceGetInputProps: () => ({ onFocus: () => inputRef.current?.select() }),
   });
 
   return (
     <Accordion.Item value={`${variable.name}-${variable.enumType}`}>
-      <Accordion.Control>
+      <Accordion.Control onClick={() => {
+        setTimeout(() => {
+          inputRef.current?.select();
+        }, TEST_VARIABLES_ACCORDION_TRANSITION_DURATION);
+      }}
+      >
         <Group>
           <VariableName value={variable.name} />
           {/* @ts-expect-error */}
@@ -48,6 +56,7 @@ const TestNumberField = (props: Props) => {
         <Group>
           <NumberInput
             w={75}
+            ref={inputRef}
             placeholder={tCommon('number')}
             styles={{ input: { height: '41px' } }}
             {...form.getInputProps('variable')}

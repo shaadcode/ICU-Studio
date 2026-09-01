@@ -22,7 +22,7 @@ const setAttribute = <
 
 export const SpanMark = Mark.create({
   name: 'span',
-  group: 'inline',
+  group: 'inline*',
   renderHTML: ({ HTMLAttributes }) => ['span', HTMLAttributes, 0],
   addMarkView: () => {
     return ReactMarkViewRenderer(SpanMarkView);

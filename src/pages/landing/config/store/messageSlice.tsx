@@ -1,10 +1,9 @@
-import React from 'react';
-import { Badge } from '@mantine/core';
+import type React from 'react';
 import type { ReactNode } from 'react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
-import { collectVariables } from '@/shared/lib/icu';
+import { TagVariable, collectVariables } from '@/shared/lib/icu';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
 import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
 import type { MessageElementsTypeEnum } from '@/shared/lib/icu/types';
@@ -62,7 +61,6 @@ function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEdi
           ...info,
           value: initialValue,
         });
-
         const typesMap = {
           0: () => ({}),
           7: () => ({}),
@@ -72,7 +70,7 @@ function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEdi
           4: () => addProperty(new Date()),
           1: () => addProperty(`[${info.name}]`),
           5: () => addProperty(info.config?.conditions?.[0] ?? 'unknown'),
-          8: () => addProperty(chunks => <Badge component="span">{chunks}</Badge>),
+          8: () => addProperty(children => <TagVariable variable={info}>{children}</TagVariable>),
         } as const satisfies Record<MessageElementsTypeEnum, () => object>;
         return typesMap[info.enumType]();
       }) as ICUEditorMessageSlice['variables'];

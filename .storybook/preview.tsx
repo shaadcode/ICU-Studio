@@ -63,7 +63,7 @@ export const decorators = [
           throw new Error(error.message);
         }}
       >
-        <MantineProvider theme={theme} forceColorScheme="light">
+        <MantineProvider env="test" theme={theme} forceColorScheme="light">
           <ColorSchemeScript forceColorScheme="light" />
           <Center p="xl" w="100%">
             <Story />

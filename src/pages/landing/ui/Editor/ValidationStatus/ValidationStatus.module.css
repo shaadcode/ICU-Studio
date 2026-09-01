@@ -4,6 +4,38 @@
   font-size: var(--mantine-font-size-xs);
 }
 
+@keyframes wobble {
+  0%,
+  100% {
+    transform: translateX(0%);
+    transform-origin: 50% 50%;
+  }
+
+  15% {
+    transform: translateX(-8px) rotate(-6deg);
+  }
+
+  30% {
+    transform: translateX(5px) rotate(6deg);
+  }
+
+  45% {
+    transform: translateX(-5px) rotate(-3.6deg);
+  }
+
+  60% {
+    transform: translateX(3px) rotate(2.4deg);
+  }
+
+  75% {
+    transform: translateX(-2px) rotate(-1.2deg);
+  }
+}
+
 .badgeRoot {
   cursor: help;
+
+  &[data-has-error] {
+    animation: wobble 1s ease 0s normal forwards;
+  }
 }

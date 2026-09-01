@@ -28,6 +28,7 @@ const ValidationStatus = () => {
         <Badge
           variant="light"
           color={hasError ? 'red' : 'green'}
+          mod={{ 'data-has-error': hasError || undefined }}
           classNames={{ root: classes['badgeRoot'], label: classes['badgeLabel'] }}
           leftSection={hasError
             ? <IconExclamationCircle size="15px" />

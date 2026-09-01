@@ -12,6 +12,7 @@ import VariableType from '../../VariableType/VariableType';
 import { icuEditorStore } from '@/pages/landing/config/store';
 import type { ICUEditorStore } from '@/pages/landing/config/store';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
+import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 type Props = {
   data: ICUEditorStore['variables'][number];
@@ -36,12 +37,17 @@ const TestPluralField = (props: Props) => {
     mode: 'controlled',
     initialValues: { variable: value ?? '' },
     onValuesChange: ({ variable }) => handleSetVariableValue(variable),
-    enhanceGetInputProps: () => ({ onFocus: () => inputRef.current?.select() }),
+    enhanceGetInputProps: () => ({ onFocus: () => inputRef.current?.select }),
   });
 
   return (
     <Accordion.Item value={`${variable.name}-${variable.enumType}`}>
-      <Accordion.Control>
+      <Accordion.Control onClick={() => {
+        setTimeout(() => {
+          inputRef.current?.select();
+        }, TEST_VARIABLES_ACCORDION_TRANSITION_DURATION);
+      }}
+      >
         <Group gap="sm">
           <VariableName value={variable.name} />
           {/* @ts-expect-error */}

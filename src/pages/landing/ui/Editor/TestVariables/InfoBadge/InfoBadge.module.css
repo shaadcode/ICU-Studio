@@ -1,6 +1,10 @@
 .badgeLabel {
-  font-size: var(--mantine-font-size-sm);
   text-transform: capitalize;
+  font-size: var(--mantine-font-size-xs);
+
+  @mixin larger-than $mantine-breakpoint-md {
+    font-size: var(--mantine-font-size-sm);
+  }
 }
 
 .badgeRoot {

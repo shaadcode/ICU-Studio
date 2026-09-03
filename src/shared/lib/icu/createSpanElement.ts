@@ -1,3 +1,7 @@
+import type { ValueOf } from 'type-fest';
+
+import type { MARK_TYPES } from './createHtml/createHtml';
+
 export type FormattingNode = {
   append?: string;
   prepend?: string;
@@ -6,9 +10,11 @@ export type FormattingNode = {
 export type CreateSpanElemParams = {
   value: string;
   withBr?: boolean;
-  className?: string;
-  referenceId?: `depth-${number}`;
+  dependsOn?: string;
+  referenceId?: string;
+  depth?: `depth-${number}`;
   formattingChars?: FormattingNode;
+  markType: ValueOf<typeof MARK_TYPES>;
 };
 
 export const createSpanElement = (params: CreateSpanElemParams) => {
@@ -19,9 +25,12 @@ export const createSpanElement = (params: CreateSpanElemParams) => {
     elem.dataset['referenceId'] = params.referenceId;
   }
 
-  if (params.className) {
-    const classes = params.className?.split(' ') ?? [];
-    elem.classList.add(...classes);
+  if (params.dependsOn) {
+    elem.dataset['dependsOn'] = params.dependsOn;
+  }
+
+  if (params.markType) {
+    elem.dataset['markType'] = params.markType;
   }
 
   if (params.formattingChars) {
@@ -32,6 +41,5 @@ export const createSpanElement = (params: CreateSpanElemParams) => {
   if (params.withBr) {
     elem.innerHTML += '\n';
   }
-
   return elem;
 };

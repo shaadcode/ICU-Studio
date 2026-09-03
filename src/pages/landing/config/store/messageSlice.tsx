@@ -1,5 +1,7 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
+import type { ValueOf } from 'type-fest';
+import type { Range } from '@tiptap/react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
@@ -12,24 +14,49 @@ export type ICUEditorMessageSlice = {
   readonly message: string | undefined;
   actions: ICUEditorMessageSliceActions;
   parsedMessage: undefined | Array<MessageFormatElement>;
+  delimitersRange: Record<
+    ReferenceId,
+    { type: string; open?: Range; close?: Range }
+  >;
   variables: Array<VariableInfo & { value: Date | string | number | ((chunks: ReactNode) => React.JSX.Element) }>;
 };
+type ReferenceId = string;
 
 type ICUEditorMessageSliceActions = {
+  clearMessageState: () => void;
   setVariables: (value: Array<MessageFormatElement>) => void;
   setMessage: (value: ICUEditorMessageSlice['message']) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
   updateVariableInitialValue: (valueName: string, value: Date | string | number) => void;
+  getDelimiterRange: (id: ReferenceId) => undefined | ValueOf<ICUEditorMessageSlice['delimitersRange']>;
+  addDelimiterRange: (
+    id: ReferenceId,
+    range: ValueOf<ICUEditorMessageSlice['delimitersRange']>,
+  ) => void;
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
   variables: [],
   message: undefined,
+  delimitersRange: {},
   parsedMessage: undefined,
   actions: {
     setVariables: setVariablesHandler(set),
     setMessage: value => set({ message: value }),
+    getDelimiterRange: id => get().delimitersRange[id],
     setParsedMessage: value => set({ parsedMessage: value }),
+    clearMessageState: () => set({
+      variables: [],
+      message: undefined,
+      delimitersRange: {},
+      parsedMessage: undefined,
+    }),
+    addDelimiterRange: (id, value) => set(state => ({
+      delimitersRange: {
+        ...state.delimitersRange,
+        [id]: { ...state.delimitersRange[id], ...value },
+      },
+    })),
     updateVariableInitialValue: (varName, value) => {
       const variables = get().variables;
       const result = variables.map((variable) => {

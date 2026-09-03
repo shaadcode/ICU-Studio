@@ -12,11 +12,10 @@ import type { SharedToHtmlHelpersParams } from './types';
 import { simpleVariableToHtml } from './toHtml/simpleVariable';
 import { rootSpanMethods } from '@/shared/lib/icu/rootSpanFactory';
 
-export const NODE_CLASSES = {
+export const MARK_TYPES = {
   stem: 'stem',
   pound: 'pound',
   comma: 'comma',
-  indent: 'indent',
   rawText: 'raw-text',
   tagValue: 'tag-value',
   stemOption: 'stem-option',
@@ -26,11 +25,8 @@ export const NODE_CLASSES = {
   pluralOption: `plural-option`,
   selectOption: `select-option`,
   offsetKeyword: 'offset-keyword',
-  numberKeyword: 'number-keyword',
   pluralKeyword: 'plural-keyword',
   selectKeyword: 'select-keyword',
-  pluralTypeOrd: 'plural-type ordinal',
-  pluralTypeCard: 'plural-type cardinal',
   dateArgumentName: 'date-argument-name',
   timeArgumentName: 'time-argument-name',
   skeletonSeparator: 'skeleton-separator',
@@ -39,17 +35,15 @@ export const NODE_CLASSES = {
   rightAngleOpenTag: 'right-angle-open-tag',
   leftAngleCloseTag: 'left-angle-close-tag',
   numberArgumentName: 'number-argument-name',
-  optionDelimiterEnd: `option-delimiter end`,
+  optionDelimiterEnd: `option-delimiter-end`,
   rightAngleCloseTag: 'right-angle-close-tag',
   stemOptionSeparator: 'stem-option-separator',
   selectOrdinalKeyword: 'selectOrdinal-keyword',
-  optionDelimiterStart: `option-delimiter start`,
+  optionDelimiterStart: `option-delimiter-start`,
   dateTimeSkeletonPattern: 'date-time-skeleton-pattern',
-  argumentNameDelimiterEnd: `argument-name-delimiter end`,
-  argumentNameDelimiterStart: `argument-name-delimiter start`,
+  argumentNameDelimiterEnd: `argument-name-delimiter-end`,
+  argumentNameDelimiterStart: `argument-name-delimiter-start`,
 } as const;
-
-export type SpanDataAttrs = 'class' | 'data-reference-id';
 
 export type TraverseContext = { id: string; depth: number };
 

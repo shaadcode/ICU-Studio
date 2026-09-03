@@ -1,0 +1,5 @@
+.root {
+  color: var(--mantine-color-orange-9);
+
+  margin-inline: 5px;
+}

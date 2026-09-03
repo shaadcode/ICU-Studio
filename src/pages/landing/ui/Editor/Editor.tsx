@@ -53,6 +53,7 @@ const ICUEditor = (props: Props) => {
   const setMessage = icuEditorStore.use.actions().setMessage;
   const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
   const setVariables = icuEditorStore.use.actions().setVariables;
+  const clearMessageState = icuEditorStore.use.actions().clearMessageState;
   const updateContent = useDebouncedCallback(updateIcuEditor, BOUNCE_UPDATE_EDITOR);
 
   const editor = useEditor({
@@ -68,6 +69,7 @@ const ICUEditor = (props: Props) => {
         setMessage,
         setVariables,
         setParsedMessage,
+        clearMessageState,
         setValidationError,
       });
     },
@@ -78,6 +80,7 @@ const ICUEditor = (props: Props) => {
         setMessage,
         setVariables,
         setParsedMessage,
+        clearMessageState,
         setValidationError,
       });
     },

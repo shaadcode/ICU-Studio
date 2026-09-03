@@ -2,10 +2,10 @@ import type { Attribute } from '@tiptap/react';
 import { Mark, ReactMarkViewRenderer } from '@tiptap/react';
 
 import SpanMarkView from './SpanMarkView/SpanMarkView';
-import type { SpanDataAttrs } from '../icu/createHtml/createHtml';
+import type { MarkAttrs } from '../icu/createHtml/types';
 
 const setAttribute = <
-  AttrName extends SpanDataAttrs,
+  AttrName extends MarkAttrs,
 >(attrName: AttrName): Record<AttrName, Attribute> =>
   // @ts-expect-error
   ({
@@ -24,15 +24,18 @@ export const SpanMark = Mark.create({
   name: 'span',
   group: 'inline*',
   renderHTML: ({ HTMLAttributes }) => ['span', HTMLAttributes, 0],
-  addMarkView: () => {
+  addMarkView() {
     return ReactMarkViewRenderer(SpanMarkView);
   },
+
   addAttributes() {
     return {
-      ...setAttribute('class'),
       ...setAttribute('data-reference-id'),
-    } as const satisfies Record<SpanDataAttrs, Attribute>;
+      ...setAttribute('data-depends-on'),
+      ...setAttribute('data-mark-type'),
+    } as const satisfies Record<MarkAttrs, Attribute>;
   },
+
   parseHTML: () => [
     {
       tag: 'span',

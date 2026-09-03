@@ -9,13 +9,17 @@ type Params = {
   setMessage: ICUEditorStore['actions']['setMessage'];
   setVariables: ICUEditorStore['actions']['setVariables'];
   setParsedMessage: ICUEditorStore['actions']['setParsedMessage'];
+  clearMessageState: ICUEditorStore['actions']['clearMessageState'];
   setValidationError: ICUEditorStore['actions']['setValidationError'];
+
 };
 export const updateIcuEditor = (params: Params) => {
+  params.clearMessageState();
   const message = params.editor.getText();
   const prevCursorPosition = params.editor.state.selection.$anchor.pos;
   params.setMessage(message);
   const [error, parsedMessage] = minimalParser(message);
+
   if (!parsedMessage) {
     params.setVariables([]);
 

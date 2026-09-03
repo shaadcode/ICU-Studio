@@ -1,10 +1,9 @@
-import { NODE_CLASSES } from './createHtml/createHtml';
+import { MARK_TYPES } from './createHtml/createHtml';
 import { createSpanElement } from './createSpanElement';
 import type { FormattingNode, CreateSpanElemParams } from './createSpanElement';
 
 type RootSpanMethodsParams = {
   withFormatting?: true;
-
 };
 
 type SharedParamsMethods = {
@@ -12,6 +11,7 @@ type SharedParamsMethods = {
   appendValue?: string;
   value?: string | number;
   formattingChars?: FormattingNode;
+  dependsOn?: CreateSpanElemParams['referenceId'];
   referenceId?: CreateSpanElemParams['referenceId'];
 
 };
@@ -21,184 +21,213 @@ export const rootSpanMethods = (rootParams: RootSpanMethodsParams) => {
 
   return {
     rootSpan,
+    addTagValue: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      markType: MARK_TYPES.tagValue,
+      referenceId: params?.referenceId,
+      value: `${params?.value}${params?.appendValue ?? ''}`,
+      formattingChars: rootParams.withFormatting && params?.formattingChars,
+    })),
     addComma: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      className: NODE_CLASSES.comma,
+      markType: MARK_TYPES.comma,
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `,${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addPound: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      className: NODE_CLASSES.pound,
+      markType: MARK_TYPES.pound,
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `#${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addOffsetColon: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.offsetColon,
+      markType: MARK_TYPES.offsetColon,
       value: `:${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addStem: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      className: NODE_CLASSES.stem,
+      markType: MARK_TYPES.stem,
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addRawText: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      className: NODE_CLASSES.rawText,
+      dependsOn: params?.dependsOn,
+      markType: MARK_TYPES.rawText,
       referenceId: params?.referenceId,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addOffsetKeyword: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.offsetKeyword,
+      markType: MARK_TYPES.offsetKeyword,
       value: `offset${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addPluralKeyword: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.pluralKeyword,
+      markType: MARK_TYPES.pluralKeyword,
       value: `plural${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addSelectKeyword: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.selectKeyword,
+      markType: MARK_TYPES.selectKeyword,
       value: `select${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
-    addTagValue: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      referenceId: params?.referenceId,
-      className: NODE_CLASSES.tagValue,
-      value: `${params?.value}${params?.appendValue ?? ''}`,
-      formattingChars: rootParams.withFormatting && params?.formattingChars,
-    })),
     addRightAngleOpenTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `>${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.rightAngleOpenTag,
+      markType: MARK_TYPES.rightAngleOpenTag,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addStemOption: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
+      markType: MARK_TYPES.stemOption,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.stemOption,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addSkeletonSeparator: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
+      markType: MARK_TYPES.skeletonSeparator,
       value: `::${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.skeletonSeparator,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addDateArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.dateArgumentName,
+      markType: MARK_TYPES.dateArgumentName,
       value: `date${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addTimeArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.timeArgumentName,
+      markType: MARK_TYPES.timeArgumentName,
       value: `time${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addOptionDelimiterEnd: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `}${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.optionDelimiterEnd,
+      markType: MARK_TYPES.optionDelimiterEnd,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addRightAngleCloseTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `>${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.rightAngleCloseTag,
+      markType: MARK_TYPES.rightAngleCloseTag,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addOffsetValue: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.offsetValue,
+      markType: MARK_TYPES.offsetValue,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addLeftAngleOpenTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.leftAngleOpenTag,
+      markType: MARK_TYPES.leftAngleOpenTag,
       value: '<' + `${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addStemOptionSeparator: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `/${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.stemOptionSeparator,
+      markType: MARK_TYPES.stemOptionSeparator,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addPluralOption: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.pluralOption,
+      markType: MARK_TYPES.pluralOption,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addSelectOption: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.selectOption,
+      markType: MARK_TYPES.selectOption,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.argumentName,
+      markType: MARK_TYPES.argumentName,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addOptionDelimiterStart: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `{${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.optionDelimiterStart,
+      markType: MARK_TYPES.optionDelimiterStart,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addLeftAngleCloseTag: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.leftAngleCloseTag,
+      markType: MARK_TYPES.leftAngleCloseTag,
       value: '</' + `${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
 
     addNumberArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.numberArgumentName,
+      markType: MARK_TYPES.numberArgumentName,
       value: `number${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addArgumentNameDelimiterEnd: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `}${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.argumentNameDelimiterEnd,
+      markType: MARK_TYPES.argumentNameDelimiterEnd,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addDedicatedFormatter: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.dedicatedFormatter,
+      markType: MARK_TYPES.dedicatedFormatter,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addSelectOrdinalKeyword: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.selectOrdinalKeyword,
+      markType: MARK_TYPES.selectOrdinalKeyword,
       value: `selectordinal${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addArgumentNameDelimiterStart: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       value: `{${params?.appendValue ?? ''}`,
-      className: NODE_CLASSES.argumentNameDelimiterStart,
+      markType: MARK_TYPES.argumentNameDelimiterStart,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
     addDateTimeSkeletonPattern: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
-      className: NODE_CLASSES.dateTimeSkeletonPattern,
+      markType: MARK_TYPES.dateTimeSkeletonPattern,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),

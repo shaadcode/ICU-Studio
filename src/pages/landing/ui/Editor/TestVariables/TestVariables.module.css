@@ -1,7 +1,11 @@
 .accordionRoot {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   column-gap: var(--mantine-spacing-md);
+
+  @mixin larger-than $mantine-breakpoint-md {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .accordionItem {

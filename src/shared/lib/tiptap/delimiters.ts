@@ -6,10 +6,10 @@ import type { MarkAttrs } from '../icu/createHtml/types';
 import type { MARK_TYPES } from '../icu/createHtml/createHtml';
 
 export const isOpenDelimiter = (markType: ValueOf<typeof MARK_TYPES>) => markType === 'argument-name-delimiter-start'
-  || markType === 'left-angle-open-tag';
+  || markType === 'left-angle-open-tag' || markType === 'option-delimiter-start';
 
 export const isCloseDelimiter = (markType: ValueOf<typeof MARK_TYPES>) => markType === 'argument-name-delimiter-end'
-  || markType === 'right-angle-close-tag';
+  || markType === 'right-angle-close-tag' || markType === 'option-delimiter-end';
 
 export const getOpenDelimiter = (view: MarkViewRendererProps) => {
   const { mark, editor } = view;

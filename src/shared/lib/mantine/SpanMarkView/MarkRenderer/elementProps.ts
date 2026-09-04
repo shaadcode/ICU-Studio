@@ -13,7 +13,6 @@ type ClassesParams = {
 
 export const elementsConfig = {
   'stem': { classes: () => `text-(--mantine-color-blue-5) ` },
-  'tag-value': { classes: () => `text-(--mantine-color-blue-9)` },
   'plural-option': { classes: () => `text-(--mantine-color-red-3)` },
   'select-option': { classes: () => `text-(--mantine-color-red-3)` },
   'offset-colon': { classes: () => `text-(--mantine-color-orange-6)` },
@@ -32,6 +31,7 @@ export const elementsConfig = {
   'option-delimiter-end': { classes: () => 'text-(--mantine-color-gray-7) !mx-2' },
   'date-time-skeleton-pattern': { classes: () => `text-(--mantine-color-blue-5)` },
   'argument-name-delimiter-end': { classes: () => 'text-(--mantine-color-gray-7)' },
+  'tag-value': { withActions: true, classes: () => `text-(--mantine-color-blue-9)` },
   'option-delimiter-start': { classes: () => 'text-(--mantine-color-gray-7) !mx-2' },
   'argument-name-delimiter-start': { classes: () => 'text-(--mantine-color-gray-7)' },
   'selectOrdinal-keyword': { classes: () => `text-(--mantine-color-orange-6) !mx-2 ` },

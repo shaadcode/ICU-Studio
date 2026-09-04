@@ -17,7 +17,6 @@ const DeleteMessageMenuAction = (props: Props) => {
     const referenceId = mark.attrs['data-reference-id'] as string;
 
     const messageRange = getDelimiterRange(referenceId);
-
     const from = messageRange?.open?.from;
     const to = messageRange?.close?.to;
     if (to && from) {

@@ -1,5 +1,6 @@
 import type { NumberElement } from '@formatjs/icu-messageformat-parser';
 
+import { createMessageId } from '../../createMessageId';
 import type { SharedToHtmlHelpersParams } from '../types';
 import { isRichNumberSkeleton, isSimpleNumberSkeleton } from '../../typeGuards';
 
@@ -7,13 +8,14 @@ type Params = SharedToHtmlHelpersParams<NumberElement>;
 
 export const numberToHtml = (params: Params) => {
   const { methods, message } = params;
+  const id = createMessageId();
 
   if (!params.ctx) {
     throw new Error('ctx is undefined');
   }
 
-  methods.addArgumentNameDelimiterStart();
-  methods.addArgumentName({ value: message.value });
+  methods.addArgumentNameDelimiterStart({ dependsOn: id });
+  methods.addArgumentName({ referenceId: id, value: message.value });
   methods.addComma();
   methods.addNumberArgumentName();
 
@@ -44,5 +46,5 @@ export const numberToHtml = (params: Params) => {
     methods.addComma();
     methods.addDedicatedFormatter({ value: message.style });
   }
-  methods.addArgumentNameDelimiterEnd();
+  methods.addArgumentNameDelimiterEnd({ dependsOn: id });
 };

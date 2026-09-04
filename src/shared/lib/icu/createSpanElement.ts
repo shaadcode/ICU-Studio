@@ -9,10 +9,10 @@ export type FormattingNode = {
 
 export type CreateSpanElemParams = {
   value: string;
+  depth?: number;
   withBr?: boolean;
   dependsOn?: string;
   referenceId?: string;
-  depth?: `depth-${number}`;
   formattingChars?: FormattingNode;
   markType: ValueOf<typeof MARK_TYPES>;
 };
@@ -31,6 +31,10 @@ export const createSpanElement = (params: CreateSpanElemParams) => {
 
   if (params.markType) {
     elem.dataset['markType'] = params.markType;
+  }
+
+  if (params.depth) {
+    elem.dataset['depth'] = String(params.depth);
   }
 
   if (params.formattingChars) {

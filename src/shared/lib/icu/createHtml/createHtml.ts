@@ -59,7 +59,6 @@ type Options = {
 };
 
 export const extractInfoAndHtml = (parsedMessage: Array<MessageFormatElement>, opts?: Options) => {
-  // console.log(parsedMessage);
   const { rootSpan, ...methods } = rootSpanMethods({
     withFormatting: opts?.withFormatting,
   });

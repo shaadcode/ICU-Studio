@@ -1,6 +1,7 @@
+/* eslint-disable perfectionist/sort-objects */
 module.exports = {
   plugins: {
-    'autoprefixer': {},
+    '@tailwindcss/postcss': {},
     'postcss-preset-mantine': {},
     'postcss-simple-vars': {
       variables: {
@@ -11,5 +12,6 @@ module.exports = {
         'mantine-breakpoint-xl': '88em',
       },
     },
+    'autoprefixer': {},
   },
 };

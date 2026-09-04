@@ -19,7 +19,6 @@ export const updateIcuEditor = (params: Params) => {
   const prevCursorPosition = params.editor.state.selection.$anchor.pos;
   params.setMessage(message);
   const [error, parsedMessage] = minimalParser(message);
-
   if (!parsedMessage) {
     params.setVariables([]);
 

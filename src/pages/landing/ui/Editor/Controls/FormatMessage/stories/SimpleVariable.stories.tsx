@@ -25,7 +25,7 @@ export const MultipleArguments: Story = {
 };
 
 export const EscapeBraces: Story = {
-  play: createSimpleFormatMessageTest(`Use { hi } to display braces in message`),
+  play: createSimpleFormatMessageTest(`Use \'{\' hi \'}\' to display braces in message`),
   decorators: [
     createSimpleFormatMessageDecorator('Use \'{\' hi \'}\' to display braces in message'),
   ],
@@ -49,7 +49,7 @@ export const LiteralHashInPlural: Story = {
   play: createSimpleFormatMessageTest(`Item '# {count,plural,
     one{has 1 tag}
     other{has # tags}
-}`),
+    }`),
   decorators: [
     createSimpleFormatMessageDecorator(`Item '# {count, plural, one {has 1 tag} other {has # tags}}`),
   ],

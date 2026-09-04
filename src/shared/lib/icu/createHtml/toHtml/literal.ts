@@ -11,5 +11,14 @@ export const literalToHtml = (params: Params) => {
     throw new Error('ctx is undefined');
   }
 
-  methods.addRawText({ value: message.value });
+  if (message.value.includes('{') && message.value.includes('}')) {
+    methods.addRawText({
+      value: message
+        .value
+        .replace('{', '\'{\'')
+        .replace('}', '\'}\''),
+    });
+  } else {
+    methods.addRawText({ value: message.value });
+  }
 };

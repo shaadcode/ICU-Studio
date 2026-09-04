@@ -47,7 +47,7 @@ export const PluralInTag: Story = {
     =0{no items}
     one{1 item}
     other{# items}
-  }</b> in your cart`),
+    }</b> in your cart`),
   decorators: [createSimpleFormatMessageDecorator(`You have <b>{count, plural,
   =0 {no items}
   one {1 item}

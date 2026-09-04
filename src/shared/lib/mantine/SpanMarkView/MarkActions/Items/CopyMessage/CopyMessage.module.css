@@ -3,8 +3,8 @@
   justify-content: center;
   align-items: center;
 
-  &:hover {
-    background-color: var(--mantine-color-red-0);
+  &[data-is-copied] {
+    border-color: var(--mantine-color-green-1);
   }
 }
 

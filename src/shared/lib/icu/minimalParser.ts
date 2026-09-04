@@ -12,5 +12,8 @@ export const minimalParser = (message: string, opts?: Options) => {
     return [null, []] as [null, Array<MessageFormatElement>];
   }
 
-  return attempt<Array<MessageFormatElement>, ParserError>(() => parse(message, opts?.parserOptions));
+  return attempt<Array<MessageFormatElement>, ParserError>(() => parse(message, {
+    shouldParseSkeletons: true,
+    ...opts?.parserOptions,
+  }));
 };

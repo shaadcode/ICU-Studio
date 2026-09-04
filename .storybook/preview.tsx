@@ -1,9 +1,8 @@
+import './../src/App.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/dates/styles.css';
-
-import './../src/App.css';
 import type { Locale } from 'use-intl';
 import { IntlProvider } from 'use-intl';
 import { Center, MantineProvider, ColorSchemeScript } from '@mantine/core';
@@ -13,6 +12,13 @@ import allLocalesMessages from '@/shared/config/reactI18n/messages';
 
 export const parameters = {
   layout: 'fullscreen',
+
+  a11y: {
+    // 'todo' - show a11y violations in the test UI only
+    // 'error' - fail CI on a11y violations
+    // 'off' - skip a11y checks entirely
+    test: 'todo',
+  },
 } as const;
 
 const getStorybookLocale = (ctx?: any) => ctx?.globals?.locale as Locale

@@ -1,7 +1,9 @@
 {
   "copy": "copy",
+  "cut": "cut",
   "date": "date",
   "dateAndTime": "date and time",
+  "delete": "delete",
   "error": "error",
   "number": "number",
   "paste": "paste",

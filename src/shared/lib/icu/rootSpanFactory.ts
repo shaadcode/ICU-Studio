@@ -167,13 +167,6 @@ export const rootSpanMethods = (rootParams: RootSpanMethodsParams) => {
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
-    addArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
-      dependsOn: params?.dependsOn,
-      referenceId: params?.referenceId,
-      markType: MARK_TYPES.argumentName,
-      value: `${params?.value}${params?.appendValue ?? ''}`,
-      formattingChars: rootParams.withFormatting && params?.formattingChars,
-    })),
     addOptionDelimiterStart: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
@@ -188,7 +181,6 @@ export const rootSpanMethods = (rootParams: RootSpanMethodsParams) => {
       value: '</' + `${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
-
     addNumberArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
@@ -196,6 +188,7 @@ export const rootSpanMethods = (rootParams: RootSpanMethodsParams) => {
       value: `number${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),
+
     addArgumentNameDelimiterEnd: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
       dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
@@ -228,6 +221,14 @@ export const rootSpanMethods = (rootParams: RootSpanMethodsParams) => {
       dependsOn: params?.dependsOn,
       referenceId: params?.referenceId,
       markType: MARK_TYPES.dateTimeSkeletonPattern,
+      value: `${params?.value}${params?.appendValue ?? ''}`,
+      formattingChars: rootParams.withFormatting && params?.formattingChars,
+    })),
+    addArgumentName: (params?: SharedParamsMethods) => rootSpan.appendChild(createSpanElement({
+      depth: params?.depth,
+      dependsOn: params?.dependsOn,
+      referenceId: params?.referenceId,
+      markType: MARK_TYPES.argumentName,
       value: `${params?.value}${params?.appendValue ?? ''}`,
       formattingChars: rootParams.withFormatting && params?.formattingChars,
     })),

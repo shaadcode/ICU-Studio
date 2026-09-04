@@ -18,7 +18,7 @@ export const Simple: Story = {
     two{#nd}
     few{#rd}
     other{#th}
-} place!`),
+    } place!`),
   decorators: [createSimpleFormatMessageDecorator(`You finished in {position, selectordinal,
   one {#st}
   two {#nd}
@@ -33,7 +33,7 @@ export const WithSimpleVariable: Story = {
     two{#nd}
     few{#rd}
     other{#th}
-} week of {month}`),
+    } week of {month}`),
   decorators: [createSimpleFormatMessageDecorator(`{week, selectordinal,
   one {#st}
   two {#nd}
@@ -48,7 +48,7 @@ export const InText: Story = {
     two{#nd}
     few{#rd}
     other{#th}
-} updated their profile.`),
+    } updated their profile.`),
   decorators: [createSimpleFormatMessageDecorator(`{week, selectordinal,
   one {#st}
   two {#nd}

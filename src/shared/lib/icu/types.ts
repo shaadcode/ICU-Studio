@@ -1,6 +1,9 @@
-import type { StringToNumber } from 'type-fest';
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
+import type { ValueOf, SetFieldType, StringToNumber } from 'type-fest';
 import type { Location } from '@formatjs/icu-messageformat-parser/manipulator.js';
+
+import type { MarkAttrs } from './createHtml/types';
+import type { MARK_TYPES } from './createHtml/createHtml';
 
 enum ErrorKind {
   /** Argument is unclosed (e.g. `{0`) */
@@ -72,3 +75,7 @@ export type ParserError = {
   location: Location;
   message: keyof typeof ErrorKind;
 };
+
+export type MarkAttributes = SetFieldType<Record<'class' | MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;
+
+export type MarkAttributesWithoutClass = SetFieldType<Record<MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;

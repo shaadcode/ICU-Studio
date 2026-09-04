@@ -1,7 +1,9 @@
 {
   "copy": "کپی",
+  "cut": "برش",
   "date": "تاریخ",
   "dateAndTime": "تاریخ و زمان",
+  "delete": "حذف",
   "error": "خطا",
   "number": "عدد",
   "paste": "چسباندن",
@@ -12,5 +14,4 @@
   "valid": "معتبر",
   "value": "مقدار",
   "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}"
-
 }

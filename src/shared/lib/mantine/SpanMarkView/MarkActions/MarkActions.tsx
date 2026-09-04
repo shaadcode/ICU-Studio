@@ -1,15 +1,17 @@
 import React from 'react';
-import { Menu } from '@mantine/core';
 import type { ComponentProps } from 'react';
+import { Menu, Group } from '@mantine/core';
 import type { Popover } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { MarkViewRendererProps } from '@tiptap/react';
 
 import classes from './MarkActions.module.css';
+import CutMessageMenuAction from './Items/CutMessage/CutMessage';
+import CopyMessageMenuAction from './Items/CopyMessage/CopyMessage';
 import DeleteMessageMenuAction from './Items/DeleteMessage/DeleteMessage';
 
 type Props = {
-  view: MarkViewRendererProps;
+  tiptapMark: MarkViewRendererProps;
   popoverRoot?: ComponentProps<typeof Popover>;
   children: (props: React.ComponentProps<'div'>) => React.JSX.Element;
 };
@@ -38,7 +40,11 @@ const MarkActions = (props: Props) => {
         />
       </Menu.Target>
       <Menu.Dropdown>
-        <DeleteMessageMenuAction view={props.view} />
+        <Group grow gap={0} wrap="nowrap">
+          <DeleteMessageMenuAction tiptapMark={props.tiptapMark} />
+          <CopyMessageMenuAction tiptapMark={props.tiptapMark} />
+          <CutMessageMenuAction tiptapMark={props.tiptapMark} />
+        </Group>
       </Menu.Dropdown>
     </Menu>
   );

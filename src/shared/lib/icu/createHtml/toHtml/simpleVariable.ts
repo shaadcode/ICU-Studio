@@ -6,14 +6,13 @@ import type { SharedToHtmlHelpersParams } from '../types';
 type Params = SharedToHtmlHelpersParams<ArgumentElement>;
 
 export const simpleVariableToHtml = (params: Params) => {
-  const { methods, message } = params;
+  const { ctx, methods, message } = params;
   const id = randomId('ICU-');
 
-  if (!params.ctx) {
+  if (!ctx) {
     throw new Error('ctx is undefined');
   }
-
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  methods.addArgumentName({ referenceId: id, value: message.value });
+  methods.addArgumentName({ referenceId: id, depth: ctx.depth, value: message.value });
   methods.addArgumentNameDelimiterEnd({ dependsOn: id });
 };

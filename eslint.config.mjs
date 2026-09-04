@@ -3,6 +3,7 @@ import antfu from '@antfu/eslint-config';
 const ignoreFiles = [
   './README.md',
   'node_modules/**/*',
+  'src-tauri/target',
 ];
 export default antfu(
   {

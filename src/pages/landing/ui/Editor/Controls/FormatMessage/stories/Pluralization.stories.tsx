@@ -17,7 +17,7 @@ export const SimplePlural: Story = {
     =0{No items}
     one{1 item}
     other{# items}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{count, plural,
   =0 {No items}
   one {1 item}
@@ -30,7 +30,7 @@ export const PluralInText: Story = {
     =0{no new messages}
     one{1 new message}
     other{# new messages}
-}.`),
+    }.`),
   decorators: [createSimpleFormatMessageDecorator(`some text {count, plural,
   =0 {no new messages}
   one {1 new message}
@@ -42,10 +42,10 @@ export const MultiplePluralInText: Story = {
   play: createSimpleFormatMessageTest(`{fileCount,plural,
     one{1 file}
     other{# files}
-} across {folderCount,plural,
+    } across {folderCount,plural,
     one{1 folder}
     other{# folders}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{fileCount, plural,
   one {1 file}
   other {# files}
@@ -61,7 +61,7 @@ export const PluralWithOffset: Story = {
     =1{You liked this}
     one{You and 1 other person liked this}
     other{You and # others liked this}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{count, plural, offset:1
   =0 {Nobody liked this}
   =1 {You liked this}
@@ -75,11 +75,11 @@ export const JustMultiplePlurals: Story = {
     =0{}
     one{1 hour }
     other{# hours }
-}{minutes,plural,
+    }{minutes,plural,
     =0{}
     one{1 minute}
     other{# minutes}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{hours, plural,
   =0 {}
   one {1 hour }
@@ -96,7 +96,7 @@ export const OptionsWithPrefix: Story = {
     =0{No change}
     one{+1 from last week}
     other{+# from last week}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{change,plural,
   =0 {No change}
   one {+1 from last week}
@@ -109,7 +109,7 @@ export const WithFormatting: Story = {
     =0{No revenue}
     one{{amount,number,::currency/USD} in revenue}
     other{{amount,number,::currency/USD} in revenue}
-}`),
+    }`),
   decorators: [createSimpleFormatMessageDecorator(`{amount, plural,
   =0 {No revenue}
   one {{amount, number, ::currency/USD} in revenue}

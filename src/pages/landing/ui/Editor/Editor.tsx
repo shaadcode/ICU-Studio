@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
@@ -12,6 +13,7 @@ import { icuEditorStore } from '../../config/store';
 import TestVariables from './TestVariables/TestVariables';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
 import { StarterKitForICUEditor } from '@/shared/lib/tiptap';
+import { createMinimalParserWorker } from '@/shared/lib/icu';
 import DateSnippet from './Controls/Snippets/Date/DateSnippet';
 import TimeSnippet from './Controls/Snippets/Time/TimeSnippet';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
@@ -42,8 +44,8 @@ type Props = {
      */
     customEditorConfig?: UseEditorOptions;
   };
-
 };
+const { worker, minimalParserWorker } = createMinimalParserWorker();
 
 const ICUEditor = (props: Props) => {
   const tCommon = useTranslations('common');
@@ -55,7 +57,6 @@ const ICUEditor = (props: Props) => {
   const setVariables = icuEditorStore.use.actions().setVariables;
   const clearMessageState = icuEditorStore.use.actions().clearMessageState;
   const updateContent = useDebouncedCallback(updateIcuEditor, BOUNCE_UPDATE_EDITOR);
-
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
     extensions: [
@@ -63,7 +64,7 @@ const ICUEditor = (props: Props) => {
       Placeholder.configure({ placeholder: t('placeholder') }),
       SpanMark,
     ],
-    onUpdate: ({ editor }) => {
+    onUpdate: async ({ editor }) => {
       updateContent({
         editor,
         setMessage,
@@ -71,6 +72,7 @@ const ICUEditor = (props: Props) => {
         setParsedMessage,
         clearMessageState,
         setValidationError,
+        parser: minimalParserWorker,
       });
     },
     onMount: ({ editor }) => {
@@ -82,10 +84,17 @@ const ICUEditor = (props: Props) => {
         setParsedMessage,
         clearMessageState,
         setValidationError,
+        parser: minimalParserWorker,
       });
     },
     ...props.custom?.customEditorConfig,
   });
+
+  useEffect(() => {
+    return () => {
+      worker.terminate();
+    };
+  }, []);
 
   if (props.custom) {
     return (

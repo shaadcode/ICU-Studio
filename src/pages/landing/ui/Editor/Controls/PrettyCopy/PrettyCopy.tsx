@@ -6,7 +6,7 @@ import { IconCheck, IconSparkles } from '@tabler/icons-react';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './PrettyCopy.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const PrettyCopyControl = () => {
   const t = useTranslations('editor');

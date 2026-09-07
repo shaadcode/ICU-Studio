@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
-import { createValidationSlice } from './validationSlice';
-import type { ICUEditorMessageSlice } from './messageSlice';
-import type { ICUValidationSlice } from './validationSlice';
-import type { ICUTemplatesSearchSlice } from './searchSlice';
-import { createIcuEditorMessageSlice } from './messageSlice';
-import { createICUTemplatesSearchSlice } from './searchSlice';
+import { createValidationSlice } from '../editor/validationSlice';
+import type { ICUEditorMessageSlice } from '../editor/messageSlice';
+import type { ICUValidationSlice } from '../editor/validationSlice';
+import type { ICUTemplatesSearchSlice } from '../editor/searchSlice';
+import { createIcuEditorMessageSlice } from '../editor/messageSlice';
+import { createICUTemplatesSearchSlice } from '../editor/searchSlice';
 import { createSelectors } from '@/shared/config/zustand/createSelector';
 
 export type ICUEditorStore = ICUTemplatesSearchSlice & ICUValidationSlice & ICUEditorMessageSlice;

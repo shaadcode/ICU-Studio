@@ -6,7 +6,7 @@ import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import { minimalParser } from '@/shared/lib/icu';
 import classes from './JSONPropertyCopy.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const JSONPropertyCopy = () => {
   const parserError = icuEditorStore.use.parserError();

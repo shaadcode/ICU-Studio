@@ -10,9 +10,9 @@ import type { NumberElement } from '@formatjs/icu-messageformat-parser';
 import InfoBadge from '../../InfoBadge/InfoBadge';
 import VariableName from '../../VariableName/VariableName';
 import VariableType from '../../VariableType/VariableType';
-import { icuEditorStore } from '@/pages/landing/config/store';
-import type { ICUEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
+import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 type Props = {

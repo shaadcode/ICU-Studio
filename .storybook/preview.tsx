@@ -5,6 +5,7 @@ import '@mantine/tiptap/styles.css';
 import '@mantine/dates/styles.css';
 import type { Locale } from 'use-intl';
 import { IntlProvider } from 'use-intl';
+import type { Decorator } from '@storybook/react-vite';
 import { Center, MantineProvider, ColorSchemeScript } from '@mantine/core';
 
 import { theme } from '@/shared/config/mantine/theme';
@@ -58,8 +59,9 @@ export const initialGlobals = {
   locale: getStorybookLocale(),
 } as const;
 export const decorators = [
-  (Story: any, ctx: any) => {
+  (Story, ctx) => {
     const locale = getStorybookLocale(ctx);
+    const withoutWrapper = ctx.parameters['withoutWrapper'];
     return (
       <IntlProvider
         locale={locale}
@@ -71,11 +73,18 @@ export const decorators = [
       >
         <MantineProvider env="test" theme={theme} forceColorScheme="light">
           <ColorSchemeScript forceColorScheme="light" />
-          <Center p="xl" w="100%">
-            <Story />
-          </Center>
+          {withoutWrapper
+            ? <Story />
+            : (
+                <Center
+                  p="xl"
+                  w="100%"
+                >
+                  <Story />
+                </Center>
+              )}
         </MantineProvider>
       </IntlProvider>
     );
   },
-];
+] as Array<Decorator>;

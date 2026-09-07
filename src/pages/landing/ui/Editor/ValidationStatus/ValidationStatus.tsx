@@ -4,7 +4,7 @@ import { Text, Badge, Popover } from '@mantine/core';
 import { IconCheck, IconExclamationCircle } from '@tabler/icons-react';
 
 import classes from './ValidationStatus.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const ValidationStatus = () => {
   const [opened, { open, close }] = useDisclosure(false);

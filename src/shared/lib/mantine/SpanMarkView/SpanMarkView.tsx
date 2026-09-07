@@ -4,7 +4,7 @@ import type { MarkViewRendererProps } from '@tiptap/react';
 
 import MarkRenderer from './MarkRenderer/MarkRenderer';
 import { getDelimiterRange } from './getDelimiterRange';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = MarkViewRendererProps;
 const SpanMarkView = (tiptapMark: Props) => {

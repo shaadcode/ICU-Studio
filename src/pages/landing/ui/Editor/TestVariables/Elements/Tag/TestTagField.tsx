@@ -7,8 +7,8 @@ import { Group, Accordion, SegmentedControl } from '@mantine/core';
 import classes from './TestTagField.module.css';
 import VariableName from '../../VariableName/VariableName';
 import VariableType from '../../VariableType/VariableType';
-import { icuEditorStore } from '@/pages/landing/config/store';
-import type { ICUEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
 
 type Props = {

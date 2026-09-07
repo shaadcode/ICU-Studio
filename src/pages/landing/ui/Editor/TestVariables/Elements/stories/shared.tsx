@@ -2,7 +2,7 @@ import { Box } from '@mantine/core';
 import type { Decorator } from '@storybook/react-vite';
 
 import { minimalParser } from '@/shared/lib/icu';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Params = {
   message: string;

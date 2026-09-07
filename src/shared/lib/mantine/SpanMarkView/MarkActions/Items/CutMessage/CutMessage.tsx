@@ -5,7 +5,7 @@ import type { MarkViewRendererProps } from '@tiptap/react';
 import { IconCheck, IconScissors } from '@tabler/icons-react';
 
 import classes from './CutMessage.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = {
   tiptapMark: MarkViewRendererProps;

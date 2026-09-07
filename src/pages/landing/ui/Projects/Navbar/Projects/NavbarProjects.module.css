@@ -1,0 +1,10 @@
+.project {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-gray-2);
+  transition: all 0.2s;
+  cursor: pointer;
+
+  @mixin hover {
+    border-color: var(--mantine-color-yellow-6);
+  }
+}

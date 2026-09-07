@@ -34,7 +34,6 @@ export const Simple: Story = {
 
 export const WithFormatting: Story = {
   decorators: createTextVariableDecorator({ message: `Rating: {rating, number, ::.0}` }),
-
   play: async ({ step, canvas, userEvent }) => {
     await userEvent.click(await canvas.findByRole('button', { name: 'rating number .0' }));
     await step('should select editor ', async ({ canvas, userEvent }) => {

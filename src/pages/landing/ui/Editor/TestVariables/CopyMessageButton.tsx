@@ -1,7 +1,7 @@
 import { ActionIcon, CopyButton } from '@mantine/core';
 import { IconCopy, IconCheck } from '@tabler/icons-react';
 
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const CopyMessageButton = () => {
   const message = icuEditorStore.use.message() ?? '';

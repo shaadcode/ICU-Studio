@@ -6,7 +6,7 @@ import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './OneLineCopy.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const OneLineCopyControl = () => {
   const t = useTranslations('editor');

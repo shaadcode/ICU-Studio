@@ -5,7 +5,7 @@ import { IconCopy, IconCheck } from '@tabler/icons-react';
 import type { MarkViewRendererProps } from '@tiptap/react';
 
 import classes from './CopyMessage.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = {
   tiptapMark: MarkViewRendererProps;

@@ -12,10 +12,10 @@ import classes from './TestVariables.module.css';
 import CopyMessageButton from './CopyMessageButton';
 import TestDateField from './Elements/Date/TestDateField';
 import TestTimeField from './Elements/Time/TestTimeField';
-import { icuEditorStore } from '@/pages/landing/config/store';
 import TestPluralField from './Elements/Plural/TestPluralField';
 import TestSelectField from './Elements/Select/TestSelectField';
 import TestNumberField from './Elements/Number/TestNumberField';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import TestSimpleVariableField from './Elements/SimpleVariable/SimpleVariable';
 import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 

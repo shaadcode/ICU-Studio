@@ -3,7 +3,7 @@ import { getMarkRange } from '@tiptap/react';
 import type { MarkViewRendererProps } from '@tiptap/react';
 
 import type { MarkAttrs } from '../../icu/createHtml/types';
-import type { ICUEditorStore } from '@/pages/landing/config/store';
+import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { isOpenDelimiter, isCloseDelimiter } from '../../tiptap/delimiters';
 
 type Params = {

@@ -5,7 +5,7 @@ import { IconCheck, IconFunction } from '@tabler/icons-react';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './TFunctionCopy.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { collectVariables } from '@/shared/lib/icu/collectVariables';
 
 const TFunctionCopyControl = () => {

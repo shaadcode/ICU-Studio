@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
@@ -9,11 +8,11 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { Box, Group, Stack, Divider } from '@mantine/core';
 
 import classes from './Editor.module.css';
-import { icuEditorStore } from '../../config/store';
+import { minimalParser } from '@/shared/lib/icu';
 import TestVariables from './TestVariables/TestVariables';
+import { icuEditorStore } from '../../config/store/editor';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
 import { StarterKitForICUEditor } from '@/shared/lib/tiptap';
-import { createMinimalParserWorker } from '@/shared/lib/icu';
 import DateSnippet from './Controls/Snippets/Date/DateSnippet';
 import TimeSnippet from './Controls/Snippets/Time/TimeSnippet';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
@@ -45,7 +44,6 @@ type Props = {
     customEditorConfig?: UseEditorOptions;
   };
 };
-const { worker, minimalParserWorker } = createMinimalParserWorker();
 
 const ICUEditor = (props: Props) => {
   const tCommon = useTranslations('common');
@@ -72,7 +70,7 @@ const ICUEditor = (props: Props) => {
         setParsedMessage,
         clearMessageState,
         setValidationError,
-        parser: minimalParserWorker,
+        parser: minimalParser,
       });
     },
     onMount: ({ editor }) => {
@@ -84,17 +82,11 @@ const ICUEditor = (props: Props) => {
         setParsedMessage,
         clearMessageState,
         setValidationError,
-        parser: minimalParserWorker,
+        parser: minimalParser,
       });
     },
     ...props.custom?.customEditorConfig,
   });
-
-  useEffect(() => {
-    return () => {
-      worker.terminate();
-    };
-  }, []);
 
   if (props.custom) {
     return (
@@ -112,7 +104,7 @@ const ICUEditor = (props: Props) => {
   }
 
   return (
-    <Stack h="100%" w="100%">
+    <Stack w="100%" h="100%">
       <RichTextEditor h="100%" w="100%" editor={editor}>
         <RichTextEditor.Toolbar
           sticky

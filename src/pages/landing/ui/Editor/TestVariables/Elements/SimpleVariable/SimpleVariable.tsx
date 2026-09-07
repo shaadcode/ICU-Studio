@@ -7,8 +7,8 @@ import { Group, Accordion, TextInput } from '@mantine/core';
 
 import VariableName from '../../VariableName/VariableName';
 import VariableType from '../../VariableType/VariableType';
-import { icuEditorStore } from '@/pages/landing/config/store';
-import type { ICUEditorStore } from '@/pages/landing/config/store';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
 import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 

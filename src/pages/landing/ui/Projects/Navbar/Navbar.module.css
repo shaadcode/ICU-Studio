@@ -1,0 +1,11 @@
+.navbarTitle {
+  text-transform: capitalize;
+}
+
+.projectsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mantine-spacing-sm);
+  grid-template-rows: max-content 1fr max-content;
+  height: 100%;
+}

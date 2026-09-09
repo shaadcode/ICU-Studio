@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/[secure]/ICU-Studio/compare/v1.0.0...v1.0.1) (2026-09-09)
+
+
+### Bug Fixes
+
+* **ci:** update workflow ([6a368ae](https://github.com/[secure]/ICU-Studio/commit/6a368aecea8ad6112b9381b08b1b8a50329628b7))
+
 # 1.0.0 (2026-09-09)
 
 

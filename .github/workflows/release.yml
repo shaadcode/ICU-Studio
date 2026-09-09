@@ -60,33 +60,6 @@ jobs:
         with:
           args: ${{ matrix.args }}
 
-      - name: 📂 Log bundle directory tree (Linux only)
-        if: runner.os == 'Linux'  # <-- فقط روی لینوکس اجرا می‌شود
-        run: |
-          echo "::group::📁 Bundle directory tree for ${{ matrix.platform }}"
-
-          # نصب tree (اگر موجود نباشد)
-          sudo apt-get install -y tree || echo "tree installation failed"
-
-          echo "Current directory: $(pwd)"
-          echo ""
-
-          if [ -d "src-tauri/target/release/bundle" ]; then
-            echo "--- Full directory tree ---"
-            tree src-tauri/target/release/bundle/ || ls -laR src-tauri/target/release/bundle/
-
-            echo ""
-            echo "--- Executable files found ---"
-            find src-tauri/target/release/bundle/ -type f \( -name "*.AppImage" -o -name "*.deb"      -o -name "*.rpm" \) -exec ls -lh {} \; 2>/dev/null || echo "No Linux executables      found"
-          else
-            echo "⚠️ Bundle directory not found!"
-            ls -la src-tauri/target/release/ || echo "Release directory not found"
-          fi
-
-          echo "::endgroup::"
-        shell: bash
-
-
 
   release:
     needs: build-apps
@@ -119,4 +92,4 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
           GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
-        run: bunx semantic-release -d ${{inputs.dry-run}}
+        run: bunx semantic-release ${{inputs.dry-run}}

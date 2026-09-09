@@ -59,14 +59,31 @@ jobs:
         with:
           args: ${{ matrix.args }}
 
-      - name: Display bundle directory tree
-        if: always()
+      - name: 📂 Log bundle directory tree (Linux only)
+        if: runner.os == 'Linux'  # <-- فقط روی لینوکس اجرا می‌شود
         run: |
-          echo "=== Contents of src-tauri/target/release/bundle/ ==="
-          ls -laR src-tauri/target/release/bundle/
-          echo "==================================================="
-          echo "If you want a tree view (if `tree` command is available):"
-          tree src-tauri/target/release/bundle/ || echo "'tree' command not installed, using ls       -laR instead."
+          echo "::group::📁 Bundle directory tree for ${{ matrix.platform }}"
+
+          # نصب tree (اگر موجود نباشد)
+          sudo apt-get install -y tree || echo "tree installation failed"
+
+          echo "Current directory: $(pwd)"
+          echo ""
+
+          if [ -d "src-tauri/target/release/bundle" ]; then
+            echo "--- Full directory tree ---"
+            tree src-tauri/target/release/bundle/ || ls -laR src-tauri/target/release/bundle/
+
+            echo ""
+            echo "--- Executable files found ---"
+            find src-tauri/target/release/bundle/ -type f \( -name "*.AppImage" -o -name "*.deb"      -o -name "*.rpm" \) -exec ls -lh {} \; 2>/dev/null || echo "No Linux executables      found"
+          else
+            echo "⚠️ Bundle directory not found!"
+            ls -la src-tauri/target/release/ || echo "Release directory not found"
+          fi
+
+          echo "::endgroup::"
+        shell: bash
 
 
 

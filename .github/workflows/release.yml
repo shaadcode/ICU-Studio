@@ -92,6 +92,18 @@ jobs:
         with:
           path: ./
 
+
+      - name: Debug - Show directory structure
+        run: |
+          echo "=== Current working directory ==="
+          pwd
+          echo ""
+          echo "=== Complete directory structure (first 100 items) ==="
+          find . -type d | head -100
+          echo ""
+          echo "=== All files (first 50 items) ==="
+          find . -type f | head -50
+
       - name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

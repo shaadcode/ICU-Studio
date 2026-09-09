@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (e.g. 1.2.3)"
+        description: "Release version (e.g. 1.0.3)"
         required: true
         type: string
 
@@ -12,46 +12,44 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-22.04
-          - windows-latest
-          - macos-latest
+  prepare:
+    name: Update version
+    runs-on: ubuntu-latest
 
-    runs-on: ${{ matrix.os }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Install Linux dependencies
-        if: matrix.os == 'ubuntu-22.04'
+      - name: Validate version
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev \
-            libgtk-3-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            patchelf
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $VERSION"
+            echo "Expected format: X.Y.Z (e.g. 1.0.3)"
+            exit 1
+          fi
 
-      - name: Set version
+      - name: Set package.json version
         env:
           VERSION: ${{ inputs.version }}
         run: |
           bun pm pkg set version="$VERSION"
 
+      - name: Set Tauri version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
           bun -e '
             const fs = require("fs");
 
@@ -66,13 +64,118 @@ jobs:
             );
           '
 
-      - name: Build and release
-        uses: tauri-apps/tauri-action@v1
+      - name: Verify versions
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          PACKAGE_VERSION=$(bun pm pkg get version | tr -d '"')
+          TAURI_VERSION=$(bun -e '
+            const fs = require("fs");
+            const config = JSON.parse(
+              fs.readFileSync("src-tauri/tauri.conf.json", "utf8")
+            );
+            console.log(config.version);
+          ')
+
+          echo "package.json: $PACKAGE_VERSION"
+          echo "tauri.conf.json: $TAURI_VERSION"
+
+          if [ "$PACKAGE_VERSION" != "$VERSION" ]; then
+            echo "package.json version mismatch"
+            exit 1
+          fi
+
+          if [ "$TAURI_VERSION" != "$VERSION" ]; then
+            echo "tauri.conf.json version mismatch"
+            exit 1
+          fi
+
+      - name: Commit version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json src-tauri/tauri.conf.json
+
+          if git diff --cached --quiet; then
+            echo "No version changes to commit."
+          else
+            git commit -m "chore: bump version to $VERSION"
+            git push
+          fi
+
+      - name: Set output
+        id: version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+
+  release:
+    name: Build and release
+
+    needs: prepare
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Apple Silicon
+          - platform: macos-latest
+            args: "--target aarch64-apple-darwin"
+
+          # Linux
+          - platform: ubuntu-22.04
+            args: ""
+
+          # Windows
+          - platform: windows-latest
+            args: ""
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin' || '' }}
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            xdg-utils
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build and publish
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: app-v__VERSION__
-          releaseName: "App v__VERSION__"
-          releaseBody: "See the assets to download this version and install."
-          releaseDraft: false
-          prerelease: false
+          releaseName: "ICU-Studio v__VERSION__"
+          releaseBody: |
+            ## ICU-Studio v__VERSION__
+
+            Download the installer for your platform from the assets below.
+          args: ${{ matrix.args }}

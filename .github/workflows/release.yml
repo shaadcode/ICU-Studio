@@ -169,10 +169,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__
-          releaseName: "ICU-Studio v__VERSION__"
+          tagName: app-v${{ needs.prepare.outputs.version }}
+          releaseName: "ICU-Studio v${{ needs.prepare.outputs.version }}"
           releaseBody: |
-            ## ICU-Studio v__VERSION__
+            ## ICU-Studio v${{ needs.prepare.outputs.version }}
 
             Download the installer for your platform from the assets below.
           args: ${{ matrix.args }}

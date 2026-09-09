@@ -46,10 +46,10 @@ export const MultipleVariable: Story = {
     await userEvent.clear(lastNameInput);
     await userEvent.type(lastNameInput, 'doe');
 
-    waitFor(async () => {
+    await waitFor(async () => {
       const preview = await canvas.findByTestId('preview-value');
 
-      expect(preview).toHaveTextContent('Welcome back, john doe!');
+      await expect(preview).toHaveTextContent('Welcome back, john doe!');
     }, { interval: 250, timeout: BOUNCE_UPDATE_VARIABLE_VALUE + 5000 });
   },
 };

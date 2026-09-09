@@ -33,5 +33,5 @@ export const createSimpleFormatMessageTest = (message: string): PlayFunction<Rea
   await userEvent.click(await canvas.findByRole('button', { name: 'formatting message' }));
   const content = editor.getText();
 
-  expect(content).toEqual(message);
+  await expect(content).toEqual(message);
 };

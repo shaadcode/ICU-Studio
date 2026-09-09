@@ -24,10 +24,10 @@ export const Simple: Story = {
     await userEvent.clear(input);
     await userEvent.type(input, 'some text');
 
-    waitFor(async () => {
+    await waitFor(async () => {
       const preview = await canvas.findByTestId('preview-value');
 
-      expect(preview).toHaveTextContent('Hello, some text!');
+      await expect(preview).toHaveTextContent('Hello, some text!');
     }, { interval: 250, timeout: BOUNCE_UPDATE_VARIABLE_VALUE + 5000 });
   },
 };

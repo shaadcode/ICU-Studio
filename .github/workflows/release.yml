@@ -1,114 +1,67 @@
-name: release
+name: Release
 
 on:
   workflow_dispatch:
     inputs:
-      dry-run:
-        type: choice
-        default: ""
-        options:
-          - -d
-          - ""
+      version:
+        description: "Release version (e.g. 1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
 
 jobs:
-
-
-  build-apps:
+  release:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
-            args: ''
-          - platform: 'windows-latest'
-            args: ''
+        os:
+          - ubuntu-22.04
+          - windows-latest
+          - macos-latest
 
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      # - name: Cache Rust dependencies
-      #   uses: Swatinem/rust-cache@v2
-      #   with:
-      #     shared-key: ${{ matrix.platform }}
-
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
-
-      - name: instal dependencies
-        run: bun i --frozen-lockfile
-
-      - name: install playwright
-        run: bunx playwright install chromium
-
-      - uses: tauri-apps/tauri-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          args: ${{ matrix.args }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.platform }}-artifacts
-          path: src-tauri/target/release/bundle/**/*
-          retention-days: 1
-
-
-  release:
-    needs: build-apps
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
-      - name: install deps
-        run: bun i --frozen-lockfile
-
-      - name: Download all build artifacts
-        uses: actions/download-artifact@v4
         with:
-          path: ./
+          bun-version: latest
 
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
-      - name: Debug - Show directory structure
-        run: |
-          echo "=== Current working directory ==="
-          pwd
-          echo ""
-          echo "=== Complete directory structure (first 100 items) ==="
-          find . -type d | head -100
-          echo ""
-          echo "=== All files (first 50 items) ==="
-          find . -type f | head -50
-
-      - name: release
+      - name: Set version
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GIT_AUTHOR_NAME: ${{ secrets.GIT_AUTHOR_NAME }}
-          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
-          GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
-          GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
-        run: bunx semantic-release ${{inputs.dry-run}}
+          VERSION: ${{ inputs.version }}
+        run: |
+          bun pm pkg set version="$VERSION"
+
+          bun -e '
+            const fs = require("fs");
+
+            const path = "src-tauri/tauri.conf.json";
+            const config = JSON.parse(fs.readFileSync(path, "utf8"));
+
+            config.version = process.env.VERSION;
+
+            fs.writeFileSync(
+              path,
+              JSON.stringify(config, null, 2) + "\n"
+            );
+          '
+
+      - name: Build and release
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v__VERSION__
+          releaseName: "App v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false

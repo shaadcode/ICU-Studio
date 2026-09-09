@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
@@ -30,39 +31,33 @@ export default {
         assets: [
           {
             label: 'Debian Package (Linux)',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}.deb',
-            path: 'src-tauri/target/release/bundle/deb/*.deb',
+            path: 'artifacts/*/src-tauri/target/release/bundle/deb/*.deb',
           },
           {
             label: 'RPM Package (Linux)',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}.rpm',
-            path: 'src-tauri/target/release/bundle/rpm/*.rpm',
+            path: 'artifacts/*/src-tauri/target/release/bundle/rpm/*.rpm',
           },
           {
             label: 'AppImage (Linux)',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}.AppImage',
-            path: 'src-tauri/target/release/bundle/appimage/*.AppImage',
+            path: 'artifacts/*/src-tauri/target/release/bundle/appimage/*.AppImage',
           },
           {
             label: 'Windows Installer (NSIS)',
-            path: 'src-tauri/target/release/bundle/nsis/*.exe',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}-setup.exe',
+            path: 'artifacts/*/src-tauri/target/release/bundle/nsis/*.exe',
           },
           {
             label: 'Windows Installer (MSI)',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}.msi',
-            path: 'src-tauri/target/release/bundle/msi/*.msi',
+            path: 'artifacts/*/src-tauri/target/release/bundle/msi/*.msi',
           },
           {
             label: 'macOS Disk Image',
-            // eslint-disable-next-line no-template-curly-in-string
             name: 'icu-studio-${nextRelease.version}.dmg',
-            path: 'src-tauri/target/release/bundle/dmg/*.dmg',
+            path: 'artifacts/*/src-tauri/target/release/bundle/dmg/*.dmg',
           },
         ],
       },
@@ -71,7 +66,7 @@ export default {
       '@semantic-release/git',
       {
         assets: ['package.json', 'CHANGELOG.md'],
-        // eslint-disable-next-line no-template-curly-in-string
+
         message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],

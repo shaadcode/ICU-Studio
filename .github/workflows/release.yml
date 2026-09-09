@@ -60,6 +60,13 @@ jobs:
         with:
           args: ${{ matrix.args }}
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-artifacts
+          path: src-tauri/target/release/bundle/**/*
+          retention-days: 1
+
 
   release:
     needs: build-apps
@@ -83,42 +90,7 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ./artifacts
-
-      - name: 📂 Display artifacts directory tree
-        run: |
-          echo "::group::📁 Artifacts directory tree"
-
-          # نصب tree (اگر موجود نباشد)
-          sudo apt-get install -y tree || echo "tree installation failed, using fallback"
-
-          echo "Current directory: $(pwd)"
-          echo ""
-
-          if [ -d "./artifacts" ]; then
-            echo "--- Full directory tree of ./artifacts (with file sizes) ---"
-            # نمایش کامل ساختار با اندازه فایل‌ها و عمق نامحدود
-            tree ./artifacts -h --du || find ./artifacts -type d -printf '%P\n' | sort | sed 's/      [^/]*\//|-- /g'
-
-            echo ""
-            echo "--- All files with details (full path, size, permissions) ---"
-            find ./artifacts -type f -exec ls -lh {} \; 2>/dev/null | head -100 || echo "No files       found"
-
-            echo ""
-            echo "--- Summary: Total size and file count ---"
-            echo "Total size of all artifacts:"
-            du -sh ./artifacts 2>/dev/null || echo "du command failed"
-            echo ""
-            echo "Number of files by type:"
-            find ./artifacts -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn || echo "Count      failed"
-          else
-            echo "⚠️ Artifacts directory not found!"
-            echo "Current directory contents:"
-            ls -la || echo "Cannot list directory"
-          fi
-
-          echo "::endgroup::"
-        shell: bash
+          path: ./
 
       - name: release
         env:

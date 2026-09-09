@@ -123,15 +123,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Apple Silicon
           - platform: macos-latest
             args: "--target aarch64-apple-darwin"
 
-          # Linux
           - platform: ubuntu-22.04
             args: ""
 
-          # Windows
           - platform: windows-latest
             args: ""
 

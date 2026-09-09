@@ -85,6 +85,31 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: 📂 Display artifacts directory tree
+        run: |
+          echo "::group::📁 Artifacts directory tree"
+
+          # نصب tree (اگر موجود نباشد)
+          sudo apt-get install -y tree || echo "tree installation failed, using fallback"
+
+          echo "Current directory: $(pwd)"
+          echo ""
+
+          if [ -d "./artifacts" ]; then
+            echo "--- Full directory tree of ./artifacts ---"
+            tree ./artifacts || find ./artifacts -type d -printf '%P\n' | sort | sed 's/[^/]*\//|     -- /g'
+
+            echo ""
+            echo "--- Files found in artifacts ---"
+            find ./artifacts -type f -exec ls -lh {} \; 2>/dev/null || echo "No files found"
+          else
+            echo "⚠️ Artifacts directory not found!"
+            ls -la || echo "Current directory contents:"
+          fi
+
+          echo "::endgroup::"
+        shell: bash
+
       - name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

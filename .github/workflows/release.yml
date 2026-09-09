@@ -96,15 +96,25 @@ jobs:
           echo ""
 
           if [ -d "./artifacts" ]; then
-            echo "--- Full directory tree of ./artifacts ---"
-            tree ./artifacts || find ./artifacts -type d -printf '%P\n' | sort | sed 's/[^/]*\//|     -- /g'
+            echo "--- Full directory tree of ./artifacts (with file sizes) ---"
+            # نمایش کامل ساختار با اندازه فایل‌ها و عمق نامحدود
+            tree ./artifacts -h --du || find ./artifacts -type d -printf '%P\n' | sort | sed 's/      [^/]*\//|-- /g'
 
             echo ""
-            echo "--- Files found in artifacts ---"
-            find ./artifacts -type f -exec ls -lh {} \; 2>/dev/null || echo "No files found"
+            echo "--- All files with details (full path, size, permissions) ---"
+            find ./artifacts -type f -exec ls -lh {} \; 2>/dev/null | head -100 || echo "No files       found"
+
+            echo ""
+            echo "--- Summary: Total size and file count ---"
+            echo "Total size of all artifacts:"
+            du -sh ./artifacts 2>/dev/null || echo "du command failed"
+            echo ""
+            echo "Number of files by type:"
+            find ./artifacts -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn || echo "Count      failed"
           else
             echo "⚠️ Artifacts directory not found!"
-            ls -la || echo "Current directory contents:"
+            echo "Current directory contents:"
+            ls -la || echo "Cannot list directory"
           fi
 
           echo "::endgroup::"

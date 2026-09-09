@@ -50,6 +50,9 @@ jobs:
       - name: instal dependencies
         run: bun i --frozen-lockfile
 
+      - name: install playwright
+        run: bunx playwright install chromium
+
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

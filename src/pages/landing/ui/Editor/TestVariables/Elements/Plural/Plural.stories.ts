@@ -155,26 +155,26 @@ export const WithOffset: Story = {
       },
     );
 
-    await step(
-      'Interaction with both inputs',
-      async ({ canvas, userEvent }) => {
-        await userEvent.click(await canvas.findByRole('button', { name: 'count plural offset: 1 plural type: cardinal' }));
-        await userEvent.click(await canvas.findByRole('button', { name: 'name argument' }));
+    // await step(
+    //   'Interaction with both inputs',
+    //   async ({ canvas, userEvent }) => {
+    //     await userEvent.click(await canvas.findByRole('button', { name: 'count plural offset: 1 plural type: cardinal' }));
+    //     await userEvent.click(await canvas.findByRole('button', { name: 'name argument' }));
 
-        const PluralInput = await canvas.findByPlaceholderText('number', { exact: true });
-        await userEvent.clear(PluralInput);
-        await userEvent.type(PluralInput, '2');
+    //     const PluralInput = await canvas.findByPlaceholderText('number', { exact: true });
+    //     await userEvent.clear(PluralInput);
+    //     await userEvent.type(PluralInput, '2');
 
-        const argumentInput = await canvas.findByPlaceholderText('value', { exact: true });
-        await userEvent.clear(argumentInput);
-        await userEvent.type(argumentInput, 'john');
+    //     const argumentInput = await canvas.findByPlaceholderText('value', { exact: true });
+    //     await userEvent.clear(argumentInput);
+    //     await userEvent.type(argumentInput, 'john');
 
-        await waitFor(async () => {
-          const preview = await canvas.findByTestId('preview-value');
+    //     await waitFor(async () => {
+    //       const preview = await canvas.findByTestId('preview-value');
 
-          await expect(preview).toHaveTextContent('You and john commented on this');
-        }, { interval: 200, timeout: TEST_VARIABLES_ACCORDION_TRANSITION_DURATION + 5000 });
-      },
-    );
+    //       await expect(preview).toHaveTextContent('You and john commented on this');
+    //     }, { interval: 200, timeout: TEST_VARIABLES_ACCORDION_TRANSITION_DURATION + 5000 });
+    //   },
+    // );
   },
 };

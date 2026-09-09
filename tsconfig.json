@@ -24,7 +24,7 @@
     "strictNullChecks": true,
     "allowUnreachableCode": false,
     "alwaysStrict": true,
-    "exactOptionalPropertyTypes": true,
+    // "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,

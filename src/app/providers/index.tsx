@@ -41,7 +41,11 @@ const Providers = ({ children }: Props) => {
     >
       <DatesProvider settings={{ locale: 'en' }}>
         <DirectionProvider>
-          <MantineProvider theme={theme} forceColorScheme="light">
+          <MantineProvider
+            theme={theme}
+            forceColorScheme="light"
+            classNamesPrefix="ICU-Studio"
+          >
             <ColorSchemeScript forceColorScheme="light" />
             {isLoading
               ? (

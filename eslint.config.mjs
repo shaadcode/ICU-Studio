@@ -3,7 +3,8 @@ import antfu from '@antfu/eslint-config';
 const ignoreFiles = [
   './README.md',
   'node_modules/**/*',
-  'src-tauri/target',
+  'src-tauri',
+  '.github',
 ];
 export default antfu(
   {
@@ -13,7 +14,6 @@ export default antfu(
     isInEditor: false,
     // Ignored paths
     ignores: ignoreFiles,
-
     // Configuration preferences
     lessOpinionated: true,
     // Format settings

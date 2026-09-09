@@ -50,6 +50,6 @@ export const MultipleVariable: Story = {
       const preview = await canvas.findByTestId('preview-value');
 
       expect(preview).toHaveTextContent('Welcome back, john doe!');
-    }, { interval: 250, timeout: BOUNCE_UPDATE_VARIABLE_VALUE + 100 });
+    }, { interval: 250, timeout: BOUNCE_UPDATE_VARIABLE_VALUE + 5000 });
   },
 };

@@ -16,8 +16,6 @@ const ProjectMain = () => {
 
   const handleSelectedLocale = (incomingLocale: string) => {
     const selectedLocale = locales.find(locale => locale.name === incomingLocale);
-    console.log(selectedLocale);
-    console.log(incomingLocale);
     if (selectedLocale) {
       setSelectedLocale(selectedLocale);
     }

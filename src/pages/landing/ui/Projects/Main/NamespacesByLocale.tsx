@@ -11,7 +11,7 @@ const NamespacesByLocale = () => {
     if (selectedLocale && selectedProject) {
       (async () => {
         const namespaces = await readDir(`${selectedProject.dirPath}\\${selectedLocale.name}`);
-        console.log(namespaces);
+        void namespaces;
       })();
     }
   }, [selectedLocale, selectedProject]);

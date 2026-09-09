@@ -4,7 +4,7 @@ import type { Editor } from '@tiptap/react';
 import { createHtml } from '../icu';
 import type { minimalParser } from '../icu';
 import { extendSetContent } from './extendSetContent';
-import type { ICUEditorStore } from '@/pages/landing/config/store/editor/editor';
+import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 
 type Params = {
   editor: Editor;

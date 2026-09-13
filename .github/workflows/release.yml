@@ -171,6 +171,7 @@ jobs:
         with:
           tagName: app-v${{ needs.prepare.outputs.version }}
           releaseName: "ICU-Studio v${{ needs.prepare.outputs.version }}"
+          releaseDraft: true
           releaseBody: |
             ## ICU-Studio v${{ needs.prepare.outputs.version }}
 

@@ -1,0 +1,43 @@
+name: 🐞 Bug Report
+description: Report a bug or an issue that occurred in the project
+labels: [bug]
+
+body:
+  - type: checkboxes
+    id: use_latest_version
+    attributes:
+      label: ✅ Pre-submission Checklist
+      description: Please confirm the following before submitting your issue.
+      options:
+        - label: I have verified that this issue occurs in the **latest version** of ICU Studio.
+          required: true
+        - label: I have searched the **existing issues** and confirmed this bug has not already been reported.
+          required: true
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: 🐞 Current Behavior
+      description: A short description of the current behavior
+      placeholder: Describe the current behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: ✅ Expected Behavior
+      description: A short description of what you expect to happen
+      placeholder: What is the expected behavior?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: Step-by-step instructions to reproduce the issue
+      placeholder: |
+        1. Click on button Y
+        2. The observed behavior occurs
+    validations:
+      required: false

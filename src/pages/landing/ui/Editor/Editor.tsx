@@ -57,15 +57,17 @@ const ICUEditor = (props: Props) => {
   const updateContent = useDebouncedCallback(updateIcuEditor, BOUNCE_UPDATE_EDITOR);
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
+
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: t('placeholder') }),
       SpanMark,
     ],
-    onUpdate: async ({ editor }) => {
+    onUpdate: async ({ editor, transaction }) => {
       updateContent({
         editor,
         setMessage,
+        transaction,
         setVariables,
         setParsedMessage,
         clearMessageState,

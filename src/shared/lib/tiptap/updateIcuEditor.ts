@@ -1,13 +1,16 @@
 import type { Remote } from 'comlink';
 import type { Editor } from '@tiptap/react';
+import type { Transaction } from '@tiptap/pm/state';
 
 import { createHtml } from '../icu';
 import type { minimalParser } from '../icu';
+import { isUndoRedoTransaction } from './predicates';
 import { extendSetContent } from './extendSetContent';
 import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 
 type Params = {
   editor: Editor;
+  transaction?: Transaction;
   setMessage: ICUEditorStore['actions']['setMessage'];
   setVariables: ICUEditorStore['actions']['setVariables'];
   parser: typeof minimalParser | Remote<typeof minimalParser>;
@@ -33,7 +36,8 @@ export const updateIcuEditor = async (params: Params) => {
   params.setValidationError(undefined);
   params.setParsedMessage(parsedMessage);
   params.setVariables(parsedMessage);
-  if (html.children.length) {
+
+  if (html.children.length && !isUndoRedoTransaction(params.transaction)) {
     extendSetContent(params.editor)(html.outerHTML);
     params.editor.commands.setTextSelection(prevCursorPosition);
   }

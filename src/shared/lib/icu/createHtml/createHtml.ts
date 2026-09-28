@@ -58,9 +58,15 @@ type Options = {
   withFormatting?: true;
 };
 
-export const extractInfoAndHtml = (parsedMessage: Array<MessageFormatElement>, opts?: Options) => {
+type Params = {
+  opts?: Options;
+  rawMessage: string;
+  parsedMessage: Array<MessageFormatElement>;
+};
+
+export const extractInfoAndHtml = (params: Params) => {
   const { rootSpan, ...methods } = rootSpanMethods({
-    withFormatting: opts?.withFormatting,
+    withFormatting: params.opts?.withFormatting,
   });
 
   const traverse: Traverse = (messages, prevCtx) => messages.map((message, ctxIndex) => {
@@ -98,7 +104,7 @@ export const extractInfoAndHtml = (parsedMessage: Array<MessageFormatElement>, o
     return message;
   });
 
-  traverse(parsedMessage);
+  traverse(params.parsedMessage);
 
   return rootSpan;
 };

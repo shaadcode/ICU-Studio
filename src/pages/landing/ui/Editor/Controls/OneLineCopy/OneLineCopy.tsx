@@ -10,7 +10,7 @@ import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const OneLineCopyControl = () => {
   const t = useTranslations('editor');
-  const parserError = icuEditorStore.use.parserError();
+  const parserError = icuEditorStore.use.validationError();
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
 

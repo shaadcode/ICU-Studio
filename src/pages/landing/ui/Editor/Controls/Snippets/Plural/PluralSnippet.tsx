@@ -7,18 +7,23 @@ import { extendInsertContent } from '@/shared/lib/tiptap';
 const PluralSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
-
   const message = `{variable, plural,
   =0 {text}
   one {text}
   other {# text}
 }`;
+
+  const handleClick = () => {
+    if (editor) {
+      extendInsertContent(editor)(message);
+    }
+  };
   return (
     <RichTextEditor.Control
       title={t('controls.snippets.plural')}
       aria-label={t('controls.snippets.plural')}
 
-      onClick={() => editor && extendInsertContent(editor)(message)}
+      onClick={handleClick}
     >
       <IconListNumbers size={16} />
     </RichTextEditor.Control>

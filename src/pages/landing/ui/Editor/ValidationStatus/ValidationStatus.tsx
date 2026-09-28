@@ -10,7 +10,7 @@ const ValidationStatus = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const tEditor = useTranslations('editor.parsingErrors');
   const t = useTranslations('common');
-  const parserError = icuEditorStore.use.parserError();
+  const parserError = icuEditorStore.use.validationError();
   const hasError = !!parserError;
 
   return (

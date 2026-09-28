@@ -9,7 +9,7 @@ import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { collectVariables } from '@/shared/lib/icu/collectVariables';
 
 const TFunctionCopyControl = () => {
-  const parserError = icuEditorStore.use.parserError();
+  const parserError = icuEditorStore.use.validationError();
 
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();

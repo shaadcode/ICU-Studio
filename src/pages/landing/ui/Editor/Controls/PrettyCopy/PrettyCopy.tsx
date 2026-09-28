@@ -12,7 +12,7 @@ const PrettyCopyControl = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
-  const parserError = icuEditorStore.use.parserError();
+  const parserError = icuEditorStore.use.validationError();
 
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();

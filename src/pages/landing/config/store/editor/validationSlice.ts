@@ -4,21 +4,21 @@ import type { ZustandSlice } from '@/shared/config/zustand/types';
 
 export type ICUValidationSlice = {
   actions: ICUValidationSliceActions;
-  parserError: undefined | ParserError;
+  validationError: undefined | ParserError;
 };
 
 type ICUValidationSliceActions = {
-  setValidationError: (err: ICUValidationSlice['parserError']) => void;
+  setValidationError: (err: ICUValidationSlice['validationError']) => void;
 };
 
 export const createValidationSlice: ZustandSlice<
   ICUEditorStore,
   ICUValidationSlice
 > = set => ({
-  parserError: undefined,
+  validationError: undefined,
   actions: {
     setValidationError: (err) => {
-      return set({ parserError: err });
+      return set({ validationError: err });
     },
   },
 });

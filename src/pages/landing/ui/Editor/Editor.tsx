@@ -49,10 +49,8 @@ type Props = {
 const CustomHardBreak = HardBreak.extend({
   addKeyboardShortcuts() {
     return {
-      // 2. کلید Enter را طوری تغییر می‌دهیم که همان HardBreak را ایجاد کند
       'Enter': () => this.editor.commands.setHardBreak(),
 
-      // 1. عملکرد پیش‌فرض Shift+Enter را حفظ می‌کنیم
       'Shift-Enter': () => this.editor.commands.setHardBreak(),
     };
   },
@@ -67,7 +65,7 @@ const ICUEditor = (props: Props) => {
   const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
   const setVariables = icuEditorStore.use.actions().setVariables;
   const clearMessageState = icuEditorStore.use.actions().clearMessageState;
-  const updateContent = useDebouncedCallback(updateIcuEditor, 700);
+  const updateContent = useDebouncedCallback(updateIcuEditor, 300);
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },

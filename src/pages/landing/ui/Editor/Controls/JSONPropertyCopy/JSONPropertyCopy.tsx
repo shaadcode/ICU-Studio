@@ -9,7 +9,7 @@ import classes from './JSONPropertyCopy.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const JSONPropertyCopy = () => {
-  const parserError = icuEditorStore.use.parserError();
+  const parserError = icuEditorStore.use.validationError();
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });

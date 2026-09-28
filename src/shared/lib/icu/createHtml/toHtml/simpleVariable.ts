@@ -12,7 +12,16 @@ export const simpleVariableToHtml = (params: Params) => {
   if (!ctx) {
     throw new Error('ctx is undefined');
   }
+
+  if (!params.message.value.length) {
+    return;
+  }
+
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  methods.addArgumentName({ referenceId: id, depth: ctx.depth, value: message.value });
+  methods.addArgumentName({
+    referenceId: id,
+    depth: ctx.depth,
+    value: message.value.trim(),
+  });
   methods.addArgumentNameDelimiterEnd({ dependsOn: id });
 };

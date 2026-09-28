@@ -18,7 +18,11 @@ const FormatMessageControl = () => {
     const [, parsedMessage] = minimalParser(rawMessage);
 
     if (parsedMessage) {
-      const html = extractInfoAndHtml(parsedMessage, { withFormatting: true });
+      const html = extractInfoAndHtml({
+        rawMessage,
+        parsedMessage,
+        opts: { withFormatting: true },
+      });
       extendSetContent(editor)(html.outerHTML);
     }
   };

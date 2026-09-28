@@ -18,7 +18,7 @@ export const literalToHtml = (params: Params) => {
         .replace('{', '\'{\'')
         .replace('}', '\'}\''),
     });
-  } else {
+  } else if (message.value.length) {
     methods.addRawText({ value: message.value });
   }
 };

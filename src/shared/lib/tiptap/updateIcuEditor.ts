@@ -19,13 +19,14 @@ type Params = {
   setValidationError: ICUEditorStore['actions']['setValidationError'];
 };
 
-/**
- * IIFE function
- */
 export const updateIcuEditor = async (params: Params) => {
   const message = params.editor.getText();
   const prevCursorPosition = params.editor.state.selection.$anchor.pos;
   params.setMessage(message);
+
+  if (message === '\n' || isUndoRedoTransaction(params.transaction)) {
+    return;
+  }
   const [error, parsedMessage] = await params.parser(message);
   if (!parsedMessage) {
     params.clearMessageState();
@@ -37,7 +38,7 @@ export const updateIcuEditor = async (params: Params) => {
   params.setParsedMessage(parsedMessage);
   params.setVariables(parsedMessage);
 
-  if (html.children.length && !isUndoRedoTransaction(params.transaction)) {
+  if (html.children.length) {
     extendSetContent(params.editor)(html.outerHTML);
     params.editor.commands.setTextSelection(prevCursorPosition);
   }

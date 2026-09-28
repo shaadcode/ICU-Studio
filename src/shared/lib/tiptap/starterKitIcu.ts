@@ -7,11 +7,13 @@ export const StarterKitForICUEditor = StarterKit.configure({
   italic: false,
   heading: false,
   listItem: false,
+  hardBreak: false,
   underline: false,
   codeBlock: false,
   blockquote: false,
   bulletList: false,
   listKeymap: false,
   orderedList: false,
+  trailingNode: false,
   horizontalRule: false,
 });

@@ -2,12 +2,14 @@ import type { ReactNode } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
 import { RichTextEditor } from '@mantine/tiptap';
+import HardBreak from '@tiptap/extension-hard-break';
 import type { UseEditorOptions } from '@tiptap/react';
 import { useDebouncedCallback } from '@mantine/hooks';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Box, Group, Stack, Divider } from '@mantine/core';
 
 import classes from './Editor.module.css';
+import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
 import TestVariables from './TestVariables/TestVariables';
 import { icuEditorStore } from '../../config/store/editor';
@@ -23,7 +25,6 @@ import OneLineCopyControl from './Controls/OneLineCopy/OneLineCopy';
 import NumberSnippet from './Controls/Snippets/Number/NumberSnippet';
 import SelectSnippet from './Controls/Snippets/Select/SelectSnippet';
 import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
-import { SpanMark, BOUNCE_UPDATE_EDITOR } from '@/shared/lib/mantine';
 import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
@@ -45,6 +46,18 @@ type Props = {
   };
 };
 
+const CustomHardBreak = HardBreak.extend({
+  addKeyboardShortcuts() {
+    return {
+      // 2. کلید Enter را طوری تغییر می‌دهیم که همان HardBreak را ایجاد کند
+      'Enter': () => this.editor.commands.setHardBreak(),
+
+      // 1. عملکرد پیش‌فرض Shift+Enter را حفظ می‌کنیم
+      'Shift-Enter': () => this.editor.commands.setHardBreak(),
+    };
+  },
+});
+
 const ICUEditor = (props: Props) => {
   const tCommon = useTranslations('common');
   const t = useTranslations('editor');
@@ -54,14 +67,15 @@ const ICUEditor = (props: Props) => {
   const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
   const setVariables = icuEditorStore.use.actions().setVariables;
   const clearMessageState = icuEditorStore.use.actions().clearMessageState;
-  const updateContent = useDebouncedCallback(updateIcuEditor, BOUNCE_UPDATE_EDITOR);
+  const updateContent = useDebouncedCallback(updateIcuEditor, 700);
+
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: t('placeholder') }),
       SpanMark,
+      CustomHardBreak,
     ],
     onUpdate: async ({ editor, transaction }) => {
       updateContent({
@@ -161,6 +175,7 @@ const ICUEditor = (props: Props) => {
           <Divider mx="-16px" style={{ gridColumn: '1/3' }} />
           <VariableStatistic />
         </RichTextEditor.Toolbar>
+
         <RichTextEditor.Content />
 
       </RichTextEditor>

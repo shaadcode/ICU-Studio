@@ -6,11 +6,11 @@ import HardBreak from '@tiptap/extension-hard-break';
 import type { UseEditorOptions } from '@tiptap/react';
 import { useDebouncedCallback } from '@mantine/hooks';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Box, Group, Stack, Divider } from '@mantine/core';
+import { Box, Group, Stack, Button, Divider } from '@mantine/core';
 
-import classes from './Editor.module.css';
 import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
+import { getLineRange } from '@/shared/lib/icu/getLine';
 import TestVariables from './TestVariables/TestVariables';
 import { icuEditorStore } from '../../config/store/editor';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
@@ -29,8 +29,10 @@ import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
+import ValidationErrorBubble from './ValidationErrorBubble/ValidationErrorBubble';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
+import './Editor.module.css';
 
 type Props = {
 /**
@@ -65,10 +67,13 @@ const ICUEditor = (props: Props) => {
   const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
   const setVariables = icuEditorStore.use.actions().setVariables;
   const clearMessageState = icuEditorStore.use.actions().clearMessageState;
+  const clearValidationError = icuEditorStore.use.actions().clearValidationError;
+  const validationError = icuEditorStore.use.validationError();
   const updateContent = useDebouncedCallback(updateIcuEditor, 300);
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
+    onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: t('placeholder') }),
@@ -81,9 +86,11 @@ const ICUEditor = (props: Props) => {
         setMessage,
         transaction,
         setVariables,
+        validationError,
         setParsedMessage,
         clearMessageState,
         setValidationError,
+        clearValidationError,
         parser: minimalParser,
       });
     },
@@ -93,9 +100,11 @@ const ICUEditor = (props: Props) => {
         editor,
         setMessage,
         setVariables,
+        validationError,
         setParsedMessage,
         clearMessageState,
         setValidationError,
+        clearValidationError,
         parser: minimalParser,
       });
     },
@@ -119,6 +128,12 @@ const ICUEditor = (props: Props) => {
 
   return (
     <Stack w="100%" h="100%">
+      <Button onClick={() => {
+        console.log(getLineRange(editor, 16));
+      }}
+      >
+        {'get error\r'}
+      </Button>
       <RichTextEditor h="100%" w="100%" editor={editor}>
         <RichTextEditor.Toolbar
           sticky
@@ -128,7 +143,7 @@ const ICUEditor = (props: Props) => {
           }}
         >
           <Group style={{ justifySelf: 'flex-start' }}>
-            <Box className={classes['copyControlsContainer']}>
+            <Box>
               <Divider label={tCommon('copy')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <SimpleCopyControl />
@@ -139,14 +154,14 @@ const ICUEditor = (props: Props) => {
               </RichTextEditor.ControlsGroup>
             </Box>
 
-            <Box className={classes['copyControlsContainer']}>
+            <Box>
               <Divider label={tCommon('paste')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <JSONPropertyPasteControl />
               </RichTextEditor.ControlsGroup>
             </Box>
 
-            <Box className={classes['copyControlsContainer']}>
+            <Box>
               <Divider label={tCommon('snippets')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <SimpleVariableSnippet />
@@ -174,6 +189,7 @@ const ICUEditor = (props: Props) => {
           <VariableStatistic />
         </RichTextEditor.Toolbar>
 
+        <ValidationErrorBubble editor={editor} />
         <RichTextEditor.Content />
 
       </RichTextEditor>

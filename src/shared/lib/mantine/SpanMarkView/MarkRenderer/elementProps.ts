@@ -1,82 +1,203 @@
 import type { ValueOf } from 'type-fest';
+import type { CSSProperties } from 'react';
 
 import type { MARK_TYPES } from '@/shared/lib/icu/createHtml/createHtml';
 import type { MarkAttributesWithoutClass } from '@/shared/lib/icu/types';
 
 export type MarkComponentConfig = {
   withActions?: true;
-  classes?: (params: ClassesParams) => string;
+  style?: (params: StyleParams) => CSSProperties;
 };
-type ClassesParams = {
+type StyleParams = {
   markAttributes: MarkAttributesWithoutClass;
 };
 
+const SPACING = {
+  lg: '0.5rem',
+  sm: '0.25rem',
+  xs: '0.125rem',
+  md: '0.375rem',
+} as const;
+
+const H_MARGIN = SPACING.sm;
+
+const INDENT_PER_DEPTH = 16;
+
 export const elementsConfig = {
-  'stem': { classes: () => `text-(--mantine-color-blue-5) ` },
-  'plural-option': { classes: () => `text-(--mantine-color-red-3)` },
-  'select-option': { classes: () => `text-(--mantine-color-red-3)` },
-  'offset-colon': { classes: () => `text-(--mantine-color-orange-6)` },
-  'stem-option': { classes: () => `text-(--mantine-color-blue-5) !me-2` },
-  'plural-keyword': { classes: () => `text-(--mantine-color-red-6) !mx-2` },
-  'select-keyword': { classes: () => `text-(--mantine-color-red-6) !mx-2` },
-  'left-angle-open-tag': { classes: () => `text-(--mantine-color-blue-3)` },
-  'left-angle-close-tag': { classes: () => `text-(--mantine-color-blue-3)` },
-  'right-angle-open-tag': { classes: () => `text-(--mantine-color-blue-3)` },
-  'offset-value': { classes: () => `text-(--mantine-color-orange-9) !mx-2` },
-  'right-angle-close-tag': { classes: () => `text-(--mantine-color-blue-3)` },
-  'stem-option-separator': { classes: () => `text-(--mantine-color-blue-5)` },
-  'offset-keyword': { classes: () => `text-(--mantine-color-orange-6) !ms-2 ` },
-  'dedicated-formatter': { classes: () => `text-(--mantine-color-blue-5) !mx-2` },
-  'skeleton-separator': { classes: () => `text-(--mantine-color-blue-3) !ms-2 ` },
-  'option-delimiter-end': { classes: () => 'text-(--mantine-color-gray-7) !mx-2' },
-  'date-time-skeleton-pattern': { classes: () => `text-(--mantine-color-blue-5)` },
-  'argument-name-delimiter-end': { classes: () => 'text-(--mantine-color-gray-7)' },
-  'tag-value': { withActions: true, classes: () => `text-(--mantine-color-blue-9)` },
-  'option-delimiter-start': { classes: () => 'text-(--mantine-color-gray-7) !mx-2' },
-  'argument-name-delimiter-start': { classes: () => 'text-(--mantine-color-gray-7)' },
-  'selectOrdinal-keyword': { classes: () => `text-(--mantine-color-orange-6) !mx-2 ` },
+  'stem': {
+    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+  },
+  'offset-colon': {
+    style: () => ({ color: 'var(--mantine-color-orange-6)' }),
+  },
+  'left-angle-open-tag': {
+    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+  },
+  'left-angle-close-tag': {
+    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+  },
+  'right-angle-open-tag': {
+    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+  },
+  'right-angle-close-tag': {
+    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+  },
+  'stem-option-separator': {
+    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+  },
+  'date-time-skeleton-pattern': {
+    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+  },
+  'tag-value': {
+    withActions: true,
+    style: () => ({ color: 'var(--mantine-color-blue-9)' }),
+  },
+  'argument-name-delimiter-start': {
+    style: () => {
+      return ({ color: 'var(--mantine-color-gray-7)' });
+    },
+  },
+  'select-keyword': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-red-6)',
+    }),
+  },
+  'plural-keyword': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-red-6)',
+    }),
+  },
+  'offset-value': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-orange-9)',
+    }),
+  },
+  'stem-option': {
+    style: () => ({
+      marginInlineEnd: H_MARGIN,
+      color: 'var(--mantine-color-blue-5)',
+    }),
+  },
+  'dedicated-formatter': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-blue-5)',
+    }),
+  },
+  'option-delimiter-end': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-gray-7)',
+    }),
+  },
+  'offset-keyword': {
+    style: () => ({
+      marginInlineStart: H_MARGIN,
+      color: 'var(--mantine-color-orange-6)',
+    }),
+  },
+  'option-delimiter-start': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-gray-7)',
+    }),
+  },
+  'skeleton-separator': {
+    style: () => ({
+      marginInlineStart: H_MARGIN,
+      color: 'var(--mantine-color-blue-3)',
+    }),
+  },
+  'selectOrdinal-keyword': {
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-orange-6)',
+    }),
+  },
   'date-argument-name': {
     withActions: true,
-    classes: () => 'text-(--mantine-color-blue-9) !mx-2',
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-blue-9)',
+    }),
   },
   'time-argument-name': {
     withActions: true,
-    classes: () => 'text-(--mantine-color-blue-9) !mx-2',
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-blue-9)',
+    }),
   },
   'number-argument-name': {
     withActions: true,
-    classes: () => 'text-(--mantine-color-blue-9) !mx-2',
+    style: () => ({
+      marginInline: H_MARGIN,
+      color: 'var(--mantine-color-blue-9)',
+    }),
   },
   'pound': {
     withActions: true,
-    classes: ({ markAttributes }) => {
-      const depth = markAttributes['data-depth'];
-      let className = '';
-
-      className += ` text-(${getArgumentTextColorByDepth(Number(depth))})`;
-      return className;
+    style: ({ markAttributes }) => {
+      const depth = Number(markAttributes['data-depth']);
+      return {
+        marginInline: H_MARGIN,
+        color: getArgumentTextColorByDepth(depth),
+      };
+    },
+  },
+  'plural-option': {
+    style: ({ markAttributes }) => {
+      const depth = Number(markAttributes['data-depth']);
+      return {
+        color: 'var(--mantine-color-red-3)',
+        marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+      };
     },
   },
   'argument-name': {
     withActions: true,
-    classes: ({ markAttributes }) => {
-      const depth = markAttributes['data-depth'];
-      let className = '!mx-2';
-      className += ` ${getArgumentTextColorByDepth(Number(depth))}`;
-      return className;
+    style: ({ markAttributes }) => {
+      const depth = Number(markAttributes['data-depth']);
+      return {
+        marginInline: H_MARGIN,
+        color: getArgumentTextColorByDepth(depth),
+      };
+    },
+  },
+  'select-option': {
+    style: ({ markAttributes }) => {
+      const depth = Number(markAttributes['data-depth']);
+
+      return {
+        color: 'var(--mantine-color-red-3)',
+        marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+      };
+    },
+  },
+  'argument-name-delimiter-end': {
+    style: ({ markAttributes }) => {
+      const depth = Number(markAttributes['data-depth']);
+
+      return {
+        color: 'var(--mantine-color-gray-7)',
+        marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+      };
     },
   },
 } as const satisfies {
   [Key in ValueOf<typeof MARK_TYPES>]?: MarkComponentConfig;
 };
 
-function getArgumentTextColorByDepth(depth: number) {
-  const colorNum = (depth % 3 === 0 ? 1 : depth % 3 as 1 | 2 | 3);
+function getArgumentTextColorByDepth(depth: number): string {
+  const colorNum = (depth % 3 === 0 ? 1 : depth % 3) as 1 | 2 | 3;
 
   const argumentColor = {
-    2: 'text-(--mantine-color-red-8)',
-    3: 'text-(--mantine-color-blue-8)',
-    1: 'text-(--mantine-color-green-8)',
+    2: 'var(--mantine-color-red-8)',
+    3: 'var(--mantine-color-blue-8)',
+    1: 'var(--mantine-color-green-8)',
   } as const;
 
   return argumentColor[colorNum];

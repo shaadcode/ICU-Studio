@@ -5,7 +5,7 @@ import type { Location } from '@formatjs/icu-messageformat-parser/manipulator.js
 import type { MarkAttrs } from './createHtml/types';
 import type { MARK_TYPES } from './createHtml/createHtml';
 
-enum ErrorKind {
+export enum ErrorKind {
   /** Argument is unclosed (e.g. `{0`) */
   EXPECT_ARGUMENT_CLOSING_BRACE = 1,
   /** Argument is empty (e.g. `{}`). */

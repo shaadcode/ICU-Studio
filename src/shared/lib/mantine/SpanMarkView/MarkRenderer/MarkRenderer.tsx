@@ -16,7 +16,7 @@ const MarkRenderer = ({ children, ...props }: Props) => {
   const markType = attrs['data-mark-type'];
   // @ts-expect-error
   const markConfig = elementsConfig?.[markType] as MarkComponentConfig;
-  const classes = markConfig?.classes?.({ markAttributes: attrs });
+  const styles = markConfig?.style?.({ markAttributes: attrs });
 
   if (markConfig?.withActions) {
     return (
@@ -25,7 +25,7 @@ const MarkRenderer = ({ children, ...props }: Props) => {
           <Text
             span
             ref={ref}
-            className={classes}
+            style={styles}
             attributes={{ root: attrs }}
             {...otherProps}
           >
@@ -38,7 +38,7 @@ const MarkRenderer = ({ children, ...props }: Props) => {
   return (
     <Text
       span
-      className={classes}
+      style={styles}
       attributes={{ root: attrs }}
     >
       {children}

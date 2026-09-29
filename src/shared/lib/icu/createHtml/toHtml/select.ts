@@ -1,6 +1,5 @@
 import type { SelectElement } from '@formatjs/icu-messageformat-parser';
 
-import { indent } from '@/shared/lib/tiptap';
 import { createMessageId } from '../../createMessageId';
 import type { ExtendedValidPluralRule, SharedToHtmlHelpersParams } from '../types';
 
@@ -21,7 +20,7 @@ export const selectToHtml = (params: Params) => {
   methods.addComma();
   methods.addSelectKeyword();
 
-  methods.addComma({ formattingChars: { append: '\n' } });
+  methods.addComma({ formattingChars: { append: ['hardBreak'] } });
 
   const entriesOptions = Object.entries(options);
 
@@ -30,8 +29,8 @@ export const selectToHtml = (params: Params) => {
     const optionId = createMessageId();
 
     methods.addSelectOption({
+      depth,
       value: typedOptionKey,
-      formattingChars: { prepend: indent(depth) },
     });
 
     if (optionValue?.value) {
@@ -39,14 +38,14 @@ export const selectToHtml = (params: Params) => {
       params.traverse(optionValue?.value, params.ctx);
       methods.addOptionDelimiterEnd({
         dependsOn: optionId,
-        formattingChars: { append: '\n' },
+        formattingChars: { append: ['hardBreak'] },
       });
     }
 
     if (optionIndex === entriesOptions.length - 1) {
       methods.addArgumentNameDelimiterEnd({
+        depth,
         dependsOn: id,
-        formattingChars: { prepend: indent(depth === 1 ? 0 : depth) },
       });
     }
   });

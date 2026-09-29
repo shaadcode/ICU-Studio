@@ -2,20 +2,21 @@ import type { ValueOf } from 'type-fest';
 
 import type { MARK_TYPES } from './createHtml/createHtml';
 
-export type FormattingNode = {
-  append?: string;
-  prepend?: string;
+export type FormattingPosition = {
+  append?: FormattingData;
+  prepend?: FormattingData;
 };
 
 export type CreateSpanElemParams = {
   value: string;
   depth?: number;
-  withBr?: boolean;
   dependsOn?: string;
   referenceId?: string;
-  formattingChars?: FormattingNode;
+  formattingChars?: FormattingPosition;
   markType: ValueOf<typeof MARK_TYPES>;
 };
+
+type FormattingData = Array<'hardBreak'>;
 
 export const createSpanElement = (params: CreateSpanElemParams) => {
   const elem = document.createElement('span');
@@ -38,12 +39,21 @@ export const createSpanElement = (params: CreateSpanElemParams) => {
   }
 
   if (params.formattingChars) {
-    elem.prepend(params.formattingChars.prepend ?? '');
-    elem.append(params.formattingChars.append ?? '');
+    elem.prepend(...appendFormattingNodes(params.formattingChars.prepend));
+    elem.append(...appendFormattingNodes(params.formattingChars.append));
   }
 
-  if (params.withBr) {
-    elem.innerHTML += '\n';
-  }
   return elem;
 };
+
+function appendFormattingNodes(formattingData: FormattingData = []): (Node | string)[] {
+  const br = document.createElement('br');
+
+  return formattingData.map((item) => {
+    if (item === 'hardBreak') {
+      return br;
+    }
+
+    return '';
+  });
+}

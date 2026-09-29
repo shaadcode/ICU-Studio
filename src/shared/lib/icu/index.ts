@@ -1,3 +1,4 @@
+import { getLineRange } from './getLine';
 import TagVariable from './components/TagVariable';
 import { createMessageId } from './createMessageId';
 import { collectVariables } from './collectVariables';
@@ -8,6 +9,7 @@ import { minimalParser, createMinimalParserWorker } from './minimalParser';
 
 export {
   TagVariable,
+  getLineRange,
   minimalParser,
   createMessageId,
   collectVariables,

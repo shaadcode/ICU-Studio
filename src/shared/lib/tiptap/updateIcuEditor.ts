@@ -4,6 +4,7 @@ import type { Transaction } from '@tiptap/pm/state';
 
 import { createHtml } from '../icu';
 import type { minimalParser } from '../icu';
+import { getLineRange } from '../icu/getLine';
 import { isUndoRedoTransaction } from './predicates';
 import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { extendSetContent, extendInsertContent } from './extendSetContent';
@@ -11,15 +12,18 @@ import { extendSetContent, extendInsertContent } from './extendSetContent';
 type Params = {
   editor: Editor;
   transaction?: Transaction;
+  validationError: ICUEditorStore['validationError'];
   setMessage: ICUEditorStore['actions']['setMessage'];
   setVariables: ICUEditorStore['actions']['setVariables'];
   parser: typeof minimalParser | Remote<typeof minimalParser>;
   setParsedMessage: ICUEditorStore['actions']['setParsedMessage'];
   clearMessageState: ICUEditorStore['actions']['clearMessageState'];
   setValidationError: ICUEditorStore['actions']['setValidationError'];
+  clearValidationError: ICUEditorStore['actions']['clearValidationError'];
 };
 
 export const updateIcuEditor = async (params: Params) => {
+  const { editor } = params;
   const message = params.editor.getText();
   const prevCursorPosition = params.editor.state.selection.$anchor.pos;
 
@@ -30,15 +34,18 @@ export const updateIcuEditor = async (params: Params) => {
     return params.editor.commands.setTextSelection(prevCursorPosition);
   }
 
-  if (message === '\n' || isUndoRedoTransaction(params.transaction)) {
+  if (!params.validationError && (message === '\n' || isUndoRedoTransaction(params.transaction))) {
     return;
   }
 
   const [error, parsedMessage] = await params.parser(message);
 
   if (!parsedMessage) {
+    console.log(error.location);
+    params.editor.commands.setTextSelection(error.location.start.offset + 1);
+    console.log(getLineRange(params.editor, error.location.start.line - 1));
     params.clearMessageState();
-    return params.setValidationError(error);
+    return params.setValidationError({ error, editor });
   }
 
   const html = createHtml({
@@ -46,7 +53,7 @@ export const updateIcuEditor = async (params: Params) => {
     rawMessage: message,
     opts: { withFormatting: true },
   });
-  params.setValidationError(undefined);
+  params.clearValidationError();
   params.setParsedMessage(parsedMessage);
   params.setVariables(parsedMessage);
   if (html.children.length) {

@@ -1,0 +1,41 @@
+.BubbleRoot {
+  left: 0px;
+  z-index: 1;
+  position: absolute;
+  height: 22px;
+  width: 100%;
+  background-color: alpha(var(--mantine-color-red-1), 0.5);
+  align-items: center;
+  padding-inline: var(--mantine-spacing-xs);
+}
+
+.errorIcon {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  position: absolute;
+  left: 5px;
+  z-index: 50;
+}
+
+.errorPopover {
+  min-width: 320px;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.codeBlock {
+  background: var(--mantine-color-gray-0);
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: 6px;
+  padding: 8px 10px;
+  overflow-x: auto;
+}
+
+.codeInner {
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre;
+}

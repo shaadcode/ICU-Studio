@@ -1,6 +1,5 @@
 import type { PluralElement } from '@formatjs/icu-messageformat-parser';
 
-import { indent } from '@/shared/lib/tiptap';
 import { createMessageId } from '../../createMessageId';
 import type { ExtendedValidPluralRule, SharedToHtmlHelpersParams } from '../types';
 
@@ -31,9 +30,9 @@ export const pluralToHtml = (params: Params) => {
     methods.addComma();
     methods.addOffsetKeyword();
     methods.addOffsetColon();
-    methods.addOffsetValue({ value: offset, formattingChars: { append: '\n' } });
+    methods.addOffsetValue({ value: offset, formattingChars: { append: ['hardBreak'] } });
   } else {
-    methods.addComma({ formattingChars: { append: '\n' } });
+    methods.addComma({ formattingChars: { append: ['hardBreak'] } });
   }
 
   const entriesOptions = Object.entries(options);
@@ -43,9 +42,9 @@ export const pluralToHtml = (params: Params) => {
 
     const typedOptionKey = optionKey as ExtendedValidPluralRule;
     methods.addPluralOption({
+      depth,
       value: typedOptionKey,
       referenceId: optionId,
-      formattingChars: { prepend: indent(depth) },
     });
 
     if (optionValue?.value) {
@@ -53,14 +52,14 @@ export const pluralToHtml = (params: Params) => {
       params.traverse(optionValue?.value, params.ctx);
       methods.addOptionDelimiterEnd({
         dependsOn: optionId,
-        formattingChars: { append: '\n' },
+        formattingChars: { append: ['hardBreak'] },
       });
     }
 
     if (optionIndex === entriesOptions.length - 1) {
       methods.addArgumentNameDelimiterEnd({
+        depth,
         dependsOn: id,
-        formattingChars: { prepend: indent(depth) },
       });
     }
   });

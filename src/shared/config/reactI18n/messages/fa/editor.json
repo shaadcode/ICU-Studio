@@ -39,15 +39,15 @@
     "8": "برچسب (tag)"
   },
   "messageFormatEnumKeyword": {
-    "literal": "متن ثابت",
     "argument": "متغیر",
-    "number": "عدد",
     "date": "تاریخ",
-    "time": "زمان",
-    "select": "انتخاب",
+    "literal": "متن ثابت",
+    "number": "عدد",
     "plural": "جمع",
     "pound": "علامت #",
-    "tag": "برچسب"
+    "select": "انتخاب",
+    "tag": "برچسب",
+    "time": "زمان"
   },
   "nextWeek": "هفته بعد",
   "nextYear": "سال بعد",
@@ -85,6 +85,11 @@
   "testVariables": "آزمایش متغیر ها",
   "today": "امروز",
   "tomorrow": "فردا",
+  "validation": {
+    "columnNumber": "ستون: {number}",
+    "lineNumber": "خط: {number}",
+    "syntaxError": "خطا نحو"
+  },
   "variableName": "نام متغیر",
   "variableType": "نوع متغیر",
   "yesterday": "دیروز"

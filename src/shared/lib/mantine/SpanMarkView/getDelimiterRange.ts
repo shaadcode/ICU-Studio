@@ -20,7 +20,11 @@ export function getDelimiterRange(params: Params) {
   const isOpenDelimiterChecked = isOpenDelimiter(markType);
   if (isCloseDelimiterChecked || isOpenDelimiterChecked) {
     const pos = tiptapMark.view.posAtDOM(ref.current, 0);
+    if (pos === -1) {
+      return;
+    }
     const resolvedPos = tiptapMark.editor.state.doc.resolve(pos);
+
     const markRange = getMarkRange(resolvedPos, tiptapMark.mark.type);
     if (isCloseDelimiterChecked) {
       addDelimiterRange(dependsOn, {

@@ -39,15 +39,15 @@
     "8": "tag"
   },
   "messageFormatEnumKeyword": {
-    "literal": "literal",
     "argument": "argument",
-    "number": "number",
     "date": "date",
-    "time": "time",
-    "select": "select",
+    "literal": "literal",
+    "number": "number",
     "plural": "plural",
     "pound": "pound",
-    "tag": "tag"
+    "select": "select",
+    "tag": "tag",
+    "time": "time"
   },
   "nextWeek": "next week",
   "nextYear": "next year",
@@ -85,6 +85,11 @@
   "testVariables": "test variables",
   "today": "today",
   "tomorrow": "tomorrow",
+  "validation": {
+    "columnNumber": "column: {number}",
+    "lineNumber": "line: {number}",
+    "syntaxError": "syntax error"
+  },
   "variableName": "variable name",
   "variableType": "variable type",
   "yesterday": "yesterday"

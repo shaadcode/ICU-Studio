@@ -1,18 +1,21 @@
 import type { Editor } from '@tiptap/react';
 
 import type { ICUEditorStore } from '.';
-import { getLineRange } from '@/shared/lib/icu';
+import { getLineRangeOffset } from '@/shared/lib/icu';
 import type { ParserError } from '@/shared/lib/icu/types';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
+import { getLineRangeOffsetByOneLine } from '@/shared/lib/icu/getLineRangeOffset';
 
 export type ICUValidationSlice = {
   actions: ICUValidationSliceActions;
   validationError: undefined | ParserError;
   errorLocation: undefined | {
-    lineNumber?: number;
-    end?: ParserError['location']['end'];
-    start?: ParserError['location']['start'];
-    lineRange?: ReturnType<typeof getLineRange>;
+    end: number;
+    start: number;
+    lineRangeOffset: {
+      end: number;
+      start: number;
+    };
   };
 };
 
@@ -32,36 +35,35 @@ export const createValidationSlice: ZustandSlice<
     setValidationError: (payload) => {
       const error = payload?.error;
       const editor = payload?.editor;
+      const { location } = error;
+
       if (error && editor) {
-        switch (error.message) {
-          case 'MISSING_OTHER_CLAUSE':{
-            const targetLine = convertParserLineToTiptapLine(error.location.start.line);
-            set({
-              errorLocation: {
-                ...error.location,
-                lineNumber: targetLine,
-                lineRange: getLineRange(
-                  editor,
-                  targetLine,
-                ),
-              },
-            });
-            break;
-          }
-
-          default:
-            set({
-              errorLocation: error.location,
-            });
-            break;
-        }
+        set({
+          validationError: payload.error,
+          errorLocation: {
+            end: location.end.offset + 1,
+            start: location.start.offset + 1,
+            lineRangeOffset: location.end.line === location.start.line
+              ? getLineRangeOffsetByOneLine(
+                editor,
+                error.location.start.line,
+              ) ?? {
+                end: location.end.offset + 1,
+                start: location.start.offset + 1,
+              }
+              : {
+                  end: getLineRangeOffset(
+                    editor,
+                    location.end.line,
+                  ) ?? location.end.offset + 1,
+                  start: getLineRangeOffset(
+                    editor,
+                    location.start.line,
+                  ) ?? location.start.offset + 1,
+                },
+          },
+        });
       }
-
-      return set({ validationError: payload.error });
     },
   },
 });
-
-function convertParserLineToTiptapLine(line: number) {
-  return line - 1;
-}

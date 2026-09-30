@@ -4,7 +4,6 @@ import type { Transaction } from '@tiptap/pm/state';
 
 import { createHtml } from '../icu';
 import type { minimalParser } from '../icu';
-import { getLineRange } from '../icu/getLine';
 import { isUndoRedoTransaction } from './predicates';
 import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { extendSetContent, extendInsertContent } from './extendSetContent';
@@ -41,9 +40,7 @@ export const updateIcuEditor = async (params: Params) => {
   const [error, parsedMessage] = await params.parser(message);
 
   if (!parsedMessage) {
-    console.log(error.location);
     params.editor.commands.setTextSelection(error.location.start.offset + 1);
-    console.log(getLineRange(params.editor, error.location.start.line - 1));
     params.clearMessageState();
     return params.setValidationError({ error, editor });
   }

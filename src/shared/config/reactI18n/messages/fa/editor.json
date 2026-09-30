@@ -86,8 +86,45 @@
   "today": "امروز",
   "tomorrow": "فردا",
   "validation": {
+    "chooseFix": "یک راه‌حل انتخاب کنید",
     "columnNumber": "ستون: {number}",
+    "fixAutomatically": "اصلاح خودکار",
+    "fixes": {
+      "emptyArgument": {
+        "fillWithHash": "پر کردن با #",
+        "remove": "حذف آرگومان",
+        "replaceWithHash": "جایگزین کردن با #",
+        "replaceWithVariable": "جایگزینی با متغیر پیش‌فرض"
+      },
+      "invalidArg": {
+        "replaceWithString": "جایگزینی با آرگومان رشته‌ای"
+      },
+      "missingBrace": {
+        "appendBrace": "افزودن «}» در انتهای خط"
+      },
+      "missingOther": {
+        "addEmpty": "افزودن شرط 'other' خالی",
+        "addWithHash": "افزودن شرط 'other {#}'"
+      },
+      "malformedArgument": {
+        "sanitizeName": "پاک‌سازی کاراکترهای غیرمجاز نام",
+        "removeSpaces": "حذف فاصله‌های اضافی از نام",
+        "removeDuplicateCommas": "حذف کاماهای تکراری",
+        "trimSkeleton": "حذف متن اضافی بعد از skeleton",
+        "cleanAndClose": "پاک‌سازی و اصلاح کلی",
+        "replaceWithValid": "جایگزینی با آرگومان معتبر"
+      },
+      "expectArgumentType": {
+        "removeComma": "حذف کاما و بستن آرگومان",
+        "addNumberType": "افزودن نوع number",
+        "addDateType": "افزودن نوع date",
+        "addTimeType": "افزودن نوع time",
+        "addPluralType": "افزودن نوع plural",
+        "addSelectType": "افزودن نوع select"
+      }
+    },
     "lineNumber": "خط: {number}",
+    "moreFixes": "راه‌حل‌های بیشتر",
     "syntaxError": "خطا نحو"
   },
   "variableName": "نام متغیر",

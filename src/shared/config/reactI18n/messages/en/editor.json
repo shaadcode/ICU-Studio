@@ -86,8 +86,45 @@
   "today": "today",
   "tomorrow": "tomorrow",
   "validation": {
+    "chooseFix": "Choose a fix",
     "columnNumber": "column: {number}",
+    "fixAutomatically": "Fix automatically",
+    "fixes": {
+      "emptyArgument": {
+        "fillWithHash": "Fill with #",
+        "remove": "Remove argument",
+        "replaceWithHash": "replace with #",
+        "replaceWithVariable": "Replace with default variable"
+      },
+      "invalidArg": {
+        "replaceWithString": "Replace with string argument"
+      },
+      "missingBrace": {
+        "appendBrace": "Append closing brace at the end"
+      },
+      "missingOther": {
+        "addEmpty": "Add empty ' other ' clause",
+        "addWithHash": "Add ' other '{'#'}' ' clause"
+      },
+      "malformedArgument": {
+        "sanitizeName": "Sanitize argument name characters",
+        "removeSpaces": "Remove extra spaces from name",
+        "removeDuplicateCommas": "Remove duplicate commas",
+        "trimSkeleton": "Trim extra content after skeleton",
+        "cleanAndClose": "Clean and fix entire argument",
+        "replaceWithValid": "Replace with valid argument"
+      },
+      "expectArgumentType": {
+        "removeComma": "Remove comma and close argument",
+        "addNumberType": "Add number type",
+        "addDateType": "Add date type",
+        "addTimeType": "Add time type",
+        "addPluralType": "Add plural type",
+        "addSelectType": "Add select type"
+      }
+    },
     "lineNumber": "line: {number}",
+    "moreFixes": "More fixes",
     "syntaxError": "syntax error"
   },
   "variableName": "variable name",

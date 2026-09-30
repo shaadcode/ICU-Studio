@@ -1,9 +1,9 @@
 import { useTranslations } from 'use-intl';
-import { useState, useEffect } from 'react';
 import type { Editor } from '@tiptap/react';
-import { Box, Text, Code, Group, Button, Popover } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { Box, Text, Code, Group, Stack, Button, Popover, ActionIcon, CloseButton } from '@mantine/core';
 import {
-  IconWand,
   IconInfoCircle,
   IconDotsVertical,
   IconMessageChatbot,
@@ -11,8 +11,10 @@ import {
   IconAlertSquareRoundedFilled,
 } from '@tabler/icons-react';
 
+import { FixButton } from './FixButton/FixButton';
 import classes from './ValidationErrorBubble.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import { generateErrorCodeSnippet } from './generateErrorCodeSnippet';
 
 type Props = {
   editor: null | Editor;
@@ -27,20 +29,31 @@ type Coords = {
 
 const ValidationErrorBubble = ({ editor }: Props) => {
   const t = useTranslations('editor');
+  const [opened, { open, close }] = useDisclosure(false);
   const errorLocation = icuEditorStore.use.errorLocation();
   const validationError = icuEditorStore.use.validationError();
+  const clearValidationError = icuEditorStore.use.actions().clearValidationError;
+
   const [coords, setCoords] = useState<null | {
     end: Coords;
     start: Coords;
   }>(null);
-  const [opened, setOpened] = useState(false);
 
   const updateCoords = (editor: Editor) => {
-    if (errorLocation?.lineRange) {
-      const start = editor.view.coordsAtPos(errorLocation.lineRange.start);
-      const end = editor.view.coordsAtPos(errorLocation.lineRange.end);
+    if (errorLocation && validationError?.location.end.line === validationError?.location.start.line) {
+      const start = editor.view.coordsAtPos(errorLocation.lineRangeOffset.start);
+      const end = editor.view.coordsAtPos(errorLocation.lineRangeOffset.end);
+      setCoords({ end, start });
+    } else if (errorLocation?.end && errorLocation?.start) {
+      const start = editor.view.coordsAtPos(errorLocation.start);
+      const end = editor.view.coordsAtPos(errorLocation.end);
       setCoords({ end, start });
     }
+  };
+
+  const handleFixed = () => {
+    clearValidationError();
+    close();
   };
 
   useEffect(() => {
@@ -49,102 +62,112 @@ const ValidationErrorBubble = ({ editor }: Props) => {
     }
   }, [errorLocation, editor]);
 
-  if (!validationError || !errorLocation || !coords) {
+  if (!editor || !validationError || !errorLocation || !coords) {
     return null;
   }
-
-  const codeSnippet = editor?.state.doc.textBetween(errorLocation.lineRange!.start, errorLocation.lineRange!.end);
+  console.log(errorLocation);
+  console.log(validationError.location);
+  const codeSnippet = generateErrorCodeSnippet({ editor, errorLocation, validationError });
 
   return (
     <>
       <Group
+        mih={22}
         className={classes['BubbleRoot']}
         style={{ top: coords.start.top - 70 }}
+        h={coords.start.top - coords.end.bottom}
       />
 
       <Popover
-        offset={8}
-        shadow="md"
-        withinPortal
+        offset={0}
+        shadow="xs"
         opened={opened}
-        withArrow={false}
-        trapFocus={false}
         closeOnClickOutside
-        position="bottom-start"
+        position="bottom-end"
 
-        onChange={setOpened}
+        onClose={close}
       >
         <Popover.Target>
-          <IconAlertSquareRoundedFilled
-            color="red"
+          <ActionIcon
+            size="sm"
+            pos="absolute"
+            variant="transparent"
             className={classes['errorIcon']}
-            style={{ top: coords.start.top - 67 }}
+            style={{ top: coords.start.top - 70 }}
 
-            onClick={() => setOpened(o => !o)}
-          />
+            onClick={open}
+          >
+            <IconAlertSquareRoundedFilled color="red" />
+          </ActionIcon>
         </Popover.Target>
 
-        <Popover.Dropdown p="md" className={classes['errorPopover']}>
-          {/* Header */}
-          <Group mb="xs" gap="xs" wrap="nowrap">
-            <IconAlertSquareRounded size={18} color="var(--mantine-color-red-6)" />
-            <Text fw={600} c="red.7" tt="capitalize">{t('validation.syntaxError')}</Text>
-          </Group>
+        <Popover.Dropdown className={classes['errorPopover']}>
+          <Stack>
+            {/* Header */}
+            <Group wrap="nowrap" justify="space-between">
+              <Group gap="xs" wrap="nowrap">
+                <IconAlertSquareRounded size={18} color="var(--mantine-color-red-6)" />
+                <Text fw={600} c="red.7" tt="capitalize">{t('validation.syntaxError')}</Text>
 
-          {/* Message */}
-          <Text mb="xs" size="sm">
-            {t(`parsingErrors.${validationError.message}`)}
-          </Text>
+              </Group>
 
-          {/* Line info */}
-          <Group gap={6} mb="sm" c="dimmed">
-            <IconInfoCircle size={14} />
-            <Text size="xs">
-              {t('validation.lineNumber', { number: errorLocation.lineNumber ?? '' })}
-              {', '}
-              {t('validation.columnNumber', {
-                number: `${errorLocation.end?.column},${errorLocation.end?.column}`,
-              })}
+              <CloseButton onClick={close} />
+            </Group>
+            {/* Message */}
+            <Text size="sm">
+              {t(`parsingErrors.${validationError.message}`)}
             </Text>
-          </Group>
 
-          {/* Code block */}
-          <Box mb="md" className={classes['codeBlock']}>
-            <Code block className={classes['codeInner']}>
-              {codeSnippet}
-            </Code>
-          </Box>
+            <Stack gap={6}>
+              {/* Line info */}
+              <Group gap={6} c="dimmed">
+                <IconInfoCircle size={14} />
+                <Text size="xs">
+                  {t('validation.lineNumber', {
+                    number: `${validationError.location.start?.line},${validationError.location.end.line}`,
+                  })}
+                  {'  -  '}
+                  {t('validation.columnNumber', {
+                    number: `${validationError.location.end?.column},${validationError.location.end?.column}`,
+                  })}
+                </Text>
+              </Group>
 
-          {/* Actions */}
-          <Group gap="xs" wrap="nowrap">
-            <Button
-              size="xs"
-              color="red"
-              leftSection={<IconWand size={14} />}
+              {/* Code block */}
+              <Box className={classes['codeBlock']}>
+                <Code block className={classes['codeInner']}>
+                  {codeSnippet}
+                </Code>
+              </Box>
+            </Stack>
 
-              onClick={() => {
-                // TODO: auto fix
-                setOpened(false);
-                console.log();
-              }}
-            >
-              {'Fix automatically\r'}
-            </Button>
-            <Button
-              size="xs"
-              variant="default"
-              leftSection={<IconMessageChatbot size={14} />}
+            {/* Actions */}
+            <Group wrap="nowrap">
+              <FixButton
+                context={{
+                  editor,
+                  errorLocation,
+                  rawMessage: editor?.state.doc.textContent ?? '',
+                }}
 
-              onClick={() => {
+                onFixed={handleFixed}
+              />
+              <Button
+                size="xs"
+                variant="default"
+                leftSection={<IconMessageChatbot size={14} />}
+
+                onClick={() => {
                 // TODO: explain
-              }}
-            >
-              {'Explain\r'}
-            </Button>
-            <Button px={6} size="xs" ml="auto" variant="subtle">
-              <IconDotsVertical size={16} />
-            </Button>
-          </Group>
+                }}
+              >
+                {'Explain\r'}
+              </Button>
+              <ActionIcon size="sm" ms="auto" radius={5} variant="subtle">
+                <IconDotsVertical size="80%" />
+              </ActionIcon>
+            </Group>
+          </Stack>
         </Popover.Dropdown>
       </Popover>
     </>

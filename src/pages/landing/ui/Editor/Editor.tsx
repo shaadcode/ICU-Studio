@@ -10,7 +10,6 @@ import { Box, Group, Stack, Button, Divider } from '@mantine/core';
 
 import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
-import { getLineRange } from '@/shared/lib/icu/getLine';
 import TestVariables from './TestVariables/TestVariables';
 import { icuEditorStore } from '../../config/store/editor';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
@@ -29,6 +28,7 @@ import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
+import { getLineRangeOffsetByOneLine } from '@/shared/lib/icu/getLineRangeOffset';
 import ValidationErrorBubble from './ValidationErrorBubble/ValidationErrorBubble';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
@@ -129,7 +129,7 @@ const ICUEditor = (props: Props) => {
   return (
     <Stack w="100%" h="100%">
       <Button onClick={() => {
-        console.log(getLineRange(editor, 16));
+        console.log(getLineRangeOffsetByOneLine(editor, 1));
       }}
       >
         {'get error\r'}
@@ -138,6 +138,7 @@ const ICUEditor = (props: Props) => {
         <RichTextEditor.Toolbar
           sticky
           style={{
+            zIndex: 2,
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
           }}

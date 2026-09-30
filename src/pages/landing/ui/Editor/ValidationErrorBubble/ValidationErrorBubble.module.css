@@ -2,7 +2,6 @@
   left: 0px;
   z-index: 1;
   position: absolute;
-  height: 22px;
   width: 100%;
   background-color: alpha(var(--mantine-color-red-1), 0.5);
   align-items: center;
@@ -10,18 +9,15 @@
 }
 
 .errorIcon {
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
   position: absolute;
   left: 5px;
-  z-index: 50;
+  z-index: 5;
+  padding: 0px;
 }
 
 .errorPopover {
   min-width: 320px;
   max-width: 400px;
-  border-radius: 8px;
 }
 
 .codeBlock {

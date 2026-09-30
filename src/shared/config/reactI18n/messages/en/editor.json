@@ -121,6 +121,10 @@
         "addTimeType": "Add time type",
         "addPluralType": "Add plural type",
         "addSelectType": "Add select type"
+      },
+      "invalidArgumentType": {
+        "replaceWithClosest": "Replace with closest valid type",
+        "removeType": "Remove type and use simple variable"
       }
     },
     "lineNumber": "line: {number}",

@@ -1,5 +1,6 @@
 /* eslint-disable perfectionist/sort-objects */
 import type { Editor } from '@tiptap/react';
+import { closest } from 'fastest-levenshtein';
 import type { useTranslations } from 'use-intl';
 
 import type { ErrorKindName } from '@/shared/lib/icu/types';
@@ -19,6 +20,15 @@ export type Fixer = {
   apply: (ctx: FixContext) => (void | false) | Promise<void | false>;
   labelKey: Parameters<ReturnType<typeof useTranslations<'editor'>>>[0];
 };
+
+const VALID_ARGUMENT_TYPES = [
+  'number',
+  'date',
+  'time',
+  'plural',
+  'select',
+  'selectordinal',
+] as const;
 
 export const fixers: FixerMap = {
   EXPECT_ARGUMENT_CLOSING_BRACE: [
@@ -259,6 +269,45 @@ export const fixers: FixerMap = {
           .chain()
           .focus()
           .insertContentAt({ from: start, to: end }, 'time', { updateSelection: true })
+          .run();
+      },
+    },
+  ],
+  INVALID_ARGUMENT_TYPE: [
+    {
+      id: 'replace-with-closest',
+      labelKey: 'validation.fixes.invalidArgumentType.replaceWithClosest',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+        const invalidType = editor.state.doc.textBetween(start, end);
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(
+            { from: start, to: end },
+            closest(invalidType, VALID_ARGUMENT_TYPES),
+          )
+          .run();
+      },
+    },
+    {
+      id: 'remove-type',
+      labelKey: 'validation.fixes.invalidArgumentType.removeType',
+      apply: ({ editor, errorLocation }) => {
+        const lineText = editor.state.doc.textBetween(
+          errorLocation.lineRangeOffset.start,
+          errorLocation.lineRangeOffset.end,
+        );
+
+        const result = lineText.split(',')[0];
+        editor
+          .chain()
+          .focus()
+          .insertContentAt({
+            from: errorLocation.lineRangeOffset.start - 1,
+            to: errorLocation.lineRangeOffset.end,
+          }, `${result}}`)
           .run();
       },
     },

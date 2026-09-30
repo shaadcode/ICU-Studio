@@ -121,6 +121,10 @@
         "addTimeType": "افزودن نوع time",
         "addPluralType": "افزودن نوع plural",
         "addSelectType": "افزودن نوع select"
+      },
+      "invalidArgumentType": {
+        "replaceWithClosest": "جایگزینی با نزدیک‌ترین نوع معتبر",
+        "removeType": "حذف نوع و تبدیل به متغیر ساده"
       }
     },
     "lineNumber": "خط: {number}",

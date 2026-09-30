@@ -64,6 +64,7 @@
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
     "es-toolkit": "^1.50.0",
+    "fastest-levenshtein": "^1.0.16",
     "format-message-parse": "^6.2.4",
     "format-message-print": "^6.2.4",
     "hast-util-to-html": "^9.0.5",

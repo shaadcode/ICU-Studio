@@ -125,6 +125,14 @@
       "invalidArgumentType": {
         "replaceWithClosest": "Replace with closest valid type",
         "removeType": "Remove type and use simple variable"
+      },
+      "expectArgumentStyle": {
+        "removeTrailingComma": "Remove trailing comma",
+        "addNumberStyle": "Add default number style",
+        "addDateStyle": "Add default date style",
+        "addTimeStyle": "Add default time style",
+        "addSkeleton": "Add default skeleton",
+        "removeTypeAndComma": "Remove type and comma"
       }
     },
     "lineNumber": "line: {number}",

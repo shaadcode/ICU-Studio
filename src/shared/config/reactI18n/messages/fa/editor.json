@@ -125,6 +125,14 @@
       "invalidArgumentType": {
         "replaceWithClosest": "جایگزینی با نزدیک‌ترین نوع معتبر",
         "removeType": "حذف نوع و تبدیل به متغیر ساده"
+      },
+      "expectArgumentStyle": {
+        "removeTrailingComma": "حذف کامای اضافی",
+        "addNumberStyle": "افزودن سبک عددی پیش‌فرض",
+        "addDateStyle": "افزودن سبک تاریخ پیش‌فرض",
+        "addTimeStyle": "افزودن سبک زمان پیش‌فرض",
+        "addSkeleton": "افزودن skeleton پیش‌فرض",
+        "removeTypeAndComma": "حذف نوع و کاما"
       }
     },
     "lineNumber": "خط: {number}",

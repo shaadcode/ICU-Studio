@@ -147,6 +147,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
                 context={{
                   editor,
                   errorLocation,
+                  validationError,
                   rawMessage: editor?.state.doc.textContent ?? '',
                 }}
 

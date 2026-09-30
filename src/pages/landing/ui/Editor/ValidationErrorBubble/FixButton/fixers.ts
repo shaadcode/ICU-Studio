@@ -1,4 +1,5 @@
 /* eslint-disable perfectionist/sort-objects */
+import { forEachRight } from 'es-toolkit';
 import type { Editor } from '@tiptap/react';
 import { closest } from 'fastest-levenshtein';
 import type { useTranslations } from 'use-intl';
@@ -12,6 +13,7 @@ export type FixContext = {
   editor: Editor;
   rawMessage: string;
   errorLocation: NonNullable<ICUValidationSlice['errorLocation']>;
+  validationError: NonNullable<ICUValidationSlice['validationError']>;
 };
 
 export type Fixer = {
@@ -312,4 +314,81 @@ export const fixers: FixerMap = {
       },
     },
   ],
+  EXPECT_ARGUMENT_STYLE: [
+    {
+      id: 'remove-trailing-comma',
+      labelKey: 'validation.fixes.expectArgumentStyle.removeTrailingComma',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+        const chars = lineText.split('');
+
+        const cleanedText = dropLastCommaBefore(
+          chars,
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt({ from: start, to: end }, cleanedText)
+          .run();
+      },
+    },
+    {
+      id: 'add-default-number-style',
+      labelKey: 'validation.fixes.expectArgumentStyle.addNumberStyle',
+      apply: ({ editor, errorLocation }) => {
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(errorLocation.start, 'decimal')
+          .run();
+      },
+    },
+    {
+      id: 'remove-type-and-comma',
+      labelKey: 'validation.fixes.expectArgumentStyle.removeTypeAndComma',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+        const chars = lineText.split('');
+
+        const cleanedText = dropLastCommaBefore(
+          chars,
+          validationError.location.end.column - 1,
+          [',', ','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt({ from: start, to: end }, cleanedText)
+          .run();
+      },
+    },
+  ],
 };
+
+/**
+ * Walks the line from right to left and drops the last comma
+ * that appears before the given column limit.
+ * Characters after that comma (to the right) are removed.
+ */
+function dropLastCommaBefore(chars: string[], columnLimit: number, snapChars: Array<string>): string[] {
+  let keptChars: string[] = [];
+  let snapCharsIndex = 0;
+
+  forEachRight(chars, (char, i) => {
+    if (snapCharsIndex < snapChars.length && i + 1 <= columnLimit) {
+      if (char === snapChars[snapCharsIndex]) {
+        snapCharsIndex = snapCharsIndex + 1;
+      };
+    } else {
+      keptChars = [char, ...keptChars];
+    }
+  });
+
+  return keptChars;
+}

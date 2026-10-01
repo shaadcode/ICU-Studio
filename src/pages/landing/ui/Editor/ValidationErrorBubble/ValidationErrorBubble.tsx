@@ -2,8 +2,8 @@ import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
 import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { Box, Text, Code, Group, Stack, Button, Popover, ActionIcon, CloseButton } from '@mantine/core';
-import { IconInfoCircle, IconDotsVertical, IconMessageChatbot, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
+import { Box, Text, Code, Group, Stack, Popover, ActionIcon, CloseButton } from '@mantine/core';
+import { IconInfoCircle, IconDotsVertical, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
 
 import { FixButton } from './FixButton/FixButton';
 import classes from './ValidationErrorBubble.module.css';
@@ -64,7 +64,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
       <Group
         mih={22}
         className={classes['BubbleRoot']}
-        style={{ top: coords.start.top - 70 }}
+        style={{ top: coords.start.top - 18 }}
         h={coords.start.top - coords.end.bottom}
       />
 
@@ -83,7 +83,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
             pos="absolute"
             variant="transparent"
             className={classes['errorIcon']}
-            style={{ top: coords.start.top - 70 }}
+            style={{ top: coords.start.top - 18 }}
 
             onClick={open}
           >
@@ -143,7 +143,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
 
                 onFixed={handleFixed}
               />
-              <Button
+              {/* <Button
                 size="xs"
                 variant="default"
                 leftSection={<IconMessageChatbot size={14} />}
@@ -153,7 +153,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
                 }}
               >
                 {'Explain\r'}
-              </Button>
+              </Button> */}
               <ActionIcon size="sm" ms="auto" radius={5} variant="subtle">
                 <IconDotsVertical size="80%" />
               </ActionIcon>

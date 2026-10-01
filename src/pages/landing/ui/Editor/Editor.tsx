@@ -1,19 +1,11 @@
 import type { ReactNode } from 'react';
-import { useEditor } from '@tiptap/react';
-import { useTranslations } from 'use-intl';
 import { RichTextEditor } from '@mantine/tiptap';
-import HardBreak from '@tiptap/extension-hard-break';
 import type { UseEditorOptions } from '@tiptap/react';
-import { useDebouncedCallback } from '@mantine/hooks';
-import Placeholder from '@tiptap/extension-placeholder';
 import { Box, Group, Stack, Divider } from '@mantine/core';
 
-import { SpanMark } from '@/shared/lib/mantine';
-import { minimalParser } from '@/shared/lib/icu';
+import { useHandleEditor } from './useHandleEditor';
 import TestVariables from './TestVariables/TestVariables';
-import { icuEditorStore } from '../../config/store/editor';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
-import { StarterKitForICUEditor } from '@/shared/lib/tiptap';
 import DateSnippet from './Controls/Snippets/Date/DateSnippet';
 import TimeSnippet from './Controls/Snippets/Time/TimeSnippet';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
@@ -24,14 +16,13 @@ import OneLineCopyControl from './Controls/OneLineCopy/OneLineCopy';
 import NumberSnippet from './Controls/Snippets/Number/NumberSnippet';
 import SelectSnippet from './Controls/Snippets/Select/SelectSnippet';
 import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
-import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
 import ValidationErrorBubble from './ValidationErrorBubble/ValidationErrorBubble';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
-import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 import './Editor.module.css';
+import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 
 type Props = {
 /**
@@ -47,73 +38,12 @@ type Props = {
   };
 };
 
-const CustomHardBreak = HardBreak.extend({
-  addKeyboardShortcuts() {
-    return {
-      'Enter': () => this.editor.commands.setHardBreak(),
-
-      'Shift-Enter': () => this.editor.commands.setHardBreak(),
-    };
-  },
-});
-
 const ICUEditor = (props: Props) => {
-  const tCommon = useTranslations('common');
-  const t = useTranslations('editor');
-
-  const setValidationError = icuEditorStore.use.actions().setValidationError;
-  const setMessage = icuEditorStore.use.actions().setMessage;
-  const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
-  const setVariables = icuEditorStore.use.actions().setVariables;
-  const clearMessageState = icuEditorStore.use.actions().clearMessageState;
-  const clearValidationError = icuEditorStore.use.actions().clearValidationError;
-  const validationError = icuEditorStore.use.validationError();
-  const updateContent = useDebouncedCallback(updateIcuEditor, 300);
-
-  const editor = useEditor({
-    parseOptions: { preserveWhitespace: 'full' },
-    // onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
-    extensions: [
-      StarterKitForICUEditor,
-      Placeholder.configure({ placeholder: t('placeholder') }),
-      SpanMark,
-      CustomHardBreak,
-    ],
-    onUpdate: async ({ editor, transaction }) => {
-      updateContent({
-        editor,
-        setMessage,
-        transaction,
-        setVariables,
-        validationError,
-        setParsedMessage,
-        clearMessageState,
-        setValidationError,
-        clearValidationError,
-        parser: minimalParser,
-      });
-    },
-    onMount: ({ editor }) => {
-      props.custom?.onMount?.({ editor });
-      updateContent({
-        editor,
-        setMessage,
-        setVariables,
-        validationError,
-        setParsedMessage,
-        clearMessageState,
-        setValidationError,
-        clearValidationError,
-        parser: minimalParser,
-      });
-    },
-
-    ...props.custom?.customEditorConfig,
-  });
+  const editorHandler = useHandleEditor({ ...props });
 
   if (props.custom) {
     return (
-      <RichTextEditor h="100%" w="100%" editor={editor}>
+      <RichTextEditor h="100%" w="100%" editor={editorHandler.editor}>
         <RichTextEditor.Toolbar
           sticky
           style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -128,7 +58,7 @@ const ICUEditor = (props: Props) => {
 
   return (
     <Stack w="100%" h="100%">
-      <RichTextEditor h="100%" w="100%" editor={editor}>
+      <RichTextEditor h="100%" w="100%" editor={editorHandler.editor}>
         <RichTextEditor.Toolbar
           sticky
           style={{
@@ -139,7 +69,7 @@ const ICUEditor = (props: Props) => {
         >
           <Group style={{ justifySelf: 'flex-start' }}>
             <Box>
-              <Divider label={tCommon('copy')} />
+              <Divider label={editorHandler.tCommon('copy')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <SimpleCopyControl />
                 <OneLineCopyControl />
@@ -150,14 +80,14 @@ const ICUEditor = (props: Props) => {
             </Box>
 
             <Box>
-              <Divider label={tCommon('paste')} />
+              <Divider label={editorHandler.tCommon('paste')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <JSONPropertyPasteControl />
               </RichTextEditor.ControlsGroup>
             </Box>
 
             <Box>
-              <Divider label={tCommon('snippets')} />
+              <Divider label={editorHandler.tCommon('snippets')} />
               <RichTextEditor.ControlsGroup style={{ backgroundColor: 'transparent' }}>
                 <SimpleVariableSnippet />
                 <NumberSnippet />
@@ -184,8 +114,8 @@ const ICUEditor = (props: Props) => {
           <VariableStatistic />
         </RichTextEditor.Toolbar>
 
-        <ValidationErrorBubble editor={editor} />
-        <RichTextEditor.Content />
+        <ValidationErrorBubble editor={editorHandler.editor} />
+        <RichTextEditor.Content px="lg" />
 
       </RichTextEditor>
 

@@ -28,6 +28,8 @@ const TestVariables = () => {
   const keyValueVariables = variables.reduce((prevAcc, value) => ({ ...prevAcc, [value.name]: value.value }), {});
 
   const message = (() => {
+    // console.log(keyValueVariables);
+    // console.log(variables);
     const [, printedMessage] = attempt(() => new IntlMessageFormat(parsedMessage).format(keyValueVariables));
 
     if (!printedMessage) {

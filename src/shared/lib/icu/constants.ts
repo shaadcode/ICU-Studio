@@ -1,4 +1,4 @@
-import type { MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
+import type { ErrorKindName, MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
 
 export const BOUNCE_UPDATE_VARIABLE_VALUE = 500;
 
@@ -25,3 +25,7 @@ export const formatMessageElementsEnumByKeyword = {
   literal: 0,
   argument: 1,
 } as Record<MessageElementsTypeKeyword, MessageElementsTypeEnum>;
+
+export const warningErrors: Partial<Record<ErrorKindName, ErrorKindName>> = {
+  CONFLICT_VARIABLE_NAME: 'CONFLICT_VARIABLE_NAME',
+};

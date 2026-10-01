@@ -17,5 +17,6 @@
   "template": "قالب ها",
   "valid": "معتبر",
   "value": "مقدار",
-  "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}"
+  "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}",
+  "warning": "هشدار"
 }

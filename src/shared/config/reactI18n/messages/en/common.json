@@ -17,5 +17,6 @@
   "template": "template",
   "valid": "valid",
   "value": "value",
-  "variable": "{count, select,single {variable}plural {variables}other {}}"
+  "variable": "{count, select,single {variable}plural {variables}other {}}",
+  "warning": "warning"
 }

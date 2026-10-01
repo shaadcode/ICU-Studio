@@ -57,6 +57,7 @@
     "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "Duplicate selectors in select argument (e.g. '{foo, select, apple {apple} apple {apple}}')",
     "EMPTY_ARGUMENT": "Argument is empty (e.g. '{}')",
     "EXPECT_ARGUMENT_CLOSING_BRACE": "Argument is unclosed (e.g. '{0')",
+    "CONFLICT_VARIABLE_NAME": "Variable has conflicting argument types",
     "EXPECT_ARGUMENT_STYLE": "Argument style is expected (e.g. '{foo, number, }')",
     "EXPECT_ARGUMENT_TYPE": "Argument type is expected (e.g. '{foo,}')",
     "EXPECT_DATE_TIME_SKELETON": "A date time skeleton following the :: is expected (e.g. '{foo, date, ::}')",

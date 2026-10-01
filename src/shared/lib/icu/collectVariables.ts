@@ -2,8 +2,9 @@ import type { DistributedOmit } from 'type-fest';
 import type { DateElement, TimeElement, PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import { isTagElement, isDateElement, isTimeElement, isNumberElement, isPluralElement, isSelectElement, isArgumentElement } from '@formatjs/icu-messageformat-parser';
 
+import { ExtendedErrorKind } from './types';
 import { formatMessageElementsKeywordByEnum } from './constants';
-import type { MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
+import type { ParserError, MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
 
 export type VariableInfo = {
   name: string;
@@ -24,6 +25,7 @@ export type VariableInfo = {
 export const collectVariables = (
   ast: Array<MessageFormatElement>,
   vars = /* @__PURE__ */ new Map<string, VariableInfo>(),
+  errors: Array<ParserError> = [],
 ) => {
   ast.forEach((el) => {
     const enumType = el.type;
@@ -34,21 +36,23 @@ export const collectVariables = (
       enumType,
       keywordType,
     });
+
     if (
       isArgumentElement(el)
       || isDateElement(el)
       || isTimeElement(el)
       || isNumberElement(el)
     ) {
-      // if (vars.has(el.value)) {
-      //   const existingVariable = vars.get(el.value);
-      //   if (existingVariable?.enumType !== el.type
-      //     && existingVariable?.enumType !== 6
-      //     && existingVariable?.enumType !== 5) {
-      //     throw new Error(`Variable ${el.value} has conflicting types`);
-      //   }
-      // } else {
-      // }
+      if (vars.has(el.value)) {
+        const existingVariable = vars.get(el.value);
+        if (existingVariable?.enumType !== el.type) {
+          errors.push({
+            location: el.location!,
+            message: 'CONFLICT_VARIABLE_NAME',
+            kind: ExtendedErrorKind.CONFLICT_VARIABLE_NAME,
+          });
+        }
+      }
 
       if (isArgumentElement(el)) {
         vars.set(el.value, assignObj({ name: el.value }));
@@ -83,14 +87,17 @@ export const collectVariables = (
 
       Object.keys(el.options).forEach((k) => {
         // @ts-expect-error
-        collectVariables(el.options[k].value, vars);
+        collectVariables(el.options[k].value, vars, errors);
       });
     }
     if (isTagElement(el)) {
       vars.set(el.value, assignObj({ name: el.value }));
-      collectVariables(el.children, vars);
+      collectVariables(el.children, vars, errors);
     }
   });
 
-  return Array.from(vars.entries()) as ReadonlyArray<[string, VariableInfo]>;
+  return {
+    errors,
+    variables: Array.from(vars.entries()) as ReadonlyArray<[string, VariableInfo]>,
+  };
 };

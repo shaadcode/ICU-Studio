@@ -57,6 +57,7 @@
     "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "selector تکراری در آرگومان select (مثال: {foo, select, apple {apple} apple {apple}})",
     "EMPTY_ARGUMENT": "آرگومان خالی است (مثال: `{}')",
     "EXPECT_ARGUMENT_CLOSING_BRACE": "آرگومان بسته نشده است (مثال: `{0`)",
+    "CONFLICT_VARIABLE_NAME": "متغیر دارای نوع‌های متناقض است",
     "EXPECT_ARGUMENT_STYLE": "سبک آرگومان مشخص نشده است (مثال: '{foo, number, }')",
     "EXPECT_ARGUMENT_TYPE": "نوع آرگومان مشخص نشده است (مثال: '{foo,}')",
     "EXPECT_DATE_TIME_SKELETON": "قالب تاریخ و زمان بعد از '::' مشخص نشده است (مثال: '{foo, date, ::}')",
@@ -88,6 +89,9 @@
   "validation": {
     "chooseFix": "یک راه‌حل انتخاب کنید",
     "columnNumber": "ستون: {number}",
+    "collectionVariablesError": {
+      "conflictVariableName": "نام متغیر تکراری است"
+    },
     "fix": "اصلاح",
     "fixAutomatically": "اصلاح خودکار",
     "fixes": {

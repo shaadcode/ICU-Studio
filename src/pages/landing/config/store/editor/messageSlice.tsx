@@ -74,16 +74,25 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
 
 type Variable = ICUEditorMessageSlice['variables'][number];
 
-function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[0]) {
+function setVariablesHandler(
+  set: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[0],
+) {
   return (parsedMessage: Parameters<ICUEditorMessageSliceActions['setVariables']>[0]): ReturnType<ICUEditorMessageSliceActions['setVariables']> => {
-    const rawVariables = collectVariables(parsedMessage);
-    const initializedVariablesValues = rawVariables
+    const collectedVariables = collectVariables(parsedMessage);
+
+    if (collectedVariables.errors.length) {
+      set({ validationError: collectedVariables.errors[0] });
+      return;
+    }
+
+    const initializedVariablesValues = collectedVariables.variables
       .map((variable) => {
         const [, info] = variable;
 
         if (info.enumType === 0 || info.enumType === 7) {
           return {};
         }
+
         const addProperty = (initialValue: Variable['value']): Variable => ({
           ...info,
           value: initialValue,
@@ -101,7 +110,7 @@ function setVariablesHandler(set: Parameters<ZustandSlice<ICUEditorStore, ICUEdi
         } as const satisfies Record<MessageElementsTypeEnum, () => object>;
         return typesMap[info.enumType]();
       }) as ICUEditorMessageSlice['variables'];
-    // console.log(parsedMessage);
+
     return set({ variables: initializedVariablesValues });
   };
 }

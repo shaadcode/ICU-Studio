@@ -5,7 +5,7 @@ import type { Location } from '@formatjs/icu-messageformat-parser/manipulator.js
 import type { MarkAttrs } from './createHtml/types';
 import type { MARK_TYPES } from './createHtml/createHtml';
 
-export enum ErrorKind {
+export enum ExtendedErrorKind {
   /** Argument is unclosed (e.g. `{0`) */
   EXPECT_ARGUMENT_CLOSING_BRACE = 1,
   /** Argument is empty (e.g. `{}`). */
@@ -61,6 +61,8 @@ export enum ErrorKind {
   MISSING_OTHER_CLAUSE = 22,
   /** The tag is malformed. (e.g. `<bold!>foo</bold!>) */
   INVALID_TAG = 23,
+  /** Variable is used with conflicting argument types. */
+  CONFLICT_VARIABLE_NAME = 24,
   /** The tag name is invalid. (e.g. `<123>foo</123>`) */
   INVALID_TAG_NAME = 25,
   /** The closing tag does not match the opening tag. (e.g. `<bold>foo</italic>`) */
@@ -68,16 +70,18 @@ export enum ErrorKind {
   /** The opening tag has unmatched closing tag. (e.g. `<bold>foo`) */
   UNCLOSED_TAG = 27,
 }
-export type ErrorKindName = keyof typeof ErrorKind;
+export type ErrorKindName = keyof typeof ExtendedErrorKind;
 export type MessageElementsTypeKeyword = keyof typeof TYPE;
 export type MessageElementsTypeEnum = StringToNumber<`${TYPE}`>;
 
-export type ParserError = {
-  kind: ErrorKind;
-  location: Location;
-  message: keyof typeof ErrorKind;
-};
+export type WarningParserError = Extract<ErrorKindName, 'CONFLICT_VARIABLE_NAME'>;
 
 export type MarkAttributes = SetFieldType<Record<'class' | MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;
+
+export type ParserError = {
+  location: Location;
+  kind: ExtendedErrorKind;
+  message: keyof typeof ExtendedErrorKind;
+};
 
 export type MarkAttributesWithoutClass = SetFieldType<Record<MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;

@@ -1,11 +1,16 @@
 import type { Editor } from '@tiptap/react';
 
-export const extendSetContent = (editor: Editor) => (content: string) =>
+type Params = {
+  editor: Editor;
+};
+
+export const extendSetContent = ({ editor }: Params) => (content: string) =>
   editor
-    .commands
+    .chain()
     .setContent(
       content,
       { emitUpdate: false, parseOptions: { preserveWhitespace: 'full' } },
-    );
+    )
+    .run();
 
 export const extendInsertContent = (editor: Editor) => (content: string) => editor.commands.insertContent(content, { parseOptions: { preserveWhitespace: 'full' } });

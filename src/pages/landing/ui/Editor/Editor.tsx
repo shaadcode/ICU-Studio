@@ -6,7 +6,7 @@ import HardBreak from '@tiptap/extension-hard-break';
 import type { UseEditorOptions } from '@tiptap/react';
 import { useDebouncedCallback } from '@mantine/hooks';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Box, Group, Stack, Button, Divider } from '@mantine/core';
+import { Box, Group, Stack, Divider } from '@mantine/core';
 
 import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
@@ -28,7 +28,6 @@ import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
-import { getLineRangeOffsetByOneLine } from '@/shared/lib/icu/getLineRangeOffset';
 import ValidationErrorBubble from './ValidationErrorBubble/ValidationErrorBubble';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
@@ -73,7 +72,7 @@ const ICUEditor = (props: Props) => {
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-    onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
+    // onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: t('placeholder') }),
@@ -108,6 +107,7 @@ const ICUEditor = (props: Props) => {
         parser: minimalParser,
       });
     },
+
     ...props.custom?.customEditorConfig,
   });
 
@@ -128,12 +128,6 @@ const ICUEditor = (props: Props) => {
 
   return (
     <Stack w="100%" h="100%">
-      <Button onClick={() => {
-        console.log(getLineRangeOffsetByOneLine(editor, 1));
-      }}
-      >
-        {'get error\r'}
-      </Button>
       <RichTextEditor h="100%" w="100%" editor={editor}>
         <RichTextEditor.Toolbar
           sticky

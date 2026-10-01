@@ -51,7 +51,6 @@ export const fixers: FixerMap = {
                 to: errorLocation.end + 1,
               },
               '',
-              { updateSelection: true },
             )
             .run();
           return;
@@ -62,7 +61,6 @@ export const fixers: FixerMap = {
           .insertContentAt(
             errorLocation.end + 1,
             '}',
-            { updateSelection: true },
           )
           .run();
       },
@@ -90,7 +88,6 @@ export const fixers: FixerMap = {
               to: message.includes(' ') ? end : end + 1,
             },
             result,
-            { updateSelection: true },
           )
           .run();
       },
@@ -104,7 +101,7 @@ export const fixers: FixerMap = {
       apply: ({ editor, errorLocation }) => {
         editor
           .chain()
-          .insertContentAt(errorLocation.end, 'other {}', { updateSelection: true })
+          .insertContentAt(errorLocation.end, 'other {}')
           .run();
       },
     },
@@ -114,7 +111,7 @@ export const fixers: FixerMap = {
       apply: ({ editor, errorLocation }) => {
         editor
           .chain()
-          .insertContentAt(errorLocation.end, 'other {#}', { updateSelection: true })
+          .insertContentAt(errorLocation.end, 'other {#}')
           .run();
       },
     },
@@ -131,7 +128,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
-          .insertContentAt({ to: end, from: start }, result, { updateSelection: true })
+          .insertContentAt({ to: end, from: start }, result)
           .run();
       },
     },
@@ -169,7 +166,6 @@ export const fixers: FixerMap = {
           .insertContentAt(
             { from: start, to: end },
             cleanedLineText,
-            { updateSelection: true },
           )
           .run();
       },
@@ -186,7 +182,6 @@ export const fixers: FixerMap = {
           .insertContentAt(
             { from: start, to: end },
             'number',
-            { updateSelection: true },
           )
           .run();
       },
@@ -200,7 +195,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
-          .insertContentAt({ from: start, to: end }, 'date', { updateSelection: true })
+          .insertContentAt({ from: start, to: end }, 'date')
           .run();
       },
     },
@@ -213,7 +208,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
-          .insertContentAt({ from: start, to: end }, 'time', { updateSelection: true })
+          .insertContentAt({ from: start, to: end }, 'time')
           .run();
       },
     },
@@ -378,7 +373,6 @@ export const fixers: FixerMap = {
               to: start + validationError.location.start.column - 1,
             },
             '',
-            { updateSelection: true },
           )
           .run();
       },
@@ -395,7 +389,6 @@ export const fixers: FixerMap = {
           .insertContentAt(
             start + validationError.location.start.column - 1,
             '\'',
-            { updateSelection: true },
           )
           .run();
       },

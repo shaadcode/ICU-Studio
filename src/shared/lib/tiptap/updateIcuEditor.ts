@@ -30,19 +30,20 @@ export const updateIcuEditor = async (params: Params) => {
 
   if (message.endsWith('{')) {
     extendInsertContent(params.editor)('}');
-    return params.editor.commands.setTextSelection(prevCursorPosition);
-  }
-
-  if (!params.validationError && (message === '\n' || isUndoRedoTransaction(params.transaction))) {
-    return;
+    return params.editor.chain().setTextSelection(prevCursorPosition).run();
   }
 
   const [error, parsedMessage] = await params.parser(message);
 
   if (!parsedMessage) {
-    params.editor.commands.setTextSelection(error.location.start.offset + 1);
     params.clearMessageState();
     return params.setValidationError({ error, editor });
+  }
+
+  if (
+    !params.validationError && (message === '\n' || isUndoRedoTransaction(params.transaction))
+  ) {
+    return;
   }
 
   const html = createHtml({
@@ -54,7 +55,10 @@ export const updateIcuEditor = async (params: Params) => {
   params.setParsedMessage(parsedMessage);
   params.setVariables(parsedMessage);
   if (html.children.length) {
-    extendSetContent(params.editor)(html.outerHTML);
-    params.editor.commands.focus(prevCursorPosition);
+    extendSetContent({ editor })(html.outerHTML);
+
+    setTimeout(() => {
+      editor.chain().setTextSelection(prevCursorPosition).run();
+    }, 0);
   }
 };

@@ -88,6 +88,7 @@
   "validation": {
     "chooseFix": "Choose a fix",
     "columnNumber": "column: {number}",
+    "fix": "fix",
     "fixAutomatically": "Fix automatically",
     "fixes": {
       "emptyArgument": {
@@ -96,8 +97,54 @@
         "replaceWithHash": "replace with #",
         "replaceWithVariable": "Replace with default variable"
       },
+      "expectArgumentStyle": {
+        "addDateStyle": "Add default date style",
+        "addNumberStyle": "Add default number style",
+        "addSkeleton": "Add default skeleton",
+        "addTimeStyle": "Add default time style",
+        "removeTrailingComma": "Remove trailing comma",
+        "removeTypeAndComma": "Remove type and comma"
+      },
+      "expectArgumentType": {
+        "addDateType": "Add date type",
+        "addNumberType": "Add number type",
+        "addPluralType": "Add plural type",
+        "addSelectType": "Add select type",
+        "addTimeType": "Add time type",
+        "removeComma": "Remove comma and close argument"
+      },
+      "expectDateTimeSkeleton": {
+        "fixMinute": "Fix minute symbol (mm)",
+        "removeDuplicates": "Remove duplicate tokens",
+        "removeEmpty": "Remove empty skeleton",
+        "removeSkeleton": "Remove entire skeleton",
+        "sanitize": "Sanitize skeleton",
+        "trimInvalidPart": "Trim invalid part",
+        "trimTrailing": "Trim trailing separator"
+      },
       "invalidArg": {
         "replaceWithString": "Replace with string argument"
+      },
+      "invalidArgumentType": {
+        "removeType": "Remove type and use simple variable",
+        "replaceWithClosest": "Replace with closest valid type"
+      },
+      "invalidNumberSkeleton": {
+        "fixCurrency": "Fix currency code",
+        "fixPrecision": "Fix precision-increment",
+        "fixScale": "Fix scale value",
+        "fixUnit": "Fix unit",
+        "removeDuplicates": "Remove duplicate tokens",
+        "removeSkeleton": "Remove entire skeleton",
+        "sanitize": "Sanitize skeleton"
+      },
+      "malformedArgument": {
+        "cleanAndClose": "Clean and fix entire argument",
+        "removeDuplicateCommas": "Remove duplicate commas",
+        "removeSpaces": "Remove extra spaces from name",
+        "replaceWithValid": "Replace with valid argument",
+        "sanitizeName": "Sanitize argument name characters",
+        "trimSkeleton": "Trim extra content after skeleton"
       },
       "missingBrace": {
         "appendBrace": "Append closing brace at the end"
@@ -106,33 +153,12 @@
         "addEmpty": "Add empty ' other ' clause",
         "addWithHash": "Add ' other '{'#'}' ' clause"
       },
-      "malformedArgument": {
-        "sanitizeName": "Sanitize argument name characters",
-        "removeSpaces": "Remove extra spaces from name",
-        "removeDuplicateCommas": "Remove duplicate commas",
-        "trimSkeleton": "Trim extra content after skeleton",
-        "cleanAndClose": "Clean and fix entire argument",
-        "replaceWithValid": "Replace with valid argument"
-      },
-      "expectArgumentType": {
-        "removeComma": "Remove comma and close argument",
-        "addNumberType": "Add number type",
-        "addDateType": "Add date type",
-        "addTimeType": "Add time type",
-        "addPluralType": "Add plural type",
-        "addSelectType": "Add select type"
-      },
-      "invalidArgumentType": {
-        "replaceWithClosest": "Replace with closest valid type",
-        "removeType": "Remove type and use simple variable"
-      },
-      "expectArgumentStyle": {
-        "removeTrailingComma": "Remove trailing comma",
-        "addNumberStyle": "Add default number style",
-        "addDateStyle": "Add default date style",
-        "addTimeStyle": "Add default time style",
-        "addSkeleton": "Add default skeleton",
-        "removeTypeAndComma": "Remove type and comma"
+      "unclosedQuote": {
+        "closeQuote": "Close unclosed quote",
+        "escapeQuote": "Escape quote",
+        "removeAll": "Remove all unclosed quotes",
+        "removeQuote": "Remove extra quote",
+        "removeStyle": "Remove entire style"
       }
     },
     "lineNumber": "line: {number}",

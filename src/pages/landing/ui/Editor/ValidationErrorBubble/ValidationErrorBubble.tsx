@@ -3,13 +3,7 @@ import type { Editor } from '@tiptap/react';
 import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Box, Text, Code, Group, Stack, Button, Popover, ActionIcon, CloseButton } from '@mantine/core';
-import {
-  IconInfoCircle,
-  IconDotsVertical,
-  IconMessageChatbot,
-  IconAlertSquareRounded,
-  IconAlertSquareRoundedFilled,
-} from '@tabler/icons-react';
+import { IconInfoCircle, IconDotsVertical, IconMessageChatbot, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
 
 import { FixButton } from './FixButton/FixButton';
 import classes from './ValidationErrorBubble.module.css';
@@ -40,15 +34,12 @@ const ValidationErrorBubble = ({ editor }: Props) => {
   }>(null);
 
   const updateCoords = (editor: Editor) => {
-    if (errorLocation && validationError?.location.end.line === validationError?.location.start.line) {
-      const start = editor.view.coordsAtPos(errorLocation.lineRangeOffset.start);
-      const end = editor.view.coordsAtPos(errorLocation.lineRangeOffset.end);
-      setCoords({ end, start });
-    } else if (errorLocation?.end && errorLocation?.start) {
-      const start = editor.view.coordsAtPos(errorLocation.start);
-      const end = editor.view.coordsAtPos(errorLocation.end);
-      setCoords({ end, start });
+    if (!errorLocation) {
+      return;
     }
+    const start = editor.view.coordsAtPos(errorLocation.start);
+    const end = editor.view.coordsAtPos(errorLocation.end);
+    setCoords({ end, start });
   };
 
   const handleFixed = () => {
@@ -65,8 +56,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
   if (!editor || !validationError || !errorLocation || !coords) {
     return null;
   }
-  console.log(errorLocation);
-  console.log(validationError.location);
+
   const codeSnippet = generateErrorCodeSnippet({ editor, errorLocation, validationError });
 
   return (

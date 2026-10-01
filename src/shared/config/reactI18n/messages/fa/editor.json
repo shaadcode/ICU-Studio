@@ -88,6 +88,7 @@
   "validation": {
     "chooseFix": "یک راه‌حل انتخاب کنید",
     "columnNumber": "ستون: {number}",
+    "fix": "اصلاح",
     "fixAutomatically": "اصلاح خودکار",
     "fixes": {
       "emptyArgument": {
@@ -96,8 +97,54 @@
         "replaceWithHash": "جایگزین کردن با #",
         "replaceWithVariable": "جایگزینی با متغیر پیش‌فرض"
       },
+      "expectArgumentStyle": {
+        "addDateStyle": "افزودن سبک تاریخ پیش‌فرض",
+        "addNumberStyle": "افزودن سبک عددی پیش‌فرض",
+        "addSkeleton": "افزودن skeleton پیش‌فرض",
+        "addTimeStyle": "افزودن سبک زمان پیش‌فرض",
+        "removeTrailingComma": "حذف کامای اضافی",
+        "removeTypeAndComma": "حذف نوع و کاما"
+      },
+      "expectArgumentType": {
+        "addDateType": "افزودن نوع date",
+        "addNumberType": "افزودن نوع number",
+        "addPluralType": "افزودن نوع plural",
+        "addSelectType": "افزودن نوع select",
+        "addTimeType": "افزودن نوع time",
+        "removeComma": "حذف کاما و بستن آرگومان"
+      },
+      "expectDateTimeSkeleton": {
+        "fixMinute": "تصحیح نماد دقیقه (mm)",
+        "removeDuplicates": "حذف توکن‌های تکراری",
+        "removeEmpty": "حذف skeleton خالی",
+        "removeSkeleton": "حذف کامل skeleton",
+        "sanitize": "پاک‌سازی skeleton",
+        "trimInvalidPart": "حذف بخش نامعتبر",
+        "trimTrailing": "حذف جداکننده‌ی انتهایی"
+      },
       "invalidArg": {
         "replaceWithString": "جایگزینی با آرگومان رشته‌ای"
+      },
+      "invalidArgumentType": {
+        "removeType": "حذف نوع و تبدیل به متغیر ساده",
+        "replaceWithClosest": "جایگزینی با نزدیک‌ترین نوع معتبر"
+      },
+      "invalidNumberSkeleton": {
+        "fixCurrency": "تصحیح کد ارز",
+        "fixPrecision": "تصحیح precision-increment",
+        "fixScale": "تصحیح مقدار scale",
+        "fixUnit": "تصحیح واحد",
+        "removeDuplicates": "حذف توکن‌های تکراری",
+        "removeSkeleton": "حذف کامل skeleton",
+        "sanitize": "پاک‌سازی skeleton"
+      },
+      "malformedArgument": {
+        "cleanAndClose": "پاک‌سازی و اصلاح کلی",
+        "removeDuplicateCommas": "حذف کاماهای تکراری",
+        "removeSpaces": "حذف فاصله‌های اضافی از نام",
+        "replaceWithValid": "جایگزینی با آرگومان معتبر",
+        "sanitizeName": "پاک‌سازی کاراکترهای غیرمجاز نام",
+        "trimSkeleton": "حذف متن اضافی بعد از skeleton"
       },
       "missingBrace": {
         "appendBrace": "افزودن «}» در انتهای خط"
@@ -106,33 +153,12 @@
         "addEmpty": "افزودن شرط 'other' خالی",
         "addWithHash": "افزودن شرط 'other {#}'"
       },
-      "malformedArgument": {
-        "sanitizeName": "پاک‌سازی کاراکترهای غیرمجاز نام",
-        "removeSpaces": "حذف فاصله‌های اضافی از نام",
-        "removeDuplicateCommas": "حذف کاماهای تکراری",
-        "trimSkeleton": "حذف متن اضافی بعد از skeleton",
-        "cleanAndClose": "پاک‌سازی و اصلاح کلی",
-        "replaceWithValid": "جایگزینی با آرگومان معتبر"
-      },
-      "expectArgumentType": {
-        "removeComma": "حذف کاما و بستن آرگومان",
-        "addNumberType": "افزودن نوع number",
-        "addDateType": "افزودن نوع date",
-        "addTimeType": "افزودن نوع time",
-        "addPluralType": "افزودن نوع plural",
-        "addSelectType": "افزودن نوع select"
-      },
-      "invalidArgumentType": {
-        "replaceWithClosest": "جایگزینی با نزدیک‌ترین نوع معتبر",
-        "removeType": "حذف نوع و تبدیل به متغیر ساده"
-      },
-      "expectArgumentStyle": {
-        "removeTrailingComma": "حذف کامای اضافی",
-        "addNumberStyle": "افزودن سبک عددی پیش‌فرض",
-        "addDateStyle": "افزودن سبک تاریخ پیش‌فرض",
-        "addTimeStyle": "افزودن سبک زمان پیش‌فرض",
-        "addSkeleton": "افزودن skeleton پیش‌فرض",
-        "removeTypeAndComma": "حذف نوع و کاما"
+      "unclosedQuote": {
+        "closeQuote": "بستن آپاستروف باز",
+        "escapeQuote": "escape کردن آپاستروف",
+        "removeAll": "حذف همه‌ی آپاستروف‌های باز",
+        "removeQuote": "حذف آپاستروف اضافی",
+        "removeStyle": "حذف کل style"
       }
     },
     "lineNumber": "خط: {number}",

@@ -4,17 +4,19 @@ export const getLineRangeOffsetByOneLine = (editor: Editor, line: number): undef
   const rootNode = editor.$node('paragraph');
   const hardBreaks = rootNode?.children
     ?.filter(node => node
-      // @ts-expect-error
+    // @ts-expect-error
       ?.currentNode
       ?.type
       ?.name === 'hardBreak');
 
   const startNode = hardBreaks?.[Math.max(line - 2, 0)];
   const endNode = hardBreaks?.[Math.max(line - 1, 0)];
-  if (startNode && endNode) {
+  if (startNode) {
+    const $pos = rootNode!.node.resolve(startNode.pos);
+    const parentIndex = $pos.index(0);
     return {
-      end: endNode.pos,
-      start: startNode.pos + 1,
+      start: rootNode!.children[parentIndex]!.pos - 1,
+      end: endNode ? endNode.pos : rootNode!.lastChild!.to,
     };
   }
 

@@ -27,11 +27,12 @@ const VALID_ARGUMENT_TYPES = [
   'number',
   'date',
   'time',
-  'plural',
-  'select',
-  'selectordinal',
+  // 'plural',
+  // 'select',
+  // 'selectordinal',
 ] as const;
 
+// @ts-expect-error
 export const fixers: FixerMap = {
   EXPECT_ARGUMENT_CLOSING_BRACE: [
     {
@@ -101,38 +102,20 @@ export const fixers: FixerMap = {
       id: 'add-empty-other',
       labelKey: 'validation.fixes.missingOther.addEmpty',
       apply: ({ editor, errorLocation }) => {
-        if (!errorLocation.lineRangeOffset) {
-          return false;
-        }
-        const { end, start } = errorLocation.lineRangeOffset;
-
-        editor.state.doc.nodesBetween(start, end, (node, pos) => {
-          if (node.marks?.[0]?.['attrs']?.['data-mark-type'] === 'plural-option') {
-            editor
-              .chain()
-              .focus()
-              .insertContentAt(
-                { from: pos, to: pos + node.nodeSize },
-                'other',
-                { updateSelection: true },
-              )
-              .run();
-          }
-        });
+        editor
+          .chain()
+          .insertContentAt(errorLocation.end, 'other {}', { updateSelection: true })
+          .run();
       },
     },
     {
       id: 'add-other-with-hash',
       labelKey: 'validation.fixes.missingOther.addWithHash',
       apply: ({ editor, errorLocation }) => {
-        if (errorLocation.lineRangeOffset) {
-          const { end, start } = errorLocation.lineRangeOffset;
-
-          editor
-            .chain()
-            .insertContentAt({ to: end, from: start }, 'other {#}', { updateSelection: true })
-            .run();
-        }
+        editor
+          .chain()
+          .insertContentAt(errorLocation.end, 'other {#}', { updateSelection: true })
+          .run();
       },
     },
   ],
@@ -156,35 +139,12 @@ export const fixers: FixerMap = {
       id: 'replace-with-default-variable',
       labelKey: 'validation.fixes.emptyArgument.replaceWithVariable',
       apply: ({ editor, errorLocation }) => {
-        if (!errorLocation.lineRangeOffset) {
-          return;
-        }
-        const { end, start } = errorLocation.lineRangeOffset;
-
-        const result = editor.state.doc.textBetween(start, end).replace(/\{\s*\}/g, '{variable}');
+        const { end, start } = errorLocation;
 
         editor
           .chain()
           .focus()
-          .insertContentAt({ to: end, from: start }, result)
-          .run();
-      },
-    },
-    {
-      id: 'replace-with-default-variable',
-      labelKey: 'validation.fixes.emptyArgument.fillWithHash',
-      apply: ({ editor, errorLocation }) => {
-        if (!errorLocation.lineRangeOffset) {
-          return;
-        }
-        const { end, start } = errorLocation.lineRangeOffset;
-
-        const result = editor.state.doc.textBetween(start, end).replace(/\{\s*\}/g, '#');
-
-        editor
-          .chain()
-          .focus()
-          .insertContentAt({ to: end, from: start }, result)
+          .insertContentAt({ to: end, from: start }, '{variable}')
           .run();
       },
     },
@@ -193,43 +153,22 @@ export const fixers: FixerMap = {
     {
       id: 'remove-comma-and-close',
       labelKey: 'validation.fixes.expectArgumentType.removeComma',
-      apply: ({ editor, errorLocation }) => {
-        const { start, end } = errorLocation;
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
 
-        const result = editor.state.doc.textBetween(start, end);
-
-        if (!result) {
-          const lineTextWithoutComma = editor
-            .state
-            .doc
-            .textBetween(
-              errorLocation.lineRangeOffset.start,
-              errorLocation.lineRangeOffset.end,
-            )
-            .replace(',', '');
-
-          editor
-            .chain()
-            .focus()
-            .insertContentAt(
-              {
-                from: errorLocation.lineRangeOffset.start,
-                to: errorLocation.lineRangeOffset.end,
-              },
-              lineTextWithoutComma,
-              { updateSelection: true },
-            )
-            .run();
-
-          return;
-        }
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
 
         editor
           .chain()
           .focus()
           .insertContentAt(
-            { from: start - 1, to: end },
-            result,
+            { from: start, to: end },
+            cleanedLineText,
             { updateSelection: true },
           )
           .run();
@@ -244,7 +183,11 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
-          .insertContentAt({ from: start, to: end }, 'number', { updateSelection: true })
+          .insertContentAt(
+            { from: start, to: end },
+            'number',
+            { updateSelection: true },
+          )
           .run();
       },
     },
@@ -296,20 +239,25 @@ export const fixers: FixerMap = {
     {
       id: 'remove-type',
       labelKey: 'validation.fixes.invalidArgumentType.removeType',
-      apply: ({ editor, errorLocation }) => {
+      apply: ({ editor, errorLocation, validationError }) => {
         const lineText = editor.state.doc.textBetween(
           errorLocation.lineRangeOffset.start,
           errorLocation.lineRangeOffset.end,
         );
 
-        const result = lineText.split(',')[0];
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
+
         editor
           .chain()
           .focus()
           .insertContentAt({
-            from: errorLocation.lineRangeOffset.start - 1,
+            from: errorLocation.lineRangeOffset.start,
             to: errorLocation.lineRangeOffset.end,
-          }, `${result}}`)
+          }, cleanedLineText)
           .run();
       },
     },
@@ -323,7 +271,7 @@ export const fixers: FixerMap = {
         const lineText = editor.state.doc.textBetween(start, end);
         const chars = lineText.split('');
 
-        const cleanedText = dropLastCommaBefore(
+        const cleanedText = dropRightUntilPattern(
           chars,
           validationError.location.end.column - 1,
           [','],
@@ -355,7 +303,7 @@ export const fixers: FixerMap = {
         const lineText = editor.state.doc.textBetween(start, end);
         const chars = lineText.split('');
 
-        const cleanedText = dropLastCommaBefore(
+        const cleanedText = dropRightUntilPattern(
           chars,
           validationError.location.end.column - 1,
           [',', ','],
@@ -369,20 +317,128 @@ export const fixers: FixerMap = {
       },
     },
   ],
+  INVALID_NUMBER_SKELETON: [
+    {
+      id: 'remove-skeleton',
+      labelKey: 'validation.fixes.invalidNumberSkeleton.removeSkeleton',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt({ from: start, to: end }, cleanedLineText)
+          .run();
+      },
+    },
+
+  ],
+  EXPECT_DATE_TIME_SKELETON: [
+    {
+      id: 'remove-skeleton',
+      labelKey: 'validation.fixes.expectDateTimeSkeleton.removeSkeleton',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 2,
+          [','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt({ from: start, to: end }, cleanedLineText)
+          .run();
+      },
+    },
+  ],
+  UNCLOSED_QUOTE_IN_ARGUMENT_STYLE: [
+    {
+      id: 'close-quote',
+      labelKey: 'validation.fixes.unclosedQuote.removeQuote',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start } = errorLocation.lineRangeOffset;
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(
+            {
+              from: start + validationError.location.start.column - 2,
+              to: start + validationError.location.start.column - 1,
+            },
+            '',
+            { updateSelection: true },
+          )
+          .run();
+      },
+    },
+    {
+      id: 'close-quote',
+      labelKey: 'validation.fixes.unclosedQuote.escapeQuote',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start } = errorLocation.lineRangeOffset;
+
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(
+            start + validationError.location.start.column - 1,
+            '\'',
+            { updateSelection: true },
+          )
+          .run();
+      },
+    },
+
+  ],
 };
 
 /**
- * Walks the line from right to left and drops the last comma
- * that appears before the given column limit.
- * Characters after that comma (to the right) are removed.
+ * Walks an array of characters from right to left and drops everything
+ * up to and including the first match of `pattern` (matched right-to-left),
+ * but only while the index is within `columnLimit`.
+ *
+ * Once the pattern is fully matched (or `columnLimit` is exceeded),
+ * the remaining characters to the left are kept untouched.
+ *
+ * @param chars        - The characters of the line to trim (left-to-right order).
+ * @param columnLimit  - 1-based column limit (usually the error column).
+ *                       Characters at index `i` are only considered while `i + 1 <= columnLimit`.
+ * @param pattern      - Characters to match from right to left.
+ *                       Example: `[',']` drops the last comma;
+ *                       `[' ', ',']` drops the last comma preceded by a space.
+ * @returns A new array of characters with the matched suffix removed.
+ *
+ * @example
+ * dropRightUntilPattern(['{', 'a', ',', 'b', ',', ' ', '}'], 7, [','])
+ * // => ['{', 'a', ',', 'b', ' ', '}']  // last comma removed
+ *
+ * @example
+ * dropRightUntilPattern(['{', 'a', ',', 'b', ',', ' ', '}'], 7, [' ', ','])
+ * // => ['{', 'a', ',', 'b', '}']        // ", " removed
  */
-function dropLastCommaBefore(chars: string[], columnLimit: number, snapChars: Array<string>): string[] {
+function dropRightUntilPattern(
+  chars: string[],
+  columnLimit: number,
+  pattern: Array<string>,
+): string[] {
   let keptChars: string[] = [];
   let snapCharsIndex = 0;
 
   forEachRight(chars, (char, i) => {
-    if (snapCharsIndex < snapChars.length && i + 1 <= columnLimit) {
-      if (char === snapChars[snapCharsIndex]) {
+    if (snapCharsIndex < pattern.length && i + 1 <= columnLimit) {
+      if (char === pattern[snapCharsIndex]) {
         snapCharsIndex = snapCharsIndex + 1;
       };
     } else {

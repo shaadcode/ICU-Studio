@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslations } from 'use-intl';
 // FixButton.tsx
-import { Menu, Button } from '@mantine/core';
+import { Menu, Button, Tooltip } from '@mantine/core';
 import { IconWand, IconChevronDown } from '@tabler/icons-react';
 
 import { fixers } from './fixers';
@@ -38,40 +38,52 @@ export const FixButton = ({ context, onFixed }: Props) => {
     }
   };
 
+  const firstFixer = availableFixers[0];
+
   if (availableFixers.length === 1) {
     return (
-      <Button
-        size="xs"
-        color="red"
-        leftSection={<IconWand size={14} />}
-
-        onClick={() => handleApply(availableFixers[0]!)}
+      <Tooltip
+        label={t(firstFixer!.labelKey)}
+        styles={{ tooltip: { fontSize: '10px' } }}
       >
-        {t('validation.fixAutomatically')}
-      </Button>
+        <Button
+          size="xs"
+          color="red"
+          tt="capitalize"
+          leftSection={<IconWand size={14} />}
+
+          onClick={() => handleApply(availableFixers[0]!)}
+        >
+          {t('validation.fix')}
+        </Button>
+      </Tooltip>
     );
   }
+
   return (
 
     <Menu
-      offset={0}
-      position="bottom"
-      middlewares={{
-        flip: false,
-      }}
+      position="bottom-start"
+      middlewares={{ flip: false }}
       classNames={{ dropdown: classes['dropdown'] }}
     >
       <Menu.Target>
-        <Button.Group w={180}>
-          <Button
-            size="xs"
-            color="red"
-            leftSection={<IconWand size={14} />}
-
-            onClick={() => handleApply(availableFixers[0]!)}
+        <Button.Group>
+          <Tooltip
+            label={t(firstFixer!.labelKey)}
+            styles={{ tooltip: { fontSize: '10px' } }}
           >
-            {t('validation.fixAutomatically')}
-          </Button>
+            <Button
+              size="xs"
+              color="red"
+              tt="capitalize"
+              leftSection={<IconWand size={14} />}
+
+              onClick={() => handleApply(availableFixers[0]!)}
+            >
+              {t('validation.fix')}
+            </Button>
+          </Tooltip>
           <Button
             px={6}
             size="xs"

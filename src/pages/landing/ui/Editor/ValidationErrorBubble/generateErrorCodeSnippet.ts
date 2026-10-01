@@ -28,5 +28,5 @@ export const generateErrorCodeSnippet = (params: Params) => {
     return ',';
   }
 
-  return snippetByLineNumber || snippetByErrorOffset || '...';
+  return snippetByErrorOffset || snippetByLineNumber || '...';
 };

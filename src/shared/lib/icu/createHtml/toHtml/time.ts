@@ -15,7 +15,11 @@ export const timeToHtml = (params: Params) => {
   }
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  methods.addArgumentName({ referenceId: id, value: message.value });
+  methods.addArgumentName({
+    referenceId: id,
+    variableType: 'date',
+    value: message.value,
+  });
   methods.addComma();
   methods.addTimeArgumentName();
   if (isSimpleDateTimeSkeleton(message.style)) {

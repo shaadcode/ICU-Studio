@@ -13,4 +13,8 @@ export const extendSetContent = ({ editor }: Params) => (content: string) =>
     )
     .run();
 
-export const extendInsertContent = (editor: Editor) => (content: string) => editor.commands.insertContent(content, { parseOptions: { preserveWhitespace: 'full' } });
+export const extendInsertContent = (editor: Editor) =>
+  (content: string) => editor
+    .chain()
+    .insertContent(content, { parseOptions: { preserveWhitespace: 'full' } })
+    .run();

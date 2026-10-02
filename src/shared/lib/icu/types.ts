@@ -1,5 +1,5 @@
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
-import type { ValueOf, SetFieldType, StringToNumber } from 'type-fest';
+import type { ValueOf, Simplify, SetFieldType, StringToNumber } from 'type-fest';
 import type { Location } from '@formatjs/icu-messageformat-parser/manipulator.js';
 
 import type { MarkAttrs } from './createHtml/types';
@@ -76,8 +76,6 @@ export type MessageElementsTypeEnum = StringToNumber<`${TYPE}`>;
 
 export type WarningParserError = Extract<ErrorKindName, 'CONFLICT_VARIABLE_NAME'>;
 
-export type MarkAttributes = SetFieldType<Record<'class' | MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;
-
 export type ParserError = {
   location: Location;
   kind: ExtendedErrorKind;
@@ -85,3 +83,11 @@ export type ParserError = {
 };
 
 export type MarkAttributesWithoutClass = SetFieldType<Record<MarkAttrs, string>, 'data-mark-type', ValueOf<typeof MARK_TYPES>>;
+
+export type MarkAttributes
+  = Simplify<
+    Record<'class' | MarkAttrs, string> & {
+      'data-mark-type': ValueOf<typeof MARK_TYPES>;
+      'data-variable-type': MessageElementsTypeKeyword;
+    }
+  >;

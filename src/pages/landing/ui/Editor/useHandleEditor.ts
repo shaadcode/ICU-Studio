@@ -11,6 +11,7 @@ import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
 import { icuEditorStore } from '../../config/store/editor';
 import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
+import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
 import { CustomHardBreak, StarterKitForICUEditor } from '@/shared/lib/tiptap';
 
 type Params = {
@@ -31,8 +32,7 @@ export const useHandleEditor = (params: Params) => {
   const tCommon = useTranslations('common');
 
   const t = useTranslations('editor');
-
-  const size = useViewportSize();
+  const viewportSize = useViewportSize();
   const setValidationError = icuEditorStore.use.actions().setValidationError;
   const setMessage = icuEditorStore.use.actions().setMessage;
   const setParsedMessage = icuEditorStore.use.actions().setParsedMessage;
@@ -56,13 +56,13 @@ export const useHandleEditor = (params: Params) => {
       clearValidationError,
       parser: minimalParser,
     }),
-    300,
+    BOUNCE_UPDATE_VARIABLE_VALUE,
   );
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-    onUpdate: async ({ editor, transaction }) => {
-      updateContent(editor, transaction);
+    onUpdate: () => {
+      setVariables([]);
     },
     onMount: ({ editor }) => {
       params.custom?.onMount?.({ editor });
@@ -75,13 +75,12 @@ export const useHandleEditor = (params: Params) => {
       SpanMark,
       CustomHardBreak,
     ],
-
     ...params.custom?.customEditorConfig,
   });
 
   useEffect(() => {
     updateContent(editor);
-  }, [size]);
+  }, [viewportSize]);
 
   return {
     t,

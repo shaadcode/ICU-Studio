@@ -6,9 +6,9 @@ import type { Traverse, TraverseContext } from './createHtml';
 
 export type ElementTypes = keyof typeof TYPE;
 
-export type MarkAttrs = 'data-depth' | 'data-mark-type' | 'data-depends-on' | 'data-reference-id';
-
 export type ExtendedValidPluralRule = LiteralUnion<'one' | 'two' | 'few' | 'zero' | 'many' | 'other', string>;
+
+export type MarkAttrs = 'data-depth' | 'data-mark-type' | 'data-depends-on' | 'data-reference-id' | 'data-variable-type';
 
 export type SharedToHtmlHelpersParams<ElementType extends MessageFormatElement> = {
   traverse: Traverse;

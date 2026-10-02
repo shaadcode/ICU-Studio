@@ -1,43 +1,28 @@
-import type React from 'react';
-import { getMarkRange } from '@tiptap/react';
-import type { MarkViewRendererProps } from '@tiptap/react';
+import type { Range, Editor } from '@tiptap/react';
 
-import type { MarkAttrs } from '../../icu/createHtml/types';
-import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
+import { getMarkAttributes } from '../../icu';
 import { isOpenDelimiter, isCloseDelimiter } from '../../tiptap/delimiters';
 
 type Params = {
-  tiptapMark: MarkViewRendererProps;
-  ref: React.RefObject<HTMLSpanElement>;
-  addDelimiterRange: ICUEditorStore['actions']['addDelimiterRange'];
+  editor: Editor;
+  referenceId: string;
 };
-export function getDelimiterRange(params: Params) {
-  const { ref, tiptapMark, addDelimiterRange } = params;
-  const dependsOn = tiptapMark.mark.attrs['data-depends-on' as MarkAttrs];
-  const markType = tiptapMark.mark.attrs['data-mark-type' as MarkAttrs];
+export const getDelimiterRange = (params: Params) => {
+  const delimitersRange = {} as Record<'open' | 'close', Range>;
 
-  const isCloseDelimiterChecked = isCloseDelimiter(markType);
-  const isOpenDelimiterChecked = isOpenDelimiter(markType);
-  if (isCloseDelimiterChecked || isOpenDelimiterChecked) {
-    const pos = tiptapMark.view.posAtDOM(ref.current, 0);
-    if (pos === -1) {
-      return;
-    }
-    const resolvedPos = tiptapMark.editor.state.doc.resolve(pos);
+  params.editor.state.doc.descendants((node, pos) => {
+    if (node.marks[0]?.attrs['data-depends-on'] === params.referenceId) {
+      const markAttrs = getMarkAttributes(node.marks[0]);
 
-    const markRange = getMarkRange(resolvedPos, tiptapMark.mark.type);
-    if (isCloseDelimiterChecked) {
-      addDelimiterRange(dependsOn, {
-        type: markType,
-        close: markRange ?? undefined,
-      });
-    }
+      if (isCloseDelimiter(markAttrs['data-mark-type'])) {
+        delimitersRange.close = { from: pos, to: pos + node.nodeSize };
+      }
 
-    if (isOpenDelimiterChecked) {
-      addDelimiterRange(dependsOn, {
-        type: markType,
-        open: markRange ?? undefined,
-      });
+      if (isOpenDelimiter(markAttrs['data-mark-type'])) {
+        delimitersRange.open = { from: pos, to: pos + node.nodeSize };
+      }
     }
-  }
-}
+  });
+
+  return delimitersRange;
+};

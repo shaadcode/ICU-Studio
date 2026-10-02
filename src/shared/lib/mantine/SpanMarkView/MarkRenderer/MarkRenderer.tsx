@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import type { MarkViewRendererProps } from '@tiptap/react';
 
 import { elementsConfig } from './elementProps';
-import { getMarkAttributes } from '@/shared/lib/icu';
 import MarkActions from '../MarkActions/MarkActions';
+import { getMarkViewAttributes } from '@/shared/lib/icu';
 import type { MarkComponentConfig } from './elementProps';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   tiptapMark: MarkViewRendererProps;
 };
 const MarkRenderer = ({ children, ...props }: Props) => {
-  const attrs = getMarkAttributes(props.tiptapMark);
+  const attrs = getMarkViewAttributes(props.tiptapMark);
   const markType = attrs['data-mark-type'];
   // @ts-expect-error
   const markConfig = elementsConfig?.[markType] as MarkComponentConfig;

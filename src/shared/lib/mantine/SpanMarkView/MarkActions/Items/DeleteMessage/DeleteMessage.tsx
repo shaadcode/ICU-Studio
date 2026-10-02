@@ -4,23 +4,27 @@ import { Tooltip, MenuItem } from '@mantine/core';
 import type { MarkViewRendererProps } from '@tiptap/react';
 
 import classes from './DeleteMessage.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import { getDelimiterRange } from '../../../getDelimiterRange';
+import { getMarkViewAttributes } from '@/shared/lib/icu/getMarkAttribute';
 
 type Props = {
   tiptapMark: MarkViewRendererProps;
 };
 const DeleteMessageMenuAction = (props: Props) => {
-  const { mark, editor } = props.tiptapMark;
+  const { editor } = props.tiptapMark;
+  const attrs = getMarkViewAttributes(props.tiptapMark);
   const t = useTranslations('common');
-  const getDelimiterRange = icuEditorStore.use.actions().getDelimiterRange;
   const handleDeleteMessage = () => {
-    const referenceId = mark.attrs['data-reference-id'] as string;
+    const messageRange = getDelimiterRange({
+      editor,
+      referenceId: attrs['data-reference-id'],
+    });
 
-    const messageRange = getDelimiterRange(referenceId);
-    const from = messageRange?.open?.from;
-    const to = messageRange?.close?.to;
+    const from = messageRange.open.from;
+    const to = messageRange.close.to;
+
     if (to && from) {
-      editor.commands.deleteRange({ to, from });
+      editor.chain().deleteRange({ to, from }).run();
     }
   };
 

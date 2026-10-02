@@ -1,6 +1,6 @@
 import type { ErrorKindName, MessageElementsTypeEnum, MessageElementsTypeKeyword } from './types';
 
-export const BOUNCE_UPDATE_VARIABLE_VALUE = 500;
+export const BOUNCE_UPDATE_VARIABLE_VALUE = 300;
 
 export const formatMessageElementsKeywordByEnum = {
   8: 'tag',

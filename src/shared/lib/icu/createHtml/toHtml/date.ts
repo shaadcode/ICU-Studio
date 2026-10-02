@@ -16,7 +16,11 @@ export const dateToHtml = (params: Params) => {
   }
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  methods.addArgumentName({ referenceId: id, value: message.value });
+  methods.addArgumentName({
+    referenceId: id,
+    value: message.value,
+    variableType: 'date',
+  });
   methods.addComma();
   methods.addDateArgumentName();
 

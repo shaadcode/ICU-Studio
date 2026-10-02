@@ -9,6 +9,7 @@ import classes from './MarkActions.module.css';
 import CutMessageMenuAction from './Items/CutMessage/CutMessage';
 import CopyMessageMenuAction from './Items/CopyMessage/CopyMessage';
 import DeleteMessageMenuAction from './Items/DeleteMessage/DeleteMessage';
+import ConvertVariableAction from './Items/ConvertVariable/ConvertVariable';
 
 type Props = {
   tiptapMark: MarkViewRendererProps;
@@ -45,6 +46,7 @@ const MarkActions = (props: Props) => {
           <CopyMessageMenuAction tiptapMark={props.tiptapMark} />
           <CutMessageMenuAction tiptapMark={props.tiptapMark} />
         </Group>
+        <ConvertVariableAction tiptapMark={props.tiptapMark} />
       </Menu.Dropdown>
     </Menu>
   );

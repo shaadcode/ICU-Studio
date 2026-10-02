@@ -6,12 +6,13 @@ import { Box, Text, Code, Group, Stack, Popover, ActionIcon, CloseButton } from 
 import { IconInfoCircle, IconDotsVertical, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
 
 import { FixButton } from './FixButton/FixButton';
+import { useFormatMessage } from '../useFormatMessage';
 import classes from './ValidationErrorBubble.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { generateErrorCodeSnippet } from './generateErrorCodeSnippet';
 
 type Props = {
-  editor: null | Editor;
+  editor: Editor;
 };
 
 type Coords = {
@@ -24,6 +25,7 @@ type Coords = {
 const ValidationErrorBubble = ({ editor }: Props) => {
   const t = useTranslations('editor');
   const [opened, { open, close }] = useDisclosure(false);
+  const formateHandlers = useFormatMessage({ editor });
   const errorLocation = icuEditorStore.use.errorLocation();
   const validationError = icuEditorStore.use.validationError();
   const clearValidationError = icuEditorStore.use.actions().clearValidationError;
@@ -45,6 +47,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
   const handleFixed = () => {
     clearValidationError();
     close();
+    formateHandlers.formatMessage();
   };
 
   useEffect(() => {
@@ -63,8 +66,8 @@ const ValidationErrorBubble = ({ editor }: Props) => {
     <>
       <Group
         mih={22}
+        top={coords.start.top - 18}
         className={classes['BubbleRoot']}
-        style={{ top: coords.start.top - 18 }}
         h={coords.start.top - coords.end.bottom}
       />
 
@@ -82,8 +85,8 @@ const ValidationErrorBubble = ({ editor }: Props) => {
             size="sm"
             pos="absolute"
             variant="transparent"
+            top={coords.start.top - 18}
             className={classes['errorIcon']}
-            style={{ top: coords.start.top - 18 }}
 
             onClick={open}
           >

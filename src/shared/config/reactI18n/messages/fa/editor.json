@@ -1,5 +1,6 @@
 {
   "controls": {
+    "format": "فرمت",
     "formatMessage": "فرمت کردن پیام",
     "jsonPastePlaceholder": "متن json خود را وارد کنید(حتی تا حدودی نامعتبر)",
     "jsonPropertyCopy": "کپی به صورت کلید json",
@@ -23,6 +24,7 @@
     "tFunctionCopy": "چسباندن به صورت تابع t",
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
+  "convertTo": "تبدیل به",
   "format": "فرمت",
   "lastWeek": "هفته قبل",
   "lastYear": "سال قبل",
@@ -53,11 +55,11 @@
   "nextYear": "سال بعد",
   "offset": "مقدار پایه",
   "parsingErrors": {
+    "CONFLICT_VARIABLE_NAME": "متغیر دارای نوع‌های متناقض است",
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "selector تکراری در آرگومان plural یا selectordinal (مثال: {foo, plural, one {#} one {#}})",
     "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "selector تکراری در آرگومان select (مثال: {foo, select, apple {apple} apple {apple}})",
     "EMPTY_ARGUMENT": "آرگومان خالی است (مثال: `{}')",
     "EXPECT_ARGUMENT_CLOSING_BRACE": "آرگومان بسته نشده است (مثال: `{0`)",
-    "CONFLICT_VARIABLE_NAME": "متغیر دارای نوع‌های متناقض است",
     "EXPECT_ARGUMENT_STYLE": "سبک آرگومان مشخص نشده است (مثال: '{foo, number, }')",
     "EXPECT_ARGUMENT_TYPE": "نوع آرگومان مشخص نشده است (مثال: '{foo,}')",
     "EXPECT_DATE_TIME_SKELETON": "قالب تاریخ و زمان بعد از '::' مشخص نشده است (مثال: '{foo, date, ::}')",
@@ -88,10 +90,10 @@
   "tomorrow": "فردا",
   "validation": {
     "chooseFix": "یک راه‌حل انتخاب کنید",
-    "columnNumber": "ستون: {number}",
     "collectionVariablesError": {
       "conflictVariableName": "نام متغیر تکراری است"
     },
+    "columnNumber": "ستون: {number}",
     "fix": "اصلاح",
     "fixAutomatically": "اصلاح خودکار",
     "fixes": {

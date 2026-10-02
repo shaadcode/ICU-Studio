@@ -34,6 +34,7 @@ export const SpanMark = Mark.create({
       ...setAttribute('data-depends-on'),
       ...setAttribute('data-mark-type'),
       ...setAttribute('data-depth'),
+      ...setAttribute('data-variable-type'),
     } as const satisfies Record<MarkAttrs, Attribute>;
   },
 

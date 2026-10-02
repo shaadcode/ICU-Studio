@@ -25,15 +25,15 @@ export const updateIcuEditor = async (params: Params) => {
   const { editor } = params;
   const message = params.editor.getText();
   const prevCursorPosition = params.editor.state.selection.$anchor.pos;
-
   params.setMessage(message);
 
   if (message.endsWith('{')) {
     extendInsertContent(params.editor)('}');
-    return params.editor.chain().setTextSelection(prevCursorPosition).run();
+    params.editor.chain().setTextSelection(prevCursorPosition).run();
+    return;
   }
 
-  const [error, parsedMessage] = await params.parser(message);
+  const [error, parsedMessage] = await params.parser(message.trim());
 
   if (!parsedMessage) {
     params.clearMessageState();

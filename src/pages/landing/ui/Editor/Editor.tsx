@@ -19,9 +19,10 @@ import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
 import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
+import './Editor.module.css';
 import ValidationErrorBubble from './ValidationErrorBubble/ValidationErrorBubble';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
-import './Editor.module.css';
+import MessageFormattingControl from './Controls/MessageFormatting/MessageFormatting';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 
 type Props = {
@@ -51,7 +52,6 @@ const ICUEditor = (props: Props) => {
           {props.custom.toolBarChildren}
         </RichTextEditor.Toolbar>
         <RichTextEditor.Content />
-
       </RichTextEditor>
     );
   }
@@ -99,10 +99,11 @@ const ICUEditor = (props: Props) => {
                 <TagSnippet />
               </RichTextEditor.ControlsGroup>
             </Box>
+
+            <MessageFormattingControl editor={editorHandler.editor} />
           </Group>
 
           <Group style={{ justifySelf: 'flex-end' }}>
-            {/* <FormatMessageControl /> */}
             <ValidationStatus />
 
             <RichTextEditor.ControlsGroup>
@@ -115,7 +116,14 @@ const ICUEditor = (props: Props) => {
         </RichTextEditor.Toolbar>
 
         <ValidationErrorBubble editor={editorHandler.editor} />
-        <RichTextEditor.Content px="lg" />
+        <RichTextEditor.Content
+          px="lg"
+          pos="relative"
+          styles={{ root: { overflow: 'hidden' } }}
+        >
+          {/* <LineNumbers editor={editorHandler.editor} /> */}
+
+        </RichTextEditor.Content>
 
       </RichTextEditor>
 

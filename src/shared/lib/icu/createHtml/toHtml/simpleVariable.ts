@@ -21,6 +21,7 @@ export const simpleVariableToHtml = (params: Params) => {
   methods.addArgumentName({
     referenceId: id,
     depth: ctx.depth,
+    variableType: 'argument',
     value: message.value.trim(),
   });
   methods.addArgumentNameDelimiterEnd({ dependsOn: id });

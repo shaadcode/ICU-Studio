@@ -14,9 +14,14 @@ const PluralSnippet = () => {
 }`;
 
   const handleClick = () => {
-    if (editor) {
-      extendInsertContent(editor)(message);
+    if (!editor) {
+      return;
     }
+
+    // const prevCursorPosition = editor.state.selection.$anchor.pos;
+
+    extendInsertContent(editor)(message);
+    // editor.chain().focus(prevCursorPosition + message.length).run();
   };
   return (
     <RichTextEditor.Control

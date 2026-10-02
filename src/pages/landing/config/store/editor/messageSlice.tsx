@@ -1,6 +1,5 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
-import type { ValueOf } from 'type-fest';
 import type { Range } from '@tiptap/react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
@@ -28,11 +27,7 @@ type ICUEditorMessageSliceActions = {
   setMessage: (value: ICUEditorMessageSlice['message']) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
   updateVariableInitialValue: (valueName: string, value: Date | string | number) => void;
-  getDelimiterRange: (id: ReferenceId) => undefined | ValueOf<ICUEditorMessageSlice['delimitersRange']>;
-  addDelimiterRange: (
-    id: ReferenceId,
-    range: ValueOf<ICUEditorMessageSlice['delimitersRange']>,
-  ) => void;
+
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
@@ -43,7 +38,6 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
   actions: {
     setVariables: setVariablesHandler(set),
     setMessage: value => set({ message: value }),
-    getDelimiterRange: id => get().delimitersRange[id],
     setParsedMessage: value => set({ parsedMessage: value }),
     clearMessageState: () => set({
       variables: [],
@@ -51,12 +45,6 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       delimitersRange: {},
       parsedMessage: undefined,
     }),
-    addDelimiterRange: (id, value) => set(state => ({
-      delimitersRange: {
-        ...state.delimitersRange,
-        [id]: { ...state.delimitersRange[id], ...value },
-      },
-    })),
     updateVariableInitialValue: (varName, value) => {
       const variables = get().variables;
       const result = variables.map((variable) => {

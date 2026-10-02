@@ -1,5 +1,6 @@
 import type { ValueOf } from 'type-fest';
 
+import type { MessageElementsTypeKeyword } from './types';
 import type { MARK_TYPES } from './createHtml/createHtml';
 
 export type FormattingPosition = {
@@ -14,6 +15,7 @@ export type CreateSpanElemParams = {
   referenceId?: string;
   formattingChars?: FormattingPosition;
   markType: ValueOf<typeof MARK_TYPES>;
+  variableType?: MessageElementsTypeKeyword;
 };
 
 type FormattingData = Array<'hardBreak'>;
@@ -21,6 +23,8 @@ type FormattingData = Array<'hardBreak'>;
 export const createSpanElement = (params: CreateSpanElemParams) => {
   const elem = document.createElement('span');
   elem.textContent = params.value;
+
+  elem.dataset['markType'] = params.markType;
 
   if (params.referenceId) {
     elem.dataset['referenceId'] = params.referenceId;
@@ -30,8 +34,8 @@ export const createSpanElement = (params: CreateSpanElemParams) => {
     elem.dataset['dependsOn'] = params.dependsOn;
   }
 
-  if (params.markType) {
-    elem.dataset['markType'] = params.markType;
+  if (params.variableType) {
+    elem.dataset['variableType'] = params.variableType;
   }
 
   if (params.depth) {

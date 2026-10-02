@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:safe": "npm run check-types && npm run test:base && npm run lint && npm run build",
+    "build:safe": "npm run check-types && npm run lint && npm run build",
     "build:safe-dev": "npm run check-types && npm run lint:fix && npm run test:base -- --browser.headless && npm run build",
     "preview": "vite preview",
     "tauri": "tauri",
@@ -119,6 +119,7 @@
     "postcss": "^8.5.26",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
+    "react-scan": "^0.5.7",
     "storybook": "10.6.0",
     "storybook-addon-pseudo-states": "10.6.0",
     "storybook-addon-test-codegen": "^3.0.4",

@@ -17,8 +17,15 @@ export const pluralToHtml = (params: Params) => {
 
   const { depth } = params.ctx;
 
-  methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  methods.addArgumentName({ depth, referenceId: id, value: message.value });
+  methods.addArgumentNameDelimiterStart({
+    dependsOn: id,
+  });
+  methods.addArgumentName({
+    depth,
+    referenceId: id,
+    value: message.value,
+    variableType: 'plural',
+  });
   methods.addComma();
   if (message.pluralType === 'cardinal') {
     methods.addPluralKeyword();

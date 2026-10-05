@@ -15,7 +15,7 @@ const CopyMessageButton = () => {
 
           onClick={copy}
         >
-          {copied ? <IconCheck size="80%" /> : <IconCopy size="80%" />}
+          {copied ? <IconCheck size="60%" /> : <IconCopy size="60%" />}
         </ActionIcon>
       )}
     </CopyButton>

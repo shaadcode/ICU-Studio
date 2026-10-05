@@ -42,7 +42,6 @@ export const createAppConfigSlice: ZustandSlice<
   selectedLocale: undefined,
   selectedProject: undefined,
   selectedLocaleNamespaces: [],
-  // selectedNamespace: undefined,
   actions: {
     setLocales: locales => set({ locales }),
     setProjects: projects => set({ projects }),

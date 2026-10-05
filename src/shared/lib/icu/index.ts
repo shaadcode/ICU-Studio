@@ -1,3 +1,4 @@
+import { ICU_STUDIO_WEBSITE } from './constants';
 import TagVariable from './components/TagVariable';
 import { createMessageId } from './createMessageId';
 import { collectVariables } from './collectVariables';
@@ -15,6 +16,7 @@ export {
   createSpanElement,
   getMarkAttributes,
   getLineRangeOffset,
+  ICU_STUDIO_WEBSITE,
   getMarkViewAttributes,
   createMinimalParserWorker,
   getLineRangeOffsetByOneLine,

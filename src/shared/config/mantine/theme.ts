@@ -1,6 +1,9 @@
 import { createTheme } from '@mantine/core';
 
+import { components } from './components';
+
 export const theme = createTheme({
+  components,
   primaryColor: 'yellow',
   fontFamily: 'montserrat',
   headings: {

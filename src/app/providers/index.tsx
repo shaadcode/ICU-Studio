@@ -1,12 +1,12 @@
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/notifications/styles.css';
-import '@mantine/dates/styles.css';
 import type { ReactNode } from 'react';
 import { IntlProvider } from 'use-intl';
 import { DatesProvider } from '@mantine/dates';
 import { useState, useLayoutEffect } from 'react';
-import { Loader, Center, MantineProvider, DirectionProvider, ColorSchemeScript } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { Loader, Center, MantineProvider, DirectionProvider } from '@mantine/core';
 
 import { loadStores } from '@/shared/lib/tauri';
 import { theme } from '@/shared/config/mantine/theme';
@@ -43,10 +43,10 @@ const Providers = ({ children }: Props) => {
         <DirectionProvider>
           <MantineProvider
             theme={theme}
-            forceColorScheme="light"
             classNamesPrefix="ICU-Studio"
           >
-            <ColorSchemeScript forceColorScheme="light" />
+            <Notifications />
+
             {isLoading
               ? (
                   <Center h="100dvh">

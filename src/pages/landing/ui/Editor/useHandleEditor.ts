@@ -3,16 +3,14 @@ import type { ReactNode } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
 import type { Transaction } from '@tiptap/pm/state';
-import { Placeholder } from '@tiptap/extension-placeholder';
 import type { Editor, UseEditorOptions } from '@tiptap/react';
 import { useViewportSize, useDebouncedCallback } from '@mantine/hooks';
 
-import { SpanMark } from '@/shared/lib/mantine';
 import { minimalParser } from '@/shared/lib/icu';
+import { useFormatMessage } from './useFormatMessage';
 import { icuEditorStore } from '../../config/store/editor';
 import { updateIcuEditor } from '@/shared/lib/tiptap/updateIcuEditor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
-import { CustomHardBreak, StarterKitForICUEditor } from '@/shared/lib/tiptap';
 
 type Params = {
   /**
@@ -30,7 +28,6 @@ type Params = {
 
 export const useHandleEditor = (params: Params) => {
   const tCommon = useTranslations('common');
-
   const t = useTranslations('editor');
   const viewportSize = useViewportSize();
   const setValidationError = icuEditorStore.use.actions().setValidationError;
@@ -60,7 +57,6 @@ export const useHandleEditor = (params: Params) => {
   );
 
   const editor = useEditor({
-    parseOptions: { preserveWhitespace: 'full' },
     onUpdate: () => {
       setVariables([]);
     },
@@ -69,18 +65,24 @@ export const useHandleEditor = (params: Params) => {
       updateContent(editor);
     },
     // onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
-    extensions: [
-      StarterKitForICUEditor,
-      Placeholder.configure({ placeholder: t('placeholder') }),
-      SpanMark,
-      CustomHardBreak,
-    ],
+
     ...params.custom?.customEditorConfig,
   });
+  const { formatMessage } = useFormatMessage({ editor });
 
   useEffect(() => {
     updateContent(editor);
   }, [viewportSize]);
+
+  useEffect(() => {
+    if (editor && editor.getText() !== params.custom?.customEditorConfig?.content) {
+      editor
+        .chain()
+        .setContent(params.custom?.customEditorConfig?.content ?? '')
+        .run();
+      formatMessage();
+    }
+  }, [params.custom?.customEditorConfig?.content]);
 
   return {
     t,

@@ -18,8 +18,8 @@ const TFunctionCopyControl = () => {
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();
     const parsedMessage = parse(rawMessage);
-    const variables = collectVariables(parsedMessage);
-    const justVariablesName = variables.map(variable => variable[1].name);
+    const collectedVariables = collectVariables(parsedMessage);
+    const justVariablesName = collectedVariables.variables.map(variable => variable[1].name);
 
     if (!justVariablesName.length) {
       return clipboard.copy(`t('')`);

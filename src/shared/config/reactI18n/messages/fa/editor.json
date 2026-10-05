@@ -51,6 +51,7 @@
     "tag": "برچسب",
     "time": "زمان"
   },
+  "messages": "پیام ها",
   "nextWeek": "هفته بعد",
   "nextYear": "سال بعد",
   "offset": "مقدار پایه",
@@ -85,6 +86,7 @@
   },
   "placeholder": "پیام ICU را در اینجا وارد کنید ...",
   "pluralType": "نوع پلورال",
+  "projects": "پروژه ها",
   "testVariables": "آزمایش متغیر ها",
   "today": "امروز",
   "tomorrow": "فردا",

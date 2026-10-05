@@ -1,0 +1,40 @@
+{
+  "addDirPath": "Add folder path",
+  "addMessageFileName": "add message name",
+  "createNewFile": "create new file",
+  "dirPath": "directory path",
+  "messages": "Messages",
+  "messageFileName": "message name",
+  "loadingState": "Loading messages...",
+  "newMessageFile": "new message file",
+  "openExistingFile": "open existing file",
+  "emptyState": {
+    "title": "No messages yet",
+    "description": "Create your first message file or open an existing one",
+    "createFirst": "Create first message"
+  },
+  "validations": {
+    "addNewMessage": {
+      "dirPath": {
+        "length": "The file name must be at least 2 characters long"
+      },
+      "name": {
+        "length": "The file name must be at least 5 characters long"
+      }
+    }
+  },
+  "notifications": {
+    "fileNotFound": {
+      "title": "File not found",
+      "message": "The file \"{name}\" doesn't exist in app storage and was removed from the list"
+    },
+    "readError": {
+      "title": "Failed to read file",
+      "message": "Unfortunately, the content of this file couldn't be read"
+    },
+    "fileExists": {
+      "title": "File already exists",
+      "message": "A file named \"{name}\" already exists in app storage. Please choose a different name."
+    }
+  }
+}

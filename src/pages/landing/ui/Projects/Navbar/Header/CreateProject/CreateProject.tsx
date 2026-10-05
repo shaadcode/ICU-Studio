@@ -9,6 +9,11 @@ import { Stack, Drawer, Button, TextInput, ActionIcon } from '@mantine/core';
 
 import { appStore } from '@/pages/landing/config/store/app';
 
+export type MessageStoreSchema = {
+  name: string;
+  dirPath: string;
+};
+
 export type CreateNewProjectFormValues = {
   name: string;
   dirPath: string;

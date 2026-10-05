@@ -4,7 +4,7 @@ import { useTranslations } from 'use-intl';
 import classes from './Header.module.css';
 import { appStore } from '@/pages/landing/config/store/app';
 
-export type ViewTabsItems = 'editor' | 'projects';
+export type ViewTabsItems = 'editor' | 'projects' | 'messages';
 const Header = () => {
   const view = appStore.use.view();
   const setView = appStore.use.actions().setView;

@@ -34,7 +34,6 @@ export const updateIcuEditor = async (params: Params) => {
   }
 
   const [error, parsedMessage] = await params.parser(message.trim());
-
   if (!parsedMessage) {
     params.clearMessageState();
     return params.setValidationError({ error, editor });

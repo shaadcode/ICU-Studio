@@ -29,3 +29,5 @@ export const formatMessageElementsEnumByKeyword = {
 export const warningErrors: Partial<Record<ErrorKindName, ErrorKindName>> = {
   CONFLICT_VARIABLE_NAME: 'CONFLICT_VARIABLE_NAME',
 };
+
+export const ICU_STUDIO_WEBSITE = 'https://shaadcode.github.io/icu-studio-docs';

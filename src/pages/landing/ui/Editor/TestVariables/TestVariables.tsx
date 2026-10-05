@@ -2,7 +2,6 @@ import { attempt } from 'es-toolkit';
 import React, { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { IntlMessageFormat } from 'intl-messageformat';
-import { notifications } from '@mantine/notifications';
 // import { IntlMessageFormat } from 'intl-messageformat';
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
 import { IconLayoutNavbarCollapse } from '@tabler/icons-react';
@@ -30,12 +29,12 @@ const TestVariables = () => {
   const message = (() => {
     const [, printedMessage] = attempt(() => new IntlMessageFormat(parsedMessage).format(keyValueVariables));
 
-    if (!printedMessage) {
-      notifications.show({
-        message: 'error',
-      });
-      return '';
-    }
+    // if (!printedMessage) {
+    //   notifications.show({
+    //     message: 'error',
+    //   });
+    //   return '';
+    // }
     return (printedMessage ?? '') as string | Array<string>;
   })();
 

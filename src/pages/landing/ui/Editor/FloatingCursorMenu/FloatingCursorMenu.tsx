@@ -28,7 +28,7 @@ const FloatingCursorMenu = ({ editor }: Props) => {
   useHotkeys(
     [
       [
-        'ctrl + space',
+        'mod + space',
         (event) => {
           event.preventDefault();
           if (editor?.isFocused) {

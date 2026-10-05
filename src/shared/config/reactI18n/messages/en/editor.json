@@ -51,6 +51,7 @@
     "tag": "tag",
     "time": "time"
   },
+  "messages": "messages",
   "nextWeek": "next week",
   "nextYear": "next year",
   "offset": "offset",
@@ -85,6 +86,7 @@
   },
   "placeholder": "type your ICU message ...",
   "pluralType": "plural type",
+  "projects": "projects",
   "testVariables": "test variables",
   "today": "today",
   "tomorrow": "tomorrow",

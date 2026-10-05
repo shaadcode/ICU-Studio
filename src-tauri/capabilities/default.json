@@ -13,7 +13,13 @@
     "fs:allow-read-file",
     "fs:allow-read-text-file",
     "dialog:default",
-    "store:default"
+    "store:default",
+    "fs:allow-write-file",
+    "fs:allow-exists",
+    "fs:allow-remove",
+    "fs:allow-write-text-file",
+    "fs:allow-create",
+    "fs:allow-mkdir"
   ],
   "platforms": ["windows", "linux", "macOS"]
 }

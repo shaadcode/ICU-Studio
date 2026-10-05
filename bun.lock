@@ -12,7 +12,7 @@
         "@mantine/form": "^9.5.2",
         "@mantine/hooks": "^9.5.2",
         "@mantine/modals": "^9.5.2",
-        "@mantine/notifications": "^9.5.2",
+        "@mantine/notifications": "^9.7.0",
         "@mantine/tiptap": "^9.5.2",
         "@tabler/icons-react": "^3.46.0",
         "@tauri-apps/api": "^2",
@@ -354,9 +354,9 @@
 
     "@mantine/modals": ["@mantine/modals@9.5.2", "", { "peerDependencies": { "@mantine/core": "9.5.2", "@mantine/hooks": "9.5.2", "react": "^19.2.0", "react-dom": "^19.2.0" } }, "sha512-mB+A9uk6U/1+e9khNCWrblE4cvrYA3H5eKp7iuz1KE472HXWp+A4h50Wb2WcN0FDIEU7+bTHWa167LUA/5jXwA=="],
 
-    "@mantine/notifications": ["@mantine/notifications@9.5.2", "", { "dependencies": { "@mantine/store": "9.5.2", "react-transition-group": "4.4.5" }, "peerDependencies": { "@mantine/core": "9.5.2", "@mantine/hooks": "9.5.2", "react": "^19.2.0", "react-dom": "^19.2.0" } }, "sha512-2DQW2i6BlTGI7Vqp1a8IN03Q2CI/nMd7joJu7RGMTDhnnD0rhAhQtu/NwGdmq5gl4vFCpzzwHtH359Do2MlRGg=="],
+    "@mantine/notifications": ["@mantine/notifications@9.7.0", "", { "dependencies": { "@mantine/store": "9.7.0", "react-transition-group": "4.4.5" }, "peerDependencies": { "@mantine/core": "9.7.0", "@mantine/hooks": "9.7.0", "react": "^19.2.0", "react-dom": "^19.2.0" } }, "sha512-0WUBbZpgDOO86YsGjV3zBYge+jkjIC9VLojSah4g0ZaYzKnh1cANRc0RF1OwSosABKaDZKZ1FAvlAhP8hq2ApQ=="],
 
-    "@mantine/store": ["@mantine/store@9.5.2", "", { "peerDependencies": { "react": "^19.2.0" } }, "sha512-vpOS9QwqaJ1KOPr8MdQXYXFDIPkDg1KCr5O8FOGVZIGfsei1vvQsvvmMGGEKGmEE/4FCYwEfhCUWaAVw2psVzw=="],
+    "@mantine/store": ["@mantine/store@9.7.0", "", { "peerDependencies": { "react": "^19.2.0" } }, "sha512-r1eCDANMSITib3NvYU82JBXVivT7wEDvHeTyRJdO+slqH+K9PY5PIIeasGIocQNXyi9HQph6rz+e3eou5abRMw=="],
 
     "@mantine/tiptap": ["@mantine/tiptap@9.5.2", "", { "peerDependencies": { "@mantine/core": "9.5.2", "@mantine/hooks": "9.5.2", "@tiptap/extension-link": ">=3.3.0", "@tiptap/react": ">=3.3.0", "react": "^19.2.0", "react-dom": "^19.2.0" } }, "sha512-8Bz0I0QQaEX/lYVwc/JGYJUJGndBgFdilHX6/XnsPLWWt9vhyYPXhb4JfVxFghbZn3TRLCykI8jasG9IojtIfA=="],
 

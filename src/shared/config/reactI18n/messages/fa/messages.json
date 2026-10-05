@@ -1,0 +1,40 @@
+{
+  "MessageFileName": "نام پیام",
+  "messages": "پیام‌ها",
+  "addDirPath": "مسیر پوشه را اضافه کنید",
+  "addMessageFileName": "نام پیام را وارد کنید",
+  "createNewFile": "ساخت فایل جدید",
+  "dirPath": "مسیر پوشه",
+  "newMessageFile": "فایل پیام جدید",
+  "loadingState": "در حال بارگذاری پیام‌ها...",
+  "openExistingFile": "باز کردن فایل موجود",
+  "emptyState": {
+    "title": "هنوز پیامی نداری",
+    "description": "اولین فایل پیامت رو بساز یا یک فایل موجود رو باز کن",
+    "createFirst": "ساخت اولین پیام"
+  },
+  "validations": {
+    "addNewMessage": {
+      "dirPath": {
+        "length": "نام فایل باید حداقل 2 حرف باشد"
+      },
+      "name": {
+        "length": "نام فایل باید حداقل 5 حرف باشد"
+      }
+    }
+  },
+  "notifications": {
+    "fileNotFound": {
+      "title": "فایل پیدا نشد",
+      "message": "فایل «{name}» در حافظه برنامه وجود ندارد و از لیست حذف شد"
+    },
+    "readError": {
+      "title": "خطا در خواندن فایل",
+      "message": "متأسفانه امکان خواندن محتوای این فایل وجود ندارد"
+    },
+    "fileExists": {
+      "title": "File already exists",
+      "message": "A file named \"{name}\" already exists in app storage. Please choose a different name."
+    }
+  }
+}

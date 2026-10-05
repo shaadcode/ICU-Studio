@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { RichTextEditor } from '@mantine/tiptap';
-import type { UseEditorOptions } from '@tiptap/react';
 import { Box, Group, Stack, Divider } from '@mantine/core';
+import type { Editor, UseEditorOptions } from '@tiptap/react';
 
 import { useHandleEditor } from './useHandleEditor';
 import TestVariables from './TestVariables/TestVariables';
@@ -26,9 +26,10 @@ import MessageFormattingControl from './Controls/MessageFormatting/MessageFormat
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 
 type Props = {
-/**
- * for custom config
- */
+  editor: Editor;
+  /**
+   * for custom config
+   */
   custom?: {
     toolBarChildren?: ReactNode;
     onMount?: UseEditorOptions['onMount'];
@@ -42,23 +43,9 @@ type Props = {
 const ICUEditor = (props: Props) => {
   const editorHandler = useHandleEditor({ ...props });
 
-  if (props.custom) {
-    return (
-      <RichTextEditor h="100%" w="100%" editor={editorHandler.editor}>
-        <RichTextEditor.Toolbar
-          sticky
-          style={{ display: 'flex', justifyContent: 'space-between' }}
-        >
-          {props.custom.toolBarChildren}
-        </RichTextEditor.Toolbar>
-        <RichTextEditor.Content />
-      </RichTextEditor>
-    );
-  }
-
   return (
     <Stack w="100%" h="100%">
-      <RichTextEditor h="100%" w="100%" editor={editorHandler.editor}>
+      <RichTextEditor h="100%" w="100%" editor={props.editor}>
         <RichTextEditor.Toolbar
           sticky
           style={{
@@ -121,7 +108,6 @@ const ICUEditor = (props: Props) => {
           pos="relative"
           styles={{ root: { overflow: 'hidden' } }}
         >
-          {/* <LineNumbers editor={editorHandler.editor} /> */}
 
         </RichTextEditor.Content>
 

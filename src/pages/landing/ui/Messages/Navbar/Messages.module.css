@@ -1,0 +1,15 @@
+.messageContainer {
+  transition: all 0.2s;
+  padding: var(--mantine-spacing-sm);
+  flex-wrap: nowrap !important;
+  justify-content: space-between !important;
+  cursor: pointer;
+
+  &[data-is-active] {
+    border: 1px solid var(--mantine-color-red-6);
+  }
+
+  @mixin hover {
+    box-shadow: var(--mantine-shadow-sm);
+  }
+}

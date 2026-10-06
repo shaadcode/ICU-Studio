@@ -23,6 +23,12 @@
       }
     }
   },
+  "modals": {
+    "dirtyMessage": {
+      "title": "Unsaved Changes",
+      "message": "You have unsaved changes. If you continue, they will be lost. Save them first?"
+    }
+  },
   "notifications": {
     "fileNotFound": {
       "title": "File not found",
@@ -35,6 +41,12 @@
     "fileExists": {
       "title": "File already exists",
       "message": "A file named \"{name}\" already exists in app storage. Please choose a different name."
+    }
+  },
+  "states": {
+    "notSelected": {
+      "title": "No message selected",
+      "description": "Select a message from the list to start editing"
     }
   }
 }

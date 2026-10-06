@@ -4,4 +4,4 @@ import type { Transaction } from '@tiptap/pm/state';
 export const isUndoTransaction = (transaction?: Transaction): boolean => Object.prototype.hasOwnProperty.call(transaction?.['meta'], 'history$') && !transaction?.['meta']['history$']['redo'];
 
 // eslint-disable-next-line e18e/prefer-object-has-own
-export const isUndoRedoTransaction = (transaction?: Transaction): boolean => transaction ? Object.prototype.hasOwnProperty.call(transaction?.['meta'], 'history$') : false;
+export const isUndoRedoTransaction = (transaction: Transaction): boolean => Object.prototype.hasOwnProperty.call(transaction?.['meta'], 'history$');

@@ -8,6 +8,8 @@
   "editor": "ویرایشگر",
   "error": "خطا",
   "github": "گیت هاب",
+  "cancel": "انصراف",
+  "saveAndContinue": "ذخیره و ادامه",
   "number": "عدد",
   "paste": "چسباندن",
   "project": "{project,select,other{پروژه ها} singular{پروژه}}",

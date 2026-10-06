@@ -44,7 +44,7 @@
     "@mantine/dropzone": "^9.5.2",
     "@mantine/form": "^9.5.2",
     "@mantine/hooks": "^9.5.2",
-    "@mantine/modals": "^9.5.2",
+    "@mantine/modals": "^9.7.0",
     "@mantine/notifications": "^9.7.0",
     "@mantine/tiptap": "^9.5.2",
     "@tabler/icons-react": "^3.46.0",

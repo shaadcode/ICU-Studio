@@ -4,8 +4,8 @@ import type { MarkViewRendererProps } from '@tiptap/react';
 
 import { getMarkViewAttributes } from '@/shared/lib/icu';
 import { getDelimiterRange } from '../../../getDelimiterRange';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import type { MessageElementsTypeKeyword } from '@/shared/lib/icu/types';
-import { useFormatMessage } from '@/pages/landing/ui/Editor/useFormatMessage';
 
 type Props = {
   tiptapMark: MarkViewRendererProps;
@@ -13,7 +13,8 @@ type Props = {
 
 const ConvertVariableAction = (props: Props) => {
   const { editor } = props.tiptapMark;
-  const formatHandlers = useFormatMessage({ editor });
+  const formatContent = icuEditorStore.use.actions().formatContent;
+
   const t = useTranslations('editor');
   const attrs = getMarkViewAttributes(props.tiptapMark);
 
@@ -52,7 +53,7 @@ const ConvertVariableAction = (props: Props) => {
       .run();
 
     if (result) {
-      formatHandlers.formatMessage();
+      formatContent({ editor });
     }
   };
 

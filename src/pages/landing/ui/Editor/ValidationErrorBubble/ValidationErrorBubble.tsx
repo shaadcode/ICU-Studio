@@ -6,7 +6,6 @@ import { Box, Text, Code, Group, Stack, Popover, ActionIcon, CloseButton } from 
 import { IconInfoCircle, IconDotsVertical, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
 
 import { FixButton } from './FixButton/FixButton';
-import { useFormatMessage } from '../useFormatMessage';
 import classes from './ValidationErrorBubble.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { generateErrorCodeSnippet } from './generateErrorCodeSnippet';
@@ -25,9 +24,9 @@ type Coords = {
 const ValidationErrorBubble = ({ editor }: Props) => {
   const t = useTranslations('editor');
   const [opened, { open, close }] = useDisclosure(false);
-  const formateHandlers = useFormatMessage({ editor });
   const errorLocation = icuEditorStore.use.errorLocation();
   const validationError = icuEditorStore.use.validationError();
+  const formatContent = icuEditorStore.use.actions().formatContent;
   const clearValidationError = icuEditorStore.use.actions().clearValidationError;
 
   const [coords, setCoords] = useState<null | {
@@ -47,7 +46,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
   const handleFixed = () => {
     clearValidationError();
     close();
-    formateHandlers.formatMessage();
+    formatContent();
   };
 
   useEffect(() => {

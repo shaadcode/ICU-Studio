@@ -23,6 +23,12 @@
       }
     }
   },
+  "modals": {
+    "dirtyMessage": {
+      "title": "تغییرات ذخیره‌نشده",
+      "message": "تغییرات ذخیره‌نشده‌ای دارید. اگر ادامه دهید، از دست خواهند رفت. آیا ابتدا ذخیره کنید؟"
+    }
+  },
   "notifications": {
     "fileNotFound": {
       "title": "فایل پیدا نشد",
@@ -35,6 +41,12 @@
     "fileExists": {
       "title": "File already exists",
       "message": "A file named \"{name}\" already exists in app storage. Please choose a different name."
+    }
+  },
+  "state": {
+    "notSelected": {
+      "title": "پیامی انتخاب نشده است",
+      "description": "برای ویرایش، ابتدا یک پیام را از لیست انتخاب کنید"
     }
   }
 }

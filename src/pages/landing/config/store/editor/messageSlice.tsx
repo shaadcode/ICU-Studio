@@ -1,16 +1,18 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
-import type { Range } from '@tiptap/react';
+import type { Transaction } from '@tiptap/pm/state';
+import type { Range, Editor, EditorOptions } from '@tiptap/react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
-import { TagVariable, collectVariables } from '@/shared/lib/icu';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
 import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
-import type { MessageElementsTypeEnum } from '@/shared/lib/icu/types';
+import type { ParserError, MessageElementsTypeEnum } from '@/shared/lib/icu/types';
+import { createHtml, TagVariable, minimalParser, collectVariables } from '@/shared/lib/icu';
+import { extendSetContent, extendInsertContent, isUndoRedoTransaction } from '@/shared/lib/tiptap';
 
 export type ICUEditorMessageSlice = {
-  readonly message: string | undefined;
+  editorInstance: Editor | undefined;
   actions: ICUEditorMessageSliceActions;
   parsedMessage: undefined | Array<MessageFormatElement>;
   delimitersRange: Record<
@@ -24,10 +26,17 @@ type ReferenceId = string;
 type ICUEditorMessageSliceActions = {
   clearMessageState: () => void;
   setVariables: (value: Array<MessageFormatElement>) => void;
-  setMessage: (value: ICUEditorMessageSlice['message']) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
+  setEditorInstance: (editor: ICUEditorMessageSlice['editorInstance']) => void;
   updateVariableInitialValue: (valueName: string, value: Date | string | number) => void;
-
+  formatContent: (params?: {
+    editor?: Editor;
+    transaction?: Transaction;
+    onRenderMessage?: () => void;
+    onMountEditor?: EditorOptions['onMount'];
+    onUpdateEditor?: EditorOptions['onUpdate'];
+    onParserError?: (error: ParserError) => void;
+  }) => void;
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
@@ -35,13 +44,13 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
   message: undefined,
   delimitersRange: {},
   parsedMessage: undefined,
+  editorInstance: undefined,
   actions: {
     setVariables: setVariablesHandler(set),
-    setMessage: value => set({ message: value }),
     setParsedMessage: value => set({ parsedMessage: value }),
+    setEditorInstance: editor => set({ editorInstance: editor }),
     clearMessageState: () => set({
       variables: [],
-      message: undefined,
       delimitersRange: {},
       parsedMessage: undefined,
     }),
@@ -56,6 +65,53 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       });
 
       return set({ variables: result });
+    },
+    formatContent(params) {
+      const editor = params?.editor ?? get().editorInstance;
+      const actions = get().actions;
+      if (!editor) {
+        throw new Error('editor is undefined - formatContent in icu editor store');
+      }
+
+      const message = editor.getText();
+      const prevCursorPosition = editor.state.selection.$anchor.pos;
+
+      if (message.endsWith('{')) {
+        extendInsertContent(editor)('}');
+        editor.chain().setTextSelection(prevCursorPosition).run();
+        return;
+      }
+
+      const [error, parsedMessage] = minimalParser(message.trim());
+      if (!parsedMessage) {
+        params?.onParserError?.(error);
+        actions.clearMessageState();
+        return actions.setValidationError({ error, editor });
+      }
+
+      if (!get().validationError
+        && params?.transaction
+        && (message === '\n' || isUndoRedoTransaction(params?.transaction))) {
+        return;
+      }
+
+      const html = createHtml({
+        parsedMessage,
+        rawMessage: message,
+        opts: { withFormatting: true },
+      });
+      actions.clearValidationError();
+      actions.setParsedMessage(parsedMessage);
+      actions.setVariables(parsedMessage);
+      if (html.children.length) {
+        extendSetContent({ editor })(html.outerHTML);
+
+        setTimeout(() => {
+          editor.chain().setTextSelection(prevCursorPosition).run();
+        }, 0);
+
+        params?.onRenderMessage?.();
+      }
     },
   },
 });

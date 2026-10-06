@@ -7,15 +7,15 @@ import { useForm, schemaResolver } from '@mantine/form';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
 import { create, exists, readTextFile, BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 
-import type { MessageStoreSchema } from './CreateMessage';
-import { appStore } from '@/pages/landing/config/store/app';
+import type { MessageSchema } from './CreateMessage';
 import { MESSAGES_DIR, createMessagesDir } from '@/shared/lib/tauri';
+import { messagesStore } from '@/pages/landing/config/store/messages';
 
 export function useCreateMessageHandlers() {
   const t = useTranslations('messages');
   const tCommon = useTranslations('common');
-  const messagesStore = appStore.use.messagesStore();
-  const setMessages = appStore.use.actions().setMessages;
+  const messagesLocalStore = messagesStore.use.messagesLocalStore();
+  const setMessages = messagesStore.use.actions().setMessages;
 
   const schema = type({
     name: type('string >= 5')
@@ -30,13 +30,13 @@ export function useCreateMessageHandlers() {
 
   const [opened, drawerHandlers] = useDisclosure(false);
 
-  const handleAddNewMessageFileInStore = async (newMessageData: MessageStoreSchema) => {
-    if (!messagesStore) {
+  const handleAddNewMessageFileInStore = async (newMessageData: MessageSchema) => {
+    if (!messagesLocalStore) {
       throw new Error('messages store is undefined');
     }
-    await messagesStore.set(newMessageData.dirPath, newMessageData);
-    await messagesStore.save();
-    const newMessages = await messagesStore.entries<MessageStoreSchema>() ?? [];
+    await messagesLocalStore.set(newMessageData.dirPath, newMessageData);
+    await messagesLocalStore.save();
+    const newMessages = await messagesLocalStore.entries<MessageSchema>() ?? [];
     setMessages(newMessages);
   };
 

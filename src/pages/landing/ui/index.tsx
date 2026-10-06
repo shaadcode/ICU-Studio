@@ -36,7 +36,7 @@ const LandingPage = () => {
       <AppShell.Navbar>
         <Navbar />
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main style={{ display: 'flex', flexDirection: 'column' }}>
         {view === 'editor' && <ICUEditor />}
         {view === 'messages' && <MessagesMainSection />}
         {view === 'projects' && <ProjectsView />}

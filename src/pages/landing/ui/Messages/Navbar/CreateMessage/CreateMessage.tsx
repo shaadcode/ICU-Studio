@@ -3,7 +3,7 @@ import { Menu, Stack, Drawer, Button, TextInput, ActionIcon } from '@mantine/cor
 
 import { useCreateMessageHandlers } from './useCreateMessageHandlers';
 
-export type MessageStoreSchema = {
+export type MessageSchema = {
   name: string;
   dirPath: string;
 };

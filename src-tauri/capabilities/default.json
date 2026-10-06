@@ -19,7 +19,9 @@
     "fs:allow-remove",
     "fs:allow-write-text-file",
     "fs:allow-create",
-    "fs:allow-mkdir"
+    "fs:allow-mkdir",
+    "core:window:allow-close",
+    "core:window:allow-destroy"
   ],
   "platforms": ["windows", "linux", "macOS"]
 }

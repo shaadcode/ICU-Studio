@@ -1,11 +1,10 @@
-import type { ReactNode } from 'react';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Box, Group, Stack, Divider } from '@mantine/core';
-import type { Editor, UseEditorOptions } from '@tiptap/react';
 
 import { useHandleEditor } from './useHandleEditor';
 import TestVariables from './TestVariables/TestVariables';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
+import type { UseHandleEditorParams } from './useHandleEditor';
 import DateSnippet from './Controls/Snippets/Date/DateSnippet';
 import TimeSnippet from './Controls/Snippets/Time/TimeSnippet';
 import SimpleCopyControl from './Controls/SimpleCopy/SimpleCopy';
@@ -25,27 +24,12 @@ import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyP
 import MessageFormattingControl from './Controls/MessageFormatting/MessageFormatting';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
 
-type Props = {
-  editor: Editor;
-  /**
-   * for custom config
-   */
-  custom?: {
-    toolBarChildren?: ReactNode;
-    onMount?: UseEditorOptions['onMount'];
-    /**
-     * override default config
-     */
-    customEditorConfig?: UseEditorOptions;
-  };
-};
-
-const ICUEditor = (props: Props) => {
+const ICUEditor = (props: UseHandleEditorParams) => {
   const editorHandler = useHandleEditor({ ...props });
 
   return (
     <Stack w="100%" h="100%">
-      <RichTextEditor h="100%" w="100%" editor={props.editor}>
+      <RichTextEditor h="100%" w="100%" editor={editorHandler.editor}>
         <RichTextEditor.Toolbar
           sticky
           style={{

@@ -1,51 +1,23 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { load } from '@tauri-apps/plugin-store';
-import { notifications } from '@mantine/notifications';
-import { exists, readTextFile, BaseDirectory } from '@tauri-apps/plugin-fs';
-import { IconTrash, IconMessageOff, IconDotsVertical, IconAlertTriangle } from '@tabler/icons-react';
-import { Text, Menu, Group, Stack, Paper, Center, Loader, ThemeIcon, ActionIcon } from '@mantine/core';
+import { IconMessageOff } from '@tabler/icons-react';
+import { Text, Group, Stack, Center, Loader, ThemeIcon } from '@mantine/core';
 
-import classes from './Messages.module.css';
-import { appStore } from '@/pages/landing/config/store/app';
+import EveryMessage from './EveryMessage/EveryMessage';
 import CreateMessageFile from './CreateMessage/CreateMessage';
-import type { MessageStoreSchema } from './CreateMessage/CreateMessage';
+import { messagesStore } from '@/pages/landing/config/store/messages';
 
 const MessagesNavbar = () => {
   const t = useTranslations('messages');
-  const tCommon = useTranslations('common');
-  const [isLoading, setIsLoading] = useState(false);
-  const messages = appStore.use.messages();
-  const selectedMessage = appStore.use.selectedMessage();
-  const deleteMessage = appStore.use.actions().deleteMessage;
-  const setMessageContent = appStore.use.actions().setMessageContent;
-  const setSelectedMessage = appStore.use.actions().setSelectedMessage;
-  const setMessagesStore = appStore.use.actions().setMessagesStore;
-  const handleSelectMessage = async (message: MessageStoreSchema) => {
-    const isFileExist = await exists(message.dirPath, { baseDir: BaseDirectory.AppData });
-    if (!isFileExist) {
-      deleteMessage(message);
-      return notifications.show({
-        color: 'red',
-        icon: <IconAlertTriangle size={18} />,
-        title: t('notifications.readError.title'),
-        message: t('notifications.readError.message'),
-      });
-    }
-
-    const messageContent = await readTextFile(
-      message.dirPath,
-      { baseDir: BaseDirectory.AppData },
-    );
-    setSelectedMessage(message);
-    return setMessageContent(messageContent);
-  };
+  const [isLoading, setIsLoading] = useState(true);
+  const messages = messagesStore.use.messages();
+  const setMessagesLocalStore = messagesStore.use.actions().setMessagesLocalStore;
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
       const messagesStore = await load('messages.json', { autoSave: false });
-      setMessagesStore(messagesStore);
+      setMessagesLocalStore(messagesStore);
       setIsLoading(false);
     })();
   }, []);
@@ -93,52 +65,12 @@ const MessagesNavbar = () => {
               </Center>
             )
           : (
-              messages.map(([_, message]) => {
-                return (
-                  <Paper
-                    withBorder
-                    component={Group}
-                    key={message.name}
-                    className={classes['messageContainer']}
-                    mod={{
-                      'data-is-active': message.dirPath === selectedMessage?.dirPath || undefined,
-                    }}
-
-                    onClick={() => handleSelectMessage(message)}
-                  >
-                    <Text fz="sm" truncate>
-                      {message.name}
-                    </Text>
-                    <Menu withArrow shadow="md">
-                      <Menu.Target>
-                        <ActionIcon
-                          size="sm"
-                          radius="sm"
-                          variant="subtle"
-                          style={{ boxShadow: 'none' }}
-                        >
-                          <IconDotsVertical size="80%" />
-                        </ActionIcon>
-                      </Menu.Target>
-
-                      <Menu.Dropdown>
-                        <Menu.Item
-                          style={{ cursor: 'pointer' }}
-
-                          onClick={() => deleteMessage(message)}
-                        >
-                          <Group gap="xs" wrap="nowrap">
-                            <IconTrash size={16} color="red" />
-                            <Text fz="xs" c="red" tt="capitalize">
-                              {tCommon('delete')}
-                            </Text>
-                          </Group>
-                        </Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
-                  </Paper>
-                );
-              })
+              messages.map(([_, message], i) => (
+                <EveryMessage
+                  message={message}
+                  key={`${message.name}-${i}`}
+                />
+              ))
             )}
     </Stack>
   );

@@ -3,7 +3,7 @@ import type { Editor } from '@tiptap/react';
 import { RichTextEditor } from '@mantine/tiptap';
 import { IconSparkleHighlight } from '@tabler/icons-react';
 
-import { useFormatMessage } from '../../useFormatMessage';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = {
   editor: Editor;
@@ -11,14 +11,14 @@ type Props = {
 
 const MessageFormattingControl = (props: Props) => {
   const t = useTranslations('editor');
-  const formatHandlers = useFormatMessage({ editor: props.editor });
+  const formatContent = icuEditorStore.use.actions().formatContent;
 
   return (
     <RichTextEditor.Control
       title={t('controls.format')}
       aria-label={t('controls.format')}
 
-      onClick={formatHandlers.formatMessage}
+      onClick={() => formatContent(props)}
     >
       <IconSparkleHighlight size={16} />
     </RichTextEditor.Control>

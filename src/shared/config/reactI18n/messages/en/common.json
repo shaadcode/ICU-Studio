@@ -9,6 +9,8 @@
   "error": "error",
   "github": "github",
   "number": "number",
+  "cancel": "cancel",
+  "saveAndContinue": "save and continue",
   "paste": "paste",
   "project": "{project,select,other{projects} singular{project}}",
   "search": "search",

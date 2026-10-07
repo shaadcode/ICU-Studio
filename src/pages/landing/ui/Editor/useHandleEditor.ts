@@ -41,7 +41,7 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
     },
     extensions: [
       StarterKitForICUEditor,
-      Placeholder.configure({ placeholder: rootParams.placeholder ?? '' }),
+      Placeholder.configure({ placeholder: rootParams.placeholder ?? t('placeholder') }),
       SpanMark,
       CustomHardBreak,
     ],

@@ -26,8 +26,6 @@
 } */
 
 .previewTitleContainer {
-  background-color: var(--mantine-color-yellow-1);
-  border: 1px solid var(--mantine-color-yellow-7);
   padding: var(--mantine-spacing-sm);
   border-radius: var(--mantine-radius-md);
   justify-content: space-between;

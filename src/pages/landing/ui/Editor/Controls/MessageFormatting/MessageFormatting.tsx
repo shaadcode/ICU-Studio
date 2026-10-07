@@ -1,8 +1,10 @@
 import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
+import { useHotkeys } from '@mantine/hooks';
 import { RichTextEditor } from '@mantine/tiptap';
 import { IconSparkleHighlight } from '@tabler/icons-react';
 
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = {
@@ -12,6 +14,14 @@ type Props = {
 const MessageFormattingControl = (props: Props) => {
   const t = useTranslations('editor');
   const formatContent = icuEditorStore.use.actions().formatContent;
+
+  useHotkeys(
+    [
+      [hotkeys.editor.formatting, () => formatContent(props)],
+    ],
+    [],
+    true,
+  );
 
   return (
     <RichTextEditor.Control

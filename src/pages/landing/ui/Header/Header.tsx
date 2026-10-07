@@ -12,7 +12,10 @@ const Header = () => {
       component="header"
       justify="space-between"
     >
-      <Logo />
+      <Group>
+        <Logo />
+
+      </Group>
 
       <ThemeToggle />
     </Group>

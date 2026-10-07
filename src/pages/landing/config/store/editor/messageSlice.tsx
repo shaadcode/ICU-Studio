@@ -24,6 +24,7 @@ export type ICUEditorMessageSlice = {
 type ReferenceId = string;
 
 type ICUEditorMessageSliceActions = {
+  clearStore: () => void;
   clearMessageState: () => void;
   setVariables: (value: Array<MessageFormatElement>) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
@@ -49,6 +50,10 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
     setVariables: setVariablesHandler(set),
     setParsedMessage: value => set({ parsedMessage: value }),
     setEditorInstance: editor => set({ editorInstance: editor }),
+    clearStore: () => {
+      get().actions.clearMessageState();
+      set({ editorInstance: undefined });
+    },
     clearMessageState: () => set({
       variables: [],
       delimitersRange: {},

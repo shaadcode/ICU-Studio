@@ -31,7 +31,10 @@ export const createValidationSlice: ZustandSlice<
   errorLocation: undefined,
   validationError: undefined,
   actions: {
-    clearValidationError: () => set({ errorLocation: undefined, validationError: undefined }),
+    clearValidationError: () => set({
+      errorLocation: undefined,
+      validationError: undefined,
+    }),
     setValidationError: (payload) => {
       const error = payload?.error;
       const editor = payload?.editor;

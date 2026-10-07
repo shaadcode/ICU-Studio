@@ -1,0 +1,5 @@
+.widget-container {
+  @mixin dark {
+    border: 1px solid var(--mantine-color-dark-4);
+  }
+}

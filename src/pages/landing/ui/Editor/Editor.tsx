@@ -2,7 +2,6 @@ import { RichTextEditor } from '@mantine/tiptap';
 import { Box, Group, Stack, Divider } from '@mantine/core';
 
 import { useHandleEditor } from './useHandleEditor';
-import TestVariables from './TestVariables/TestVariables';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
 import type { UseHandleEditorParams } from './useHandleEditor';
 import DateSnippet from './Controls/Snippets/Date/DateSnippet';
@@ -96,8 +95,6 @@ const ICUEditor = (props: UseHandleEditorParams) => {
         </RichTextEditor.Content>
 
       </RichTextEditor>
-
-      <TestVariables />
     </Stack>
   );
 };

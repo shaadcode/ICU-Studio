@@ -3,6 +3,8 @@ import { useHotkeys } from '@mantine/hooks';
 import { IconSun, IconMoon } from '@tabler/icons-react';
 import { ActionIcon, useMantineColorScheme } from '@mantine/core';
 
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
+
 type Props = {
   button?: ComponentProps<typeof ActionIcon<'div'>>;
 };
@@ -10,7 +12,7 @@ function ThemeToggle(props: Props) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   useHotkeys(
     [
-      ['mod + J', toggleColorScheme],
+      [hotkeys.toggleTheme, toggleColorScheme],
     ],
     [],
     true,

@@ -6,6 +6,8 @@ import { IconCodeDots } from '@tabler/icons-react';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 import { Stack, Button, Popover, JsonInput, CloseButton } from '@mantine/core';
 
+import { extendSetContent } from '@/shared/lib/tiptap';
+
 const normalizeValue = (value: string) => {
   let incomingValue = value;
   if (value[0] !== '{' && value.includes(':')) {
@@ -25,18 +27,21 @@ const JSONPropertyPasteControl = () => {
   const [opened, handlers] = useDisclosure(false);
 
   const handleSubmit = () => {
+    if (!editor) {
+      return;
+    }
     try {
       const normalizedValue = normalizeValue(field.getValue());
       const repaired = jsonrepair(normalizedValue);
       const parsedMessage = JSON.parse(repaired);
 
       if (typeof parsedMessage === 'string') {
-        editor?.commands.setContent(parsedMessage);
+        extendSetContent({ editor })(parsedMessage);
       }
 
       if (typeof parsedMessage === 'object') {
         const firstProperty = Object.entries(parsedMessage as object)?.[0]?.[1];
-        editor?.commands.setContent(String(firstProperty));
+        extendSetContent({ editor })(String(firstProperty));
       }
 
       handlers.close();

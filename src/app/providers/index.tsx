@@ -1,6 +1,10 @@
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
+
+import './../../App.css';
+
 import type { ReactNode } from 'react';
 import { IntlProvider } from 'use-intl';
 import { DatesProvider } from '@mantine/dates';

@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
-import { useViewportSize } from '@mantine/hooks';
 import type { EditorOptions } from '@tiptap/react';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { useViewportSize, useDebouncedCallback } from '@mantine/hooks';
 
 import { SpanMark } from '@/shared/lib/mantine';
 import type { ParserError } from '@/shared/lib/icu/types';
 import { icuEditorStore } from '../../config/store/editor';
+import { DEBOUNCE_UPDATE_EDITOR } from '@/shared/lib/mantine/constant';
 import { CustomHardBreak, StarterKitForICUEditor } from '@/shared/lib/tiptap';
 
 export type UseHandleEditorParams = {
@@ -24,14 +25,22 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
   const viewportSize = useViewportSize();
   const setEditorInstance = icuEditorStore.use.actions().setEditorInstance;
   const setVariables = icuEditorStore.use.actions().setVariables;
+  const setFormatted = icuEditorStore.use.actions().setFormatted;
+  const setIsEmpty = icuEditorStore.use.actions().setIsEmpty;
   const formatContent = icuEditorStore.use.actions().formatContent;
+  const clearValidationError = icuEditorStore.use.actions().clearValidationError;
+
+  const debouncedUpdate = useDebouncedCallback((params: Parameters<EditorOptions['onUpdate']>[0]) => {
+    const textContent = params.editor.getText();
+    setIsEmpty(!textContent.trim().length);
+    setVariables([]);
+    setFormatted(false);
+    clearValidationError();
+  }, DEBOUNCE_UPDATE_EDITOR);
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-    onUpdate: (params) => {
-      setVariables([]);
-      rootParams.onUpdateEditor?.(params);
-    },
+
     onMount: (params) => {
       rootParams.onMountEditor?.(params);
       formatContent({
@@ -45,6 +54,12 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
       SpanMark,
       CustomHardBreak,
     ],
+    onUpdate: (params) => {
+      if (params.transaction.getMeta('is-message-fixer') !== true) {
+        debouncedUpdate(params);
+      }
+      rootParams.onUpdateEditor?.(params);
+    },
   });
 
   useEffect(() => {
@@ -54,7 +69,9 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
   }, [viewportSize]);
 
   useEffect(() => {
-    setEditorInstance(editor);
+    if (editor) {
+      setEditorInstance(editor);
+    }
   }, [editor]);
 
   return {

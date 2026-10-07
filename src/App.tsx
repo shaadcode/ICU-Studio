@@ -1,4 +1,3 @@
-import './App.css';
 import LandingPage from './pages/landing/ui';
 
 function App() {

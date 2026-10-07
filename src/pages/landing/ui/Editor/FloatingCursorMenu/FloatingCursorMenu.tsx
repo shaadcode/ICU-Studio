@@ -3,6 +3,8 @@ import type { Editor } from '@tiptap/react';
 import { useState, useEffect } from 'react';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
 
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
+
 type Props = {
   editor: null | Editor;
 };
@@ -28,7 +30,7 @@ const FloatingCursorMenu = ({ editor }: Props) => {
   useHotkeys(
     [
       [
-        'mod + space',
+        hotkeys.openFloatingMenu,
         (event) => {
           event.preventDefault();
           if (editor?.isFocused) {

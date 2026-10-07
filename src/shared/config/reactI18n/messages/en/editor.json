@@ -25,6 +25,7 @@
     "tFunctionPaste": "t function paste"
   },
   "convertTo": "convert to",
+  "copyPreview": "copy preview",
   "format": "format",
   "lastWeek": "last week",
   "lastYear": "last year",
@@ -83,6 +84,35 @@
     "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE": "Unmatched apostrophes in the argument style (e.g. '{foo, number, 'test)'",
     "UNCLOSED_TAG": "The opening tag has unmatched closing tag (e.g. '<bold>foo')",
     "UNMATCHED_CLOSING_TAG": "The closing tag does not match the opening tag (e.g. '<bold>foo</italic>')"
+  },
+  "parsingErrorsDescription": {
+    "CONFLICT_VARIABLE_NAME": "This variable is used with two different argument types in the same message. A variable must always have one type, such as number or plural. Rename one of them, or make both usages use the same type.",
+    "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "The same plural selector appears more than once in this argument. Each selector, like one, few, or other, may only be defined a single time. Remove the duplicate selector or merge its content into the existing one.",
+    "DUPLICATE_SELECT_ARGUMENT_SELECTOR": "The same select selector is defined twice in this argument. Every selector name must be unique within a select block. Delete the repeated selector, or rename it if it was meant to be a different case.",
+    "EMPTY_ARGUMENT": "This argument is empty. An ICU argument must contain a variable name, an optional type, and a message. Provide the missing content inside the braces, for example '{name}' or '{count, plural, other {# items}}'.",
+    "EXPECT_ARGUMENT_CLOSING_BRACE": "This argument is missing its closing brace. Every opening '{' must have a matching '}'. Add the missing brace, and check for nested braces that were not closed in the correct order.",
+    "EXPECT_ARGUMENT_STYLE": "A comma after the argument type signals that a style follows, but none was found. Either remove the trailing comma, or provide a valid style such as a number or date format, for example '{value, number, percent}'.",
+    "EXPECT_ARGUMENT_TYPE": "This argument has a comma but no type after it. When you write a comma, a type such as number, date, time, plural, or select must follow. Add the intended type or remove the comma entirely.",
+    "EXPECT_DATE_TIME_SKELETON": "The date or time argument uses '::' to introduce a skeleton, but no skeleton was provided. Add a valid skeleton after the '::', or remove the '::' if you did not intend to specify one.",
+    "EXPECT_NUMBER_SKELETON": "The number argument uses '::' to introduce a skeleton, but the skeleton is missing. Provide a valid number skeleton after the '::', or remove the '::' if a skeleton is not needed.",
+    "EXPECT_PLURAL_ARGUMENT_OFFSET_VALUE": "The plural argument declares an offset but does not provide its value. Write 'offset:' followed by an integer, for example 'offset:1', or remove the offset keyword entirely if it is not needed.",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR": "The plural or selectordinal argument is missing its selectors. After the argument type, at least one selector with a message must be provided. Add selectors such as '=1 {...} other {...}'.",
+    "EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT": "A plural or selectordinal selector is declared but has no message. Every selector must be followed by a message in braces, for example 'one {# item}'. Add the missing message or remove the empty selector.",
+    "EXPECT_SELECT_ARGUMENT_OPTIONS": "The select argument is missing its options. A select block must contain at least one selector with a message, such as 'male {...} other {...}'. Add the missing options or remove the select block.",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR": "The select argument has no selectors. After the argument type, at least one selector must be defined. Add selectors such as 'apple {...} other {...}', and remember that an 'other' clause is required.",
+    "EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT": "A select selector is declared but has no message. Every selector must be followed by a message in braces, for example 'apple {An apple}'. Add the missing message or remove the empty selector.",
+    "INVALID_ARGUMENT_TYPE": "This argument uses a type that ICU does not support. Only number, date, time, plural, select, and selectordinal are valid. Check for typos such as 'numer' or 'plural ' and correct the type name.",
+    "INVALID_DATE_TIME_SKELETON": "The date or time skeleton contains invalid characters or an unsupported pattern. Skeletons use specific ICU symbols, so check the syntax carefully and remove any characters that are not part of the skeleton specification.",
+    "INVALID_NUMBER_SKELETON": "The number skeleton contains invalid characters or an unsupported pattern. Number skeletons follow a strict ICU syntax, so review the skeleton and remove or correct any symbols that are not allowed.",
+    "INVALID_PLURAL_ARGUMENT_OFFSET_VALUE": "The offset value in this plural or selectordinal argument is invalid. The offset must be an integer, written as 'offset:1'. Replace the current value with a valid integer or remove the offset.",
+    "INVALID_PLURAL_ARGUMENT_SELECTOR": "This plural or selectordinal selector is malformed. Exact-value selectors must use '=' followed by an integer, such as '=0' or '=1'. Correct the selector or remove it if it is not needed.",
+    "INVALID_TAG": "This tag is malformed. Tags must follow the pattern '<name>content</name>' with matching names. Check for invalid characters, missing angle brackets, or incorrect slashes in the closing tag.",
+    "INVALID_TAG_NAME": "This tag name is invalid. Tag names must start with a letter and may only contain letters, digits, and underscores. Rename the tag to a valid identifier, such as 'bold' or 'user_name'.",
+    "MALFORMED_ARGUMENT": "This argument is malformed. It contains an unexpected character or is missing required parts such as the comma or the type. Review the argument and make sure it follows the pattern '{name, type, style}'.",
+    "MISSING_OTHER_CLAUSE": "This plural or select argument has no 'other' clause. ICU requires an 'other' clause to handle any value that does not match the defined selectors. Add 'other {...}' at the end of the argument.",
+    "UNCLOSED_QUOTE_IN_ARGUMENT_STYLE": "There is an unmatched apostrophe inside the argument style. In ICU, a single quote starts a quoted literal, so an unpaired quote will break parsing. Close the quote or escape it with another quote.",
+    "UNCLOSED_TAG": "This opening tag has no matching closing tag. Every '<name>' must be closed with '</name>'. Add the missing closing tag, or remove the opening tag if the markup was not intended.",
+    "UNMATCHED_CLOSING_TAG": "This closing tag does not match its opening tag. The names must be identical, so '</bold>' cannot close '<italic>'. Rename the closing tag to match the opening one, or fix the opening tag."
   },
   "placeholder": "type your ICU message ...",
   "pluralType": "plural type",
@@ -172,5 +202,16 @@
   },
   "variableName": "variable name",
   "variableType": "variable type",
+  "widgets": {
+    "problems": {
+      "editorNotReady": "Editor is not ready yet.",
+      "empty": "Empty message",
+      "emptyHint": "Start typing a message to see problems and suggestions.",
+      "formatNow": "Format now",
+      "noProblems": "No problems detected. Your message is valid.",
+      "unformatted": "Unformatted message",
+      "unformattedHint": "This message hasn't been formatted yet, so we can't check it for errors."
+    }
+  },
   "yesterday": "yesterday"
 }

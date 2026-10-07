@@ -7,6 +7,7 @@ import { notifications } from '@mantine/notifications';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { readTextFile, BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import type { MessageSchema } from '../CreateMessage/CreateMessage';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import { messagesStore } from '@/pages/landing/config/store/messages';
@@ -68,7 +69,7 @@ export function useEveryMessageHandlers(_props: Props) {
 
   useHotkeys(
     [
-      ['mod+S', handleSaveMessage],
+      [hotkeys.messages.saveMessage, handleSaveMessage],
     ],
     [],
     true,

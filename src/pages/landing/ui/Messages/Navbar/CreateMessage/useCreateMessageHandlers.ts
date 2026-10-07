@@ -8,6 +8,7 @@ import { useHotkeys, useDisclosure } from '@mantine/hooks';
 import { create, exists, readTextFile, BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 
 import type { MessageSchema } from './CreateMessage';
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import { MESSAGES_DIR, createMessagesDir } from '@/shared/lib/tauri';
 import { messagesStore } from '@/pages/landing/config/store/messages';
 
@@ -120,8 +121,8 @@ export function useCreateMessageHandlers() {
   };
 
   useHotkeys([
-    ['mod+N', () => openCreateMode()],
-    ['mod+O', () => handleOpenExistFile()],
+    [hotkeys.messages.createNewMessage, () => openCreateMode()],
+    [hotkeys.messages.openNewMessage, () => handleOpenExistFile()],
   ]);
   return {
     t,

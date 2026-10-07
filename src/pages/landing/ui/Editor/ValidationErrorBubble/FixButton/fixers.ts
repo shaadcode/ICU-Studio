@@ -45,6 +45,7 @@ export const fixers: FixerMap = {
           editor
             .chain()
             .focus()
+            .setMeta('is-message-fixer', true)
             .insertContentAt(
               {
                 from: errorLocation.end,
@@ -58,6 +59,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             errorLocation.end + 1,
             '}',
@@ -82,6 +84,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             {
               from: start + 1,
@@ -101,6 +104,7 @@ export const fixers: FixerMap = {
       apply: ({ editor, errorLocation }) => {
         editor
           .chain()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(errorLocation.end, 'other {}')
           .run();
       },
@@ -111,6 +115,7 @@ export const fixers: FixerMap = {
       apply: ({ editor, errorLocation }) => {
         editor
           .chain()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(errorLocation.end, 'other {#}')
           .run();
       },
@@ -128,6 +133,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ to: end, from: start }, result)
           .run();
       },
@@ -141,6 +147,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ to: end, from: start }, '{variable}')
           .run();
       },
@@ -163,6 +170,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             { from: start, to: end },
             cleanedLineText,
@@ -179,6 +187,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             { from: start, to: end },
             'number',
@@ -195,6 +204,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, 'date')
           .run();
       },
@@ -208,6 +218,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, 'time')
           .run();
       },
@@ -224,6 +235,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             { from: start, to: end },
             closest(invalidType, VALID_ARGUMENT_TYPES),
@@ -249,6 +261,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({
             from: errorLocation.lineRangeOffset.start,
             to: errorLocation.lineRangeOffset.end,
@@ -275,6 +288,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, cleanedText)
           .run();
       },
@@ -286,6 +300,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(errorLocation.start, 'decimal')
           .run();
       },
@@ -307,6 +322,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, cleanedText)
           .run();
       },
@@ -329,6 +345,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, cleanedLineText)
           .run();
       },
@@ -352,6 +369,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt({ from: start, to: end }, cleanedLineText)
           .run();
       },
@@ -367,6 +385,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             {
               from: start + validationError.location.start.column - 2,
@@ -386,6 +405,7 @@ export const fixers: FixerMap = {
         editor
           .chain()
           .focus()
+          .setMeta('is-message-fixer', true)
           .insertContentAt(
             start + validationError.location.start.column - 1,
             '\'',

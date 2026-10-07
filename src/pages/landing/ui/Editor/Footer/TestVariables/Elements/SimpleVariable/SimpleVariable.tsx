@@ -1,16 +1,13 @@
+import { useRef } from 'react';
 import { isString } from 'es-toolkit';
 import { useForm } from '@mantine/form';
-import { useRef, useEffect } from 'react';
 import { useTranslations } from 'use-intl';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { Group, Accordion, TextInput } from '@mantine/core';
+import { Text, Group, Stack, TextInput } from '@mantine/core';
 
-import VariableName from '../../VariableName/VariableName';
-import VariableType from '../../VariableType/VariableType';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
-import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 type Props = {
   data: ICUEditorStore['variables'][number];
@@ -30,39 +27,28 @@ const TestSimpleVariableField = (props: Props) => {
 
   const form = useForm({
     initialValues: { variable: value ?? '' },
-    onValuesChange: ({ variable }) => handleSetVariableValue(variable),
+    onValuesChange: ({ variable: v }) => handleSetVariableValue(v),
   });
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
   return (
-    <Accordion.Item
-      value={`${variable.name}-${variable.enumType}`}
-    >
-      <Accordion.Control onClick={() => {
-        setTimeout(() => {
-          inputRef.current?.select();
-        }, TEST_VARIABLES_ACCORDION_TRANSITION_DURATION);
-      }}
-      >
-        <Group>
-          <VariableName value={variable.name} />
+    <Group gap="md" wrap="nowrap" align="center">
+      <Stack gap={2} style={{ minWidth: 100, flexShrink: 0 }}>
+        <Text fw={600} size="sm" c="green.9">
+          {variable.name}
+        </Text>
+        <Text size="xs" c="dimmed" tt="capitalize">
           {/* @ts-expect-error */}
-          <VariableType value={t(String(variable.enumType))} />
-        </Group>
-      </Accordion.Control>
-      <Accordion.Panel>
-        <TextInput
-          ref={inputRef}
-          key={form.key('variable')}
-          placeholder={tCommon('value')}
-          {...form.getInputProps('variable')}
-        />
-      </Accordion.Panel>
-    </Accordion.Item>
+          {t(String(variable.enumType))}
+        </Text>
+      </Stack>
 
+      <TextInput
+        w="100%"
+        ref={inputRef}
+        placeholder={tCommon('value')}
+        {...form.getInputProps('variable')}
+      />
+    </Group>
   );
 };
 

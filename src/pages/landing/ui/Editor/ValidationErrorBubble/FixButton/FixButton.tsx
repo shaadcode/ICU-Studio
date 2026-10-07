@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslations } from 'use-intl';
+import { useHotkeys } from '@mantine/hooks';
 // FixButton.tsx
 import { Menu, Button, Tooltip } from '@mantine/core';
 import { IconWand, IconChevronDown } from '@tabler/icons-react';
@@ -7,6 +8,7 @@ import { IconWand, IconChevronDown } from '@tabler/icons-react';
 import { fixers } from './fixers';
 import classes from './FixButton.module.css';
 import type { Fixer, FixContext } from './fixers';
+import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 type Props = {
@@ -27,9 +29,7 @@ export const FixButton = ({ context, onFixed }: Props) => {
     );
   }, [context, validationError]);
 
-  if (availableFixers.length === 0) {
-    return null;
-  }
+  const firstFixer = availableFixers[0];
 
   const handleApply = async (fixer: Fixer) => {
     const result = await fixer.apply(context);
@@ -38,7 +38,16 @@ export const FixButton = ({ context, onFixed }: Props) => {
     }
   };
 
-  const firstFixer = availableFixers[0];
+  useHotkeys(
+    [
+      [hotkeys.editor.fixError, () => firstFixer && handleApply(firstFixer)],
+    ],
+    [],
+    true,
+  );
+  if (availableFixers.length === 0) {
+    return null;
+  }
 
   if (availableFixers.length === 1) {
     return (
@@ -63,8 +72,6 @@ export const FixButton = ({ context, onFixed }: Props) => {
   return (
 
     <Menu
-      position="bottom-start"
-      middlewares={{ flip: false }}
       classNames={{ dropdown: classes['dropdown'] }}
     >
       <Menu.Target>

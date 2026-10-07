@@ -12,6 +12,8 @@ import { createHtml, TagVariable, minimalParser, collectVariables } from '@/shar
 import { extendSetContent, extendInsertContent, isUndoRedoTransaction } from '@/shared/lib/tiptap';
 
 export type ICUEditorMessageSlice = {
+  isEmpty: boolean;
+  isFormatted: boolean;
   editorInstance: Editor | undefined;
   actions: ICUEditorMessageSliceActions;
   parsedMessage: undefined | Array<MessageFormatElement>;
@@ -26,6 +28,8 @@ type ReferenceId = string;
 type ICUEditorMessageSliceActions = {
   clearStore: () => void;
   clearMessageState: () => void;
+  setIsEmpty: (value: boolean) => void;
+  setFormatted: (value: boolean) => void;
   setVariables: (value: Array<MessageFormatElement>) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
   setEditorInstance: (editor: ICUEditorMessageSlice['editorInstance']) => void;
@@ -41,13 +45,17 @@ type ICUEditorMessageSliceActions = {
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
+  isEmpty: true,
   variables: [],
+  isFormatted: false,
   message: undefined,
   delimitersRange: {},
   parsedMessage: undefined,
   editorInstance: undefined,
   actions: {
+    setIsEmpty: v => set({ isEmpty: v }),
     setVariables: setVariablesHandler(set),
+    setFormatted: v => set({ isFormatted: v }),
     setParsedMessage: value => set({ parsedMessage: value }),
     setEditorInstance: editor => set({ editorInstance: editor }),
     clearStore: () => {
@@ -91,6 +99,7 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       if (!parsedMessage) {
         params?.onParserError?.(error);
         actions.clearMessageState();
+        set({ isFormatted: false });
         return actions.setValidationError({ error, editor });
       }
 
@@ -116,6 +125,8 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
         }, 0);
 
         params?.onRenderMessage?.();
+
+        set({ isFormatted: true });
       }
     },
   },

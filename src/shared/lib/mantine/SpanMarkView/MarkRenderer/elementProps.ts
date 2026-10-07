@@ -121,21 +121,21 @@ export const elementsConfig = {
     withActions: true,
     style: () => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-9)',
+      color: 'var(--mantine-color-blue-6)',
     }),
   },
   'time-argument-name': {
     withActions: true,
     style: () => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-9)',
+      color: 'var(--mantine-color-blue-6)',
     }),
   },
   'number-argument-name': {
     withActions: true,
     style: () => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-9)',
+      color: 'var(--mantine-color-blue-4)',
     }),
   },
   'pound': {

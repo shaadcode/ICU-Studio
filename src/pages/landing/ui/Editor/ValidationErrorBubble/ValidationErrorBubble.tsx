@@ -3,7 +3,7 @@ import type { Editor } from '@tiptap/react';
 import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Box, Text, Code, Group, Stack, Popover, ActionIcon, CloseButton } from '@mantine/core';
-import { IconInfoCircle, IconDotsVertical, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
+import { IconInfoCircle, IconAlertSquareRounded, IconAlertSquareRoundedFilled } from '@tabler/icons-react';
 
 import { FixButton } from './FixButton/FixButton';
 import classes from './ValidationErrorBubble.module.css';
@@ -65,7 +65,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
     <>
       <Group
         mih={22}
-        top={coords.start.top - 18}
+        top={coords.start.top - 78}
         className={classes['BubbleRoot']}
         h={coords.start.top - coords.end.bottom}
       />
@@ -84,7 +84,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
             size="sm"
             pos="absolute"
             variant="transparent"
-            top={coords.start.top - 18}
+            top={coords.start.top - 78}
             className={classes['errorIcon']}
 
             onClick={open}
@@ -156,9 +156,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
               >
                 {'Explain\r'}
               </Button> */}
-              <ActionIcon size="sm" ms="auto" radius={5} variant="subtle">
-                <IconDotsVertical size="80%" />
-              </ActionIcon>
+
             </Group>
           </Stack>
         </Popover.Dropdown>

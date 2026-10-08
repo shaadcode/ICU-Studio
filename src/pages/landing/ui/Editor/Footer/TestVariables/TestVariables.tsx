@@ -4,7 +4,7 @@ import { useTranslations } from 'use-intl';
 import { IntlMessageFormat } from 'intl-messageformat';
 import { IconFlask2Filled } from '@tabler/icons-react';
 import type { TYPE } from '@formatjs/icu-messageformat-parser';
-import { Box, Text, Stack, Group, Paper, Divider } from '@mantine/core';
+import { Box, Text, Stack, Group, Paper, Divider, ScrollAreaAutosize } from '@mantine/core';
 
 import WidgetHeader from '../../WidgetHeader';
 import classes from './TestVariables.module.css';
@@ -15,20 +15,28 @@ import TestPluralField from './Elements/Plural/TestPluralField';
 import TestSelectField from './Elements/Select/TestSelectField';
 import TestNumberField from './Elements/Number/TestNumberField';
 import WidgetContainer from '../../WidgetContainer/WidgetContainer';
+import { TestVariablesEmptyState } from './TestVariablesEmptyState';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import TestSimpleVariableField from './Elements/SimpleVariable/SimpleVariable';
 
 const TestVariablesWidget = () => {
   const tCommon = useTranslations('common');
+  const t = useTranslations('editor');
   const variables = icuEditorStore.use.variables() ?? [];
   const parsedMessage = icuEditorStore.use.parsedMessage() ?? [];
-  const keyValueVariables = variables.reduce((prevAcc, value) => ({ ...prevAcc, [value.name]: value.value }), {});
+  const keyValueVariables = variables.reduce(
+    (prevAcc, value) => ({ ...prevAcc, [value.name]: value.value }),
+    {},
+  );
 
   const message = (() => {
-    const [, printedMessage] = attempt(() => new IntlMessageFormat(parsedMessage).format(keyValueVariables));
-
+    const [, printedMessage] = attempt(
+      () => new IntlMessageFormat(parsedMessage).format(keyValueVariables),
+    );
     return (printedMessage ?? '') as string | Array<string>;
   })();
+
+  const hasVariables = variables.length > 0;
 
   const items = variables.map((element, i) => {
     const components = {
@@ -55,44 +63,56 @@ const TestVariablesWidget = () => {
       : null;
   });
 
-  if (!variables.length) {
-    return null;
-  }
-
   return (
-    <WidgetContainer>
-      <Stack>
-        <Group wrap="nowrap" justify="space-between">
-          <WidgetHeader
-            icon={IconFlask2Filled}
-            label={tCommon('preview')}
-          />
-        </Group>
+    <WidgetContainer className={classes['widget-container']}>
+      <Group wrap="nowrap" justify="space-between">
+        <WidgetHeader
+          label={tCommon('preview')}
+          icon={props => (
+            <IconFlask2Filled
+              color="var(--mantine-color-green-6)"
+              {...props}
+            />
+          )}
+        />
+      </Group>
+      <Paper p="sm" pie={0} mih={0} h="100%" shadow="xs">
+        {hasVariables
+          ? (
+              <ScrollAreaAutosize h="100%" scrollbars="y" offsetScrollbars>
+                <Stack gap="xs" h="100%">
+                  {items}
+                </Stack>
+              </ScrollAreaAutosize>
+            )
+          : (
+              <TestVariablesEmptyState />
+            )}
+      </Paper>
 
-        <Paper p="sm" shadow="xs">
-          <Stack gap="xs">
-            <Group wrap="nowrap" justify="space-between">
-              <Text span fz="sm" fw={600} tt="capitalize">
-                {tCommon('result')}
-              </Text>
-
-              { typeof message === 'string' && <CopyMessageButton previewMessage={message} />}
-            </Group>
-            <Box className={classes['preview-container']}>
-              <Text mod={{ 'data-testid': 'preview-value' }}>
-                {message}
-              </Text>
-            </Box>
-          </Stack>
-
-        </Paper>
-        <Paper p="sm" shadow="xs">
-          <Stack gap="xs">
-            {items}
-          </Stack>
-        </Paper>
-
-      </Stack>
+      <Paper p="sm" shadow="xs">
+        <Stack gap={0}>
+          <Group wrap="nowrap" justify="space-between">
+            <Text span fz="sm" fw={600} tt="capitalize">
+              {tCommon('result')}
+            </Text>
+            {typeof message === 'string' && hasVariables && (
+              <CopyMessageButton previewMessage={message} />
+            )}
+          </Group>
+          <Box className={classes['preview-container']}>
+            {hasVariables
+              ? (
+                  <Text fz="sm" mod={{ 'data-testid': 'preview-value' }}>{message}</Text>
+                )
+              : (
+                  <Text size="sm" c="dimmed" ta="center">
+                    {t('widgets.testVariables.empty.result')}
+                  </Text>
+                )}
+          </Box>
+        </Stack>
+      </Paper>
     </WidgetContainer>
   );
 };

@@ -12,12 +12,14 @@ export const xmlTagToHtml = (params: Params) => {
   if (!params.ctx) {
     throw new Error('ctx is undefined');
   }
+  const varName = message.value.trim();
 
+  params.stats.variables.add(varName);
   methods.addLeftAngleOpenTag({ dependsOn: id });
-  methods.addTagValue({ referenceId: id, value: message.value });
+  methods.addTagValue({ value: varName, referenceId: id });
   methods.addRightAngleOpenTag();
   params.traverse(message.children);
   methods.addLeftAngleCloseTag();
-  methods.addTagValue({ referenceId: id, value: message.value });
+  methods.addTagValue({ value: varName, referenceId: id });
   methods.addRightAngleCloseTag({ dependsOn: id });
 };

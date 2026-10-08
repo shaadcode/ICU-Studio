@@ -1,8 +1,9 @@
 import { Text, Group } from '@mantine/core';
+import type { IconProps } from '@tabler/icons-react';
 
 type Props = {
-  icon: any;
   label: string;
+  icon: (props: IconProps) => React.JSX.Element;
 };
 
 const WidgetHeader = (props: Props) => {
@@ -10,7 +11,6 @@ const WidgetHeader = (props: Props) => {
     <Group gap={6} wrap="nowrap" align="center">
       <props.icon
         size={16}
-        color="var(--mantine-color-gray-6)"
       />
       <Text span fz="sm" fw={600} tt="capitalize">
         {props.label}

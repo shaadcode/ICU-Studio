@@ -6,3 +6,10 @@
     background-color: var(--mantine-color-gray-0);
   }
 }
+
+.widget-container {
+  display: grid !important;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--mantine-spacing-xs);
+  height: 100%;
+}

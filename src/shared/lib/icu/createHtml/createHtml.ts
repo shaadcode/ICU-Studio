@@ -1,7 +1,9 @@
+import { words } from 'es-toolkit';
 import type { TYPE, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { dateToHtml } from './toHtml/date';
 import { timeToHtml } from './toHtml/time';
+import { createEmptyStats } from './stats';
 import { xmlTagToHtml } from './toHtml/tag';
 import { poundToHtml } from './toHtml/pound';
 import { pluralToHtml } from './toHtml/plural';
@@ -45,7 +47,10 @@ export const MARK_TYPES = {
   argumentNameDelimiterStart: `argument-name-delimiter-start`,
 } as const;
 
-export type TraverseContext = { id: string; depth: number };
+export type TraverseContext = {
+  id: string;
+  depth: number;
+};
 
 export type DefaultToHtml = <ElementType extends MessageFormatElement>() => SharedToHtmlHelpersParams<ElementType>;
 
@@ -69,6 +74,8 @@ export const extractInfoAndHtml = (params: Params) => {
     withFormatting: params.opts?.withFormatting,
   });
 
+  const stats = createEmptyStats();
+
   const traverse: Traverse = (messages, prevCtx) => messages.map((message, ctxIndex) => {
     const currentDepth = (prevCtx?.depth ?? 0) + 1;
     const ctxId = String(ctxIndex);
@@ -79,6 +86,7 @@ export const extractInfoAndHtml = (params: Params) => {
     } as TraverseContext;
 
     const defaultToHtmlParams: DefaultToHtml = () => ({
+      stats,
       methods,
       traverse,
       rootSpan,
@@ -105,6 +113,9 @@ export const extractInfoAndHtml = (params: Params) => {
   });
 
   traverse(params.parsedMessage);
+  stats.characters = params.rawMessage.length;
+  stats.words = words(params.rawMessage).length;
 
+  console.log(stats);
   return rootSpan;
 };

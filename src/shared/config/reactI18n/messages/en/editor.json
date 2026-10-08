@@ -52,6 +52,13 @@
     "tag": "tag",
     "time": "time"
   },
+  "now": "Now",
+  "inOneHour": "In 1 hour",
+  "inThreeHours": "In 3 hours",
+  "inSixHours": "In 6 hours",
+  "inTwelveHours": "In 12 hours",
+  "oneHourAgo": "1 hour ago",
+  "threeHoursAgo": "3 hours ago",
   "messages": "messages",
   "nextWeek": "next week",
   "nextYear": "next year",
@@ -122,6 +129,7 @@
   "tomorrow": "tomorrow",
   "validation": {
     "chooseFix": "Choose a fix",
+    "selectError": "Select error",
     "columnNumber": "column: {number}",
     "fix": "fix",
     "fixAutomatically": "Fix automatically",
@@ -211,6 +219,36 @@
       "noProblems": "No problems detected. Your message is valid.",
       "unformatted": "Unformatted message",
       "unformattedHint": "This message hasn't been formatted yet, so we can't check it for errors."
+    },
+    "testVariables": {
+      "empty": {
+        "title": "No variables to test",
+        "hint": "Add a variable to your message to see it here and test different values.",
+        "result": "Nothing to preview yet."
+      }
+    },
+    "statistics": {
+      "title": "Statistics",
+      "compare": "Compare",
+      "currentMessage": "Current Message",
+      "messageDetails": "Message Details",
+      "tabs": {
+        "message": "Message",
+        "project": "Project"
+      },
+      "project": {
+        "totalMessages": "Total Messages",
+        "withVariables": "With Variables",
+        "withPlural": "With Plural",
+        "withSelect": "With Select"
+      },
+      "characters": "Characters",
+      "words": "Words",
+      "variables": "Variables",
+      "pluralBranches": "Plural branches",
+      "selectBranches": "Select branches",
+      "tags": "Tags",
+      "maxNesting": "Max nesting"
     }
   },
   "yesterday": "yesterday"

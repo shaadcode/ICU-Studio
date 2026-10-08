@@ -20,7 +20,7 @@ const ICUEditorProblems = () => {
   const isFormatted = icuEditorStore.use.isFormatted();
   const isEmpty = icuEditorStore.use.isEmpty();
   const formatContent = icuEditorStore.use.actions().formatContent;
-  const hasProblem = Boolean(validationError && errorLocation);
+  const hasProblem = Boolean(validationError || errorLocation);
   const problemCount = hasProblem ? 1 : 0;
 
   const renderState = () => {
@@ -49,8 +49,13 @@ const ICUEditorProblems = () => {
     <WidgetContainer>
       <Stack h="100%">
         <WidgetHeader
-          icon={IconAlertHexagonFilled}
           label={t('problem', { count: problemCount })}
+          icon={props => (
+            <IconAlertHexagonFilled
+              color="var(--mantine-color-red-6)"
+              {...props}
+            />
+          )}
         />
         {renderState()}
       </Stack>

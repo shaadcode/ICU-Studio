@@ -8,7 +8,7 @@ const NumberSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
 
-  const message = `{value, number}`;
+  const message = `{variable, number}`;
   return (
     <RichTextEditor.Control
       title={t('controls.snippets.number')}

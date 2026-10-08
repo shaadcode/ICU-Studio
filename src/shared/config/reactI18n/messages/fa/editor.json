@@ -56,6 +56,13 @@
   "nextWeek": "هفته بعد",
   "nextYear": "سال بعد",
   "offset": "مقدار پایه",
+  "now": "الان",
+  "inOneHour": "یک ساعت بعد",
+  "inThreeHours": "سه ساعت بعد",
+  "inSixHours": "شش ساعت بعد",
+  "inTwelveHours": "دوازده ساعت بعد",
+  "oneHourAgo": "یک ساعت پیش",
+  "threeHoursAgo": "سه ساعت پیش",
   "parsingErrors": {
     "CONFLICT_VARIABLE_NAME": "متغیر دارای نوع‌های متناقض است",
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "selector تکراری در آرگومان plural یا selectordinal (مثال: {foo, plural, one {#} one {#}})",
@@ -122,6 +129,7 @@
   "tomorrow": "فردا",
   "validation": {
     "chooseFix": "یک راه‌حل انتخاب کنید",
+    "selectError": "انتخاب خطا",
     "collectionVariablesError": {
       "conflictVariableName": "نام متغیر تکراری است"
     },
@@ -214,6 +222,36 @@
       "noProblems": "هیچ مشکلی یافت نشد. پیام شما معتبر است.",
       "unformatted": "پیام فرمت نشده",
       "unformattedHint": "این پیام هنوز فرمت نشده، بنابراین نمی‌توانیم آن را بررسی کنیم."
+    },
+    "testVariables": {
+      "empty": {
+        "title": "متغیری برای تست وجود ندارد",
+        "hint": "برای دیدن و تست مقادیر مختلف، یک متغیر به پیام خود اضافه کنید.",
+        "result": "هنوز چیزی برای پیش‌نمایش نیست."
+      }
+    },
+    "statistics": {
+      "title": "آمار",
+      "compare": "مقایسه",
+      "currentMessage": "پیام فعلی",
+      "messageDetails": "جزئیات پیام",
+      "tabs": {
+        "message": "پیام",
+        "project": "پروژه"
+      },
+      "project": {
+        "totalMessages": "کل پیام‌ها",
+        "withVariables": "دارای متغیر",
+        "withPlural": "دارای Plural",
+        "withSelect": "دارای Select"
+      },
+      "characters": "کاراکترها",
+      "words": "کلمات",
+      "variables": "متغیرها",
+      "pluralBranches": "شاخه‌های Plural",
+      "selectBranches": "شاخه‌های Select",
+      "tags": "تگ‌ها",
+      "maxNesting": "حداکثر تودرتویی"
     }
   },
   "yesterday": "دیروز"

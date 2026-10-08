@@ -16,3 +16,14 @@ body {
   background-color: var(--mantine-color-yellow-6) !important;
   color: var(--mantine-color-dark-7) !important;
 }
+
+.error-line-highlight {
+  background-color: rgb(255, 0, 0, 0.08);
+  border-bottom: 2px wavy var(--mantine-color-red-6);
+}
+
+.error-block {
+  outline: 1px solid rgb(255, 0, 0, 0.2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

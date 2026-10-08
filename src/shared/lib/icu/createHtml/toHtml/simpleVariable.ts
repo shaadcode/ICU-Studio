@@ -18,11 +18,14 @@ export const simpleVariableToHtml = (params: Params) => {
   }
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
+
+  const varName = message.value.trim();
   methods.addArgumentName({
+    value: varName,
     referenceId: id,
     depth: ctx.depth,
     variableType: 'argument',
-    value: message.value.trim(),
   });
+  params.stats.variables.add(varName);
   methods.addArgumentNameDelimiterEnd({ dependsOn: id });
 };

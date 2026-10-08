@@ -15,11 +15,15 @@ export const numberToHtml = (params: Params) => {
   }
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
+  const varName = message.value.trim();
   methods.addArgumentName({
+    value: varName,
     referenceId: id,
-    variableType: 'date',
-    value: message.value,
+    variableType: 'number',
   });
+
+  params.stats.variables.add(varName);
+
   methods.addComma();
   methods.addNumberArgumentName();
 

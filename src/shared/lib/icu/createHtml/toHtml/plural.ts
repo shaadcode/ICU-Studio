@@ -20,12 +20,16 @@ export const pluralToHtml = (params: Params) => {
   methods.addArgumentNameDelimiterStart({
     dependsOn: id,
   });
+  const varName = message.value.trim();
   methods.addArgumentName({
     depth,
+    value: varName,
     referenceId: id,
-    value: message.value,
     variableType: 'plural',
   });
+
+  params.stats.variables.add(varName);
+
   methods.addComma();
   if (message.pluralType === 'cardinal') {
     methods.addPluralKeyword();

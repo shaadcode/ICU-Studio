@@ -8,7 +8,7 @@ const TimeSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
 
-  const message = `{time, time, short}`;
+  const message = `{variable, time, short}`;
   return (
     <RichTextEditor.Control
       title={t('controls.snippets.time')}

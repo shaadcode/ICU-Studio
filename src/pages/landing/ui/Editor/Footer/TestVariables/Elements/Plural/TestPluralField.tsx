@@ -3,16 +3,11 @@ import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
 import { isNumber, isString } from 'es-toolkit';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { Group, Accordion, NumberInput, SegmentedControl } from '@mantine/core';
+import { Text, Group, Stack, NumberInput } from '@mantine/core';
 
-import InfoBadge from '../../InfoBadge/InfoBadge';
-import classes from './TestPluralField.module.css';
-import VariableName from '../../VariableName/VariableName';
-import VariableType from '../../VariableType/VariableType';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import type { ICUEditorStore } from '@/pages/landing/config/store/editor';
 import { BOUNCE_UPDATE_VARIABLE_VALUE } from '@/shared/lib/icu/constants';
-import { TEST_VARIABLES_ACCORDION_TRANSITION_DURATION } from '@/shared/lib/mantine';
 
 type Props = {
   data: ICUEditorStore['variables'][number];
@@ -25,10 +20,12 @@ const TestPluralField = (props: Props) => {
     ? variable.value
     : isNumber(variable.value)
       ? String(variable.value)
-      : 'unknown';
+      : '';
+
   const t = useTranslations('editor');
   const tCommon = useTranslations('common');
   const updateVariableInitialValue = icuEditorStore.use.actions().updateVariableInitialValue;
+
   const handleSetVariableValue = useDebouncedCallback((fieldValue: string) => {
     updateVariableInitialValue(variable.name, fieldValue);
   }, BOUNCE_UPDATE_VARIABLE_VALUE);
@@ -36,52 +33,48 @@ const TestPluralField = (props: Props) => {
   const form = useForm({
     mode: 'controlled',
     initialValues: { variable: value ?? '' },
-    onValuesChange: ({ variable }) => handleSetVariableValue(variable),
-    enhanceGetInputProps: () => ({ onFocus: () => inputRef.current?.select }),
+    onValuesChange: ({ variable: v }) => handleSetVariableValue(v),
+    enhanceGetInputProps: () => ({
+      onFocus: () => inputRef.current?.select(),
+    }),
   });
 
   return (
-    <Accordion.Item value={`${variable.name}-${variable.enumType}`}>
-      <Accordion.Control onClick={() => {
-        setTimeout(() => {
-          inputRef.current?.select();
-        }, TEST_VARIABLES_ACCORDION_TRANSITION_DURATION);
-      }}
-      >
-        <Group gap="sm">
-          <VariableName value={variable.name} />
+    <Group gap="md" wrap="nowrap" align="center">
+      <Stack gap={2} style={{ minWidth: 100, flexShrink: 0 }}>
+        <Group gap={4} align="center">
+          <Text fw={600} size="sm" c="orange.6">
+            {variable.name}
+          </Text>
+        </Group>
+        <Text size="xs" c="dimmed" tt="capitalize">
           {/* @ts-expect-error */}
-          <VariableType value={t(`messageFormatEnum.${String(variable.enumType)}`)} />
-          <InfoBadge color="orange">
-            {t('offset')}
-            {': '}
-            {variable.config?.offset ?? 'unknown'}
-          </InfoBadge>
+          {t(`messageFormatEnum.${String(variable.enumType)}`)}
+        </Text>
+      </Stack>
 
-          <InfoBadge color="blue">
-            {t('pluralType')}
-            {': '}
-            {variable.config?.pluralType ?? 'unknown'}
-          </InfoBadge>
-        </Group>
-      </Accordion.Control>
-      <Accordion.Panel>
-        <Group>
-          <SegmentedControl
-            data={[0, 1, 2, 5, 10, 100]}
-            classNames={{ innerLabel: classes['presetLabel'] }}
-            {...form.getInputProps('variable')}
-          />
-          <NumberInput
-            w={75}
-            ref={inputRef}
-            placeholder={tCommon('number')}
-            styles={{ input: { height: '41px' } }}
-            {...form.getInputProps('variable')}
-          />
-        </Group>
-      </Accordion.Panel>
-    </Accordion.Item>
+      <Group gap="xs" wrap="nowrap" align="center" style={{ flex: 1, minWidth: 0 }}>
+        {/* <InfoBadge color="orange">
+          {t('offset')}
+          {': '}
+          {variable.config?.offset ?? 'unknown'}
+        </InfoBadge>
+
+        <InfoBadge color="blue">
+          {t('pluralType')}
+          {': '}
+          {variable.config?.pluralType ?? 'unknown'}
+        </InfoBadge> */}
+
+        <NumberInput
+          w="100%"
+          size="xs"
+          ref={inputRef}
+          placeholder={tCommon('number')}
+          {...form.getInputProps('variable')}
+        />
+      </Group>
+    </Group>
   );
 };
 

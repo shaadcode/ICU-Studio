@@ -41,30 +41,32 @@ export const createValidationSlice: ZustandSlice<
       const { location } = error;
 
       if (error && editor) {
+        const errorLocation = {
+          end: location.end.offset + 1,
+          start: location.start.offset + 1,
+          lineRangeOffset: location.end.line === location.start.line
+            ? getLineRangeOffsetByOneLine(
+              editor,
+              error.location.start.line,
+            ) ?? {
+              end: location.end.offset + 1,
+              start: location.start.offset + 1,
+            }
+            : {
+                end: getLineRangeOffset(
+                  editor,
+                  location.end.line,
+                ) ?? location.end.offset + 1,
+                start: getLineRangeOffset(
+                  editor,
+                  location.start.line,
+                ) ?? location.start.offset + 1,
+              },
+        };
+
         set({
+          errorLocation,
           validationError: payload.error,
-          errorLocation: {
-            end: location.end.offset + 1,
-            start: location.start.offset + 1,
-            lineRangeOffset: location.end.line === location.start.line
-              ? getLineRangeOffsetByOneLine(
-                editor,
-                error.location.start.line,
-              ) ?? {
-                end: location.end.offset + 1,
-                start: location.start.offset + 1,
-              }
-              : {
-                  end: getLineRangeOffset(
-                    editor,
-                    location.end.line,
-                  ) ?? location.end.offset + 1,
-                  start: getLineRangeOffset(
-                    editor,
-                    location.start.line,
-                  ) ?? location.start.offset + 1,
-                },
-          },
         });
       }
     },

@@ -13,6 +13,7 @@ import { extendSetContent, extendInsertContent, isUndoRedoTransaction } from '@/
 
 export type ICUEditorMessageSlice = {
   isEmpty: boolean;
+  textContent: string;
   isFormatted: boolean;
   editorInstance: Editor | undefined;
   actions: ICUEditorMessageSliceActions;
@@ -30,6 +31,7 @@ type ICUEditorMessageSliceActions = {
   clearMessageState: () => void;
   setIsEmpty: (value: boolean) => void;
   setFormatted: (value: boolean) => void;
+  setTextContent: (value: string) => void;
   setVariables: (value: Array<MessageFormatElement>) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
   setEditorInstance: (editor: ICUEditorMessageSlice['editorInstance']) => void;
@@ -47,6 +49,7 @@ type ICUEditorMessageSliceActions = {
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
   isEmpty: true,
   variables: [],
+  textContent: '',
   isFormatted: false,
   message: undefined,
   delimitersRange: {},
@@ -54,8 +57,9 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
   editorInstance: undefined,
   actions: {
     setIsEmpty: v => set({ isEmpty: v }),
-    setVariables: setVariablesHandler(set),
     setFormatted: v => set({ isFormatted: v }),
+    setVariables: setVariablesHandler(set, get),
+    setTextContent: v => set({ textContent: v }),
     setParsedMessage: value => set({ parsedMessage: value }),
     setEditorInstance: editor => set({ editorInstance: editor }),
     clearStore: () => {
@@ -136,12 +140,16 @@ type Variable = ICUEditorMessageSlice['variables'][number];
 
 function setVariablesHandler(
   set: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[0],
+  get: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[1],
 ) {
   return (parsedMessage: Parameters<ICUEditorMessageSliceActions['setVariables']>[0]): ReturnType<ICUEditorMessageSliceActions['setVariables']> => {
     const collectedVariables = collectVariables(parsedMessage);
 
     if (collectedVariables.errors.length) {
-      set({ validationError: collectedVariables.errors[0] });
+      get().actions.setValidationError({
+        editor: get().editorInstance!,
+        error: collectedVariables.errors[0] as ParserError,
+      });
       return;
     }
 

@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
-import { Text, Stack, Group } from '@mantine/core';
+import { IconTarget } from '@tabler/icons-react';
+import { Text, Stack, Group, Button } from '@mantine/core';
 
 import CodeSnippet from '../CodeSnippet/CodeSnippet';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
@@ -23,18 +24,32 @@ export const InvalidState = memo(({ editor, errorLocation, validationError }: Pr
     clearValidationError();
     formatContent();
   };
+
+  const handleSelectError = () => {
+    editor
+      .chain()
+      .focus()
+      .setTextSelection({
+        to: errorLocation.end,
+        from: errorLocation.start,
+      })
+      .scrollIntoView()
+      .run();
+  };
+
   return (
     <Stack h="100%">
       <Text size="sm">
         {t(`parsingErrors.${validationError.message}`)}
       </Text>
+
       <CodeSnippet
         editor={editor}
         errorLocation={errorLocation}
         validationError={validationError}
       />
 
-      <Text c="dark" size="sm">
+      <Text size="sm">
         {t(`parsingErrorsDescription.${validationError.message}`)}
       </Text>
 
@@ -49,6 +64,17 @@ export const InvalidState = memo(({ editor, errorLocation, validationError }: Pr
 
           onFixed={handleOnFixed}
         />
+
+        <Button
+          size="xs"
+          color="blue"
+          variant="light"
+          leftSection={<IconTarget size={14} />}
+
+          onClick={handleSelectError}
+        >
+          {t('validation.selectError')}
+        </Button>
       </Group>
     </Stack>
   );

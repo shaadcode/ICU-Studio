@@ -82,7 +82,7 @@ const ValidationErrorBubble = ({ editor }: Props) => {
         <Popover.Target>
           <ActionIcon
             size="sm"
-            pos="absolute"
+            pos="fixed"
             variant="transparent"
             top={coords.start.top - 78}
             className={classes['errorIcon']}

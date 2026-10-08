@@ -16,12 +16,16 @@ export const selectToHtml = (params: Params) => {
 
   const options = message.options;
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
+  const varName = message.value.trim();
   methods.addArgumentName({
     depth,
+    value: varName,
     referenceId: id,
-    value: message.value,
-    variableType: 'date',
+    variableType: 'select',
   });
+
+  params.stats.variables.add(varName);
+
   methods.addComma();
   methods.addSelectKeyword();
 

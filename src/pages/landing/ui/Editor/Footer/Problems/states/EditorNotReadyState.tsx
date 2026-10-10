@@ -7,7 +7,7 @@ export const EditorNotReadyState = memo(() => {
 
   return (
     <Center style={{ flex: 1 }}>
-      <Text size="sm" c="dimmed" ta="center">
+      <Text size="sm" c="dimmed" ta="center" textWrap="wrap">
         {tEditor('widgets.problems.editorNotReady')}
       </Text>
     </Center>

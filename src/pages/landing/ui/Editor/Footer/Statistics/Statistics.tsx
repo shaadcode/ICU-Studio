@@ -5,6 +5,7 @@ import { Stack, ScrollAreaAutosize } from '@mantine/core';
 
 import WidgetHeader from '../../WidgetHeader';
 import { UnformattedState } from './UnformattedState';
+import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
 import { CurrentMessageCard } from './CurrentMessageCard';
 import { StatisticsEmptyState } from './StatisticsEmptyState';
 import { ValidationErrorState } from './ValidationErrorState';
@@ -41,7 +42,7 @@ export const StatisticsWidget = memo(() => {
   };
 
   return (
-    <WidgetContainer pr={0} mih={0}>
+    <WidgetContainer pr={0} mih={0} mod={{ 'data-footer-widget': true }}>
       <ScrollAreaAutosize
         h="100%"
         mah="100%"
@@ -51,6 +52,7 @@ export const StatisticsWidget = memo(() => {
         <Stack gap="sm" h="100%">
           <WidgetHeader
             label={t('widgets.statistics.title')}
+            containerProps={{ visibleFrom: MOBILE_BREAKPOINT }}
             icon={props => <IconChartPie color="var(--mantine-color-blue-6)" {...props} />}
           />
 

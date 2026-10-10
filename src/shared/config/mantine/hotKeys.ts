@@ -1,6 +1,7 @@
 export const hotkeys = {
   toggleTheme: 'mod + j',
   toggleNavbar: 'mod + b',
+  toggleSideBar: 'mod + \\',
   openFloatingMenu: 'mod + space',
   editor: {
     fixError: 'mod + .',

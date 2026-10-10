@@ -1,8 +1,8 @@
 import path from 'node:path';
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
+import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 
@@ -17,8 +17,10 @@ export default defineConfig({
   //
   // 1. prevent Vite from obscuring rust errors
   clearScreen: false,
-  plugins: [react()],
   cacheDir: './.cache',
+  plugins: [
+    react(),
+  ],
   resolve: {
     tsconfigPaths: true,
   },

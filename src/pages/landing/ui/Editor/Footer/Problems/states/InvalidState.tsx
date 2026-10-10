@@ -49,7 +49,7 @@ export const InvalidState = memo(({ editor, errorLocation, validationError }: Pr
         validationError={validationError}
       />
 
-      <Text size="sm">
+      <Text size="sm" textWrap="wrap">
         {t(`parsingErrorsDescription.${validationError.message}`)}
       </Text>
 

@@ -37,7 +37,7 @@ const Navbar = () => {
 
   return (
     <Grid p="md" w="100%">
-      <GridCol span={2}>
+      <GridCol span="auto" maw="fit-content">
         <Stack justify="center">
           {navItems.map(item => (
             <Tooltip key={item.label} label={item.label}>
@@ -58,7 +58,7 @@ const Navbar = () => {
           ))}
         </Stack>
       </GridCol>
-      <GridCol span={10}>
+      <GridCol span="auto">
         {view === 'messages' && <MessagesNavbar />}
       </GridCol>
     </Grid>

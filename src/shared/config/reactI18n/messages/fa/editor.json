@@ -257,6 +257,19 @@
         "numbers": "اعداد",
         "punctuation": "علائم نگارشی"
       }
+    },
+    "variables": {
+      "title": "متغیرها",
+      "empty": {
+        "title": "متغیری یافت نشد",
+        "hint": "برای دیدن متغیرها، یک متغیر به پیام خود اضافه کنید."
+      },
+      "offset": "Offset",
+      "pluralType": "نوع Plural",
+      "conditions": "شرط‌ها",
+      "dateStyle": "فرمت تاریخ",
+      "timeStyle": "فرمت زمان",
+      "numberStyle": "فرمت عدد"
     }
   },
   "yesterday": "دیروز"

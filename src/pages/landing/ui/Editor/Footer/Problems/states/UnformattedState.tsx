@@ -16,7 +16,7 @@ export const UnformattedState = memo(({ onFormat }: Props) => {
         <ThemeIcon size="lg" radius="xl" color="yellow" variant="light">
           <IconHelpHexagonFilled size={20} />
         </ThemeIcon>
-        <Text size="sm" c="dimmed" ta="center">
+        <Text size="sm" c="dimmed" ta="center" textWrap="wrap">
           {tEditor('widgets.problems.unformattedHint')}
         </Text>
         <Button

@@ -6,6 +6,7 @@ import WidgetHeader from '../../WidgetHeader';
 import { EmptyState } from './states/EmptyState';
 import { ValidState } from './states/ValidState';
 import { InvalidState } from './states/InvalidState';
+import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
 import { UnformattedState } from './states/UnformattedState';
 import { EditorNotReadyState } from './states/EditorNotReadyState';
 import WidgetContainer from '../../WidgetContainer/WidgetContainer';
@@ -46,10 +47,11 @@ const ICUEditorProblemsWidgets = () => {
   };
 
   return (
-    <WidgetContainer>
+    <WidgetContainer mod={{ 'data-footer-widget': true }}>
       <Stack h="100%">
         <WidgetHeader
           label={t('problem', { count: problemCount })}
+          containerProps={{ visibleFrom: MOBILE_BREAKPOINT }}
           icon={props => (
             <IconAlertHexagonFilled
               color="var(--mantine-color-red-6)"

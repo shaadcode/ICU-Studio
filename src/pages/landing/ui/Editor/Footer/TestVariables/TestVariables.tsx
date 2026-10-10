@@ -9,6 +9,7 @@ import { Box, Text, Stack, Group, Paper, Divider, ScrollAreaAutosize } from '@ma
 import WidgetHeader from '../../WidgetHeader';
 import classes from './TestVariables.module.css';
 import CopyMessageButton from './CopyMessageButton';
+import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
 import TestDateField from './Elements/Date/TestDateField';
 import TestTimeField from './Elements/Time/TestTimeField';
 import TestPluralField from './Elements/Plural/TestPluralField';
@@ -64,10 +65,14 @@ const TestVariablesWidget = () => {
   });
 
   return (
-    <WidgetContainer className={classes['widget-container']}>
+    <WidgetContainer
+      mod={{ 'data-footer-widget': true }}
+      className={classes['widget-container']}
+    >
       <Group wrap="nowrap" justify="space-between">
         <WidgetHeader
           label={tCommon('preview')}
+          containerProps={{ visibleFrom: MOBILE_BREAKPOINT }}
           icon={props => (
             <IconFlask2Filled
               color="var(--mantine-color-green-6)"

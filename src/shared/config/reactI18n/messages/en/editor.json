@@ -254,6 +254,19 @@
         "numbers": "Numbers",
         "punctuation": "Punctuation"
       }
+    },
+    "variables": {
+      "title": "Variables",
+      "empty": {
+        "title": "No variables found",
+        "hint": "Add a variable to your message to see it here."
+      },
+      "offset": "Offset",
+      "pluralType": "Plural type",
+      "conditions": "Conditions",
+      "dateStyle": "Date style",
+      "timeStyle": "Time style",
+      "numberStyle": "Number style"
     }
   },
   "yesterday": "yesterday"

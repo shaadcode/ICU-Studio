@@ -1,6 +1,6 @@
-import { Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 import type { MarkViewRendererProps } from '@tiptap/react';
+import { Text, useComputedColorScheme } from '@mantine/core';
 
 import { elementsConfig } from './elementProps';
 import MarkActions from '../MarkActions/MarkActions';
@@ -13,10 +13,14 @@ type Props = {
 };
 const MarkRenderer = ({ children, ...props }: Props) => {
   const attrs = getMarkViewAttributes(props.tiptapMark);
+  const colorScheme = useComputedColorScheme('light');
   const markType = attrs['data-mark-type'];
   // @ts-expect-error
   const markConfig = elementsConfig?.[markType] as MarkComponentConfig;
-  const styles = markConfig?.style?.({ markAttributes: attrs });
+  const styles = markConfig?.style?.({
+    colorScheme,
+    markAttributes: attrs,
+  });
 
   if (markConfig?.withActions) {
     return (

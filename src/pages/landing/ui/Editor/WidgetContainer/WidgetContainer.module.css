@@ -1,4 +1,21 @@
 .widget-container {
+  width: 100%;
+  padding: var(--mantine-spacing-xs);
+  height: 100%;
+  box-shadow: var(--mantine-shadow-xs);
+
+  &[data-footer-widget] {
+    min-width: 400px;
+
+    @mixin smaller-than $mantine-breakpoint-sm {
+      cursor: default;
+    }
+
+    @mixin larger-than $mantine-breakpoint-sm {
+      width: 33.3333%;
+    }
+  }
+
   @mixin dark {
     background-color: var(--mantine-color-dark-8);
     border: 1px solid var(--mantine-color-dark-4);

@@ -1,5 +1,6 @@
 import type { ValueOf } from 'type-fest';
 import type { CSSProperties } from 'react';
+import type { UseColorSchemeValue } from '@mantine/hooks';
 
 import type { MARK_TYPES } from '@/shared/lib/icu/createHtml/createHtml';
 import type { MarkAttributesWithoutClass } from '@/shared/lib/icu/types';
@@ -9,6 +10,7 @@ export type MarkComponentConfig = {
   style?: (params: StyleParams) => CSSProperties;
 };
 type StyleParams = {
+  colorScheme: UseColorSchemeValue;
   markAttributes: MarkAttributesWithoutClass;
 };
 
@@ -23,182 +25,210 @@ const H_MARGIN = SPACING.sm;
 
 const INDENT_PER_DEPTH = 16;
 
+const SHADE = {
+  dark: 4,
+  light: 7,
+} as const;
+
+export const makeColorValue = (
+  color: string,
+  colorScheme: UseColorSchemeValue,
+): string => `var(--mantine-color-${color}-${SHADE[colorScheme]})`;
+
+export const VARIABLE_COLORS = {
+  date: { color: 'teal' },
+  time: { color: 'cyan' },
+  plural: { color: 'red' },
+  tag: { color: 'indigo' },
+  number: { color: 'blue' },
+  pound: { color: 'orange' },
+  select: { color: 'violet' },
+  literal: { color: 'orange' },
+  argument: { color: 'grape' },
+  selectordinal: { color: 'orange' },
+} as const;
+
+export type VariableColorKey = keyof typeof VARIABLE_COLORS;
+
+const SYNTAX_COLORS = {
+  gray: 'gray',
+  orange: 'orange',
+} as const;
+
 export const elementsConfig = {
   'stem': {
-    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.number.color, colorScheme),
+    }),
   },
   'offset-colon': {
-    style: () => ({ color: 'var(--mantine-color-orange-6)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(SYNTAX_COLORS.orange, colorScheme),
+    }),
   },
   'left-angle-open-tag': {
-    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.tag.color, colorScheme),
+    }),
   },
   'left-angle-close-tag': {
-    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.tag.color, colorScheme),
+    }),
   },
   'right-angle-open-tag': {
-    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.tag.color, colorScheme),
+    }),
   },
   'right-angle-close-tag': {
-    style: () => ({ color: 'var(--mantine-color-blue-3)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.tag.color, colorScheme),
+    }),
+  },
+  'argument-name-delimiter-start': {
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(SYNTAX_COLORS.gray, colorScheme),
+    }),
   },
   'stem-option-separator': {
-    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.number.color, colorScheme),
+    }),
   },
   'date-time-skeleton-pattern': {
-    style: () => ({ color: 'var(--mantine-color-blue-5)' }),
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.date.color, colorScheme),
+    }),
   },
   'tag-value': {
     withActions: true,
-    style: () => ({ color: 'var(--mantine-color-blue-9)' }),
-  },
-  'argument-name-delimiter-start': {
-    style: () => {
-      return ({ color: 'var(--mantine-color-gray-7)' });
-    },
-  },
-  'select-keyword': {
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-red-6)',
-    }),
-  },
-  'plural-keyword': {
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-red-6)',
+    style: ({ colorScheme }) => ({
+      color: makeColorValue(VARIABLE_COLORS.tag.color, colorScheme),
     }),
   },
   'offset-value': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-orange-9)',
-    }),
-  },
-  'stem-option': {
-    style: () => ({
-      marginInlineEnd: H_MARGIN,
-      color: 'var(--mantine-color-blue-5)',
-    }),
-  },
-  'dedicated-formatter': {
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-5)',
+      color: makeColorValue(SYNTAX_COLORS.orange, colorScheme),
     }),
   },
   'option-delimiter-end': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-gray-7)',
+      color: makeColorValue(SYNTAX_COLORS.gray, colorScheme),
     }),
   },
   'offset-keyword': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInlineStart: H_MARGIN,
-      color: 'var(--mantine-color-orange-6)',
+      color: makeColorValue(SYNTAX_COLORS.orange, colorScheme),
     }),
   },
   'option-delimiter-start': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-gray-7)',
+      color: makeColorValue(SYNTAX_COLORS.gray, colorScheme),
+    }),
+  },
+  'select-keyword': {
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.select.color, colorScheme),
+    }),
+  },
+  'plural-keyword': {
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.plural.color, colorScheme),
+    }),
+  },
+  'stem-option': {
+    style: ({ colorScheme }) => ({
+      marginInlineEnd: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.number.color, colorScheme),
+    }),
+  },
+  'dedicated-formatter': {
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.number.color, colorScheme),
     }),
   },
   'skeleton-separator': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInlineStart: H_MARGIN,
-      color: 'var(--mantine-color-blue-3)',
+      color: makeColorValue(VARIABLE_COLORS.date.color, colorScheme),
     }),
   },
   'selectOrdinal-keyword': {
-    style: () => ({
+    style: ({ colorScheme }) => ({
       marginInline: H_MARGIN,
-      color: 'var(--mantine-color-orange-6)',
-    }),
-  },
-  'date-argument-name': {
-    withActions: true,
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-6)',
-    }),
-  },
-  'time-argument-name': {
-    withActions: true,
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-6)',
-    }),
-  },
-  'number-argument-name': {
-    withActions: true,
-    style: () => ({
-      marginInline: H_MARGIN,
-      color: 'var(--mantine-color-blue-4)',
+      color: makeColorValue(VARIABLE_COLORS.selectordinal.color, colorScheme),
     }),
   },
   'pound': {
     withActions: true,
-    style: ({ markAttributes }) => {
-      const depth = Number(markAttributes['data-depth']);
-      return {
-        marginInline: H_MARGIN,
-        color: getArgumentTextColorByDepth(depth),
-      };
-    },
-  },
-  'plural-option': {
-    style: ({ markAttributes }) => {
-      const depth = Number(markAttributes['data-depth']);
-      return {
-        color: 'var(--mantine-color-red-3)',
-        marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
-      };
-    },
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.plural.color, colorScheme),
+    }),
   },
   'argument-name': {
     withActions: true,
-    style: ({ markAttributes }) => {
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.argument.color, colorScheme),
+    }),
+  },
+  'date-argument-name': {
+    withActions: true,
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.date.color, colorScheme),
+    }),
+  },
+  'time-argument-name': {
+    withActions: true,
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.time.color, colorScheme),
+    }),
+  },
+  'number-argument-name': {
+    withActions: true,
+    style: ({ colorScheme }) => ({
+      marginInline: H_MARGIN,
+      color: makeColorValue(VARIABLE_COLORS.number.color, colorScheme),
+    }),
+  },
+  'plural-option': {
+    style: ({ colorScheme, markAttributes }) => {
       const depth = Number(markAttributes['data-depth']);
       return {
-        marginInline: H_MARGIN,
-        color: getArgumentTextColorByDepth(depth),
+        marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+        color: makeColorValue(VARIABLE_COLORS.plural.color, colorScheme),
       };
     },
   },
   'select-option': {
-    style: ({ markAttributes }) => {
+    style: ({ colorScheme, markAttributes }) => {
       const depth = Number(markAttributes['data-depth']);
-
       return {
-        color: 'var(--mantine-color-red-3)',
         marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+        color: makeColorValue(VARIABLE_COLORS.select.color, colorScheme),
       };
     },
   },
   'argument-name-delimiter-end': {
-    style: ({ markAttributes }) => {
+    style: ({ colorScheme, markAttributes }) => {
       const depth = Number(markAttributes['data-depth']);
-
       return {
-        color: 'var(--mantine-color-gray-7)',
         marginInlineStart: `${depth * INDENT_PER_DEPTH}px`,
+        color: makeColorValue(SYNTAX_COLORS.gray, colorScheme),
       };
     },
   },
 } as const satisfies {
   [Key in ValueOf<typeof MARK_TYPES>]?: MarkComponentConfig;
 };
-
-function getArgumentTextColorByDepth(depth: number): string {
-  const colorNum = (depth % 3 === 0 ? 1 : depth % 3) as 1 | 2 | 3;
-
-  const argumentColor = {
-    2: 'var(--mantine-color-red-8)',
-    3: 'var(--mantine-color-blue-8)',
-    1: 'var(--mantine-color-green-8)',
-  } as const;
-
-  return argumentColor[colorNum];
-}

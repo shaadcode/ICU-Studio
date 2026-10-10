@@ -13,7 +13,6 @@ import OneLineCopyControl from './Controls/OneLineCopy/OneLineCopy';
 import NumberSnippet from './Controls/Snippets/Number/NumberSnippet';
 import SelectSnippet from './Controls/Snippets/Select/SelectSnippet';
 import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
-import VariableStatistic from './VariableStatistic/VariableStatistic';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
 import './Editor.module.css';
@@ -83,8 +82,6 @@ const ICUEditor = (props: UseHandleEditorParams) => {
             <RichTextEditor.Redo />
           </RichTextEditor.ControlsGroup>
         </Group>
-        <Divider mx="-16px" style={{ gridColumn: '1/3' }} />
-        <VariableStatistic />
       </RichTextEditor.Toolbar>
 
       <ScrollAreaAutosize h="100%">

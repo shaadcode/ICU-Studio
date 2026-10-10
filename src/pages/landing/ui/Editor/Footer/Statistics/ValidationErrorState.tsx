@@ -12,7 +12,7 @@ export const ValidationErrorState = memo(() => {
         <ThemeIcon size="lg" radius="xl" color="red" variant="light">
           <IconAlertTriangle size={20} />
         </ThemeIcon>
-        <Text size="sm" c="dimmed" ta="center">
+        <Text size="sm" c="dimmed" ta="center" textWrap="wrap">
           {t('widgets.statistics.validationErrorHint')}
         </Text>
       </Stack>

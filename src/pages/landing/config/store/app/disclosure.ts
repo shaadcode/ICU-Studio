@@ -2,24 +2,28 @@ import type { AppStore } from '.';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
 
 export type DisclosureSlice = {
-  opened: boolean;
+  navbar: boolean;
+  sidebar: boolean;
   actions: DisclosureSliceActions;
 };
 
+type OpenedBar = 'navbar' | 'sidebar';
+
 type DisclosureSliceActions = {
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
+  open: (bar: OpenedBar) => void;
+  close: (bar: OpenedBar) => void;
+  toggle: (bar: OpenedBar) => void;
 };
 
 export const createDisclosureSlice: ZustandSlice<
   AppStore,
   DisclosureSlice
 > = set => ({
-  opened: false,
+  navbar: false,
+  sidebar: false,
   actions: {
-    open: () => set({ opened: true }),
-    close: () => set({ opened: false }),
-    toggle: () => set(state => ({ opened: !state.opened })),
+    open: bar => set({ [bar]: true }),
+    close: bar => set({ [bar]: false }),
+    toggle: bar => set(state => ({ [bar]: !state[bar] })),
   },
 });

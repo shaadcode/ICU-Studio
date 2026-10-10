@@ -12,7 +12,7 @@ export const ValidState = memo(() => {
         <ThemeIcon size="lg" radius="xl" color="green" variant="light">
           <IconCircleCheckFilled size={20} />
         </ThemeIcon>
-        <Text size="sm" c="dimmed" ta="center">
+        <Text size="sm" c="dimmed" ta="center" textWrap="wrap">
           {tEditor('widgets.problems.noProblems')}
         </Text>
       </Stack>

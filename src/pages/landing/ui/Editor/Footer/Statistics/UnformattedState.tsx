@@ -12,7 +12,7 @@ export const UnformattedState = memo(() => {
         <ThemeIcon size="lg" radius="xl" color="blue" variant="light">
           <IconWand size={20} />
         </ThemeIcon>
-        <Text size="sm" c="dimmed" ta="center">
+        <Text size="sm" c="dimmed" ta="center" textWrap="wrap">
           {t('widgets.statistics.unformattedHint')}
         </Text>
       </Stack>

@@ -11,7 +11,7 @@ import { EditorNotReadyState } from './states/EditorNotReadyState';
 import WidgetContainer from '../../WidgetContainer/WidgetContainer';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
-const ICUEditorProblems = () => {
+const ICUEditorProblemsWidgets = () => {
   const t = useTranslations('common');
 
   const errorLocation = icuEditorStore.use.errorLocation();
@@ -63,4 +63,4 @@ const ICUEditorProblems = () => {
   );
 };
 
-export default ICUEditorProblems;
+export default ICUEditorProblemsWidgets;

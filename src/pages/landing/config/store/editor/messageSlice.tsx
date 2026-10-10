@@ -6,6 +6,8 @@ import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
+import { createEmptyStats } from '@/shared/lib/icu/createHtml/stats';
+import type { MessageStats } from '@/shared/lib/icu/createHtml/stats';
 import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
 import type { ParserError, MessageElementsTypeEnum } from '@/shared/lib/icu/types';
 import { createHtml, TagVariable, minimalParser, collectVariables } from '@/shared/lib/icu';
@@ -14,6 +16,7 @@ import { extendSetContent, extendInsertContent, isUndoRedoTransaction } from '@/
 export type ICUEditorMessageSlice = {
   isEmpty: boolean;
   textContent: string;
+  stats: MessageStats;
   isFormatted: boolean;
   editorInstance: Editor | undefined;
   actions: ICUEditorMessageSliceActions;
@@ -29,6 +32,7 @@ type ReferenceId = string;
 type ICUEditorMessageSliceActions = {
   clearStore: () => void;
   clearMessageState: () => void;
+  setStats: (v: MessageStats) => void;
   setIsEmpty: (value: boolean) => void;
   setFormatted: (value: boolean) => void;
   setTextContent: (value: string) => void;
@@ -54,8 +58,10 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
   message: undefined,
   delimitersRange: {},
   parsedMessage: undefined,
+  stats: createEmptyStats(),
   editorInstance: undefined,
   actions: {
+    setStats: v => set({ stats: v }),
     setIsEmpty: v => set({ isEmpty: v }),
     setFormatted: v => set({ isFormatted: v }),
     setVariables: setVariablesHandler(set, get),
@@ -113,7 +119,7 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
         return;
       }
 
-      const html = createHtml({
+      const { stats, rootSpan: html } = createHtml({
         parsedMessage,
         rawMessage: message,
         opts: { withFormatting: true },
@@ -121,6 +127,7 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       actions.clearValidationError();
       actions.setParsedMessage(parsedMessage);
       actions.setVariables(parsedMessage);
+      set({ stats });
       if (html.children.length) {
         extendSetContent({ editor })(html.outerHTML);
 

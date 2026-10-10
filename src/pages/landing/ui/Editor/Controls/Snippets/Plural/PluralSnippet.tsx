@@ -7,7 +7,7 @@ import { extendInsertContent } from '@/shared/lib/tiptap';
 const PluralSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
-  const message = `{variable, plural,
+  const message = `{pluralVariable, plural,
   =0 {text}
   one {text}
   other {# text}

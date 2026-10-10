@@ -14,7 +14,6 @@ export const xmlTagToHtml = (params: Params) => {
   }
   const varName = message.value.trim();
 
-  params.stats.variables.add(varName);
   methods.addLeftAngleOpenTag({ dependsOn: id });
   methods.addTagValue({ value: varName, referenceId: id });
   methods.addRightAngleOpenTag();

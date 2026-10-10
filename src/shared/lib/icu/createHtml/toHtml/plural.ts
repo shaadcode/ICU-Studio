@@ -28,8 +28,6 @@ export const pluralToHtml = (params: Params) => {
     variableType: 'plural',
   });
 
-  params.stats.variables.add(varName);
-
   methods.addComma();
   if (message.pluralType === 'cardinal') {
     methods.addPluralKeyword();

@@ -232,26 +232,31 @@
     },
     "statistics": {
       "title": "آمار",
-      "compare": "مقایسه",
       "currentMessage": "پیام فعلی",
       "messageDetails": "جزئیات پیام",
-      "tabs": {
-        "message": "پیام",
-        "project": "پروژه"
+      "unformattedHint": "برای مشاهده‌ی آمار، پیام خود را فرمت کنید.",
+      "validationErrorHint": "در پیام شما خطای نحوی وجود دارد. برای مشاهده‌ی آمار، آن را برطرف کنید.",
+      "empty": {
+        "title": "پیامی برای تحلیل وجود ندارد",
+        "hint": "برای دیدن آمار و ساختار، شروع به نوشتن پیام کنید."
       },
-      "project": {
-        "totalMessages": "کل پیام‌ها",
-        "withVariables": "دارای متغیر",
-        "withPlural": "دارای Plural",
-        "withSelect": "دارای Select"
+      "legend": {
+        "text": "متن",
+        "syntax": "ICU Syntax"
       },
-      "characters": "کاراکترها",
-      "words": "کلمات",
-      "variables": "متغیرها",
-      "pluralBranches": "شاخه‌های Plural",
-      "selectBranches": "شاخه‌های Select",
-      "tags": "تگ‌ها",
-      "maxNesting": "حداکثر تودرتویی"
+      "stats": {
+        "characters": "کاراکترها",
+        "words": "کلمات",
+        "variables": "متغیرها",
+        "icuSyntaxRatio": "ICU Syntax",
+        "pluralBranches": "شاخه‌های Plural",
+        "selectBranches": "شاخه‌های Select",
+        "tags": "تگ‌ها",
+        "maxNesting": "حداکثر تودرتویی",
+        "textRatio": "نسبت متن",
+        "numbers": "اعداد",
+        "punctuation": "علائم نگارشی"
+      }
     }
   },
   "yesterday": "دیروز"

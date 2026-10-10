@@ -23,8 +23,6 @@ export const dateToHtml = (params: Params) => {
     variableType: 'date',
   });
 
-  params.stats.variables.add(varName);
-
   methods.addComma();
   methods.addDateArgumentName();
 

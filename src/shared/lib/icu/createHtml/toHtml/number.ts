@@ -22,8 +22,6 @@ export const numberToHtml = (params: Params) => {
     variableType: 'number',
   });
 
-  params.stats.variables.add(varName);
-
   methods.addComma();
   methods.addNumberArgumentName();
 

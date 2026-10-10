@@ -8,12 +8,12 @@ type Props = {
 };
 
 export const StatCard = memo(({ hint, label, value }: Props) => (
-  <Paper p="sm" withBorder radius="md" style={{ flex: 1, minWidth: 0 }}>
+  <Paper p="xs" withBorder radius="md" style={{ flex: 1, minWidth: 0 }}>
     <Stack gap={2}>
-      <Text truncate size="xs" c="dimmed">
+      <Text fz="xs" truncate c="dimmed">
         {label}
       </Text>
-      <Text fw={700} size="xl">
+      <Text fz="xl" fw={700}>
         {value}
       </Text>
       {hint && (

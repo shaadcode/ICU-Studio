@@ -22,8 +22,6 @@ export const timeToHtml = (params: Params) => {
     variableType: 'time',
   });
 
-  params.stats.variables.add(varName);
-
   methods.addComma();
   methods.addTimeArgumentName();
   if (isSimpleDateTimeSkeleton(message.style)) {

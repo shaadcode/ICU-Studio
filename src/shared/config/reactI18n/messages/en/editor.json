@@ -229,26 +229,31 @@
     },
     "statistics": {
       "title": "Statistics",
-      "compare": "Compare",
       "currentMessage": "Current Message",
       "messageDetails": "Message Details",
-      "tabs": {
-        "message": "Message",
-        "project": "Project"
+      "validationErrorHint": "There is a syntax error in your message. Fix it to see the statistics.",
+      "unformattedHint": "Format your message to see the statistics.",
+      "empty": {
+        "title": "No message to analyze",
+        "hint": "Start typing a message to see its statistics and structure."
       },
-      "project": {
-        "totalMessages": "Total Messages",
-        "withVariables": "With Variables",
-        "withPlural": "With Plural",
-        "withSelect": "With Select"
+      "legend": {
+        "text": "Text",
+        "syntax": "ICU Syntax"
       },
-      "characters": "Characters",
-      "words": "Words",
-      "variables": "Variables",
-      "pluralBranches": "Plural branches",
-      "selectBranches": "Select branches",
-      "tags": "Tags",
-      "maxNesting": "Max nesting"
+      "stats": {
+        "characters": "Characters",
+        "words": "Words",
+        "variables": "Variables",
+        "icuSyntaxRatio": "ICU Syntax",
+        "pluralBranches": "Plural branches",
+        "selectBranches": "Select branches",
+        "tags": "Tags",
+        "maxNesting": "Max nesting",
+        "textRatio": "Text ratio",
+        "numbers": "Numbers",
+        "punctuation": "Punctuation"
+      }
     }
   },
   "yesterday": "yesterday"

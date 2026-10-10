@@ -26,6 +26,5 @@ export const simpleVariableToHtml = (params: Params) => {
     depth: ctx.depth,
     variableType: 'argument',
   });
-  params.stats.variables.add(varName);
   methods.addArgumentNameDelimiterEnd({ dependsOn: id });
 };

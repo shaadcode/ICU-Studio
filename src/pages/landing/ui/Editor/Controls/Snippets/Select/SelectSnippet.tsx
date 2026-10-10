@@ -8,7 +8,7 @@ const SelectSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
 
-  const message = `{variable, select,
+  const message = `{selectVariable, select,
   option1 {text}
   option2 {text}
   other {text}

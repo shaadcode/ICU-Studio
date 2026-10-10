@@ -24,8 +24,6 @@ export const selectToHtml = (params: Params) => {
     variableType: 'select',
   });
 
-  params.stats.variables.add(varName);
-
   methods.addComma();
   methods.addSelectKeyword();
 

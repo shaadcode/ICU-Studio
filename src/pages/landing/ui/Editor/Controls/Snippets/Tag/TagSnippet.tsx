@@ -8,7 +8,7 @@ const TagSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
 
-  const message = `<TagName>children</TagName>`;
+  const message = `<tag>children</tag>`;
   return (
     <RichTextEditor.Control
       title={t('controls.snippets.tag')}

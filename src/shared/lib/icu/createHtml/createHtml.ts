@@ -3,7 +3,6 @@ import type { TYPE, MessageFormatElement } from '@formatjs/icu-messageformat-par
 
 import { dateToHtml } from './toHtml/date';
 import { timeToHtml } from './toHtml/time';
-import { createEmptyStats } from './stats';
 import { xmlTagToHtml } from './toHtml/tag';
 import { poundToHtml } from './toHtml/pound';
 import { pluralToHtml } from './toHtml/plural';
@@ -70,11 +69,9 @@ type Params = {
 };
 
 export const extractInfoAndHtml = (params: Params) => {
-  const { rootSpan, ...methods } = rootSpanMethods({
+  const { stats, rootSpan, ...methods } = rootSpanMethods({
     withFormatting: params.opts?.withFormatting,
   });
-
-  const stats = createEmptyStats();
 
   const traverse: Traverse = (messages, prevCtx) => messages.map((message, ctxIndex) => {
     const currentDepth = (prevCtx?.depth ?? 0) + 1;
@@ -86,7 +83,6 @@ export const extractInfoAndHtml = (params: Params) => {
     } as TraverseContext;
 
     const defaultToHtmlParams: DefaultToHtml = () => ({
-      stats,
       methods,
       traverse,
       rootSpan,
@@ -113,9 +109,17 @@ export const extractInfoAndHtml = (params: Params) => {
   });
 
   traverse(params.parsedMessage);
+
   stats.characters = params.rawMessage.length;
   stats.words = words(params.rawMessage).length;
 
-  console.log(stats);
-  return rootSpan;
+  const totalChars = stats.literalCharacters + stats.icuSyntaxChars;
+  if (totalChars > 0) {
+    stats.textRatio = Math.round((stats.literalCharacters / totalChars) * 100);
+    stats.icuSyntaxRatio = Math.round((stats.icuSyntaxChars / totalChars) * 100);
+  }
+  return {
+    stats,
+    rootSpan,
+  };
 };

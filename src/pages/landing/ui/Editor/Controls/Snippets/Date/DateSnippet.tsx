@@ -8,7 +8,7 @@ const DateSnippet = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
 
-  const message = `{variable, date, short}`;
+  const message = `{dateVariable, date, short}`;
   return (
     <RichTextEditor.Control
       title={t('controls.snippets.date')}

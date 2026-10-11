@@ -18,6 +18,7 @@
       "pound": "pound",
       "select": "select",
       "simpleVariable": "simple variable",
+      "selectordinal": "select-ordinal",
       "tag": "tag",
       "time": "time"
     },
@@ -25,6 +26,7 @@
     "tFunctionPaste": "t function paste"
   },
   "convertTo": "convert to",
+  "convertAllTo": "convert all to…",
   "copyPreview": "copy preview",
   "format": "format",
   "lastWeek": "last week",
@@ -49,6 +51,7 @@
     "plural": "plural",
     "pound": "pound",
     "select": "select",
+    "selectordinal": "selectordinal",
     "tag": "tag",
     "time": "time"
   },
@@ -63,6 +66,7 @@
   "nextWeek": "next week",
   "nextYear": "next year",
   "offset": "offset",
+
   "parsingErrors": {
     "CONFLICT_VARIABLE_NAME": "Variable has conflicting argument types",
     "DUPLICATE_PLURAL_ARGUMENT_SELECTOR": "Duplicate selectors in plural or selectordinal argument (e.g. '{foo, plural, one {#} one {#}}')",
@@ -267,6 +271,13 @@
       "dateStyle": "Date style",
       "timeStyle": "Time style",
       "numberStyle": "Number style"
+    },
+    "outline": {
+      "title": "outline",
+      "empty": {
+        "title": "No outline available",
+        "hint": "Format your message to see its structure here."
+      }
     }
   },
   "yesterday": "yesterday"

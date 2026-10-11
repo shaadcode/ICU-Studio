@@ -12,7 +12,8 @@
     }
 
     @mixin larger-than $mantine-breakpoint-sm {
-      width: 33.3333%;
+      width: 100%;
+      max-width: 33.3333%;
     }
   }
 

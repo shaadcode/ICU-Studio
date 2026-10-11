@@ -18,13 +18,17 @@
       "pound": "جای‌نشان عدد",
       "select": "انتخاب",
       "simpleVariable": "متغیر ساده",
+      "selectordinal": "انتخاب ترتیبی",
       "tag": "برچسب",
       "time": "زمان"
     },
     "tFunctionCopy": "چسباندن به صورت تابع t",
     "tFunctionPaste": "چسباندن به صورت تابع t"
   },
+  "collapse": "جمع کردن",
+  "expand": "باز کردن",
   "convertTo": "تبدیل به",
+  "convertAllTo": "تبدیل همه به…",
   "copyPreview": "کپی پیش نمایش",
   "format": "فرمت",
   "lastWeek": "هفته قبل",
@@ -49,6 +53,7 @@
     "plural": "جمع",
     "pound": "علامت #",
     "select": "انتخاب",
+    "selectordinal": "انتخاب ترتیبی",
     "tag": "برچسب",
     "time": "زمان"
   },
@@ -270,6 +275,13 @@
       "dateStyle": "فرمت تاریخ",
       "timeStyle": "فرمت زمان",
       "numberStyle": "فرمت عدد"
+    },
+    "outline": {
+      "title": "ساختار",
+      "empty": {
+        "title": "ساختاری موجود نیست",
+        "hint": "برای دیدن ساختار، پیام خود را فرمت کنید."
+      }
     }
   },
   "yesterday": "دیروز"

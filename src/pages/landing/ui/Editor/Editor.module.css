@@ -1,4 +1,11 @@
-div[contenteditable='true'] {
-  position: relative;
-  z-index: 1;
+.editorContent span {
+  font-weight: 600;
+}
+
+.editorRoot {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
 }

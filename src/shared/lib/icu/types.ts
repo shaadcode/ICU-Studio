@@ -71,8 +71,8 @@ export enum ExtendedErrorKind {
   UNCLOSED_TAG = 27,
 }
 export type ErrorKindName = keyof typeof ExtendedErrorKind;
-export type MessageElementsTypeKeyword = keyof typeof TYPE;
 export type MessageElementsTypeEnum = StringToNumber<`${TYPE}`>;
+export type MessageElementsTypeKeyword = 'selectordinal' | keyof typeof TYPE;
 
 export type WarningParserError = Extract<ErrorKindName, 'CONFLICT_VARIABLE_NAME'>;
 

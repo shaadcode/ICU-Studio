@@ -2,7 +2,7 @@ import type { LiteralUnion } from 'type-fest';
 import type { TYPE, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { rootSpanMethods } from '../rootSpanFactory';
-import type { Traverse, TraverseContext } from './createHtml';
+import type { Traverse, TraverseContext, VariableReference } from './createHtml';
 
 export type ElementTypes = keyof typeof TYPE;
 
@@ -15,5 +15,6 @@ export type SharedToHtmlHelpersParams<ElementType extends MessageFormatElement> 
   message: ElementType;
   ctx?: TraverseContext;
   rootSpan: HTMLSpanElement;
+  variableReferences: Map<string, VariableReference>;
   methods: Omit<ReturnType<typeof rootSpanMethods>, 'stats' | 'rootSpan'>;
 };

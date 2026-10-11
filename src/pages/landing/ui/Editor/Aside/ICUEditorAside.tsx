@@ -8,6 +8,7 @@ import {
 } from '@tabler/icons-react';
 
 import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
+import { OutlineWidget } from './Widgets/Outline/OutlineWidget';
 import ICUEditorProblemsWidgets from '../Footer/Problems/Problems';
 import { StatisticsWidget } from '../Footer/Statistics/Statistics';
 import { VariablesWidget } from './Widgets/Variables/VariablesWidget';
@@ -56,6 +57,7 @@ const ICUEditorAside = () => {
   return (
     <Stack p="sm" h="100%">
       <VariablesWidget />
+      <OutlineWidget />
       <Tabs
         h="100%"
         defaultValue="problems"

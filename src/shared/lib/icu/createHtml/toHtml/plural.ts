@@ -9,18 +9,19 @@ export const pluralToHtml = (params: Params) => {
   const { methods, message } = params;
   const options = message.options;
   const offset = message.offset as number;
-  const id = createMessageId();
 
   if (!params.ctx) {
     throw new Error('ctx is undefined');
   }
 
+  const id = createMessageId();
   const { depth } = params.ctx;
+  const varName = message.value.trim();
+  params.variableReferences.set(varName, { name: varName, referenceId: id });
 
   methods.addArgumentNameDelimiterStart({
     dependsOn: id,
   });
-  const varName = message.value.trim();
   methods.addArgumentName({
     depth,
     value: varName,

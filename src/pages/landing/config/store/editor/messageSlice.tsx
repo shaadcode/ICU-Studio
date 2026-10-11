@@ -1,7 +1,8 @@
 import type React from 'react';
+import { isString } from 'es-toolkit';
 import type { ReactNode } from 'react';
 import type { Transaction } from '@tiptap/pm/state';
-import type { Range, Editor, EditorOptions } from '@tiptap/react';
+import type { Editor, EditorOptions } from '@tiptap/react';
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import type { ICUEditorStore } from '.';
@@ -9,6 +10,7 @@ import type { ZustandSlice } from '@/shared/config/zustand/types';
 import { createEmptyStats } from '@/shared/lib/icu/createHtml/stats';
 import type { MessageStats } from '@/shared/lib/icu/createHtml/stats';
 import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
+import type { VariableReference } from '@/shared/lib/icu/createHtml/createHtml';
 import type { ParserError, MessageElementsTypeEnum } from '@/shared/lib/icu/types';
 import { createHtml, TagVariable, minimalParser, collectVariables } from '@/shared/lib/icu';
 import { extendSetContent, extendInsertContent, isUndoRedoTransaction } from '@/shared/lib/tiptap';
@@ -21,13 +23,8 @@ export type ICUEditorMessageSlice = {
   editorInstance: Editor | undefined;
   actions: ICUEditorMessageSliceActions;
   parsedMessage: undefined | Array<MessageFormatElement>;
-  delimitersRange: Record<
-    ReferenceId,
-    { type: string; open?: Range; close?: Range }
-  >;
-  variables: Array<VariableInfo & { value: Date | string | number | ((chunks: ReactNode) => React.JSX.Element) }>;
+  variables: Array<VariableInfo & { referenceId: string; value: Date | string | number | ((chunks: ReactNode) => React.JSX.Element) }>;
 };
-type ReferenceId = string;
 
 type ICUEditorMessageSliceActions = {
   clearStore: () => void;
@@ -36,10 +33,14 @@ type ICUEditorMessageSliceActions = {
   setIsEmpty: (value: boolean) => void;
   setFormatted: (value: boolean) => void;
   setTextContent: (value: string) => void;
-  setVariables: (value: Array<MessageFormatElement>) => void;
+  removeVariableByReferenceId: (v: string | Array<string>) => void;
   setParsedMessage: (value: ICUEditorMessageSlice['parsedMessage']) => void;
   setEditorInstance: (editor: ICUEditorMessageSlice['editorInstance']) => void;
   updateVariableInitialValue: (valueName: string, value: Date | string | number) => void;
+  setVariables: (
+    value: Array<MessageFormatElement>,
+    variableReferences?: Map<string, VariableReference>,
+  ) => void;
   formatContent: (params?: {
     editor?: Editor;
     transaction?: Transaction;
@@ -56,7 +57,6 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
   textContent: '',
   isFormatted: false,
   message: undefined,
-  delimitersRange: {},
   parsedMessage: undefined,
   stats: createEmptyStats(),
   editorInstance: undefined,
@@ -68,15 +68,14 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
     setTextContent: v => set({ textContent: v }),
     setParsedMessage: value => set({ parsedMessage: value }),
     setEditorInstance: editor => set({ editorInstance: editor }),
+    clearMessageState: () => set({
+      variables: [],
+      parsedMessage: undefined,
+    }),
     clearStore: () => {
       get().actions.clearMessageState();
       set({ editorInstance: undefined });
     },
-    clearMessageState: () => set({
-      variables: [],
-      delimitersRange: {},
-      parsedMessage: undefined,
-    }),
     updateVariableInitialValue: (varName, value) => {
       const variables = get().variables;
       const result = variables.map((variable) => {
@@ -88,6 +87,19 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       });
 
       return set({ variables: result });
+    },
+    removeVariableByReferenceId: (id) => {
+      if (isString(id)) {
+        set(state => ({
+          variables: state.variables.filter(variable => variable.referenceId !== id),
+        }));
+      } else if (Array.isArray(id)) {
+        set(state => ({
+          variables: state
+            .variables
+            .filter(variable => !id.includes(variable.referenceId)),
+        }));
+      }
     },
     formatContent(params) {
       const editor = params?.editor ?? get().editorInstance;
@@ -119,14 +131,14 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
         return;
       }
 
-      const { stats, rootSpan: html } = createHtml({
+      const { stats, rootSpan: html, variableReferences } = createHtml({
         parsedMessage,
         rawMessage: message,
         opts: { withFormatting: true },
       });
       actions.clearValidationError();
       actions.setParsedMessage(parsedMessage);
-      actions.setVariables(parsedMessage);
+      actions.setVariables(parsedMessage, variableReferences);
       set({ stats });
       if (html.children.length) {
         extendSetContent({ editor })(html.outerHTML);
@@ -149,9 +161,14 @@ function setVariablesHandler(
   set: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[0],
   get: Parameters<ZustandSlice<ICUEditorStore, ICUEditorMessageSlice>>[1],
 ) {
-  return (parsedMessage: Parameters<ICUEditorMessageSliceActions['setVariables']>[0]): ReturnType<ICUEditorMessageSliceActions['setVariables']> => {
+  return (
+    parsedMessage: Parameters<ICUEditorMessageSliceActions['setVariables']>[0],
+    variableReferences: Map<string, VariableReference> = new Map<string, VariableReference>(),
+  ): ReturnType<ICUEditorMessageSliceActions['setVariables']> => {
+    if (parsedMessage.length === 0 && get().variables.length === 0) {
+      return;
+    }
     const collectedVariables = collectVariables(parsedMessage);
-
     if (collectedVariables.errors.length) {
       get().actions.setValidationError({
         editor: get().editorInstance!,
@@ -163,13 +180,15 @@ function setVariablesHandler(
     const initializedVariablesValues = collectedVariables.variables
       .map((variable) => {
         const [, info] = variable;
+        const referenceId = variableReferences.get(info.name)?.referenceId;
 
-        if (info.enumType === 0 || info.enumType === 7) {
+        if (info.enumType === 0 || info.enumType === 7 || !referenceId) {
           return {};
         }
 
         const addProperty = (initialValue: Variable['value']): Variable => ({
           ...info,
+          referenceId,
           value: initialValue,
         });
         const typesMap = {

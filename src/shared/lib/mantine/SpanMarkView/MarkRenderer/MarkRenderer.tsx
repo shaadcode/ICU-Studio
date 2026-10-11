@@ -3,9 +3,9 @@ import type { MarkViewRendererProps } from '@tiptap/react';
 import { Text, useComputedColorScheme } from '@mantine/core';
 
 import { elementsConfig } from './elementProps';
-import MarkActions from '../MarkActions/MarkActions';
 import { getMarkViewAttributes } from '@/shared/lib/icu';
 import type { MarkComponentConfig } from './elementProps';
+import VariableActions from '../MarkActions/VariableActions';
 
 type Props = {
   children: ReactNode;
@@ -24,7 +24,12 @@ const MarkRenderer = ({ children, ...props }: Props) => {
 
   if (markConfig?.withActions) {
     return (
-      <MarkActions tiptapMark={props.tiptapMark}>
+      <VariableActions
+        eventTrigger="contextMenu"
+        editor={props.tiptapMark.editor}
+        referenceId={attrs['data-reference-id']}
+        elementType={attrs['data-variable-type']}
+      >
         {({ ref, children: _, className: __, ...otherProps }) => (
           <Text
             span
@@ -36,7 +41,7 @@ const MarkRenderer = ({ children, ...props }: Props) => {
             {children}
           </Text>
         )}
-      </MarkActions>
+      </VariableActions>
     );
   }
   return (

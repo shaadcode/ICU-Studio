@@ -12,7 +12,7 @@ type Props = {
 const WidgetHeader = (props: Props) => {
   return (
     <Group wrap="nowrap" align="center" justify="space-between" {...props.containerProps}>
-      <Group wrap="nowrap">
+      <Group gap="xs" wrap="nowrap">
         <props.icon
           size={16}
         />

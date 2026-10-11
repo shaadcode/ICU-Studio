@@ -7,7 +7,7 @@
   }
 }
 
-.widget-container {
+.inner-container {
   display: grid !important;
   grid-template-rows: auto 1fr auto;
   gap: var(--mantine-spacing-xs);

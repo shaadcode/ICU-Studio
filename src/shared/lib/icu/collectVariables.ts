@@ -1,5 +1,5 @@
 import type { DistributedOmit } from 'type-fest';
-import type { DateElement, TimeElement, PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
+import type { Location, DateElement, TimeElement, PluralElement, NumberElement, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 import { isTagElement, isDateElement, isTimeElement, isNumberElement, isPluralElement, isSelectElement, isArgumentElement } from '@formatjs/icu-messageformat-parser';
 
 import { ExtendedErrorKind } from './types';
@@ -8,6 +8,7 @@ import type { ParserError, MessageElementsTypeEnum, MessageElementsTypeKeyword }
 
 export type VariableInfo = {
   name: string;
+  location: Location;
   enumType: MessageElementsTypeEnum;
   keywordType: MessageElementsTypeKeyword;
   config?: {
@@ -29,7 +30,11 @@ export const collectVariables = (
 ) => {
   ast.forEach((el) => {
     const enumType = el.type;
-    const keywordType = formatMessageElementsKeywordByEnum[enumType];
+    const keywordType = enumType === 6
+      ? el.pluralType === 'ordinal'
+        ? 'selectordinal'
+        : formatMessageElementsKeywordByEnum[enumType]
+      : formatMessageElementsKeywordByEnum[enumType];
 
     const assignObj = (value: DistributedOmit<VariableInfo, 'enumType' | 'keywordType'>): VariableInfo => ({
       ...value,
@@ -55,32 +60,45 @@ export const collectVariables = (
       }
 
       if (isArgumentElement(el)) {
-        vars.set(el.value, assignObj({ name: el.value }));
+        vars.set(el.value, assignObj({ name: el.value, location: el.location! }));
       }
 
       if (isNumberElement(el)) {
-        vars.set(el.value, assignObj({ name: el.value, config: { numberStyle: el.style } }));
+        vars.set(el.value, assignObj({
+          name: el.value,
+          location: el.location!,
+          config: { numberStyle: el.style },
+        }));
       }
 
       if (isTimeElement(el)) {
-        vars.set(el.value, assignObj({ name: el.value, config: { timeStyle: el.style } }));
+        vars.set(el.value, assignObj({
+          name: el.value,
+          location: el.location!,
+          config: { timeStyle: el.style },
+        }));
       }
 
       if (isDateElement(el)) {
-        vars.set(el.value, assignObj({ name: el.value, config: { dateStyle: el.style } }));
+        vars.set(el.value, assignObj({
+          name: el.value,
+          location: el.location!,
+          config: { dateStyle: el.style },
+        }));
       }
-      // vars.set(el.value, assignObj({ name: el.value }));
     }
     if (isPluralElement(el) || isSelectElement(el)) {
       if (isPluralElement(el)) {
         vars.set(el.value, assignObj({
           name: el.value,
+          location: el.location!,
           config: { offset: el.offset, pluralType: el.pluralType },
         }));
       }
       if (isSelectElement(el)) {
         vars.set(el.value, assignObj({
           name: el.value,
+          location: el.location!,
           config: { conditions: Object.keys(el.options) },
         }));
       }
@@ -91,7 +109,7 @@ export const collectVariables = (
       });
     }
     if (isTagElement(el)) {
-      vars.set(el.value, assignObj({ name: el.value }));
+      vars.set(el.value, assignObj({ name: el.value, location: el.location! }));
       collectVariables(el.children, vars, errors);
     }
   });

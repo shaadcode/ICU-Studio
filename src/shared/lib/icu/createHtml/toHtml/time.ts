@@ -8,14 +8,15 @@ type Params = SharedToHtmlHelpersParams<TimeElement>;
 
 export const timeToHtml = (params: Params) => {
   const { methods, message } = params;
-  const id = createMessageId();
 
   if (!params.ctx) {
     throw new Error('ctx is undefined');
   }
+  const id = createMessageId();
+  const varName = message.value.trim();
+  params.variableReferences.set(varName, { name: varName, referenceId: id });
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
-  const varName = message.value.trim();
   methods.addArgumentName({
     value: varName,
     referenceId: id,

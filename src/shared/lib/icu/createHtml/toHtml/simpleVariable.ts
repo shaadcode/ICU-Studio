@@ -7,8 +7,6 @@ type Params = SharedToHtmlHelpersParams<ArgumentElement>;
 
 export const simpleVariableToHtml = (params: Params) => {
   const { ctx, methods, message } = params;
-  const id = createMessageId();
-
   if (!ctx) {
     throw new Error('ctx is undefined');
   }
@@ -16,10 +14,12 @@ export const simpleVariableToHtml = (params: Params) => {
   if (!params.message.value.length) {
     return;
   }
+  const id = createMessageId();
+  const varName = message.value.trim();
+  params.variableReferences.set(varName, { name: varName, referenceId: id });
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });
 
-  const varName = message.value.trim();
   methods.addArgumentName({
     value: varName,
     referenceId: id,

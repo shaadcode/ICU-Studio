@@ -2,29 +2,22 @@ import { useTranslations } from 'use-intl';
 import { useClipboard } from '@mantine/hooks';
 import { Tooltip, MenuItem } from '@mantine/core';
 import { IconCopy, IconCheck } from '@tabler/icons-react';
-import type { MarkViewRendererProps } from '@tiptap/react';
 
 import classes from './CopyMessage.module.css';
-import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import { getDelimiterRange } from '@/shared/lib/tiptap';
+import type { SharedActionProps } from '../../VariableActions';
 
-type Props = {
-  tiptapMark: MarkViewRendererProps;
-};
-const CopyMessageMenuAction = (props: Props) => {
-  const { mark, editor } = props.tiptapMark;
+const CopyMessageMenuAction = (props: SharedActionProps) => {
   const t = useTranslations('common');
   const clipboard = useClipboard({ timeout: 500 });
 
-  const getDelimiterRange = icuEditorStore.use.actions().getDelimiterRange;
   const handleDeleteMessage = () => {
-    const referenceId = mark.attrs['data-reference-id'] as string;
-
-    const messageRange = getDelimiterRange(referenceId);
+    const messageRange = getDelimiterRange(props);
 
     const from = messageRange?.open?.from;
     const to = messageRange?.close?.to;
     if (to && from) {
-      const text = editor.view.state.doc.textBetween(from, to);
+      const text = props.editor.view.state.doc.textBetween(from, to);
       clipboard.copy(text);
     }
   };

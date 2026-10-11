@@ -1,7 +1,7 @@
 import type { Range, Editor } from '@tiptap/react';
 
-import { getMarkAttributes } from '../../icu';
-import { isOpenDelimiter, isCloseDelimiter } from '../../tiptap/delimiters';
+import { getMarkAttributes } from '../icu';
+import { isOpenDelimiter, isCloseDelimiter } from './delimiters';
 
 type Params = {
   editor: Editor;

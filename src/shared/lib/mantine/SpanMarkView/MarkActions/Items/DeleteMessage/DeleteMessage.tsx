@@ -1,45 +1,43 @@
 import { useTranslations } from 'use-intl';
 import { IconTrash } from '@tabler/icons-react';
 import { Tooltip, MenuItem } from '@mantine/core';
-import type { MarkViewRendererProps } from '@tiptap/react';
 
-import classes from './DeleteMessage.module.css';
-import { getDelimiterRange } from '../../../getDelimiterRange';
-import { getMarkViewAttributes } from '@/shared/lib/icu/getMarkAttribute';
+import type { SharedActionProps } from '../../VariableActions';
+import { icuEditorStore } from '@/pages/landing/config/store/editor';
+import { getDelimiterRange } from '../../../../../tiptap/getDelimiterRange';
 
-type Props = {
-  tiptapMark: MarkViewRendererProps;
-};
-const DeleteMessageMenuAction = (props: Props) => {
-  const { editor } = props.tiptapMark;
-  const attrs = getMarkViewAttributes(props.tiptapMark);
+const DeleteMessageMenuAction = (props: SharedActionProps) => {
   const t = useTranslations('common');
+  const formatContent = icuEditorStore.use.actions().formatContent;
   const handleDeleteMessage = () => {
     const messageRange = getDelimiterRange({
-      editor,
-      referenceId: attrs['data-reference-id'],
+      editor: props.editor,
+      referenceId: props.referenceId,
     });
 
     const from = messageRange.open.from;
     const to = messageRange.close.to;
 
     if (to && from) {
-      editor.chain().deleteRange({ to, from }).run();
+      props
+        .editor
+        .chain()
+        .setMeta('skipUpdate', true)
+        .deleteRange({ to, from })
+        .run();
+      formatContent({ editor: props.editor });
     }
   };
 
   return (
-    <Tooltip label={t('delete')} classNames={{ tooltip: classes['tooltip'] }}>
+    <Tooltip label={t('delete')}>
       <MenuItem
+        p={7}
         color="red"
-        classNames={{
-          item: classes['menuItem'],
-          itemLabel: classes['menuItemLabel'],
-        }}
 
         onClick={handleDeleteMessage}
       >
-        <IconTrash size="17px" />
+        <IconTrash size={17} />
       </MenuItem>
     </Tooltip>
   );

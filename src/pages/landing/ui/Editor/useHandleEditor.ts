@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
 import type { EditorOptions } from '@tiptap/react';
+import { useDebouncedCallback } from '@mantine/hooks';
 import { Placeholder } from '@tiptap/extension-placeholder';
-import { useViewportSize, useDebouncedCallback } from '@mantine/hooks';
 
 import { SpanMark } from '@/shared/lib/mantine';
 import type { ParserError } from '@/shared/lib/icu/types';
@@ -22,7 +22,6 @@ export type UseHandleEditorParams = {
 export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
   const tCommon = useTranslations('common');
   const t = useTranslations('editor');
-  const viewportSize = useViewportSize();
   const setEditorInstance = icuEditorStore.use.actions().setEditorInstance;
   const setVariables = icuEditorStore.use.actions().setVariables;
   const setFormatted = icuEditorStore.use.actions().setFormatted;
@@ -40,7 +39,7 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-
+    // onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
     onMount: (params) => {
       rootParams.onMountEditor?.(params);
       formatContent({
@@ -48,25 +47,19 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
         ...rootParams,
       });
     },
+    onUpdate: (params) => {
+      if (!params.transaction.getMeta('skipUpdate')) {
+        debouncedUpdate(params);
+      }
+      rootParams.onUpdateEditor?.(params);
+    },
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: rootParams.placeholder ?? t('placeholder') }),
       SpanMark,
       CustomHardBreak,
     ],
-    onUpdate: (params) => {
-      if (params.transaction.getMeta('is-message-fixer') !== true) {
-        debouncedUpdate(params);
-      }
-      rootParams.onUpdateEditor?.(params);
-    },
   });
-
-  useEffect(() => {
-    if (editor) {
-      formatContent({ ...rootParams, editor });
-    }
-  }, [viewportSize]);
 
   useEffect(() => {
     if (editor) {

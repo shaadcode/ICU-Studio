@@ -1,4 +1,4 @@
-.menuItem {
+/* .menuItem {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,16 +6,16 @@
   &:hover {
     background-color: var(--mantine-color-red-0);
   }
-}
+} */
 
-.menuItemLabel {
+/* .menuItemLabel {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
-}
+} */
 
-.tooltip {
+/* .tooltip {
   max-width: 100%;
   width: fit-content;
-}
+} */

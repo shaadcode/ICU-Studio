@@ -1,0 +1,5 @@
+.control {
+  &[data-is-copied] {
+    border-color: var(--mantine-color-green-1);
+  }
+}

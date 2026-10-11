@@ -51,6 +51,8 @@ export type TraverseContext = {
   depth: number;
 };
 
+export type VariableReference = { name: string; referenceId: string };
+
 export type DefaultToHtml = <ElementType extends MessageFormatElement>() => SharedToHtmlHelpersParams<ElementType>;
 
 export type Traverse = (
@@ -73,6 +75,8 @@ export const extractInfoAndHtml = (params: Params) => {
     withFormatting: params.opts?.withFormatting,
   });
 
+  const variableReferences = new Map<string, VariableReference>();
+
   const traverse: Traverse = (messages, prevCtx) => messages.map((message, ctxIndex) => {
     const currentDepth = (prevCtx?.depth ?? 0) + 1;
     const ctxId = String(ctxIndex);
@@ -86,6 +90,7 @@ export const extractInfoAndHtml = (params: Params) => {
       methods,
       traverse,
       rootSpan,
+      variableReferences,
       ctx: CurrentContext,
       // @ts-expect-error
       message: message as MessageFormatElement,
@@ -121,5 +126,6 @@ export const extractInfoAndHtml = (params: Params) => {
   return {
     stats,
     rootSpan,
+    variableReferences,
   };
 };

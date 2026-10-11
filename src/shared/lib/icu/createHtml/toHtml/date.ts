@@ -9,14 +9,15 @@ type Params = SharedToHtmlHelpersParams<DateElement>;
 export const dateToHtml = (params: Params) => {
   const { methods, message } = params;
 
-  const id = createMessageId();
-
   if (!params.ctx) {
     throw new Error('ctx is undefined');
   }
 
-  methods.addArgumentNameDelimiterStart({ dependsOn: id });
+  const id = createMessageId();
   const varName = message.value.trim();
+  params.variableReferences.set(varName, { name: varName, referenceId: id });
+
+  methods.addArgumentNameDelimiterStart({ dependsOn: id });
   methods.addArgumentName({
     value: varName,
     referenceId: id,

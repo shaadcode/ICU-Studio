@@ -14,6 +14,7 @@ type Props = {
 const MessageFormattingControl = (props: Props) => {
   const t = useTranslations('editor');
   const formatContent = icuEditorStore.use.actions().formatContent;
+  const isFormatted = icuEditorStore.use.isFormatted();
 
   useHotkeys(
     [
@@ -25,6 +26,7 @@ const MessageFormattingControl = (props: Props) => {
 
   return (
     <RichTextEditor.Control
+      disabled={isFormatted}
       title={t('controls.format')}
       aria-label={t('controls.format')}
 

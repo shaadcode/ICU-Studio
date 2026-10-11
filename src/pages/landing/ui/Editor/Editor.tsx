@@ -1,6 +1,7 @@
 import { RichTextEditor } from '@mantine/tiptap';
 import { Box, Group, Divider, ScrollAreaAutosize } from '@mantine/core';
 
+import classes from './Editor.module.css';
 import { useHandleEditor } from './useHandleEditor';
 import TagSnippet from './Controls/Snippets/Tag/TagSnippet';
 import type { UseHandleEditorParams } from './useHandleEditor';
@@ -15,7 +16,6 @@ import SelectSnippet from './Controls/Snippets/Select/SelectSnippet';
 import PluralSnippet from './Controls/Snippets/Plural/PluralSnippet';
 import TFunctionCopyControl from './Controls/TFunctionCopy/TFunctionCopy';
 import JSONPropertyCopy from './Controls/JSONPropertyCopy/JSONPropertyCopy';
-import './Editor.module.css';
 import JSONPropertyPasteControl from './Controls/JSONPropertyPaste/JSONPropertyPaste';
 import MessageFormattingControl from './Controls/MessageFormatting/MessageFormatting';
 import SimpleVariableSnippet from './Controls/Snippets/SimpleVariable/SimpleVariableSnippet';
@@ -25,11 +25,11 @@ const ICUEditor = (props: UseHandleEditorParams) => {
 
   return (
     <RichTextEditor
-      h="100%"
-      w="100%"
-      display="flex"
       editor={editorHandler.editor}
-      style={{ overflow: 'hidden', flexDirection: 'column' }}
+      classNames={{
+        root: classes['editorRoot'],
+        content: classes['editorContent'],
+      }}
     >
       <RichTextEditor.Toolbar
         sticky

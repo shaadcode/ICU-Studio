@@ -1,4 +1,6 @@
 import { words } from 'es-toolkit';
+import type { LiteralUnion } from 'type-fest';
+import type { TreeNodeData } from '@mantine/core';
 import type { TYPE, MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { dateToHtml } from './toHtml/date';
@@ -9,8 +11,10 @@ import { pluralToHtml } from './toHtml/plural';
 import { selectToHtml } from './toHtml/select';
 import { numberToHtml } from './toHtml/number';
 import { literalToHtml } from './toHtml/literal';
+import type { createTreeNodeData } from '../../mantine';
 import type { SharedToHtmlHelpersParams } from './types';
 import { simpleVariableToHtml } from './toHtml/simpleVariable';
+import type { MessageOutlineData } from '../../mantine/constant';
 import { rootSpanMethods } from '@/shared/lib/icu/rootSpanFactory';
 
 export const MARK_TYPES = {
@@ -46,11 +50,6 @@ export const MARK_TYPES = {
   argumentNameDelimiterStart: `argument-name-delimiter-start`,
 } as const;
 
-export type TraverseContext = {
-  id: string;
-  depth: number;
-};
-
 export type VariableReference = { name: string; referenceId: string };
 
 export type DefaultToHtml = <ElementType extends MessageFormatElement>() => SharedToHtmlHelpersParams<ElementType>;
@@ -59,6 +58,17 @@ export type Traverse = (
   messages: Array<MessageFormatElement>,
   prevCtx?: TraverseContext,
 ) => MessageFormatElement[];
+
+export type TraverseContext = {
+  depth: number;
+  childIndex: number;
+  /**
+   * reference id
+   */
+  referenceId: string;
+  treeData: Array<TreeNodeData>;
+  parentType: LiteralUnion<string, ReturnType<typeof createTreeNodeData>['type']>;
+};
 
 type Options = {
   withFormatting?: true;
@@ -74,16 +84,18 @@ export const extractInfoAndHtml = (params: Params) => {
   const { stats, rootSpan, ...methods } = rootSpanMethods({
     withFormatting: params.opts?.withFormatting,
   });
-
+  const treeData: Array<MessageOutlineData> = [];
   const variableReferences = new Map<string, VariableReference>();
 
-  const traverse: Traverse = (messages, prevCtx) => messages.map((message, ctxIndex) => {
+  const traverse: Traverse = (messages, prevCtx) => messages.map((message, index) => {
     const currentDepth = (prevCtx?.depth ?? 0) + 1;
-    const ctxId = String(ctxIndex);
 
     const CurrentContext = {
-      id: ctxId,
+      childIndex: index,
       depth: currentDepth,
+      treeData: prevCtx?.treeData,
+      referenceId: prevCtx?.referenceId,
+      parentType: prevCtx?.parentType ?? 'root',
     } as TraverseContext;
 
     const defaultToHtmlParams: DefaultToHtml = () => ({
@@ -113,7 +125,16 @@ export const extractInfoAndHtml = (params: Params) => {
     return message;
   });
 
-  traverse(params.parsedMessage);
+  traverse(
+    params.parsedMessage,
+    {
+      depth: 0,
+      treeData,
+      childIndex: 0,
+      referenceId: '',
+      parentType: 'root',
+    },
+  );
 
   stats.characters = params.rawMessage.length;
   stats.words = words(params.rawMessage).length;
@@ -123,9 +144,11 @@ export const extractInfoAndHtml = (params: Params) => {
     stats.textRatio = Math.round((stats.literalCharacters / totalChars) * 100);
     stats.icuSyntaxRatio = Math.round((stats.icuSyntaxChars / totalChars) * 100);
   }
+
   return {
     stats,
     rootSpan,
+    treeData,
     variableReferences,
   };
 };

@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+// import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import ICUEditor from '../../Editor';
-import SimpleCopy from './SimpleCopy';
+// import ICUEditor from '../../Editor';
+// import SimpleCopy from './SimpleCopy';
 
-const meta = {
-  component: SimpleCopy,
-} satisfies Meta<typeof SimpleCopy>;
+// const meta = {
+//   component: SimpleCopy,
+// } satisfies Meta<typeof SimpleCopy>;
 
-export default meta;
+// export default meta;
 
-type Story = StoryObj<typeof meta>;
+// type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  decorators: [
-    Story => <ICUEditor custom={{ toolBarChildren: <Story /> }} />,
+// export const Default: Story = {
+//   decorators: [
+//     Story => <ICUEditor custom={{ toolBarChildren: <Story /> }} />,
 
-  ],
-};
+//   ],
+// };

@@ -10,6 +10,7 @@ import type { ZustandSlice } from '@/shared/config/zustand/types';
 import { createEmptyStats } from '@/shared/lib/icu/createHtml/stats';
 import type { MessageStats } from '@/shared/lib/icu/createHtml/stats';
 import type { VariableInfo } from '@/shared/lib/icu/collectVariables';
+import type { MessageOutlineData } from '@/shared/lib/mantine/constant';
 import type { VariableReference } from '@/shared/lib/icu/createHtml/createHtml';
 import type { ParserError, MessageElementsTypeEnum } from '@/shared/lib/icu/types';
 import { createHtml, TagVariable, minimalParser, collectVariables } from '@/shared/lib/icu';
@@ -21,6 +22,7 @@ export type ICUEditorMessageSlice = {
   stats: MessageStats;
   isFormatted: boolean;
   editorInstance: Editor | undefined;
+  treeData: Array<MessageOutlineData>;
   actions: ICUEditorMessageSliceActions;
   parsedMessage: undefined | Array<MessageFormatElement>;
   variables: Array<VariableInfo & { referenceId: string; value: Date | string | number | ((chunks: ReactNode) => React.JSX.Element) }>;
@@ -52,6 +54,7 @@ type ICUEditorMessageSliceActions = {
 };
 
 export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditorMessageSlice> = (set, get) => ({
+  treeData: [],
   isEmpty: true,
   variables: [],
   textContent: '',
@@ -131,7 +134,7 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
         return;
       }
 
-      const { stats, rootSpan: html, variableReferences } = createHtml({
+      const { stats, treeData, rootSpan: html, variableReferences } = createHtml({
         parsedMessage,
         rawMessage: message,
         opts: { withFormatting: true },
@@ -139,7 +142,7 @@ export const createIcuEditorMessageSlice: ZustandSlice<ICUEditorStore, ICUEditor
       actions.clearValidationError();
       actions.setParsedMessage(parsedMessage);
       actions.setVariables(parsedMessage, variableReferences);
-      set({ stats });
+      set({ stats, treeData });
       if (html.children.length) {
         extendSetContent({ editor })(html.outerHTML);
 

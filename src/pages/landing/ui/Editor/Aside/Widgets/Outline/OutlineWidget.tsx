@@ -1,47 +1,40 @@
 import { useTranslations } from 'use-intl';
 // OutlineWidget.tsx
-import { memo, useMemo, useCallback } from 'react';
-import { IconListTree } from '@tabler/icons-react';
-import { Stack, Badge, ScrollAreaAutosize } from '@mantine/core';
+import { memo, useState, useCallback } from 'react';
+import { IconListTree, IconChevronDown } from '@tabler/icons-react';
+import {
+  Tree,
+  Stack,
+  Badge,
+  Group,
+  useTree,
+  Collapse,
+  ActionIcon,
+  ScrollAreaAutosize,
+} from '@mantine/core';
 
-import { OutlineItem } from './OutlineItem';
+import { OutlineNode } from './OutlineNode';
 import WidgetHeader from '../../../WidgetHeader';
-import type { OutlineNode } from './buildOutlineTree';
-import { buildOutlineTree } from './buildOutlineTree';
 import { OutlineEmptyState } from './OutlineEmptyState';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import WidgetContainer from '../../../WidgetContainer/WidgetContainer';
 
 export const OutlineWidget = memo(() => {
+  const tree = useTree();
   const t = useTranslations('editor');
-  const parsedMessage = icuEditorStore.use.parsedMessage();
-  const textContent = icuEditorStore.use.textContent();
-  const editor = icuEditorStore.use.editorInstance();
+  const tCommon = useTranslations('common');
+  const treeData = icuEditorStore.use.treeData();
 
-  const tree = useMemo(() => {
-    if (!parsedMessage?.length) {
-      return [];
-    }
-    return buildOutlineTree(parsedMessage, textContent);
-  }, [parsedMessage, textContent]);
+  const [opened, setOpened] = useState(true);
 
-  const isEmpty = tree.length === 0;
+  const handleToggle = useCallback(() => {
+    setOpened(prev => !prev);
+  }, []);
 
-  const handleSelect = useCallback((node: OutlineNode) => {
-    if (!editor || !node.location) {
-      return;
-    }
-
-    editor
-      .chain()
-      .focus()
-      .setTextSelection({ to: node.location.end, from: node.location.start })
-      .scrollIntoView()
-      .run();
-  }, [editor]);
+  const isEmpty = treeData.length === 0;
 
   return (
-    <WidgetContainer>
+    <WidgetContainer h={opened ? 460 : 'auto'} style={{ transition: 'height 0.2s' }}>
       <Stack h="100%" gap="xs">
         <WidgetHeader
           label={t('widgets.outline.title')}
@@ -49,30 +42,51 @@ export const OutlineWidget = memo(() => {
             <IconListTree color="var(--mantine-color-teal-6)" {...props} />
           )}
           endSection={(
-            <Badge size="sm" color="teal" variant="light">
-              {tree.length}
-            </Badge>
+            <Group gap="xs" wrap="nowrap">
+              <Badge size="sm" color="teal" variant="light">
+                {treeData.length}
+              </Badge>
+
+              <ActionIcon
+                size="sm"
+                color="gray"
+                variant="subtle"
+                aria-label={opened ? tCommon('collapse') : tCommon('expand')}
+
+                onClick={handleToggle}
+              >
+                <IconChevronDown
+                  size={16}
+                  style={{
+                    transition: 'transform 0.2s',
+                    transform: opened ? 'rotate(0deg)' : 'rotate(90deg)',
+                  }}
+                />
+              </ActionIcon>
+              {' '}
+
+            </Group>
           )}
         />
 
-        {isEmpty
-          ? (
-              <OutlineEmptyState />
-            )
-          : (
-              <ScrollAreaAutosize mih={0} mah="100%" offsetScrollbars>
-                <Stack gap={2}>
-                  {tree.map(node => (
-                    <OutlineItem
-                      node={node}
-                      key={node.id}
-
-                      onSelect={handleSelect}
-                    />
-                  ))}
-                </Stack>
-              </ScrollAreaAutosize>
-            )}
+        <Collapse expanded={opened}>
+          {isEmpty
+            ? (
+                <OutlineEmptyState />
+              )
+            : (
+                <ScrollAreaAutosize mih={0} mah={400} offsetScrollbars>
+                  <Tree
+                    withLines
+                    tree={tree}
+                    selectOnClick
+                    data={treeData}
+                    clearSelectionOnOutsideClick
+                    renderNode={payload => <OutlineNode {...payload} />}
+                  />
+                </ScrollAreaAutosize>
+              )}
+        </Collapse>
       </Stack>
     </WidgetContainer>
   );

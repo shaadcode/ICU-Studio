@@ -53,6 +53,7 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
       }
       rootParams.onUpdateEditor?.(params);
     },
+
     extensions: [
       StarterKitForICUEditor,
       Placeholder.configure({ placeholder: rootParams.placeholder ?? t('placeholder') }),

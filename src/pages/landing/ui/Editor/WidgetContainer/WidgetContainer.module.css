@@ -5,7 +5,7 @@
   box-shadow: var(--mantine-shadow-xs);
 
   &[data-footer-widget] {
-    min-width: 400px;
+    min-width: 350px;
 
     @mixin smaller-than $mantine-breakpoint-sm {
       cursor: default;
@@ -20,5 +20,10 @@
   @mixin dark {
     background-color: var(--mantine-color-dark-8);
     border: 1px solid var(--mantine-color-dark-4);
+  }
+
+  @mixin light {
+    background-color: var(--mantine-color-gray-0);
+    border: 1px solid var(--mantine-color-gray-2);
   }
 }

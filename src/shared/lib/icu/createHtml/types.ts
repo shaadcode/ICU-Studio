@@ -17,4 +17,5 @@ export type SharedToHtmlHelpersParams<ElementType extends MessageFormatElement> 
   rootSpan: HTMLSpanElement;
   variableReferences: Map<string, VariableReference>;
   methods: Omit<ReturnType<typeof rootSpanMethods>, 'stats' | 'rootSpan'>;
+
 };

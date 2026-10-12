@@ -1,5 +1,8 @@
-.editorContent span {
-  font-weight: 600;
+.editorContent {
+  span,
+  p {
+    font-weight: 600;
+  }
 }
 
 .editorRoot {

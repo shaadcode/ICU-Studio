@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
 
-import Logo from './Logo';
+import Logo from '../Logo';
 import { ThemeToggle } from '@/shared/lib/mantine';
 
 const Header = () => {

@@ -18,9 +18,14 @@ export function useMessageMainSectionHandlers() {
     if (editorInstance && initialContent) {
       editorInstance
         .chain()
+        .setMeta('addToHistory', false)
         .setContent(
           initialContent,
-          { emitUpdate: false, parseOptions: { preserveWhitespace: 'full' } },
+          {
+            emitUpdate: false,
+            parseOptions: { preserveWhitespace: 'full' },
+
+          },
         )
         .run();
     }

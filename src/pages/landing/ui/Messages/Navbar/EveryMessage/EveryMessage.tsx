@@ -29,7 +29,7 @@ const EveryMessage = (props: Props) => {
         } else if (handlers.isDirty) {
           return handlers.dirtyModal(message);
         }
-        handlers.handleSelectMessage(message);
+        return handlers.handleSelectMessage(message);
       }}
     >
       <Group gap="xs" wrap="nowrap">

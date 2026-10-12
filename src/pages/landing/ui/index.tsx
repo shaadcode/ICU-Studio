@@ -2,7 +2,6 @@ import { AppShell, useMantineTheme } from '@mantine/core';
 import { useHotkeys, useMediaQuery } from '@mantine/hooks';
 
 import Navbar from './Navbar';
-import Header from './Header/Header';
 import ICUEditor from './Editor/Editor';
 import ProjectsView from './Projects/View';
 import { appStore } from '../config/store/app';
@@ -11,6 +10,7 @@ import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
 import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import ICUEditorAside from './Editor/Aside/ICUEditorAside';
 import MessagesMainSection from './Messages/Main/MainSection';
+import ICUEditorHeader from './Editor/Header/ICUEditorHeader';
 
 const LandingPage = () => {
   const view = appStore.use.view();
@@ -47,7 +47,7 @@ const LandingPage = () => {
       }}
     >
       <AppShell.Header>
-        <Header />
+        {view === 'editor' && <ICUEditorHeader />}
       </AppShell.Header>
       <AppShell.Navbar maw={isBelowMd ? 'fit-content' : undefined}>
         <Navbar />
@@ -63,11 +63,10 @@ const LandingPage = () => {
       </AppShell.Main>
 
       <AppShell.Aside>
-        {view === 'editor' && <ICUEditorAside />}
+        {(view === 'editor' || view === 'messages') && <ICUEditorAside />}
       </AppShell.Aside>
       <AppShell.Footer>
-        {view === 'editor' && <ICUEditorFooter />}
-
+        {(view === 'editor' || view === 'messages') && <ICUEditorFooter />}
       </AppShell.Footer>
     </AppShell>
   );

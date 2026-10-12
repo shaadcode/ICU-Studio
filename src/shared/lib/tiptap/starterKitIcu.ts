@@ -16,4 +16,5 @@ export const StarterKitForICUEditor = StarterKit.configure({
   orderedList: false,
   trailingNode: false,
   horizontalRule: false,
+
 });

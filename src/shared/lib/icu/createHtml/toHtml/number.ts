@@ -2,18 +2,28 @@ import type { NumberElement } from '@formatjs/icu-messageformat-parser';
 
 import { createMessageId } from '../../createMessageId';
 import type { SharedToHtmlHelpersParams } from '../types';
+import { createTreeNodeData, createTreeNodePath } from '@/shared/lib/mantine';
 import { isRichNumberSkeleton, isSimpleNumberSkeleton } from '../../typeGuards';
 
 type Params = SharedToHtmlHelpersParams<NumberElement>;
 
 export const numberToHtml = (params: Params) => {
-  const { methods, message } = params;
+  const { ctx, methods, message } = params;
 
-  if (!params.ctx) {
+  if (!ctx) {
     throw new Error('ctx is undefined');
   }
   const id = createMessageId();
   const varName = message.value.trim();
+  const treeNode = createTreeNodeData();
+  treeNode.location = message.location!;
+  treeNode.value = createTreeNodePath(ctx, 'number');
+  treeNode.type = 'number';
+  treeNode.label = varName;
+  treeNode.referenceId = id;
+
+  ctx.treeData.push(treeNode);
+
   params.variableReferences.set(varName, { name: varName, referenceId: id });
 
   methods.addArgumentNameDelimiterStart({ dependsOn: id });

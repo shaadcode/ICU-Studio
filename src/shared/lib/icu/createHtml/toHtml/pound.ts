@@ -1,17 +1,23 @@
 import type { PoundElement } from '@formatjs/icu-messageformat-parser';
 
 import type { SharedToHtmlHelpersParams } from '../types';
+import { createTreeNodeData, createTreeNodePath } from '@/shared/lib/mantine';
 
 type Params = SharedToHtmlHelpersParams<PoundElement>;
 
 export const poundToHtml = (params: Params) => {
-  const { methods } = params;
+  const { ctx, methods } = params;
 
-  if (!params.ctx) {
+  if (!ctx) {
     throw new Error('ctx is undefined');
   }
+  const treeNode = createTreeNodeData();
+  treeNode.value = createTreeNodePath(ctx, 'pound');
+  treeNode.label = 'pound(#)';
+  treeNode.type = 'pound';
+  treeNode.location = params.message.location!;
+  treeNode.referenceId = ctx.referenceId;
+  ctx.treeData.push(treeNode);
 
-  const depth = Math.max(params.ctx.depth - 1, 1);
-
-  methods.addPound({ referenceId: `depth-${depth}` });
+  methods.addPound({ dependsOn: ctx.referenceId });
 };

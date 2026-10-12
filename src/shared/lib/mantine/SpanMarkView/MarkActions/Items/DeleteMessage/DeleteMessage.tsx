@@ -33,11 +33,10 @@ const DeleteMessageMenuAction = (props: SharedActionProps) => {
     <Tooltip label={t('delete')}>
       <MenuItem
         p={7}
-        color="red"
 
         onClick={handleDeleteMessage}
       >
-        <IconTrash size={17} />
+        <IconTrash size={17} color="var(--mantine-color-red-6)" />
       </MenuItem>
     </Tooltip>
   );

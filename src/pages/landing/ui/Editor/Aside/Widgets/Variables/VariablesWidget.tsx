@@ -56,7 +56,11 @@ export const VariablesWidget = memo(() => {
   const totalCount = variables.length;
 
   return (
-    <WidgetContainer h={opened ? 460 : 'auto'} style={{ transition: 'height 0.2s' }}>
+    <WidgetContainer
+      mah={400}
+      h={opened ? '100%' : 'fit-content'}
+      style={{ transition: 'height 0.2s' }}
+    >
       <Stack h="100%" gap="xs">
         <WidgetHeader
           label={t('widgets.variables.title')}

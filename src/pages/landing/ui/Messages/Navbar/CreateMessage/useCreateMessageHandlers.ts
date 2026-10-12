@@ -73,9 +73,9 @@ export function useCreateMessageHandlers() {
         dirPath: relativePath,
       });
 
-      drawerHandlers.close();
+      return drawerHandlers.close();
     } catch (error) {
-      console.error('Error creating message file:', error);
+      return console.error('Error creating message file:', error);
     } finally {
       form.setSubmitting(false);
     }

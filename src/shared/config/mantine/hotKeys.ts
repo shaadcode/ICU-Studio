@@ -3,6 +3,9 @@ export const hotkeys = {
   toggleNavbar: 'mod + b',
   toggleSideBar: 'mod + \\',
   openFloatingMenu: 'mod + space',
+  i18nManager: {
+    newProject: 'mod + n',
+  },
   editor: {
     fixError: 'mod + .',
     formatting: 'Shift + Alt + F',

@@ -5,7 +5,8 @@ import { IconPencil, IconFolders, IconMessage2 } from '@tabler/icons-react';
 import { appStore } from '../config/store/app';
 import MessagesNavbar from './Messages/Navbar/Messages';
 import { icuEditorStore } from '../config/store/editor';
-import type { ViewTabsItems } from './Projects/Header/Header';
+import I18nManagerNavbar from './I18nManager/Navbar/Navbar';
+import type { ViewTabsItems } from './I18nManager/Header/Header';
 
 const Navbar = () => {
   const setView = appStore.use.actions().setView;
@@ -25,8 +26,8 @@ const Navbar = () => {
       label: t('messages', { count: 2 }),
     },
     {
-      value: 'projects',
       icon: IconFolders,
+      value: 'i18nManager',
       label: t('project', { count: 2 }),
     },
   ] as const satisfies Array<{
@@ -60,6 +61,7 @@ const Navbar = () => {
       </GridCol>
       <GridCol span="auto">
         {view === 'messages' && <MessagesNavbar />}
+        {view === 'i18nManager' && <I18nManagerNavbar />}
       </GridCol>
     </Grid>
   );

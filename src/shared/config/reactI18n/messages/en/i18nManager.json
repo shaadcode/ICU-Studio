@@ -1,0 +1,67 @@
+{
+  "addDirPath": "Add folder path",
+  "addProjectName": "add project name",
+  "basicInfo": {
+    "defaultLocale": "Default Locale",
+    "description": "Description",
+    "descriptionPlaceholder": "Internationalization setup for our e-commerce platform with support for multiple locales and namespaces.",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "E-commerce App",
+    "repository": "Repository (Optional)",
+    "title": "Basic Information",
+    "validation": {
+      "localeRequired": "Default locale is required",
+      "nameRequired": "Project name is required"
+    }
+  },
+  "createNewProject": {
+    "submit": "Create Project",
+    "subtitle": "Set up your project and configure how ICU Studio should detect and manage your internationalization structure.",
+    "title": "Create New Project"
+  },
+  "dirPath": "directory path",
+  "emptyState": {
+    "createFirst": "Create new project",
+    "description": "To get started, create a new internationalization project or open an existing one",
+    "title": "No projects found"
+  },
+  "loadingState": "Loading projects...",
+  "locales": "locales",
+  "namespaces": "namespaces",
+  "project": "{count,plural,other{projects} =0{project} =1{project}}",
+  "projectName": "project name",
+  "projectSettings": {
+    "baseDirectory": "Base Directory",
+    "fileFormat": "File Format",
+    "scanExisting": "Scan for Existing Structure",
+    "scanExistingDesc": "Automatically detect locales, namespaces and structure",
+    "title": "Project Settings"
+  },
+  "structureDetection": {
+    "autoDetect": "Automatic Detection",
+    "autoDetectDesc": "ICU Studio will scan your project and detect the structure based on common patterns.",
+    "description": "ICU Studio will automatically detect your project structure, but you can also choose the structure manually.",
+    "manualSelection": "Manual Selection",
+    "preview": "Preview",
+    "title": "Structure Detection",
+    "wellDetect": "We'll detect:"
+  },
+  "validation": {
+    "createNewProject": {
+      "validation": {
+        "baseDirectoryInvalid": "Base directory path is invalid",
+        "baseDirectoryRequired": "Base directory is required",
+        "fileFormatRequired": "Please select a file format",
+        "localeInvalid": "Please select a valid locale",
+        "localeNotSupported": "The selected locale is not supported",
+        "localeRequired": "Default locale is required",
+        "nameInvalid": "Project name contains invalid characters",
+        "nameMaxLength": "Project name must not exceed {max} characters",
+        "nameMinLength": "Project name must be at least {min} characters",
+        "nameRequired": "Project name is required",
+        "repositoryInvalid": "Repository URL is not valid",
+        "structureRequired": "Please select a project structure"
+      }
+    }
+  }
+}

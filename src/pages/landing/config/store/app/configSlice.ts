@@ -5,8 +5,7 @@ import type { Store } from '@tauri-apps/plugin-store';
 
 import type { AppStore } from '.';
 import type { ZustandSlice } from '@/shared/config/zustand/types';
-import type { ViewTabsItems } from '@/pages/landing/ui/Projects/Header/Header';
-import type { CreateNewProjectFormValues } from '@/pages/landing/ui/Projects/Navbar/Header/CreateProject/CreateProject';
+import type { ViewTabsItems } from '@/pages/landing/ui/I18nManager/Header/Header';
 
 export type AppConfigSlice = {
   locales: Array<DirEntry>;

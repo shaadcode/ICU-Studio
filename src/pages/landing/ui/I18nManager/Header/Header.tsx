@@ -4,7 +4,7 @@ import { useTranslations } from 'use-intl';
 import classes from './Header.module.css';
 import { appStore } from '@/pages/landing/config/store/app';
 
-export type ViewTabsItems = 'editor' | 'projects' | 'messages';
+export type ViewTabsItems = 'editor' | 'messages' | 'i18nManager';
 const Header = () => {
   const view = appStore.use.view();
   const setView = appStore.use.actions().setView;
@@ -25,7 +25,7 @@ const Header = () => {
         <Tabs.Tab value={'editor' as ViewTabsItems}>
           {t('editor')}
         </Tabs.Tab>
-        <Tabs.Tab value={'projects' as ViewTabsItems}>
+        <Tabs.Tab value={'i18nManager' as ViewTabsItems}>
           {t('project', { project: 'other' })}
         </Tabs.Tab>
       </Tabs.List>

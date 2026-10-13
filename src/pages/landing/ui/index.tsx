@@ -3,7 +3,6 @@ import { useHotkeys, useMediaQuery } from '@mantine/hooks';
 
 import Navbar from './Navbar';
 import ICUEditor from './Editor/Editor';
-import ProjectsView from './Projects/View';
 import { appStore } from '../config/store/app';
 import ICUEditorFooter from './Editor/Footer/Footer';
 import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
@@ -11,6 +10,7 @@ import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import ICUEditorAside from './Editor/Aside/ICUEditorAside';
 import MessagesMainSection from './Messages/Main/MainSection';
 import ICUEditorHeader from './Editor/Header/ICUEditorHeader';
+import I18nManagementViewMain from './I18nManager/Main/I18nManagementViewMain';
 
 const LandingPage = () => {
   const view = appStore.use.view();
@@ -59,7 +59,7 @@ const LandingPage = () => {
       >
         {view === 'editor' && (<ICUEditor />)}
         {view === 'messages' && <MessagesMainSection />}
-        {view === 'projects' && <ProjectsView />}
+        {view === 'i18nManager' && <I18nManagementViewMain />}
       </AppShell.Main>
 
       <AppShell.Aside>

@@ -1,0 +1,65 @@
+{
+  "addDirPath": "مسیر پوشه را اضافه کنید",
+  "addProjectName": "نام پروژه را وارد کنید",
+  "basicInfo": {
+    "defaultLocale": "Locale پیش‌فرض",
+    "description": "توضیحات",
+    "descriptionPlaceholder": "راه‌اندازی بین‌المللی‌سازی برای پلتفرم فروشگاهی با پشتیبانی از چندین locale و namespace.",
+    "projectName": "نام پروژه",
+    "projectNamePlaceholder": "اپلیکیشن فروشگاهی",
+    "repository": "مخزن (اختیاری)",
+    "title": "اطلاعات پایه",
+    "validation": {
+      "localeRequired": "Locale پیش‌فرض الزامی است",
+      "nameRequired": "نام پروژه الزامی است"
+    }
+  },
+  "createNewProject": {
+    "submit": "ایجاد پروژه",
+    "subtitle": "پروژه خود را تنظیم کنید و پیکربندی کنید که ICU Studio چگونه ساختار بین‌المللی‌سازی شما را تشخیص و مدیریت کند.",
+    "title": "ایجاد پروژه جدید"
+  },
+  "dirPath": "مسیر پوشه",
+  "emptyState": {
+    "createFirst": "ایجاد پروژه جدید",
+    "description": "برای شروع، یک پروژه بین‌المللی‌سازی جدید ایجاد کنید یا پروژه‌ای موجود را باز نمایید",
+    "title": "پروژه‌ای یافت نشد"
+  },
+  "loadingState": "درحال بارگذاری پروژه ها...",
+  "locales": "زبان ها",
+  "namespaces": "محیط ها",
+  "project": "{count,plural,other{پروژه ها} =0{پروژه} =1{پروژه}}",
+  "projectName": "نام پروژه",
+  "projectSettings": {
+    "baseDirectory": "دایرکتوری پایه",
+    "fileFormat": "فرمت فایل",
+    "scanExisting": "اسکن ساختار موجود",
+    "scanExistingDesc": "تشخیص خودکار locale ها، namespace ها و ساختار",
+    "title": "تنظیمات پروژه"
+  },
+  "structureDetection": {
+    "autoDetect": "تشخیص خودکار",
+    "autoDetectDesc": "ICU Studio پروژه شما را اسکن کرده و ساختار را بر اساس الگوهای رایج تشخیص می‌دهد.",
+    "description": "ICU Studio به طور خودکار ساختار پروژه شما را تشخیص می‌دهد، اما می‌توانید ساختار را به صورت دستی نیز انتخاب کنید.",
+    "manualSelection": "انتخاب دستی",
+    "preview": "پیش‌نمایش",
+    "title": "تشخیص ساختار",
+    "wellDetect": "ما تشخیص می‌دهیم:"
+  },
+  "validation": {
+    "createNewProject": {
+      "baseDirectoryInvalid": "مسیر دایرکتوری پایه نامعتبر است",
+      "baseDirectoryRequired": "دایرکتوری پایه الزامی است",
+      "fileFormatRequired": "لطفاً یک فرمت فایل انتخاب کنید",
+      "localeInvalid": "لطفاً یک locale معتبر انتخاب کنید",
+      "localeNotSupported": "Locale انتخاب‌شده پشتیبانی نمی‌شود",
+      "localeRequired": "Locale پیش‌فرض الزامی است",
+      "nameInvalid": "نام پروژه شامل کاراکترهای غیرمجاز است",
+      "nameMaxLength": "نام پروژه نباید بیشتر از {max} کاراکتر باشد",
+      "nameMinLength": "نام پروژه باید حداقل {min} کاراکتر باشد",
+      "nameRequired": "نام پروژه الزامی است",
+      "repositoryInvalid": "آدرس مخزن معتبر نیست",
+      "structureRequired": "لطفاً یک ساختار پروژه انتخاب کنید"
+    }
+  }
+}

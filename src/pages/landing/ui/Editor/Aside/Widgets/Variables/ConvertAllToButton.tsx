@@ -7,7 +7,7 @@ import { IconTransform } from '@tabler/icons-react';
 import { Menu, Tooltip, ActionIcon } from '@mantine/core';
 
 import { getDelimiterRange } from '@/shared/lib/tiptap';
-import type { MessageKeys } from '@/shared/config/reactI18n/types';
+import type { Translator } from '@/shared/config/reactI18n/types';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import type { MessageElementsTypeKeyword } from '@/shared/lib/icu/types';
 
@@ -26,8 +26,8 @@ const CONVERT_TARGETS = [
   { value: 'select', labelKey: 'controls.snippets.select' },
   { value: 'selectordinal', labelKey: 'controls.snippets.selectordinal' },
 ] as const satisfies Array<{
-  labelKey: MessageKeys<'editor'>;
   value: MessageElementsTypeKeyword;
+  labelKey: Parameters<Translator<'editor'>>[0];
 }>;
 
 export const ConvertAllToButton = memo((props: Props) => {

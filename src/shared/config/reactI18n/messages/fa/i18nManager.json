@@ -21,9 +21,14 @@
   },
   "dirPath": "مسیر پوشه",
   "emptyState": {
-    "createFirst": "ایجاد پروژه جدید",
-    "description": "برای شروع، یک پروژه بین‌المللی‌سازی جدید ایجاد کنید یا پروژه‌ای موجود را باز نمایید",
-    "title": "پروژه‌ای یافت نشد"
+    "noProjects": {
+      "title": "هنوز پروژه‌ای وجود ندارد",
+      "description": "برای افزودن اولین پروژه i18n خود، یک پوشه را اسکن کنید."
+    },
+    "noSelection": {
+      "title": "پروژه‌ای انتخاب نشده است",
+      "description": "برای مشاهده ساختار و تحلیل i18n، یک پروژه را از لیست انتخاب کنید."
+    }
   },
   "loadingState": "درحال بارگذاری پروژه ها...",
   "locales": "زبان ها",
@@ -60,6 +65,108 @@
       "nameRequired": "نام پروژه الزامی است",
       "repositoryInvalid": "آدرس مخزن معتبر نیست",
       "structureRequired": "لطفاً یک ساختار پروژه انتخاب کنید"
+    }
+  },
+  "errors": {
+    "duplicateProject": {
+      "title": "پروژه تکراری",
+      "message": "پروژه‌ای با مسیر \"{path}\" از قبل وجود دارد."
+    }
+  },
+  "header": {
+    "title": "مدیریت بومی‌سازی",
+    "description": "ساختار i18n، زبان‌ها و namespace های شما را به‌صورت خودکار شناسایی و مدیریت می‌کند.",
+    "scanProject": "اسکن پروژه",
+    "settings": "تنظیمات"
+  },
+  "stats": {
+    "detectedLocales": "زبان‌های شناسایی‌شده",
+    "namespaces": "Namespace ها",
+    "files": "فایل‌ها",
+    "structureType": "نوع ساختار"
+  },
+  "tabs": {
+    "structure": "ساختار",
+    "locales": "زبان‌ها",
+    "namespaces": "Namespace ها",
+    "analysis": "تحلیل",
+    "settings": "تنظیمات",
+    "localesContent": "محتوای زبان‌ها",
+    "namespacesContent": "محتوای Namespace ها",
+    "analysisContent": "محتوای تحلیل",
+    "settingsContent": "محتوای تنظیمات"
+  },
+  "structure": {
+    "detectedStructure": "ساختار شناسایی‌شده",
+    "autoDetected": "شناسایی خودکار",
+    "addNamespace": "افزودن Namespace",
+    "details": "جزئیات ساختار",
+    "rescan": "اسکن مجدد",
+    "pattern": "الگو",
+    "folderPerLocale": "پوشه برای هر زبان",
+    "recommended": "پیشنهاد شده",
+    "localeDetection": "تشخیص زبان",
+    "fromFolderName": "از نام پوشه",
+    "namespaceDetection": "تشخیص Namespace",
+    "fromFileName": "از نام فایل",
+    "detectedLocales": "زبان‌های شناسایی‌شده",
+    "addLocale": "افزودن زبان",
+    "namespaces": "Namespace ها",
+    "baseLocale": "زبان پایه",
+    "baseLocaleHint": "زبان اصلی (پایه) را برای مقایسه و fallback انتخاب کنید.",
+    "table": {
+      "name": "نام",
+      "files": "فایل‌ها (زبان‌ها)",
+      "status": "وضعیت",
+      "filesUnit": "فایل"
+    }
+  },
+  "analysis": {
+    "title": "تحلیل",
+    "translated": "ترجمه‌شده",
+    "missing": "جامانده",
+    "errors": "خطاها"
+  },
+  "insights": {
+    "title": "بینش‌های ساختار"
+  },
+  "recommendations": {
+    "title": "پیشنهادها",
+    "add": "افزودن",
+    "learnMore": "بیشتر بدانید"
+  },
+  "quickActions": {
+    "title": "عملیات سریع",
+    "exportReport": {
+      "title": "خروجی گزارش i18n",
+      "description": "گزارش دقیق ساختار خود را بسازید."
+    },
+    "convertCsv": {
+      "title": "تبدیل JSON ⇄ CSV",
+      "description": "فایل‌های ترجمه خود را تبدیل کنید."
+    },
+    "openExplorer": {
+      "title": "باز کردن در Explorer",
+      "description": "ساختار شناسایی‌شده را در فایل‌سیستم مرور کنید."
+    }
+  },
+  "recentScans": {
+    "title": "اسکن‌های اخیر",
+    "lastScan": "آخرین اسکن: {time}",
+    "rescan": "اسکن مجدد"
+  },
+  "notifications": {
+    "scanStarted": {
+      "title": "اسکن شروع شد",
+      "message": "در حال اسکن ساختار پروژه شما هستیم…"
+    },
+    "rescanStarted": {
+      "title": "اسکن مجدد شروع شد",
+      "message": "در حال اسکن مجدد ساختار پروژه…"
+    },
+    "exportStarted": {
+      "title": "خروجی شروع شد",
+      "message": "گزارش i18n شما در حال ساخت است…"
     }
   }
 }

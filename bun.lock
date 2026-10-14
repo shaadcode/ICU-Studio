@@ -6,6 +6,7 @@
       "name": "icu-studio",
       "dependencies": {
         "@formatjs/icu-messageformat-parser": "^3.5.17",
+        "@formatjs/intl-localematcher": "^0.9.0",
         "@mantine/core": "^9.5.2",
         "@mantine/dates": "^9.5.2",
         "@mantine/dropzone": "^9.5.2",
@@ -310,6 +311,8 @@
     "@formatjs/icu-messageformat-parser": ["@formatjs/icu-messageformat-parser@3.5.17", "", { "dependencies": { "@formatjs/icu-skeleton-parser": "2.1.11" } }, "sha512-cN9jhVqT7u0K9tix43fhjoUwL0nazyW6zsNIXs2QdPADr+nurPfYyssUiMqcSCGlPcCiqnYVxgSn7zBSuI+5Bg=="],
 
     "@formatjs/icu-skeleton-parser": ["@formatjs/icu-skeleton-parser@2.1.11", "", {}, "sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA=="],
+
+    "@formatjs/intl-localematcher": ["@formatjs/intl-localematcher@0.9.0", "", { "dependencies": { "@formatjs/fast-memoize": "3.1.7" } }, "sha512-Z7TD3ssNry1Av1dVDoq/mzpxGyxqWwU0ClWEo+BB3k0JQTeQvUGmeK9WZGYvlqStS0UqkaKXk3dfjsb6NaHAxw=="],
 
     "@github-ui/storybook-addon-performance-panel": ["@github-ui/storybook-addon-performance-panel@1.1.4", "", { "peerDependencies": { "@storybook/icons": "^2.0.0", "@storybook/react": "^10.0.0", "react": "^19", "storybook": "^10" }, "optionalPeers": ["@storybook/react", "react"] }, "sha512-clVeSoS1BM2z+nHffOXpnA1J034XALEDfJez6yg7TS7Clfn8eBjgw5FwLjfMvM+kWeG2nwfP6LujRMvJDqj+yg=="],
 

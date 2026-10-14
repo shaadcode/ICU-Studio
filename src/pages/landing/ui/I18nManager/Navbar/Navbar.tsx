@@ -20,10 +20,10 @@ import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 const I18nManagerNavbar = () => {
   const t = useTranslations('i18nManager');
   const [isLoading, setIsLoading] = useState(true);
-  const [projects, setProjects] = useState<ProjectSchema[]>([]);
 
-  const setI18nManagerStore
-    = i18nManagerStore.use.actions().setI18nManagerStore;
+  const setI18nManagerStore = i18nManagerStore.use.actions().setI18nManagerStore;
+  const setProjects = i18nManagerStore.use.actions().setProjects;
+  const projects = i18nManagerStore.use.projects();
 
   useEffect(() => {
     (async () => {
@@ -43,7 +43,7 @@ const I18nManagerNavbar = () => {
     <Stack>
       <Group wrap="nowrap" justify="space-between">
         <Text fw={600} tt="capitalize">
-          {t('project', { count: projects.length })}
+          {t('project', { count: 2 })}
         </Text>
         <CreateNewProject />
       </Group>

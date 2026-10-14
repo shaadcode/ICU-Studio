@@ -6,7 +6,7 @@ import { appStore } from '../config/store/app';
 import MessagesNavbar from './Messages/Navbar/Messages';
 import { icuEditorStore } from '../config/store/editor';
 import I18nManagerNavbar from './I18nManager/Navbar/Navbar';
-import type { ViewTabsItems } from './I18nManager/Header/Header';
+import type { ViewTabsItems } from '../config/store/app/configSlice';
 
 const Navbar = () => {
   const setView = appStore.use.actions().setView;
@@ -37,8 +37,8 @@ const Navbar = () => {
   }>;
 
   return (
-    <Grid p="md" w="100%">
-      <GridCol span="auto" maw="fit-content">
+    <Grid p="md" w="100%" styles={{ inner: { flexWrap: 'nowrap' } }}>
+      <GridCol span={2}>
         <Stack justify="center">
           {navItems.map(item => (
             <Tooltip key={item.label} label={item.label}>
@@ -59,7 +59,7 @@ const Navbar = () => {
           ))}
         </Stack>
       </GridCol>
-      <GridCol span="auto">
+      <GridCol span={10}>
         {view === 'messages' && <MessagesNavbar />}
         {view === 'i18nManager' && <I18nManagerNavbar />}
       </GridCol>

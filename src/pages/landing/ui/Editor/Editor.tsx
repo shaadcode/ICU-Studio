@@ -25,6 +25,7 @@ const ICUEditor = (props: UseHandleEditorParams) => {
 
   return (
     <RichTextEditor
+      flex={1}
       editor={editorHandler.editor}
       classNames={{
         root: classes['editorRoot'],

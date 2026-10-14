@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^3.5.17",
+    "@formatjs/intl-localematcher": "^0.9.0",
     "@mantine/core": "^9.5.2",
     "@mantine/dates": "^9.5.2",
     "@mantine/dropzone": "^9.5.2",

@@ -11,9 +11,7 @@ declare module 'use-intl' {
   }
 }
 
-export type MessageKeys<Base extends Paths<Messages>> = Parameters<
-  ReturnType<
+export type Translator<Base extends Paths<Messages>> = ReturnType<
   // @ts-expect-error
     typeof useTranslations<Base>
-  >
->[0];
+>;

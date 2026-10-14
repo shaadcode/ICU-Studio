@@ -21,9 +21,14 @@
   },
   "dirPath": "directory path",
   "emptyState": {
-    "createFirst": "Create new project",
-    "description": "To get started, create a new internationalization project or open an existing one",
-    "title": "No projects found"
+    "noProjects": {
+      "title": "No projects yet",
+      "description": "Scan a folder to add your first i18n project."
+    },
+    "noSelection": {
+      "title": "No project selected",
+      "description": "Select a project from the list to view its i18n structure and analysis."
+    }
   },
   "loadingState": "Loading projects...",
   "locales": "locales",
@@ -48,20 +53,120 @@
   },
   "validation": {
     "createNewProject": {
-      "validation": {
-        "baseDirectoryInvalid": "Base directory path is invalid",
-        "baseDirectoryRequired": "Base directory is required",
-        "fileFormatRequired": "Please select a file format",
-        "localeInvalid": "Please select a valid locale",
-        "localeNotSupported": "The selected locale is not supported",
-        "localeRequired": "Default locale is required",
-        "nameInvalid": "Project name contains invalid characters",
-        "nameMaxLength": "Project name must not exceed {max} characters",
-        "nameMinLength": "Project name must be at least {min} characters",
-        "nameRequired": "Project name is required",
-        "repositoryInvalid": "Repository URL is not valid",
-        "structureRequired": "Please select a project structure"
-      }
+      "baseDirectoryInvalid": "Base directory path is invalid",
+      "baseDirectoryRequired": "Base directory is required",
+      "fileFormatRequired": "Please select a file format",
+      "localeInvalid": "Please select a valid locale",
+      "localeNotSupported": "The selected locale is not supported",
+      "localeRequired": "Default locale is required",
+      "nameInvalid": "Project name contains invalid characters",
+      "nameMaxLength": "Project name must not exceed {max} characters",
+      "nameMinLength": "Project name must be at least {min} characters",
+      "nameRequired": "Project name is required",
+      "repositoryInvalid": "Repository URL is not valid",
+      "structureRequired": "Please select a project structure"
+    }
+  },
+  "errors": {
+    "duplicateProject": {
+      "title": "duplicate project",
+      "message": "project with path \"{path}\" already exists."
+    }
+  },
+  "header": {
+    "title": "Internationalization Management",
+    "description": "Automatically detect and manage your i18n structure, locales, and namespaces.",
+    "scanProject": "Scan Project",
+    "settings": "Settings"
+  },
+  "stats": {
+    "detectedLocales": "Detected Locales",
+    "namespaces": "Namespaces",
+    "files": "Files",
+    "structureType": "Structure Type"
+  },
+  "tabs": {
+    "structure": "Structure",
+    "locales": "Locales",
+    "namespaces": "Namespaces",
+    "analysis": "Analysis",
+    "settings": "Settings",
+    "localesContent": "Locales content",
+    "namespacesContent": "Namespaces content",
+    "analysisContent": "Analysis content",
+    "settingsContent": "Settings content"
+  },
+  "structure": {
+    "detectedStructure": "Detected Structure",
+    "autoDetected": "Auto-detected",
+    "addNamespace": "Add Namespace",
+    "details": "Structure Details",
+    "rescan": "Re-scan",
+    "pattern": "Pattern",
+    "folderPerLocale": "Folder per Locale",
+    "recommended": "recommended",
+    "localeDetection": "Locale Detection",
+    "fromFolderName": "From folder name",
+    "namespaceDetection": "Namespace Detection",
+    "fromFileName": "From file name",
+    "detectedLocales": "Detected Locales",
+    "addLocale": "Add locale",
+    "namespaces": "Namespaces",
+    "baseLocale": "Base Locale",
+    "baseLocaleHint": "Select the primary language (base locale) for comparison and fallback.",
+    "table": {
+      "name": "Name",
+      "files": "Files (locales)",
+      "status": "Status",
+      "filesUnit": "files"
+    }
+  },
+  "analysis": {
+    "title": "Analysis",
+    "translated": "Translated",
+    "missing": "Missing",
+    "errors": "Errors"
+  },
+  "insights": {
+    "title": "Structure Insights"
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "add": "Add",
+    "learnMore": "Learn more"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "exportReport": {
+      "title": "Export i18n report",
+      "description": "Generate a detailed report of your structure."
+    },
+    "convertCsv": {
+      "title": "Convert JSON ⇄ CSV",
+      "description": "Convert your translation files."
+    },
+    "openExplorer": {
+      "title": "Open in Explorer",
+      "description": "Browse the detected structure in your file system."
+    }
+  },
+  "recentScans": {
+    "title": "Recent Scans",
+    "lastScan": "Last scan: {time}",
+    "rescan": "Rescan"
+  },
+  "notifications": {
+    "scanStarted": {
+      "title": "Scan started",
+      "message": "We are scanning your project structure…"
+    },
+    "rescanStarted": {
+      "title": "Re-scan started",
+      "message": "Re-scanning your project structure…"
+    },
+    "exportStarted": {
+      "title": "Export started",
+      "message": "Your i18n report is being generated…"
     }
   }
 }

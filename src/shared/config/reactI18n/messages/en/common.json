@@ -45,5 +45,11 @@
   "value": "value",
   "variable": "{count, select,single {variable}plural {variables}other {}}",
   "view": "view",
-  "warning": "warning"
+  "warning": "warning",
+  "errors": {
+    "storeNotInitialized": {
+      "title": "store not initialized!",
+      "message": "this is an internal error. please report this issue."
+    }
+  }
 }

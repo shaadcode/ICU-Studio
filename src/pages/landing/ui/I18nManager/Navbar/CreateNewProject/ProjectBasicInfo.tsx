@@ -15,12 +15,13 @@ export const ProjectBasicInfo = (props: Props) => {
   const tCommon = useTranslations('common');
 
   const handleSelectBaseDirectory = async () => {
-    const localesFolder = await open({
+    const localesFolderPath = await open({
       multiple: false,
       directory: true,
+      recursive: true,
     });
-    if (localesFolder) {
-      props.form.setFieldValue('baseDirectory', localesFolder);
+    if (localesFolderPath) {
+      props.form.setFieldValue('baseDirectoryPath', localesFolderPath);
     }
   };
   return (
@@ -49,7 +50,7 @@ export const ProjectBasicInfo = (props: Props) => {
 
       <TextInput
         withAsterisk
-        placeholder="/messages"
+        placeholder="path/to/messages"
         leftSection={<IconFolder size={16} />}
         label={t('projectSettings.baseDirectory')}
         rightSection={(
@@ -64,7 +65,7 @@ export const ProjectBasicInfo = (props: Props) => {
             <IconFolderOpen size={16} />
           </ActionIcon>
         )}
-        {...props.form.getInputProps('baseDirectory')}
+        {...props.form.getInputProps('baseDirectoryPath')}
       />
     </Stack>
   );

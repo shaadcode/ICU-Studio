@@ -62,10 +62,11 @@ export const decorators = [
   (Story, ctx) => {
     const locale = getStorybookLocale(ctx);
     const withoutWrapper = ctx.parameters['withoutWrapper'];
+    const messages = allLocalesMessages[locale];
     return (
       <IntlProvider
         locale={locale}
-        messages={allLocalesMessages[locale]}
+        messages={messages}
 
         onError={(error) => {
           throw new Error(error.message);

@@ -32,20 +32,11 @@ export const useCreateProjectHandlers = () => {
       return;
     }
     if (values.structureType === 'locale-folder-namespace-file') {
-      // const isExistFolder = await exists(values.baseDirectoryPath);
-
-      // if (!isExistFolder) {
-      //   return notifications.show({
-      //     title: 'not found',
-      //     message: 'not found',
-      //   });
-      // }
-
-      addProject(values);
+      addProject({ tCommon, project: values, tI18nManager: t });
     }
 
-    // modalHandlers.close();
-    // form.reset();
+    modalHandlers.close();
+    form.reset();
   };
 
   const handleStructureSelect = (structure: StructureType) => {

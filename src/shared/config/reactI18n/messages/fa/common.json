@@ -46,5 +46,11 @@
   "value": "مقدار",
   "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}",
   "view": "نما",
-  "warning": "هشدار"
+  "warning": "هشدار",
+  "errors": {
+    "storeNotInitialized": {
+      "title": "استور مقداردهی اولیه نشده!",
+      "message": "این یک خطا داخلی است. لطفا این خطا را گزارش دهید"
+    }
+  }
 }

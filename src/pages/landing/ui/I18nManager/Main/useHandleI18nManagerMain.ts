@@ -110,6 +110,7 @@ export const useHandleI18nManagerMain = () => {
     quickActions,
     setActiveTab,
     setBaseLocale,
+    selectedProject,
     selectedProjectData,
   };
 };

@@ -1,5 +1,6 @@
-import { IconFolder } from '@tabler/icons-react';
-import { Box, Text, Group, Paper } from '@mantine/core';
+import { useTranslations } from 'use-intl';
+import { IconDots, IconTrash, IconFolder } from '@tabler/icons-react';
+import { Box, Text, Menu, Group, Paper, ActionIcon } from '@mantine/core';
 
 import type { ProjectSchema } from './CreateNewProject/types';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -11,7 +12,16 @@ type Props = {
 export const ProjectItem = ({ project }: Props) => {
   const selectedProject = i18nManagerStore.use.selectedProject();
   const setSelectedProject = i18nManagerStore.use.actions().setSelectedProject;
-  const isSelected = selectedProject?.baseDirectoryPath === project.baseDirectoryPath;
+  const deleteProject = i18nManagerStore.use.actions().deleteProject;
+  const tCommon = useTranslations('common');
+  const tI18nManager = useTranslations('i18nManager');
+  const isSelected
+    = selectedProject?.baseDirectoryPath === project.baseDirectoryPath;
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await deleteProject({ project, tCommon, tI18nManager });
+  };
 
   return (
     <Paper
@@ -41,6 +51,31 @@ export const ProjectItem = ({ project }: Props) => {
             </Text>
           </Box>
         </Group>
+
+        <Menu shadow="md" width={160} position="bottom-end">
+          <Menu.Target>
+            <ActionIcon
+              size="sm"
+              color="gray"
+              variant="subtle"
+
+              onClick={e => e.stopPropagation()}
+            >
+              <IconDots size={16} />
+            </ActionIcon>
+          </Menu.Target>
+
+          <Menu.Dropdown onClick={e => e.stopPropagation()}>
+            <Menu.Item
+              color="red"
+              leftSection={<IconTrash size={14} />}
+
+              onClick={handleDelete}
+            >
+              {'Delete\r'}
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Group>
     </Paper>
   );

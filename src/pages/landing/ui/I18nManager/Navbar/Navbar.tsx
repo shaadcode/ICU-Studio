@@ -61,16 +61,16 @@ const I18nManagerNavbar = () => {
           )
         : projects.length === 0
           ? (
-              <Center py="xl">
+              <Center py="xl" w="100%">
                 <Stack gap="xs" align="center">
                   <ThemeIcon size={50} radius="xl" color="gray" variant="light">
                     <IconMessageOff size="60%" stroke={1.5} />
                   </ThemeIcon>
                   <Text fz="sm" fw={600} ta="center" style={{ userSelect: 'none' }}>
-                    {t('emptyState.title')}
+                    {t('emptyState.noProjects.title')}
                   </Text>
                   <Text fz="xs" maw={220} c="dimmed" ta="center">
-                    {t('emptyState.description')}
+                    {t('emptyState.noProjects.description')}
                   </Text>
                 </Stack>
               </Center>

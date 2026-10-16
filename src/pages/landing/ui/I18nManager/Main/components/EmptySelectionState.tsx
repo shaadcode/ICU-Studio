@@ -7,7 +7,7 @@ export const EmptySelectionState = () => {
   const t = useTranslations('i18nManager.emptyState');
 
   return (
-    <Center h="100%" mih={400}>
+    <Center h="100%" w="100%" mih={400}>
       <Stack gap="md" maw={420} align="center">
         <ThemeIcon size={80} radius="xl" color="gray" variant="light">
           <IconFolderOff size={40} />

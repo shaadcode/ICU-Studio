@@ -1,25 +1,8 @@
 import { useTranslations } from 'use-intl';
-import {
-  IconStack2,
-  IconRefresh,
-  IconFileCode,
-  IconFileText,
-} from '@tabler/icons-react';
-import {
-  Card,
-  Text,
-  Group,
-  Stack,
-  Button,
-  ThemeIcon,
-  SimpleGrid,
-} from '@mantine/core';
+import { IconStack2, IconFileCode, IconFileText } from '@tabler/icons-react';
+import { Card, Text, Group, Stack, ThemeIcon, SimpleGrid } from '@mantine/core';
 
-type Props = {
-  onRescan: () => void;
-};
-
-export const StructureDetails = ({ onRescan }: Props) => {
+export const StructureDetails = () => {
   const t = useTranslations('i18nManager');
   const items = [
     {
@@ -46,21 +29,10 @@ export const StructureDetails = ({ onRescan }: Props) => {
   ];
 
   return (
-    <Card withBorder radius="md" padding="md">
-      <Group mb="md" justify="space-between">
-        <Text fw={600} size="sm">
-          {t('structure.details')}
-        </Text>
-        <Button
-          size="xs"
-          variant="default"
-          leftSection={<IconRefresh size={14} />}
-
-          onClick={onRescan}
-        >
-          {t('structure.rescan')}
-        </Button>
-      </Group>
+    <Card withBorder radius="md" padding="md" component={Stack}>
+      <Text fw={600} size="sm">
+        {t('structure.details')}
+      </Text>
 
       <SimpleGrid spacing="md" cols={{ sm: 3, base: 1 }}>
         {items.map(item => (

@@ -71,6 +71,10 @@
     "duplicateProject": {
       "title": "پروژه تکراری",
       "message": "پروژه‌ای با مسیر \"{path}\" از قبل وجود دارد."
+    },
+    "projectNotFound": {
+      "title": "پروژه یافت نشد",
+      "message": "پروژه‌ای با مسیر \"{path}\" یافت نشد."
     }
   },
   "header": {
@@ -119,6 +123,60 @@
       "files": "فایل‌ها (زبان‌ها)",
       "status": "وضعیت",
       "filesUnit": "فایل"
+    },
+    "modals": {
+      "addLocale": {
+        "title": "افزودن زبان جدید",
+        "description": "یک زبان انتخاب کنید. فایل‌ها بر اساس ساختار شناسایی‌شده ساخته می‌شوند.",
+        "codeLabel": "زبان",
+        "codePlaceholder": "جستجوی زبان…",
+        "noResults": "زبانی یافت نشد",
+        "previewLabel": "پیش‌نمایش",
+        "previewTotal": "{count} فایل ساخته خواهد شد",
+        "sameAsBaseWarning": "زبان انتخاب‌شده با زبان پایه یکسان است",
+        "cancel": "لغو",
+        "submit": "افزودن زبان"
+      },
+      "deleteLocale": {
+        "title": "حذف زبان",
+        "message": "آیا از حذف زبان \"{locale}\" مطمئن هستید؟ تمام فایل‌های آن حذف خواهند شد و این عمل قابل بازگشت نیست.",
+        "confirm": "حذف",
+        "cancel": "لغو"
+      }
+    },
+    "contextMenu": {
+      "nodeLabel": "عملیات",
+      "openInExplorer": "باز کردن در Explorer",
+      "copyPath": "کپی مسیر",
+      "copied": "کپی شد!",
+      "revealInExplorer": "نمایش در Explorer",
+      "deleteLocale": "حذف زبان"
+    },
+    "validation": {
+      "localeRequired": "لطفاً یک زبان انتخاب کنید",
+      "localeExists": "این زبان از قبل در پروژه وجود دارد"
+    },
+    "notifications": {
+      "localeAdded": {
+        "title": "زبان اضافه شد",
+        "message": "زبان \"{locale}\" با موفقیت ساخته شد."
+      },
+      "localeAddFailed": {
+        "title": "افزودن زبان ناموفق بود",
+        "message": "{error}"
+      },
+      "localeDeleted": {
+        "title": "زبان حذف شد",
+        "message": "زبان \"{locale}\" با موفقیت حذف شد."
+      },
+      "localeDeleteFailed": {
+        "title": "حذف زبان ناموفق بود",
+        "message": "{error}"
+      },
+      "revealFailed": {
+        "title": "باز کردن در Explorer ناموفق بود",
+        "message": "{error}"
+      }
     }
   },
   "analysis": {

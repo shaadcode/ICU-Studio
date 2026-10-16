@@ -17,7 +17,7 @@ const I18nManagementViewMain = () => {
     activeTab,
     setActiveTab,
     quickActions,
-    setBaseLocale,
+    selectedProject,
     selectedProjectData,
   } = useHandleI18nManagerMain();
 
@@ -25,7 +25,7 @@ const I18nManagementViewMain = () => {
     return <EmptyProjectsState />;
   }
 
-  if (!selectedProjectData) {
+  if (!selectedProjectData || !selectedProject) {
     return <EmptySelectionState />;
   }
 
@@ -57,11 +57,9 @@ const I18nManagementViewMain = () => {
           <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
             <Tabs.Panel value="structure">
               <StructureTab
+                project={selectedProject}
                 projectData={selectedProjectData}
 
-                onRescan={handlers.handleRescan}
-                onBaseLocaleChange={setBaseLocale}
-                onAddLocale={handlers.handleAddLocale}
                 onAddNamespace={handlers.handleAddNamespace}
               />
             </Tabs.Panel>

@@ -5,17 +5,18 @@ export type StructureType
     | 'locale-folder-namespace-file'
     | 'locale-file-nested-namespaces';
 
-export type ProjectSchema = {
-  name: string;
-  description: string;
-  baseDirectoryPath: string;
-  structureType: StructureType;
-};
-
 export type StructureOption = {
   title: string;
   example: string;
   description: string;
   value: StructureType;
   icon: React.ReactNode;
+};
+
+export type ProjectSchema = {
+  name: string;
+  baseLocale: string;
+  description: string;
+  baseDirectoryPath: string;
+  structureType: StructureType;
 };

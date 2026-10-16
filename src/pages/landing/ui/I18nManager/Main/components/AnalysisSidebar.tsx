@@ -19,7 +19,6 @@ type Props = {
 };
 
 export const AnalysisSidebar = ({
-  onRescan,
   projectData,
   quickActions,
   onConvertCsv,
@@ -45,11 +44,7 @@ export const AnalysisSidebar = ({
         onExportReport={onExportReport}
         onOpenExplorer={onOpenExplorer}
       />
-      <RecentScans
-        recentScan={{ lastScanAt: projectData.recentScan.toISOString() }}
-
-        onRescan={onRescan}
-      />
+      <RecentScans projectData={projectData} />
     </Stack>
   );
 };

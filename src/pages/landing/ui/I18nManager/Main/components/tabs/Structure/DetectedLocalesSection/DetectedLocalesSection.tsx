@@ -1,23 +1,23 @@
 import { useTranslations } from 'use-intl';
-import { IconPlus } from '@tabler/icons-react';
-import { Card, Text, Badge, Group, Button } from '@mantine/core';
+import { Box, Card, Text, Badge, Group } from '@mantine/core';
 
+import { AddLocaleModal } from './AddLocaleModal/AddLocaleModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  onAddLocale: () => void;
-  locales: NonNullable<I18nManagerStore['selectedProjectData']>['locales'];
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const DetectedLocalesSection = ({ locales, onAddLocale }: Props) => {
+export const DetectedLocalesSection = (props: Props) => {
   const t = useTranslations('i18nManager');
+
   return (
     <Card withBorder radius="md" padding="md">
       <Text mb="sm" fw={600} size="sm">
         {t('structure.detectedLocales')}
       </Text>
       <Group gap="xs">
-        {locales.map(locale => (
+        {props.projectData.locales.map(locale => (
           <Badge
             size="lg"
             radius="sm"
@@ -28,16 +28,9 @@ export const DetectedLocalesSection = ({ locales, onAddLocale }: Props) => {
             {locale}
           </Badge>
         ))}
-        <Button
-          size="xs"
-          variant="default"
-          leftSection={<IconPlus size={12} />}
-          styles={{ root: { borderStyle: 'dashed' } }}
-
-          onClick={onAddLocale}
-        >
-          {t('structure.addLocale')}
-        </Button>
+        <Box mis="auto">
+          <AddLocaleModal projectData={props.projectData} />
+        </Box>
       </Group>
     </Card>
   );

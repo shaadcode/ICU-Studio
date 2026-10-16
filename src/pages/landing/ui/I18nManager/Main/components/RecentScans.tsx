@@ -1,14 +1,18 @@
-import { useTranslations } from 'use-intl';
 import { IconRefresh } from '@tabler/icons-react';
 import { Card, Text, Group, Button } from '@mantine/core';
+import { useNow, useFormatter, useTranslations } from 'use-intl';
+
+import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  onRescan: () => void;
-  recentScan: { lastScanAt: string };
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const RecentScans = ({ onRescan, recentScan }: Props) => {
+export const RecentScans = (params: Props) => {
   const t = useTranslations('i18nManager');
+  const format = useFormatter();
+  const now = useNow({ updateInterval: 1000 * 30 });
+
   return (
     <Card withBorder radius="md" padding="md">
       <Text mb="sm" fw={600} size="sm">
@@ -17,14 +21,15 @@ export const RecentScans = ({ onRescan, recentScan }: Props) => {
 
       <Group justify="space-between">
         <Text size="xs" c="dimmed">
-          {t('recentScans.lastScan', { time: recentScan.lastScanAt })}
+          {t(
+            'recentScans.lastScan',
+            { time: format.relativeTime(params.projectData.recentScan, now) },
+          )}
         </Text>
         <Button
           size="compact-xs"
           variant="default"
           leftSection={<IconRefresh size={12} />}
-
-          onClick={onRescan}
         >
           {t('recentScans.rescan')}
         </Button>

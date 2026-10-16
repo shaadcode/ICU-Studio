@@ -17,6 +17,10 @@ export type I18nManagerStore = {
   i18nManagerLocalStore: Store | undefined;
   selectedProject: undefined | ProjectSchema;
   selectedProjectData: undefined | {
+    /**
+     * project full path
+     */
+    path: string;
     recentScan: Date;
     baseLocale: string;
     filesAmount: number;
@@ -46,6 +50,11 @@ type I18nManagerStoreActions = {
     tCommon: Translator<'common'>;
     tI18nManager: Translator<'i18nManager'>;
   }) => Promise<void>;
+  updateSelectedProject: (params: {
+    updatedProject: ProjectSchema;
+    tCommon: Translator<'common'>;
+    tI18nManager: Translator<'i18nManager'>;
+  }) => Promise<void>;
 };
 
 const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
@@ -56,6 +65,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
   selectedProjectData: undefined,
   i18nManagerLocalStore: undefined,
   actions: {
+
     setProjects: projects => set({ projects }),
     setSelectedProjectData: v => set({ selectedProjectData: v }),
     setSelectedProject: value => set({ selectedProject: value }),
@@ -122,6 +132,52 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         await store.save();
 
         set({ projects: updatedProjects, selectedProject: params.project });
+      });
+    },
+    updateSelectedProject: async (params) => {
+      const store = get().i18nManagerLocalStore;
+      if (!store) {
+        notifications.show({
+          color: 'red',
+          title: params.tCommon('errors.storeNotInitialized.title'),
+          message: params.tCommon('errors.storeNotInitialized.message'),
+        });
+        return;
+      }
+
+      const existingProjects
+        = (await store.get<ProjectSchema[]>(storeKeys.i18nManager.projects)) ?? [];
+
+      const targetIndex = existingProjects.findIndex(
+        p => p.baseDirectoryPath === params.updatedProject.baseDirectoryPath,
+      );
+
+      if (targetIndex === -1) {
+        notifications.show({
+          color: 'orange',
+          title: params.tI18nManager('errors.projectNotFound.title'),
+          message: params.tI18nManager('errors.projectNotFound.message', {
+            path: params.updatedProject.baseDirectoryPath,
+          }),
+        });
+        return;
+      }
+
+      await attemptAsync(async () => {
+        const updatedProjects = [...existingProjects];
+        updatedProjects[targetIndex] = params.updatedProject;
+
+        await store.set(storeKeys.i18nManager.projects, updatedProjects);
+        await store.save();
+
+        const currentSelected = get().selectedProject;
+        const shouldUpdateSelected
+          = currentSelected?.baseDirectoryPath === params.updatedProject.baseDirectoryPath;
+
+        set({
+          projects: updatedProjects,
+          ...(shouldUpdateSelected && { selectedProject: params.updatedProject }),
+        });
       });
     },
   },

@@ -3,24 +3,20 @@ import { Grid, Stack } from '@mantine/core';
 import { NamespacesTable } from './NamespacesTable';
 import { StructureDetails } from './StructureDetails';
 import { BaseLocaleSelect } from './BaseLocaleSelect';
-import { DetectedStructureTree } from './DetectedStructureTree';
-import { DetectedLocalesSection } from './DetectedLocalesSection';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { DetectedStructureTree } from './DetectedStructureTree/DetectedStructureTree';
+import { DetectedLocalesSection } from './DetectedLocalesSection/DetectedLocalesSection';
 
 type Props = {
-  onRescan: () => void;
-  onAddLocale: () => void;
   onAddNamespace: () => void;
-  onBaseLocaleChange: (locale: string) => void;
+  project: NonNullable<I18nManagerStore['selectedProject']>;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
 export const StructureTab = ({
-  onRescan,
-  onAddLocale,
+  project,
   projectData,
   onAddNamespace,
-  onBaseLocaleChange,
 }: Props) => {
   return (
     <Grid gap="md">
@@ -34,20 +30,16 @@ export const StructureTab = ({
 
       <Grid.Col span={{ lg: 8, base: 12 }}>
         <Stack gap="md">
-          <StructureDetails onRescan={onRescan} />
+          <StructureDetails />
 
-          <DetectedLocalesSection
-            locales={projectData.locales}
-
-            onAddLocale={onAddLocale}
-          />
+          <DetectedLocalesSection projectData={projectData} />
 
           <NamespacesTable namespaces={projectData.namespaces} />
 
           <BaseLocaleSelect
-            locales={projectData.locales}
+            project={project}
+            projectData={projectData}
 
-            onChange={onBaseLocaleChange}
           />
         </Stack>
       </Grid.Col>

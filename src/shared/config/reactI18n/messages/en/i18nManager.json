@@ -71,6 +71,10 @@
     "duplicateProject": {
       "title": "duplicate project",
       "message": "project with path \"{path}\" already exists."
+    },
+    "projectNotFound": {
+      "title": "Project not found",
+      "message": "No project was found with path \"{path}\"."
     }
   },
   "header": {
@@ -119,6 +123,60 @@
       "files": "Files (locales)",
       "status": "Status",
       "filesUnit": "files"
+    },
+    "modals": {
+      "addLocale": {
+        "title": "Add new locale",
+        "description": "Select a locale. Files will be created based on the detected structure.",
+        "codeLabel": "Locale",
+        "codePlaceholder": "Search for a language…",
+        "noResults": "No language found",
+        "previewLabel": "Preview",
+        "previewTotal": "{count} files will be created",
+        "sameAsBaseWarning": "The selected locale is the same as the base locale",
+        "cancel": "Cancel",
+        "submit": "Add Locale"
+      },
+      "deleteLocale": {
+        "title": "Delete locale",
+        "message": "Are you sure you want to delete the locale \"{locale}\"? This will remove all its files and cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "validation": {
+      "localeRequired": "Please select a locale",
+      "localeExists": "This locale already exists in the project"
+    },
+    "contextMenu": {
+      "nodeLabel": "node actions",
+      "openInExplorer": "open in explorer",
+      "copyPath": "copy path",
+      "copied": "copied!",
+      "revealInExplorer": "reveal in explorer",
+      "deleteLocale": "delete locale"
+    },
+    "notifications": {
+      "localeAdded": {
+        "title": "Locale added",
+        "message": "Locale \"{locale}\" was created successfully."
+      },
+      "localeDeleted": {
+        "title": "Locale deleted",
+        "message": "Locale \"{locale}\" was deleted successfully."
+      },
+      "localeDeleteFailed": {
+        "title": "Failed to delete locale",
+        "message": "{error}"
+      },
+      "localeAddFailed": {
+        "title": "Failed to add locale",
+        "message": "{error}"
+      },
+      "revealFailed": {
+        "title": "Failed to open in Explorer",
+        "message": "{error}"
+      }
     }
   },
   "analysis": {

@@ -1,14 +1,26 @@
 import { readDir } from '@tauri-apps/plugin-fs';
-import type { TreeNodeData } from '@mantine/core';
 import { join, extname } from '@tauri-apps/api/path';
 
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type I18nProjectTree = {
+  /**
+   * full path dir or file(just for rendering and state management)
+   */
+  value: string;
+  /**
+   * file or directory path
+   */
   fullPath: string;
+  isLocale: boolean;
+  isNamespace: boolean;
   isDirectory: boolean;
+  /**
+   * file or dir name(namespace)
+   */
+  label: React.ReactNode;
   children?: I18nProjectTree[];
-} & TreeNodeData;
+};
 
 export async function getI18nProjectData(projectPath: string) {
   const locales: string[] = [];
@@ -19,9 +31,7 @@ export async function getI18nProjectData(projectPath: string) {
     const nodes: I18nProjectTree[] = [];
 
     for (const entry of entries) {
-      const ext = await extname(entry.name);
-
-      if (entry.name.startsWith('.') || ext !== 'json') {
+      if (entry.name.startsWith('.')) {
         continue;
       }
 
@@ -35,10 +45,13 @@ export async function getI18nProjectData(projectPath: string) {
       const node: I18nProjectTree = {
         fullPath,
         value: fullPath,
+        isLocale: isDir,
         label: entry.name,
         isDirectory: isDir,
+        isNamespace: !isDir,
       };
 
+      const ext = isDir ? '' : await extname(entry.name);
       if (isDir) {
         node.children = await buildTree(fullPath, depth + 1);
       } else {
@@ -46,8 +59,9 @@ export async function getI18nProjectData(projectPath: string) {
           filesSet.add(entry.name);
         }
       }
-
-      nodes.push(node);
+      if (isDir || ext === 'json') {
+        nodes.push(node);
+      }
     }
 
     return nodes;
@@ -59,6 +73,7 @@ export async function getI18nProjectData(projectPath: string) {
   return {
     tree,
     locales,
+    path: projectPath,
     namespaces: files,
     recentScan: new Date(),
     baseLocale: 'baseLocale',

@@ -1,30 +1,13 @@
 import ISO6391 from 'iso-639-1';
+import { useMemo } from 'react';
 import { useForm } from '@mantine/form';
-import { attemptAsync } from 'es-toolkit';
 import { useTranslations } from 'use-intl';
 import { useDisclosure } from '@mantine/hooks';
-import { useMemo, useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
-import type { StructureType } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
-
-export const ADD_LOCALE_STRATEGIES: Record<StructureType, AddLocaleStrategy>
-
-  = {
-    'locale-folder-namespace-file': async (ctx) => {
-
-    },
-
-    'namespace-path-prefix': async () => {
-      throw new Error('Not implemented yet: namespace-path-prefix');
-    },
-
-    'locale-file-nested-namespaces': async () => {
-      throw new Error('Not implemented yet: locale-file-nested-namespaces');
-    },
-  };
 
 type FormValues = {
   localeCode: string;
@@ -41,10 +24,8 @@ type Params = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const useHandleAddLocaleModal = (params: Params) => {
+export const useHandleAddLocaleModal = (rootParams: Params) => {
   const t = useTranslations('i18nManager');
-  const [isLoading, setIsLoading] = useState(false);
-  const projectData = i18nManagerStore.use.selectedProjectData();
   const setSelectedProjectData = i18nManagerStore.use.actions().setSelectedProjectData;
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -57,37 +38,22 @@ export const useHandleAddLocaleModal = (params: Params) => {
         if (!value) {
           return t('structure.validation.localeRequired');
         }
-        if (params.projectData.locales.includes(value)) {
+        if (rootParams.projectData.locales.some(l => l.code === value)) {
           return t('structure.validation.localeExists');
         }
         return null;
       },
     },
   });
-  const addLocale = useCallback(
-    async (params: { localeCode: string; localeName: string }) => {
-      if (!projectData) {
-        return;
-      }
-
-      setIsLoading(true);
-
-      const [error] = await attemptAsync(async () => {
-        const structureType = projectData.structureType as StructureType;
-        const strategy = ADD_LOCALE_STRATEGIES[structureType];
-
-        if (!strategy) {
-          throw new Error(`Unknown structure type: ${structureType}`);
-        }
-        await strategy({
-          ...projectData,
-          setSelectedProjectData,
-          newLocaleCode: params.localeCode,
-          newLocaleLabel: params.localeName,
-        });
+  const addLocale
+    = async (params: { localeCode: string; localeName: string }) => {
+      const patternActions = i18nManagerPatternsActions[rootParams.projectData.structureType];
+      const [error] = await patternActions.addLocale({
+        ...rootParams.projectData,
+        setSelectedProjectData,
+        newLocaleCode: params.localeCode,
+        newLocaleLabel: params.localeName,
       });
-
-      setIsLoading(false);
 
       if (error) {
         notifications.show({
@@ -107,16 +73,14 @@ export const useHandleAddLocaleModal = (params: Params) => {
         ),
       });
       close();
-    },
-    [projectData, setSelectedProjectData, t],
-  );
+    };
 
   const availableLocaleOptions = useMemo(
     () =>
       ALL_LOCALE_OPTIONS.filter(
-        opt => !params.projectData.locales.includes(opt.value),
+        opt => !rootParams.projectData.locales.some(l => opt.value === l.code),
       ),
-    [params.projectData.locales],
+    [rootParams.projectData.locales],
   );
 
   const handleSubmit = async (values: FormValues) => {
@@ -125,21 +89,22 @@ export const useHandleAddLocaleModal = (params: Params) => {
       localeName: name,
       localeCode: values.localeCode,
     });
+
+    handleClose();
   };
 
-  const handleClose = () => {
+  function handleClose() {
     form.reset();
     close();
   };
 
   const normalizedCode = form.values.localeCode;
-  const previewFiles = normalizedCode ? params.projectData.namespaces : [];
+  const previewFiles = normalizedCode ? rootParams.projectData.namespaces : [];
 
   return {
     t,
     form,
     addLocale,
-    isLoading,
     handleClose,
     handleSubmit,
     previewFiles,
@@ -147,6 +112,5 @@ export const useHandleAddLocaleModal = (params: Params) => {
     openModal: open,
     openedModal: opened,
     availableLocaleOptions,
-
   };
 };

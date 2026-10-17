@@ -7,6 +7,7 @@ import { storeKeys } from '@/shared/config/tauri';
 import type { Translator } from '@/shared/config/reactI18n/types';
 import { createSelectors } from '@/shared/config/zustand/createSelector';
 import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
 import type { ProjectSchema } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 export type I18nManagerStore = {
@@ -16,6 +17,7 @@ export type I18nManagerStore = {
   initialContent: string | undefined;
   i18nManagerLocalStore: Store | undefined;
   selectedProject: undefined | ProjectSchema;
+  selectedProjectAnalysis: undefined | ProjectAnalysisResult;
   selectedProjectData: undefined | {
     /**
      * project full path
@@ -24,10 +26,10 @@ export type I18nManagerStore = {
     recentScan: Date;
     baseLocale: string;
     filesAmount: number;
-    locales: Array<string>;
     namespaces: Array<string>;
     tree: Array<I18nProjectTree>;
     structureType: ProjectSchema['structureType'];
+    locales: Array<{ code: string; path: string }>;
     messages: {
       missing: number;
       translated: number;
@@ -37,6 +39,7 @@ export type I18nManagerStore = {
 
 type I18nManagerStoreActions = {
   setI18nManagerStore: (value: Store) => void;
+  setProjectAnalysis: (v: ProjectAnalysisResult) => void;
   setProjects: (projects: I18nManagerStore['projects']) => void;
   setSelectedProject: (value: undefined | ProjectSchema) => void;
   setSelectedProjectData: (v: I18nManagerStore['selectedProjectData']) => void;
@@ -64,9 +67,10 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
   selectedProject: undefined,
   selectedProjectData: undefined,
   i18nManagerLocalStore: undefined,
+  selectedProjectAnalysis: undefined,
   actions: {
-
     setProjects: projects => set({ projects }),
+    setProjectAnalysis: v => set({ selectedProjectAnalysis: v }),
     setSelectedProjectData: v => set({ selectedProjectData: v }),
     setSelectedProject: value => set({ selectedProject: value }),
     setI18nManagerStore: store => set({ i18nManagerLocalStore: store }),
@@ -120,7 +124,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
           title: params.tI18nManager('errors.duplicateProject.title'),
           message: params.tI18nManager(
             'errors.duplicateProject.message',
-            { path: params.project.baseDirectoryPath },
+            { path: params.project.baseDirectoryPath } as any,
           ),
         });
         return;
@@ -156,9 +160,10 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         notifications.show({
           color: 'orange',
           title: params.tI18nManager('errors.projectNotFound.title'),
-          message: params.tI18nManager('errors.projectNotFound.message', {
-            path: params.updatedProject.baseDirectoryPath,
-          }),
+          message: params.tI18nManager(
+            'errors.projectNotFound.message',
+            { path: params.updatedProject.baseDirectoryPath } as any,
+          ),
         });
         return;
       }

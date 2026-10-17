@@ -16,7 +16,6 @@ const I18nManagementViewMain = () => {
     projects,
     activeTab,
     setActiveTab,
-    quickActions,
     selectedProject,
     selectedProjectData,
   } = useHandleI18nManagerMain();
@@ -60,7 +59,6 @@ const I18nManagementViewMain = () => {
                 project={selectedProject}
                 projectData={selectedProjectData}
 
-                onAddNamespace={handlers.handleAddNamespace}
               />
             </Tabs.Panel>
 
@@ -84,15 +82,12 @@ const I18nManagementViewMain = () => {
           <Box w={320} style={{ flexShrink: 0 }}>
             <ScrollArea h="100%">
               <AnalysisSidebar
-                quickActions={quickActions}
                 projectData={selectedProjectData}
 
                 onRescan={handlers.handleRescan}
                 onConvertCsv={handlers.handleConvertCsv}
                 onExportReport={handlers.handleExportReport}
                 onOpenExplorer={handlers.handleOpenExplorer}
-                onLearnMoreNaming={handlers.handleLearnMoreNaming}
-                onAddDefaultNamespace={handlers.handleAddDefaultNamespace}
               />
             </ScrollArea>
           </Box>

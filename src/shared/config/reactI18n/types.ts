@@ -1,5 +1,4 @@
-import type { Paths } from 'type-fest';
-import type { Messages, useTranslations } from 'use-intl';
+import type { useTranslations } from 'use-intl';
 
 import type enMessages from './messages/en';
 
@@ -11,7 +10,7 @@ declare module 'use-intl' {
   }
 }
 
-export type Translator<Base extends Paths<Messages>> = ReturnType<
+export type Translator<Prefix> = ReturnType<
   // @ts-expect-error
-    typeof useTranslations<Base>
+    typeof useTranslations<Prefix>
 >;

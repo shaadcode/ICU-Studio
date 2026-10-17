@@ -1,5 +1,5 @@
 import { IconRefresh } from '@tabler/icons-react';
-import { Card, Text, Group, Button } from '@mantine/core';
+import { Box, Card, Text, Group, Button } from '@mantine/core';
 import { useNow, useFormatter, useTranslations } from 'use-intl';
 
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -20,12 +20,16 @@ export const RecentScans = (params: Props) => {
       </Text>
 
       <Group justify="space-between">
-        <Text size="xs" c="dimmed">
-          {t(
-            'recentScans.lastScan',
-            { time: format.relativeTime(params.projectData.recentScan, now) },
-          )}
-        </Text>
+        <Group gap="xs" wrap="nowrap">
+          <Box w={7} h={7} bdrs={999} bg="green" />
+          <Text size="xs" c="dimmed">
+            {t(
+              'recentScans.lastScan',
+              { time: format.relativeTime(params.projectData.recentScan, now) },
+            )}
+          </Text>
+        </Group>
+
         <Button
           size="compact-xs"
           variant="default"

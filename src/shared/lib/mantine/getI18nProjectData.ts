@@ -22,8 +22,10 @@ export type I18nProjectTree = {
   children?: I18nProjectTree[];
 };
 
-export async function getI18nProjectData(projectPath: string) {
-  const locales: string[] = [];
+type Locales = NonNullable<I18nManagerStore['selectedProjectData']>['locales'];
+
+export async function getI18nProjectData(selectedProject: NonNullable<I18nManagerStore['selectedProject']>) {
+  const locales: Locales = [];
   const filesSet = new Set<string>();
 
   const buildTree = async (dirPath: string, depth = 0): Promise<I18nProjectTree[]> => {
@@ -39,14 +41,19 @@ export async function getI18nProjectData(projectPath: string) {
       const isDir = entry.isDirectory ?? false;
 
       if (depth === 0 && isDir) {
-        locales.push(entry.name);
+        locales.push({
+          path: fullPath,
+          code: entry.name,
+        });
       }
+
+      const entryName = entry.name.split('.')[0] as string;
 
       const node: I18nProjectTree = {
         fullPath,
         value: fullPath,
         isLocale: isDir,
-        label: entry.name,
+        label: entryName,
         isDirectory: isDir,
         isNamespace: !isDir,
       };
@@ -56,7 +63,7 @@ export async function getI18nProjectData(projectPath: string) {
         node.children = await buildTree(fullPath, depth + 1);
       } else {
         if (ext === 'json') {
-          filesSet.add(entry.name);
+          filesSet.add(entryName);
         }
       }
       if (isDir || ext === 'json') {
@@ -67,17 +74,17 @@ export async function getI18nProjectData(projectPath: string) {
     return nodes;
   };
 
-  const tree = await buildTree(projectPath);
+  const tree = await buildTree(selectedProject.baseDirectoryPath);
   const files = [...filesSet];
 
   return {
     tree,
     locales,
-    path: projectPath,
     namespaces: files,
     recentScan: new Date(),
-    baseLocale: 'baseLocale',
     filesAmount: files.length,
+    path: selectedProject.baseDirectoryPath,
+    baseLocale: selectedProject.baseLocale ?? '',
     structureType: 'locale-folder-namespace-file',
     messages: {
       missing: 313,

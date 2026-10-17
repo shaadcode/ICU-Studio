@@ -16,27 +16,6 @@ export const useHandleI18nManagerMain = () => {
   const setSelectedProjectData = i18nManagerStore.use.actions().setSelectedProjectData;
   const setBaseLocale = () => {};
 
-  const quickActions = [
-    {
-      icon: 'download',
-      key: 'exportReport',
-      title: t('i18nManager.quickActions.exportReport.title'),
-      description: t('i18nManager.quickActions.exportReport.description'),
-    },
-    {
-      icon: 'convert',
-      key: 'convertCsv',
-      title: t('i18nManager.quickActions.convertCsv.title'),
-      description: t('i18nManager.quickActions.convertCsv.description'),
-    },
-    {
-      icon: 'explorer',
-      key: 'openExplorer',
-      title: t('i18nManager.quickActions.openExplorer.title'),
-      description: t('i18nManager.quickActions.openExplorer.description'),
-    },
-  ];
-
   const handlers = {
     handleConvertCsv: () => {
       // TODO: تبدیل JSON ↔ CSV
@@ -96,7 +75,7 @@ export const useHandleI18nManagerMain = () => {
   useEffect(() => {
     if (selectedProject) {
       (async () => {
-        const data = await getI18nProjectData(selectedProject.baseDirectoryPath);
+        const data = await getI18nProjectData(selectedProject);
         setSelectedProjectData(data);
       })();
     }
@@ -107,7 +86,6 @@ export const useHandleI18nManagerMain = () => {
     handlers,
     projects,
     activeTab,
-    quickActions,
     setActiveTab,
     setBaseLocale,
     selectedProject,

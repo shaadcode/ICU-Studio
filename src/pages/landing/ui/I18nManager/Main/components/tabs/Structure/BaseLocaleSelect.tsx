@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import ISO6391 from 'iso-639-1';
 import { useTranslations } from 'use-intl';
-import { Card, Text, Select } from '@mantine/core';
+import { IconLanguageOff } from '@tabler/icons-react';
+import { Card, Text, Stack, Select, Center, ThemeIcon } from '@mantine/core';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -12,18 +13,21 @@ type Props = {
 };
 
 export const BaseLocaleSelect = (props: Props) => {
-  const t = useTranslations('i18nManager');
   const tCommon = useTranslations('common');
+  const t = useTranslations('i18nManager');
   const updateSelectedProject = i18nManagerStore.use.actions().updateSelectedProject;
+
+  const isEmpty = props.projectData.locales.length === 0;
+
   const data = useMemo(
     () =>
-      props.projectData.locales.map((code) => {
-        const name = ISO6391.getName(code) || code;
-        const nativeName = ISO6391.getNativeName(code) || name;
+      props.projectData.locales.map((locale) => {
+        const name = ISO6391.getName(locale.code) || locale.code;
+        const nativeName = ISO6391.getNativeName(locale.code) || name;
 
         return {
-          value: code,
-          label: `${nativeName} — ${name} (${code})`,
+          value: locale.code,
+          label: `${nativeName} — ${name} (${locale.code})`,
         };
       }),
     [props.projectData.locales],
@@ -37,17 +41,37 @@ export const BaseLocaleSelect = (props: Props) => {
       <Text mb="sm" size="xs" c="dimmed">
         {t('structure.baseLocaleHint')}
       </Text>
-      <Select
-        searchable
-        data={data}
-        value={props.project.baseLocale}
 
-        onChange={v => v && updateSelectedProject({
-          tCommon,
-          tI18nManager: t,
-          updatedProject: { ...props.project, baseLocale: v },
-        })}
-      />
+      {isEmpty
+        ? (
+            <Center py="md">
+              <Stack gap="sm" align="center">
+                <ThemeIcon size={50} radius="xl" color="gray" variant="light">
+                  <IconLanguageOff size={26} />
+                </ThemeIcon>
+                <Text size="sm" c="dimmed" ta="center">
+                  {t('structure.emptyBaseLocale')}
+                </Text>
+              </Stack>
+            </Center>
+          )
+        : (
+            <Select
+              searchable
+              data={data}
+              allowDeselect={false}
+              value={props.project.baseLocale}
+              placeholder={t('structure.baseLocalePlaceholder')}
+
+              onChange={v =>
+                v
+                && updateSelectedProject({
+                  tCommon,
+                  tI18nManager: t,
+                  updatedProject: { ...props.project, baseLocale: v },
+                })}
+            />
+          )}
     </Card>
   );
 };

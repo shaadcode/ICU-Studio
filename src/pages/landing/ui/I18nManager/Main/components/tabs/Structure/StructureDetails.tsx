@@ -2,7 +2,12 @@ import { useTranslations } from 'use-intl';
 import { IconStack2, IconFileCode, IconFileText } from '@tabler/icons-react';
 import { Card, Text, Group, Stack, ThemeIcon, SimpleGrid } from '@mantine/core';
 
-export const StructureDetails = () => {
+import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+
+type Props = {
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+};
+export const StructureDetails = (props: Props) => {
   const t = useTranslations('i18nManager');
   const items = [
     {
@@ -14,17 +19,17 @@ export const StructureDetails = () => {
     },
     {
       color: 'violet',
-      hint: '(en, fa, de, fr, es)',
       icon: <IconFileText size={16} />,
       value: t('structure.fromFolderName'),
       label: t('structure.localeDetection'),
+      hint: `(${props.projectData.locales.map(l => l.code).join(',')})`,
     },
     {
       color: 'green',
-      hint: '(common.json + common)',
       icon: <IconFileCode size={16} />,
       value: t('structure.fromFileName'),
       label: t('structure.namespaceDetection'),
+      hint: `(${props.projectData.namespaces.join(',')})`,
     },
   ];
 
@@ -49,7 +54,7 @@ export const StructureDetails = () => {
               {item.value}
             </Text>
             {item.hint && (
-              <Text size="xs" c="dimmed">
+              <Text truncate size="xs" c="dimmed">
                 {item.hint}
               </Text>
             )}

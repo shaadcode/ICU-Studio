@@ -17,10 +17,11 @@ export const useCreateProjectHandlers = () => {
     mode: 'uncontrolled',
     validate: {
       name: value =>
-        value.trim().length === 0 ? t('validation.createNewProject.validation.nameRequired') : null,
+        value.trim().length === 0 ? t('validation.createNewProject.nameRequired') : null,
     },
     initialValues: {
       name: '',
+      baseLocale: '',
       description: '',
       baseDirectoryPath: '',
       structureType: 'locale-folder-namespace-file',

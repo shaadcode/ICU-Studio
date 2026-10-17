@@ -4,13 +4,16 @@ import { useDisclosure } from '@mantine/hooks';
 
 import { CopyPathMenuItem } from './context-menu-items/CopyPathMenuItem';
 import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import { DeleteLocaleMenuItem } from './context-menu-items/DeleteLocaleMenuItem';
+import { DeleteNamespaceMenuItem } from './context-menu-items/DeleteNamespaceMenuItem';
 import { RevealInExplorerMenuItem } from './context-menu-items/RevealInExplorerMenuItem';
 
 type Props = {
   isLocale: boolean;
   node: I18nProjectTree;
   children: (props: React.ComponentProps<any>) => React.JSX.Element;
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
 export const TreeNodeContextMenu = (props: Props) => {
@@ -52,6 +55,14 @@ export const TreeNodeContextMenu = (props: Props) => {
 
         <DeleteLocaleMenuItem
           node={props.node}
+          projectData={props.projectData}
+
+          onClose={contextMenuHandlers.close}
+        />
+
+        <DeleteNamespaceMenuItem
+          node={props.node}
+          projectData={props.projectData}
 
           onClose={contextMenuHandlers.close}
         />

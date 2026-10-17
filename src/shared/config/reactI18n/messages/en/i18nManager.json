@@ -1,6 +1,12 @@
 {
   "addDirPath": "Add folder path",
   "addProjectName": "add project name",
+  "analysis": {
+    "errors": "Errors",
+    "missing": "Missing",
+    "title": "Analysis",
+    "translated": "Translated"
+  },
   "basicInfo": {
     "defaultLocale": "Default Locale",
     "description": "Description",
@@ -22,17 +28,50 @@
   "dirPath": "directory path",
   "emptyState": {
     "noProjects": {
-      "title": "No projects yet",
-      "description": "Scan a folder to add your first i18n project."
+      "description": "Scan a folder to add your first i18n project.",
+      "title": "No projects yet"
     },
     "noSelection": {
-      "title": "No project selected",
-      "description": "Select a project from the list to view its i18n structure and analysis."
+      "description": "Select a project from the list to view its i18n structure and analysis.",
+      "title": "No project selected"
     }
+  },
+  "errors": {
+    "duplicateProject": {
+      "message": "project with path \"{path}\" already exists.",
+      "title": "duplicate project"
+    },
+    "projectNotFound": {
+      "message": "No project was found with path \"{path}\".",
+      "title": "Project not found"
+    }
+  },
+  "header": {
+    "description": "Automatically detect and manage your i18n structure, locales, and namespaces.",
+    "scanProject": "Scan Project",
+    "settings": "Settings",
+    "title": "Internationalization Management"
+  },
+  "insights": {
+    "title": "Structure Insights"
   },
   "loadingState": "Loading projects...",
   "locales": "locales",
   "namespaces": "namespaces",
+  "notifications": {
+    "exportStarted": {
+      "message": "Your i18n report is being generated…",
+      "title": "Export started"
+    },
+    "rescanStarted": {
+      "message": "Re-scanning your project structure…",
+      "title": "Re-scan started"
+    },
+    "scanStarted": {
+      "message": "We are scanning your project structure…",
+      "title": "Scan started"
+    }
+  },
   "project": "{count,plural,other{projects} =0{project} =1{project}}",
   "projectName": "project name",
   "projectSettings": {
@@ -42,6 +81,155 @@
     "scanExistingDesc": "Automatically detect locales, namespaces and structure",
     "title": "Project Settings"
   },
+  "quickActions": {
+    "convertCsv": {
+      "description": "Convert your translation files.",
+      "title": "Convert JSON ⇄ CSV"
+    },
+    "exportReport": {
+      "description": "Generate a detailed report of your structure.",
+      "title": "Export i18n report"
+    },
+    "openExplorer": {
+      "description": "Browse the detected structure in your file system.",
+      "title": "Open in Explorer"
+    },
+    "title": "Quick Actions"
+  },
+  "recentScans": {
+    "lastScan": "Last scan: {time}",
+    "rescan": "Rescan",
+    "title": "Recent Scans"
+  },
+  "recommendations": {
+    "add": "Add",
+    "learnMore": "Learn more",
+    "title": "Recommendations"
+  },
+  "stats": {
+    "detectedLocales": "Detected Locales",
+    "files": "Files",
+    "namespaces": "Namespaces",
+    "structureType": "Structure Type"
+  },
+  "structure": {
+    "addLocale": "Add locale",
+    "addNamespace": "Add Namespace",
+    "addNamespaceDisabledTooltip": "You need at least one locale to add a namespace.",
+    "autoDetected": "Auto-detected",
+    "baseLocale": "Base Locale",
+    "baseLocaleHint": "Select the primary language (base locale) for comparison and fallback.",
+    "baseLocalePlaceholder": "Please select a base locale",
+    "contextMenu": {
+      "copied": "copied!",
+      "copyPath": "copy path",
+      "deleteLocale": "delete locale",
+      "deleteNamespace": "delete namespace",
+      "nodeLabel": "node actions",
+      "openInExplorer": "open in explorer",
+      "revealInExplorer": "reveal in explorer"
+    },
+    "details": "Structure Details",
+    "detectedLocales": "Detected Locales",
+    "detectedStructure": "Detected Structure",
+    "emptyBaseLocale": "No locales available. Add a locale first to select a base locale.",
+    "emptyLocales": "No locales detected. Add a locale to get started.",
+    "emptyNamespaces": "No namespaces found. Add a namespace to get started.",
+    "emptyTree": "No structure detected. Scan the project or add a namespace to get started.",
+    "folderPerLocale": "Folder per Locale",
+    "fromFileName": "From file name",
+    "fromFolderName": "From folder name",
+    "localeDetection": "Locale Detection",
+    "modals": {
+      "addLocale": {
+        "cancel": "Cancel",
+        "codeLabel": "Locale",
+        "codePlaceholder": "Search for a language…",
+        "description": "Select a locale. Files will be created based on the detected structure.",
+        "noResults": "No language found",
+        "previewLabel": "Preview",
+        "previewTotal": "{count} files will be created",
+        "sameAsBaseWarning": "The selected locale is the same as the base locale",
+        "submit": "Add Locale",
+        "title": "Add new locale"
+      },
+      "addNamespace": {
+        "description": "Create a new namespace to organize your translation files.",
+        "nameLabel": "Namespace Name",
+        "namePlaceholder": "e.g., dashboard, auth, checkout",
+        "previewLabel": "Preview",
+        "previewTotal": "This file will be created in {count} locale(s).",
+        "submit": "Create Namespace",
+        "title": "Add New Namespace"
+      },
+      "deleteLocale": {
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "message": "Are you sure you want to delete the locale \"{locale}\"? This will remove all its files and cannot be undone.",
+        "title": "Delete locale"
+      },
+      "deleteNamespace": {
+        "cancel": "cancel",
+        "confirm": "delete",
+        "message": "are you sure you want to delete the \"{namespace}\" namespace? this will remove the file from all {count} locales. this action cannot be undone.",
+        "title": "delete namespace"
+      }
+    },
+    "namespaceDetection": "Namespace Detection",
+    "namespaces": "Namespaces",
+    "notifications": {
+      "localeAddFailed": {
+        "message": "{error}",
+        "title": "Failed to add locale"
+      },
+      "localeAdded": {
+        "message": "Locale \"{locale}\" was created successfully.",
+        "title": "Locale added"
+      },
+      "localeDeleteFailed": {
+        "message": "{error}",
+        "title": "Failed to delete locale"
+      },
+      "localeDeleted": {
+        "message": "Locale \"{locale}\" was deleted successfully.",
+        "title": "Locale deleted"
+      },
+      "namespaceAddFailed": {
+        "title": "Failed to add namespace"
+      },
+      "namespaceAdded": {
+        "message": "The namespace \"{namespace}\" was created successfully across all locales.",
+        "title": "Namespace added successfully"
+      },
+      "namespaceDeleteFailed": {
+        "title": "failed to delete namespace"
+      },
+      "namespaceDeleted": {
+        "message": "the namespace \"{namespace}\" was removed from all locales.",
+        "title": "namespace deleted"
+      },
+      "revealFailed": {
+        "message": "{error}",
+        "title": "Failed to open in Explorer"
+      }
+    },
+    "pattern": "Pattern",
+    "recommended": "recommended",
+    "rescan": "Re-scan",
+    "table": {
+      "files": "Files (locales)",
+      "filesUnit": "files",
+      "name": "Name",
+      "status": "Status"
+    },
+    "validation": {
+      "localeExists": "This locale already exists in the project",
+      "localeRequired": "Please select a locale",
+      "namespaceExists": "This namespace already exists",
+      "namespaceInvalid": "Only letters, numbers, and hyphens (-) are allowed",
+      "namespaceRequired": "Namespace name is required"
+    }
+  },
   "structureDetection": {
     "autoDetect": "Automatic Detection",
     "autoDetectDesc": "ICU Studio will scan your project and detect the structure based on common patterns.",
@@ -50,6 +238,17 @@
     "preview": "Preview",
     "title": "Structure Detection",
     "wellDetect": "We'll detect:"
+  },
+  "tabs": {
+    "analysis": "Analysis",
+    "analysisContent": "Analysis content",
+    "locales": "Locales",
+    "localesContent": "Locales content",
+    "namespaces": "Namespaces",
+    "namespacesContent": "Namespaces content",
+    "settings": "Settings",
+    "settingsContent": "Settings content",
+    "structure": "Structure"
   },
   "validation": {
     "createNewProject": {
@@ -65,166 +264,6 @@
       "nameRequired": "Project name is required",
       "repositoryInvalid": "Repository URL is not valid",
       "structureRequired": "Please select a project structure"
-    }
-  },
-  "errors": {
-    "duplicateProject": {
-      "title": "duplicate project",
-      "message": "project with path \"{path}\" already exists."
-    },
-    "projectNotFound": {
-      "title": "Project not found",
-      "message": "No project was found with path \"{path}\"."
-    }
-  },
-  "header": {
-    "title": "Internationalization Management",
-    "description": "Automatically detect and manage your i18n structure, locales, and namespaces.",
-    "scanProject": "Scan Project",
-    "settings": "Settings"
-  },
-  "stats": {
-    "detectedLocales": "Detected Locales",
-    "namespaces": "Namespaces",
-    "files": "Files",
-    "structureType": "Structure Type"
-  },
-  "tabs": {
-    "structure": "Structure",
-    "locales": "Locales",
-    "namespaces": "Namespaces",
-    "analysis": "Analysis",
-    "settings": "Settings",
-    "localesContent": "Locales content",
-    "namespacesContent": "Namespaces content",
-    "analysisContent": "Analysis content",
-    "settingsContent": "Settings content"
-  },
-  "structure": {
-    "detectedStructure": "Detected Structure",
-    "autoDetected": "Auto-detected",
-    "addNamespace": "Add Namespace",
-    "details": "Structure Details",
-    "rescan": "Re-scan",
-    "pattern": "Pattern",
-    "folderPerLocale": "Folder per Locale",
-    "recommended": "recommended",
-    "localeDetection": "Locale Detection",
-    "fromFolderName": "From folder name",
-    "namespaceDetection": "Namespace Detection",
-    "fromFileName": "From file name",
-    "detectedLocales": "Detected Locales",
-    "addLocale": "Add locale",
-    "namespaces": "Namespaces",
-    "baseLocale": "Base Locale",
-    "baseLocaleHint": "Select the primary language (base locale) for comparison and fallback.",
-    "table": {
-      "name": "Name",
-      "files": "Files (locales)",
-      "status": "Status",
-      "filesUnit": "files"
-    },
-    "modals": {
-      "addLocale": {
-        "title": "Add new locale",
-        "description": "Select a locale. Files will be created based on the detected structure.",
-        "codeLabel": "Locale",
-        "codePlaceholder": "Search for a language…",
-        "noResults": "No language found",
-        "previewLabel": "Preview",
-        "previewTotal": "{count} files will be created",
-        "sameAsBaseWarning": "The selected locale is the same as the base locale",
-        "cancel": "Cancel",
-        "submit": "Add Locale"
-      },
-      "deleteLocale": {
-        "title": "Delete locale",
-        "message": "Are you sure you want to delete the locale \"{locale}\"? This will remove all its files and cannot be undone.",
-        "confirm": "Delete",
-        "cancel": "Cancel"
-      }
-    },
-    "validation": {
-      "localeRequired": "Please select a locale",
-      "localeExists": "This locale already exists in the project"
-    },
-    "contextMenu": {
-      "nodeLabel": "node actions",
-      "openInExplorer": "open in explorer",
-      "copyPath": "copy path",
-      "copied": "copied!",
-      "revealInExplorer": "reveal in explorer",
-      "deleteLocale": "delete locale"
-    },
-    "notifications": {
-      "localeAdded": {
-        "title": "Locale added",
-        "message": "Locale \"{locale}\" was created successfully."
-      },
-      "localeDeleted": {
-        "title": "Locale deleted",
-        "message": "Locale \"{locale}\" was deleted successfully."
-      },
-      "localeDeleteFailed": {
-        "title": "Failed to delete locale",
-        "message": "{error}"
-      },
-      "localeAddFailed": {
-        "title": "Failed to add locale",
-        "message": "{error}"
-      },
-      "revealFailed": {
-        "title": "Failed to open in Explorer",
-        "message": "{error}"
-      }
-    }
-  },
-  "analysis": {
-    "title": "Analysis",
-    "translated": "Translated",
-    "missing": "Missing",
-    "errors": "Errors"
-  },
-  "insights": {
-    "title": "Structure Insights"
-  },
-  "recommendations": {
-    "title": "Recommendations",
-    "add": "Add",
-    "learnMore": "Learn more"
-  },
-  "quickActions": {
-    "title": "Quick Actions",
-    "exportReport": {
-      "title": "Export i18n report",
-      "description": "Generate a detailed report of your structure."
-    },
-    "convertCsv": {
-      "title": "Convert JSON ⇄ CSV",
-      "description": "Convert your translation files."
-    },
-    "openExplorer": {
-      "title": "Open in Explorer",
-      "description": "Browse the detected structure in your file system."
-    }
-  },
-  "recentScans": {
-    "title": "Recent Scans",
-    "lastScan": "Last scan: {time}",
-    "rescan": "Rescan"
-  },
-  "notifications": {
-    "scanStarted": {
-      "title": "Scan started",
-      "message": "We are scanning your project structure…"
-    },
-    "rescanStarted": {
-      "title": "Re-scan started",
-      "message": "Re-scanning your project structure…"
-    },
-    "exportStarted": {
-      "title": "Export started",
-      "message": "Your i18n report is being generated…"
     }
   }
 }

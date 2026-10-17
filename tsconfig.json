@@ -19,6 +19,7 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "allowJs": true,
+    "noErrorTruncation": true,
     "checkJs": true,
     "strict": true,
     "strictNullChecks": true,

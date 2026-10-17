@@ -1,6 +1,6 @@
 import { useTranslations } from 'use-intl';
+import { IconFolder, IconStack2, IconLanguage } from '@tabler/icons-react';
 import { Card, Text, Group, Stack, ThemeIcon, SimpleGrid } from '@mantine/core';
-import { IconFolder, IconStack2, IconLanguage, IconFileText } from '@tabler/icons-react';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -23,13 +23,7 @@ export const StatsCards = () => {
       icon: <IconStack2 size={18} />,
       value: selectedProjectData?.namespaces.length,
     },
-    {
-      key: 'files',
-      color: 'green',
-      title: t('stats.files'),
-      icon: <IconFileText size={18} />,
-      value: selectedProjectData?.filesAmount,
-    },
+
     {
       color: 'orange',
       key: 'structure',

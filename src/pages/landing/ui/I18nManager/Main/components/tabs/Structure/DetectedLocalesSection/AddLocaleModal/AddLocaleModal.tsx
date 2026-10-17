@@ -13,20 +13,17 @@ type Props = {
 };
 
 export const AddLocaleModal = (params: Props) => {
-  const handlers = useHandleAddLocaleModal(params);
-
   const {
     t,
     form,
     openModal,
-    isLoading,
     openedModal,
     handleClose,
     handleSubmit,
     previewFiles,
     normalizedCode,
     availableLocaleOptions,
-  } = handlers;
+  } = useHandleAddLocaleModal(params);
 
   return (
     <>
@@ -113,13 +110,13 @@ export const AddLocaleModal = (params: Props) => {
             <Group mt="xs" gap="xs" justify="flex-end">
               <Button
                 variant="default"
-                disabled={isLoading}
+                disabled={form.submitting}
 
                 onClick={handleClose}
               >
                 {t('structure.modals.addLocale.cancel')}
               </Button>
-              <Button type="submit" loading={isLoading}>
+              <Button type="submit" loading={form.submitting}>
                 {t('structure.modals.addLocale.submit')}
               </Button>
             </Group>

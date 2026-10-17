@@ -11,8 +11,12 @@ export type AddLocaleContext = {
   setSelectedProjectData: NonNullable<I18nManagerStore['actions']['setSelectedProjectData']>;
 } & NonNullable<I18nManagerStore['selectedProjectData']>;
 
-export async function name(params: AddLocaleContext) {
-  const [error] = await attemptAsync(async () => {
+/**
+ * add a locale folder with all its namespace files.
+ * Pattern: `locale-folder-namespace-file`
+ */
+export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
+  const result = await attemptAsync(async () => {
     const { newLocaleCode, setSelectedProjectData, ...projectData } = params;
 
     const localeFolderPath = await join(projectData.path, newLocaleCode);
@@ -30,7 +34,7 @@ export async function name(params: AddLocaleContext) {
 
     const files = await Promise.all(
       projectData.namespaces.map(async (ns) => {
-        const newNamespaceFilePath = await join(localeFolderPath, ns);
+        const newNamespaceFilePath = await join(localeFolderPath, `${ns}.json`);
         const content = '{}\n';
 
         await writeTextFile(newNamespaceFilePath, content);
@@ -49,12 +53,10 @@ export async function name(params: AddLocaleContext) {
     setSelectedProjectData({
       ...projectData,
       tree: [...projectData.tree, localeTreeNode],
-      locales: [...projectData.locales, newLocaleCode],
+      locales: [...projectData.locales, { code: newLocaleCode, path: localeFolderPath }],
     });
     return { files, localePath: localeFolderPath };
   });
 
-  if (error) {
-    console.error(error);
-  }
+  return result;
 }

@@ -1,5 +1,7 @@
 // Widgets/Variables/ConvertAllToButton.tsx
 import { memo } from 'react';
+import type { Paths } from 'type-fest';
+import type { Messages } from 'use-intl';
 import { forEachRight } from 'es-toolkit';
 import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
@@ -7,7 +9,6 @@ import { IconTransform } from '@tabler/icons-react';
 import { Menu, Tooltip, ActionIcon } from '@mantine/core';
 
 import { getDelimiterRange } from '@/shared/lib/tiptap';
-import type { Translator } from '@/shared/config/reactI18n/types';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 import type { MessageElementsTypeKeyword } from '@/shared/lib/icu/types';
 
@@ -27,7 +28,7 @@ const CONVERT_TARGETS = [
   { value: 'selectordinal', labelKey: 'controls.snippets.selectordinal' },
 ] as const satisfies Array<{
   value: MessageElementsTypeKeyword;
-  labelKey: Parameters<Translator<'editor'>>[0];
+  labelKey: Paths<Messages['editor']>;
 }>;
 
 export const ConvertAllToButton = memo((props: Props) => {

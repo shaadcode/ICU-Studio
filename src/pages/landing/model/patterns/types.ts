@@ -1,4 +1,4 @@
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { LocaleInfo } from '@/shared/lib/icu/constants';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type PatternActionResult = {
@@ -24,12 +24,6 @@ export type DeleteLocaleContext = BasePatternContext & {
   localeNode: I18nProjectTree;
 };
 
-export type I18nPatternActions
-  = 'addLocale'
-    | 'deleteLocale'
-    | 'addNamespace'
-    | 'deleteNamespace';
-
 export type DeleteNamespaceContext = BasePatternContext & {
   namespaceName: string;
   namespaceNode: I18nProjectTree;
@@ -40,11 +34,41 @@ export type StructureType
     | 'locale-folder-namespace-file'
     | 'locale-file-nested-namespaces';
 
+export type I18nPatternActions
+  = 'addLocale'
+    | 'deleteLocale'
+    | 'addNamespace'
+    | 'getProjectData'
+    | 'deleteNamespace';
+
 export type BasePatternContext = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
   setSelectedProjectData: NonNullable<
     I18nManagerStore['actions']['setSelectedProjectData']
   >;
+};
+
+export type I18nProjectTree = {
+  /**
+   * full path dir or file(just for rendering and state management)
+   */
+  value: string;
+  /**
+   * file or directory path
+   */
+  fullPath: string;
+  isLocale: boolean;
+  isNamespace: boolean;
+  isDirectory: boolean;
+  /**
+   * file or dir name(namespace)
+   */
+  label: React.ReactNode;
+  children?: I18nProjectTree[];
+  /**
+   * There is a case where `isLocale` is `true`.
+   */
+  localeInfo?: undefined | LocaleInfo;
 };
 
 export type NamespaceAnalysis = {

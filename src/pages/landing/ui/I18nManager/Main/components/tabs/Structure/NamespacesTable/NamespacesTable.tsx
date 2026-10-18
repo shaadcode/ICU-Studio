@@ -1,9 +1,11 @@
 // components/tabs/Structure/NamespacesTable.tsx
+import { useMemo } from 'react';
 import { useTranslations } from 'use-intl';
-import { IconStack2, IconStackPop } from '@tabler/icons-react';
-import { Card, Text, Group, Table, Stack, Center, ThemeIcon } from '@mantine/core';
+import { useSelection } from '@mantine/hooks';
+import { IconTrash, IconStackPop } from '@tabler/icons-react';
+import { Card, Text, Group, Table, Stack, Center, ThemeIcon, ActionIcon } from '@mantine/core';
 
-import { NamespaceRowMenu } from './NamespaceRowMenu';
+import { NamespaceRow } from './NamespaceRow';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -13,8 +15,14 @@ type Props = {
 
 export const NamespacesTable = ({ namespaces }: Props) => {
   const t = useTranslations('i18nManager');
-
   const projectData = i18nManagerStore.use.selectedProjectData();
+
+  const data = useMemo(() => namespaces, [namespaces]);
+
+  const [selection, selectionHandlers] = useSelection({
+    data,
+    resetSelectionOnDataChange: true,
+  });
 
   if (!projectData) {
     return null;
@@ -24,9 +32,25 @@ export const NamespacesTable = ({ namespaces }: Props) => {
 
   return (
     <Card withBorder radius="md" padding="md">
-      <Text mb="sm" fw={600} size="sm">
-        {t('structure.namespaces')}
-      </Text>
+      <Group mb="sm" justify="space-between">
+        <Text fw={600} size="sm">
+          {t('structure.namespaces')}
+        </Text>
+        {selection.length > 0 && (
+          <ActionIcon
+            size="sm"
+            color="red"
+            variant="subtle"
+            aria-label={t('structure.modals.deleteNamespace.title')}
+
+            onClick={() => {
+              console.log('delete selected:', selection);
+            }}
+          >
+            <IconTrash size={14} />
+          </ActionIcon>
+        )}
+      </Group>
 
       {isEmpty
         ? (
@@ -50,26 +74,19 @@ export const NamespacesTable = ({ namespaces }: Props) => {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {namespaces.map(ns => (
-                  <Table.Tr key={ns}>
-                    <Table.Td>
-                      <Group gap="xs">
-                        <ThemeIcon size={20} color="gray" variant="transparent">
-                          <IconStack2 size={14} />
-                        </ThemeIcon>
-                        <Text size="sm" tt="capitalize">
-                          {ns}
-                        </Text>
-                      </Group>
-                    </Table.Td>
-                    <Table.Td>
-                      <NamespaceRowMenu
-                        namespaceName={ns}
-                        projectData={projectData}
-                      />
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
+                {namespaces.map((ns) => {
+                  const isSelected = selection.includes(ns);
+                  return (
+                    <NamespaceRow
+                      key={ns}
+                      namespaceName={ns}
+                      isSelected={isSelected}
+                      projectData={projectData}
+                      selectionState={selection}
+                      selectionHandlers={selectionHandlers}
+                    />
+                  );
+                })}
               </Table.Tbody>
             </Table>
           )}

@@ -8,11 +8,11 @@ import ICUEditorAside from './Editor/Aside/ICUEditorAside';
 import MessagesMainSection from './Messages/Main/MainSection';
 import ICUEditorHeader from './Editor/Header/ICUEditorHeader';
 import I18nManagerHeader from './I18nManager/Header/I18nManagerHeader';
+import I18nManagerSidebar from './I18nManager/Sidebar/I18nManagerSidebar';
 import I18nManagementViewMain from './I18nManager/Main/I18nManagementViewMain';
 
 const LandingPage = () => {
   const appshellHandlers = useHandleLanding();
-
   return (
     <AppShell
       padding="md"
@@ -37,6 +37,7 @@ const LandingPage = () => {
 
       <AppShell.Aside>
         {(appshellHandlers.view === 'editor' || appshellHandlers.view === 'messages') && <ICUEditorAside />}
+        {appshellHandlers.view === 'i18nManager' && <I18nManagerSidebar />}
       </AppShell.Aside>
       <AppShell.Footer>
         {(appshellHandlers.view === 'editor' || appshellHandlers.view === 'messages') && <ICUEditorFooter />}

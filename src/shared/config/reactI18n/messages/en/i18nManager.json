@@ -151,7 +151,9 @@
         "previewTotal": "{count} files will be created",
         "sameAsBaseWarning": "The selected locale is the same as the base locale",
         "submit": "Add Locale",
-        "title": "Add new locale"
+        "title": "Add new locale",
+        "regionalHintTitle": "Regional translations",
+        "regionalHint": "If you want to add a locale like en-AU or en-GB (regional translation), it's better to create it manually."
       },
       "addNamespace": {
         "description": "Create a new namespace to organize your translation files.",

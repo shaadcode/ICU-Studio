@@ -6,7 +6,7 @@ import { IconFolderOpen } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { revealItemInDir } from '@tauri-apps/plugin-opener';
 
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 
 type Props = {
   onClose: () => void;

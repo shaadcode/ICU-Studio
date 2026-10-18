@@ -75,27 +75,27 @@ export async function analyzeLocaleFolderNamespaceFile(
       let localeTranslatedCount = 0;
 
       await Promise.all(
-        namespaces.map(async (ns) => {
-          const namespaceKeysInBaseLocale = baseLocaleKeys[ns] || [];
+        namespaces.map(async (namespace) => {
+          const namespaceKeysInBaseLocale = baseLocaleKeys[namespace] || [];
           const namespaceEntriesInBaseLocale = Object.entries(namespaceKeysInBaseLocale);
-          const nsAnalysis: NamespaceAnalysis = {
-            name: ns,
+          const currentNamespaceAnalysis: NamespaceAnalysis = {
             totalKeys: 0,
             missingKeys: 0,
+            name: namespace,
             translatedKeys: 0,
             completionPercentage: 100,
           };
 
           if (namespaceEntriesInBaseLocale.length === 0) {
-            localeAnalysis.namespaces[ns] = nsAnalysis;
+            localeAnalysis.namespaces[namespace] = currentNamespaceAnalysis;
             return;
           }
 
-          const namespacePath = await join(locale.path, `${ns}.json`);
+          const namespacePath = await join(locale.path, `${namespace}.json`);
           const [error, namespaceContent] = await attemptAsync(() => readTextFile(namespacePath));
 
           if (error || !namespaceContent) {
-            localeAnalysis.namespaces[ns] = nsAnalysis;
+            localeAnalysis.namespaces[namespace] = currentNamespaceAnalysis;
             return;
           }
 
@@ -121,16 +121,16 @@ export async function analyzeLocaleFolderNamespaceFile(
               // baseLocaleNamespaceValue,
             ]) => !namespaceFlattenedKeys[baseLocaleNamespaceKey]).length;
 
-            nsAnalysis.translatedKeys = translatedInNs;
-            nsAnalysis.missingKeys = missingInNs;
-            nsAnalysis.completionPercentage = Math.round((translatedInNs / namespaceEntriesInBaseLocale.length) * 100);
-            nsAnalysis.totalKeys = namespaceFlattenedEntries.length;
+            currentNamespaceAnalysis.translatedKeys = translatedInNs;
+            currentNamespaceAnalysis.missingKeys = missingInNs;
+            currentNamespaceAnalysis.completionPercentage = Math.round((translatedInNs / namespaceEntriesInBaseLocale.length) * 100);
+            currentNamespaceAnalysis.totalKeys = namespaceFlattenedEntries.length;
 
-            localeAnalysis.namespaces[ns] = nsAnalysis;
+            localeAnalysis.namespaces[namespace] = currentNamespaceAnalysis;
             localeTranslatedCount += translatedInNs;
             localeAnalysis.extraKeys += extraInNs;
           } catch {
-            localeAnalysis.namespaces[ns] = nsAnalysis;
+            localeAnalysis.namespaces[namespace] = currentNamespaceAnalysis;
           }
         }),
       );

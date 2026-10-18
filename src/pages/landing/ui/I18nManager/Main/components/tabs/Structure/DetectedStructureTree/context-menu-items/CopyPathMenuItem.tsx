@@ -4,7 +4,7 @@ import { useTranslations } from 'use-intl';
 import { useClipboard } from '@mantine/hooks';
 import { IconCopy, IconCheck } from '@tabler/icons-react';
 
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 
 type Props = {
   onClose: () => void;

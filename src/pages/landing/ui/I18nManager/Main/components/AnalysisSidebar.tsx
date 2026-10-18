@@ -6,19 +6,14 @@ import { TranslationCompleteness } from './TranslationCompleteness';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  onRescan: () => void;
-  onConvertCsv: () => void;
-  onExportReport: () => void;
-  onOpenExplorer: () => void;
+  project: NonNullable<I18nManagerStore['selectedProject']>;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const AnalysisSidebar = ({
-  projectData,
-}: Props) => {
+export const AnalysisSidebar = (params: Props) => {
   return (
     <Stack gap="md">
-      <TranslationCompleteness projectData={projectData} />
+      <TranslationCompleteness projectData={params.projectData} />
       {/* <Recommendations
         recommendations={[{ description: 'hello', title: 'test recommend', key: 'defaultNamespace' }]}
 
@@ -26,9 +21,9 @@ export const AnalysisSidebar = ({
         onAddDefaultNamespace={onAddDefaultNamespace}
       /> */}
       <QuickActions
-        projectData={projectData}
+        projectData={params.projectData}
       />
-      <RecentScans projectData={projectData} />
+      <RecentScans project={params.project} projectData={params.projectData} />
     </Stack>
   );
 };

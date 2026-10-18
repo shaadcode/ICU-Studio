@@ -5,6 +5,7 @@ import { analyzeLocaleFolderNamespaceFile } from './locale-folder-namespace-file
 import { deleteLocaleFolderNamespaceFile } from './locale-folder-namespace-file/deleteLocale';
 import { addNamespaceFolderNamespaceFile } from './locale-folder-namespace-file/addNamespace';
 import { deleteNamespaceFolderNamespaceFile } from './locale-folder-namespace-file/deleteNamespace';
+import { getProjectDataLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectData';
 
 type PatternActionsWithAnalyzer = {
   [K in I18nPatternActions]: any;
@@ -19,6 +20,7 @@ export const i18nManagerPatternsActions = {
     deleteLocale: deleteLocaleFolderNamespaceFile,
     addNamespace: addNamespaceFolderNamespaceFile,
     deleteNamespace: deleteNamespaceFolderNamespaceFile,
+    getProjectData: getProjectDataLocaleFolderNamespaceFile,
   },
   'locale-folder-namespace-file': {
     addLocale: addLocaleFolderNamespaceFile,
@@ -26,6 +28,7 @@ export const i18nManagerPatternsActions = {
     deleteLocale: deleteLocaleFolderNamespaceFile,
     addNamespace: addNamespaceFolderNamespaceFile,
     deleteNamespace: deleteNamespaceFolderNamespaceFile,
+    getProjectData: getProjectDataLocaleFolderNamespaceFile,
   },
   'locale-file-nested-namespaces': {
     addLocale: addLocaleFolderNamespaceFile,
@@ -33,5 +36,6 @@ export const i18nManagerPatternsActions = {
     deleteLocale: deleteLocaleFolderNamespaceFile,
     addNamespace: addNamespaceFolderNamespaceFile,
     deleteNamespace: deleteNamespaceFolderNamespaceFile,
+    getProjectData: getProjectDataLocaleFolderNamespaceFile,
   },
 } as const satisfies Record<StructureType, PatternActionsWithAnalyzer>;

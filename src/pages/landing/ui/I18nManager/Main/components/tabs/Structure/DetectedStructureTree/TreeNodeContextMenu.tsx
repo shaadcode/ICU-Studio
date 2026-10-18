@@ -3,7 +3,7 @@ import { Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { CopyPathMenuItem } from './context-menu-items/CopyPathMenuItem';
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import { DeleteLocaleMenuItem } from './context-menu-items/DeleteLocaleMenuItem';
 import { DeleteNamespaceMenuItem } from './context-menu-items/DeleteNamespaceMenuItem';

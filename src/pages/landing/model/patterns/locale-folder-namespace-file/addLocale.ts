@@ -1,8 +1,10 @@
 import { attemptAsync } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
+import type { LanguageCode } from 'iso-639-1';
 import { mkdir, writeTextFile } from '@tauri-apps/plugin-fs';
 
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '../types';
+import { parseLocale, localeInfoMap } from '@/shared/lib/icu';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type AddLocaleContext = {
@@ -50,10 +52,22 @@ export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
         return { content, path: newNamespaceFilePath };
       }),
     );
+    const parsedLocale = parseLocale(newLocaleCode);
+    const localeInfo = localeInfoMap[parsedLocale.language as LanguageCode];
+    if (!localeInfo) {
+      throw new Error('locale is invalid');
+    }
     setSelectedProjectData({
       ...projectData,
       tree: [...projectData.tree, localeTreeNode],
-      locales: [...projectData.locales, { code: newLocaleCode, path: localeFolderPath }],
+      locales: [
+        ...projectData.locales,
+        {
+          path: localeFolderPath,
+          code: localeInfo.languageCode,
+          native: localeInfo.languageData.native,
+        },
+      ],
     });
     return { files, localePath: localeFolderPath };
   });

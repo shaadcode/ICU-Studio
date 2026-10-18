@@ -1,11 +1,17 @@
 import { useMemo } from 'react';
-import ISO6391 from 'iso-639-1';
 import { useTranslations } from 'use-intl';
+import type { ComboboxItem } from '@mantine/core';
 import { IconLanguageOff } from '@tabler/icons-react';
-import { Card, Text, Stack, Select, Center, ThemeIcon } from '@mantine/core';
+import { CountryFlagRounded } from '@appica/country-flags-react';
+import { Card, Text, Stack, Group, Select, Center, ThemeIcon } from '@mantine/core';
 
+import { parseLocale } from '@/shared/lib/icu';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+
+type LocaleSelectOption = {
+  countryCode: string;
+} & ComboboxItem<string>;
 
 type Props = {
   project: NonNullable<I18nManagerStore['selectedProject']>;
@@ -22,20 +28,26 @@ export const BaseLocaleSelect = (props: Props) => {
   const data = useMemo(
     () =>
       props.projectData.locales.map((locale) => {
-        const name = ISO6391.getName(locale.code) || locale.code;
-        const nativeName = ISO6391.getNativeName(locale.code) || name;
-
         return {
           value: locale.code,
-          label: `${nativeName} — ${name} (${locale.code})`,
-        };
+          countryCode: locale.region,
+          label: `${locale.native} — ${locale.region} (${locale.code})`,
+        } as LocaleSelectOption;
       }),
     [props.projectData.locales],
   );
 
+  const baseLocaleRegion = useMemo(() => {
+    const parsed = parseLocale(props.projectData.baseLocale);
+    return parsed.region;
+  }, [props.projectData.baseLocale]);
   return (
     <Card withBorder radius="md" padding="md">
-      <Text mb={4} fw={600} size="sm">
+      <Text
+        mb={4}
+        fw={600}
+        size="sm"
+      >
         {t('structure.baseLocale')}
       </Text>
       <Text mb="sm" size="xs" c="dimmed">
@@ -62,6 +74,24 @@ export const BaseLocaleSelect = (props: Props) => {
               allowDeselect={false}
               value={props.project.baseLocale}
               placeholder={t('structure.baseLocalePlaceholder')}
+              leftSection={(
+                <CountryFlagRounded
+                  size={20}
+                  code={baseLocaleRegion ?? 'un'}
+                />
+              )}
+              renderOption={({ option }) => {
+                const typedOption = option as LocaleSelectOption;
+                return (
+                  <Group gap="sm">
+                    <CountryFlagRounded
+                      size={20}
+                      code={typedOption['countryCode'] ?? 'un'}
+                    />
+                    <Text size="sm">{typedOption.label}</Text>
+                  </Group>
+                );
+              }}
 
               onChange={v =>
                 v

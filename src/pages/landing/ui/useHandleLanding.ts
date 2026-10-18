@@ -55,18 +55,19 @@ const createMessagesViewLayout: LayoutFactory = ({ isBelowMd }) => ({
   },
 });
 
-const createI18nManagerViewLayout: LayoutFactory = ({ isBelowMd }) => ({
-  aside: undefined,
+const createI18nManagerViewLayout: LayoutFactory = ({ navbarOpened, sidebarOpened }) => ({
   layout: 'default',
+  footer: undefined,
   header: { height: 60, collapsed: false },
-  footer: { height: 60, collapsed: isBelowMd },
-  // {
-  //   width: 400,
-  //   breakpoint: MOBILE_BREAKPOINT,
-  // },
+  aside: {
+    width: 400,
+    breakpoint: MOBILE_BREAKPOINT,
+    collapsed: { desktop: false, mobile: !sidebarOpened },
+  },
   navbar: {
     width: 300,
     breakpoint: MOBILE_BREAKPOINT,
+    collapsed: { desktop: false, mobile: !navbarOpened },
   },
 });
 

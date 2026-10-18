@@ -2,8 +2,8 @@ import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { notifications } from '@mantine/notifications';
 
-import { getI18nProjectData } from '@/shared/lib/mantine';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 
 export type I18nManagerTabKey = 'locales' | 'analysis' | 'settings' | 'structure' | 'namespaces';
 
@@ -75,7 +75,9 @@ export const useHandleI18nManagerMain = () => {
   useEffect(() => {
     if (selectedProject) {
       (async () => {
-        const data = await getI18nProjectData(selectedProject);
+        const patternActions = i18nManagerPatternsActions[selectedProject.structureType];
+
+        const data = await patternActions.getProjectData(selectedProject);
         setSelectedProjectData(data);
       })();
     }

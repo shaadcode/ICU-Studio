@@ -3,7 +3,7 @@ import { attemptAsync } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '../types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type AddNamespaceContext = {

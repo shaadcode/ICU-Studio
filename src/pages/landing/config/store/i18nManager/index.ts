@@ -2,16 +2,18 @@ import { create } from 'zustand';
 import { attemptAsync } from 'es-toolkit';
 import type { Store } from '@tauri-apps/plugin-store';
 import { notifications } from '@mantine/notifications';
+import type { TCountryCode, TLanguageCode } from 'countries-list';
 
 import { storeKeys } from '@/shared/config/tauri';
 import type { Translator } from '@/shared/config/reactI18n/types';
 import { createSelectors } from '@/shared/config/zustand/createSelector';
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
-import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
 import type { ProjectSchema } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
+import type { I18nProjectTree, ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
+import type { I18nManagerTabKey } from '@/pages/landing/ui/I18nManager/Main/useHandleI18nManagerMain';
 
 export type I18nManagerStore = {
   isDirty: boolean;
+  activeTab: I18nManagerTabKey;
   projects: Array<ProjectSchema>;
   actions: I18nManagerStoreActions;
   initialContent: string | undefined;
@@ -29,17 +31,29 @@ export type I18nManagerStore = {
     namespaces: Array<string>;
     tree: Array<I18nProjectTree>;
     structureType: ProjectSchema['structureType'];
-    locales: Array<{ code: string; path: string }>;
     messages: {
       missing: number;
       translated: number;
     };
+    locales: Array<{
+      path: string;
+      native: string;
+      /**
+       * fa, en, en-gb ...
+       */
+      code: TLanguageCode;
+      /**
+       * ir , us ...
+       */
+      region?: TCountryCode;
+    }>;
   };
 };
 
 type I18nManagerStoreActions = {
   setI18nManagerStore: (value: Store) => void;
   setProjectAnalysis: (v: ProjectAnalysisResult) => void;
+  setActiveTab: (v: I18nManagerStore['activeTab']) => void;
   setProjects: (projects: I18nManagerStore['projects']) => void;
   setSelectedProject: (value: undefined | ProjectSchema) => void;
   setSelectedProjectData: (v: I18nManagerStore['selectedProjectData']) => void;
@@ -63,6 +77,7 @@ type I18nManagerStoreActions = {
 const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
   projects: [],
   isDirty: false,
+  activeTab: 'structure',
   initialContent: undefined,
   selectedProject: undefined,
   selectedProjectData: undefined,
@@ -70,6 +85,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
   selectedProjectAnalysis: undefined,
   actions: {
     setProjects: projects => set({ projects }),
+    setActiveTab: tab => set({ activeTab: tab }),
     setProjectAnalysis: v => set({ selectedProjectAnalysis: v }),
     setSelectedProjectData: v => set({ selectedProjectData: v }),
     setSelectedProject: value => set({ selectedProject: value }),

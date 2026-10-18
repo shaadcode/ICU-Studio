@@ -7,6 +7,7 @@ import type { TraverseContext } from '../icu/createHtml/createHtml';
 export const DEBOUNCE_UPDATE_EDITOR = 300;
 export const TEST_VARIABLES_ACCORDION_TRANSITION_DURATION = 250;
 export const MOBILE_BREAKPOINT = 'sm';
+export const TABLET_BREAKPOINT = 'lg';
 
 export const createTreeNodeData = () => ({
   label: '',

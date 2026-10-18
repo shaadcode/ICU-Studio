@@ -1,6 +1,6 @@
 // components/modals/AddLocaleModal.tsx
-import { IconPlus, IconFolder, IconFileText } from '@tabler/icons-react';
-import { Box, Text, Group, Modal, Stack, Button, Select, Divider, ScrollArea } from '@mantine/core';
+import { IconPlus, IconFolder, IconFileText, IconInfoCircle } from '@tabler/icons-react';
+import { Box, Text, Group, Modal, Stack, Alert, Button, Select, Divider, ScrollArea } from '@mantine/core';
 
 import { useHandleAddLocaleModal } from './useHandleAddLocaleModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -51,6 +51,17 @@ export const AddLocaleModal = (params: Props) => {
             <Text size="sm" c="dimmed">
               {t('structure.modals.addLocale.description')}
             </Text>
+
+            <Alert
+              color="yellow"
+              variant="light"
+              icon={<IconInfoCircle size={16} />}
+              title={t('structure.modals.addLocale.regionalHintTitle')}
+            >
+              <Text size="xs">
+                {t('structure.modals.addLocale.regionalHint')}
+              </Text>
+            </Alert>
 
             <Select
               searchable

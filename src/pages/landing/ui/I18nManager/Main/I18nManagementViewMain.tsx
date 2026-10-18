@@ -3,7 +3,6 @@ import { Box, Tabs, Group, Stack, ScrollArea } from '@mantine/core';
 import { ViewHeader } from './components/ViewHeader';
 import { StatsCards } from './components/StatsCards';
 import { ViewTabs } from './components/tabs/ViewTabs';
-import { AnalysisSidebar } from './components/AnalysisSidebar';
 import { EmptyProjectsState } from './components/EmptyProjectState';
 import { useHandleI18nManagerMain } from './useHandleI18nManagerMain';
 import { EmptySelectionState } from './components/EmptySelectionState';
@@ -12,10 +11,7 @@ import { StructureTab } from './components/tabs/Structure/StructureTab';
 const I18nManagementViewMain = () => {
   const {
     t,
-    handlers,
     projects,
-    activeTab,
-    setActiveTab,
     selectedProject,
     selectedProjectData,
   } = useHandleI18nManagerMain();
@@ -36,22 +32,16 @@ const I18nManagementViewMain = () => {
         settingsLabel={t('i18nManager.header.settings')}
         description={t('i18nManager.header.description')}
 
-        onScan={handlers.handleScan}
-        onSettings={handlers.handleOpenSettings}
       />
 
       <StatsCards />
 
-      <ViewTabs
-        activeTab={activeTab}
-
-        onChange={setActiveTab}
-      >
+      <ViewTabs>
         <Group
+          mt="md"
           gap="md"
           wrap="nowrap"
           align="flex-start"
-          style={{ flex: 1, minHeight: 0, marginTop: 'var(--mantine-spacing-md)' }}
         >
           <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
             <Tabs.Panel value="structure">
@@ -78,19 +68,6 @@ const I18nManagementViewMain = () => {
               <Box>{t('i18nManager.tabs.settingsContent')}</Box>
             </Tabs.Panel>
           </ScrollArea>
-
-          <Box w={320} style={{ flexShrink: 0 }}>
-            <ScrollArea h="100%">
-              <AnalysisSidebar
-                projectData={selectedProjectData}
-
-                onRescan={handlers.handleRescan}
-                onConvertCsv={handlers.handleConvertCsv}
-                onExportReport={handlers.handleExportReport}
-                onOpenExplorer={handlers.handleOpenExplorer}
-              />
-            </ScrollArea>
-          </Box>
         </Group>
       </ViewTabs>
     </Stack>

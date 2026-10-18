@@ -1,11 +1,12 @@
 import { useTranslations } from 'use-intl';
-import { IconFolder, IconFileText, IconFolderOpen } from '@tabler/icons-react';
-import { Card, Text, Tree, Group, Stack, useTree, ThemeIcon, ScrollArea } from '@mantine/core';
+import { IconFileText } from '@tabler/icons-react';
+import { CountryFlagRounded } from '@appica/country-flags-react';
+import { Card, Text, Tree, Group, Stack, useTree, Divider, ThemeIcon, ScrollArea } from '@mantine/core';
 
 import DetectedStructureEmptyState from './EmptyState';
 import classes from './DetectedStructureTree.module.css';
 import { TreeNodeContextMenu } from './TreeNodeContextMenu';
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
+import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { AddNamespaceModal } from './HandleAddNamespaceModal/AddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -24,6 +25,7 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
         <Text fw={600} size="sm">
           {t('structure.detectedStructure')}
         </Text>
+        <Divider />
         {isEmpty
           ? (
               <DetectedStructureEmptyState />
@@ -32,12 +34,9 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
               <ScrollArea h={350} type="hover" offsetScrollbars>
                 <Tree
                   withLines
-                  selectOnClick
-                  expandOnClick
-                  levelOffset={23}
                   tree={treeHandlers}
                   data={projectData.tree}
-                  renderNode={({ node, expanded, hasChildren, elementProps }) => {
+                  renderNode={({ node, level, hasChildren, elementProps }) => {
                     const typedNode = node as I18nProjectTree;
                     return (
                       <TreeNodeContextMenu
@@ -49,32 +48,29 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                           const mergedProps = {
                             ...elementProps,
                             ...otherProps,
-                            onClick: (e: any) => {
-                              elementProps.onClick(e);
-                              // otherProps.onClick(e);
-                            },
+                            onClick: elementProps.onClick,
                           };
+
                           return (
                             <Group
                               gap={6}
                               wrap="nowrap"
+                              p={level === 1 ? 4 : undefined}
                               classNames={{ root: classes['treeNodeRoot'] }}
                               {...mergedProps}
                             >
-                              {hasChildren || typedNode.isDirectory
+                              {hasChildren || typedNode.isDirectory || typedNode.isLocale
                                 ? (
-                                    <ThemeIcon size={16} variant="transparent">
-                                      {expanded
-                                        ? <IconFolderOpen size={14} color="var(--mantine-color-yellow-6)" />
-                                        : <IconFolder size={14} color="var(--mantine-color-yellow-6)" />}
-                                    </ThemeIcon>
+                                    <CountryFlagRounded
+                                      size={20}
+                                      code={typedNode.localeInfo?.region ?? 'un'}
+                                    />
                                   )
                                 : (
                                     <ThemeIcon size={16} variant="transparent">
                                       <IconFileText size={14} color="var(--mantine-color-blue-6)" />
                                     </ThemeIcon>
                                   )}
-
                               <Text
                                 fw={500}
                                 truncate
@@ -92,7 +88,6 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                 />
               </ScrollArea>
             )}
-
         <AddNamespaceModal projectData={projectData} />
       </Stack>
     </Card>

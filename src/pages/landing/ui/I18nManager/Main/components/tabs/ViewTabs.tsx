@@ -11,21 +11,20 @@ import {
 } from '@tabler/icons-react';
 
 import type { I18nManagerTabKey } from '../../useHandleI18nManagerMain';
+import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  activeTab: string;
   children: ReactNode;
-  onChange: (tab: I18nManagerTabKey) => void;
 };
 
-export const ViewTabs = ({ onChange, children, activeTab }: Props) => {
+export const ViewTabs = ({ children }: Props) => {
   const t = useTranslations('i18nManager');
-
+  const setActiveTab = i18nManagerStore.use.actions().setActiveTab;
   return (
     <Tabs
-      value={activeTab}
+      defaultValue="structure"
 
-      onChange={v => v && onChange(v as I18nManagerTabKey)}
+      onChange={v => v && setActiveTab(v as I18nManagerTabKey)}
     >
       <Tabs.List>
         <Tabs.Tab value="structure" leftSection={<IconSitemap size={14} />}>

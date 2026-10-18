@@ -1,5 +1,9 @@
 .treeNodeRoot {
   &:hover {
-    background-color: color-mix(in srgb, var(--mantine-color-gray-0) 5%, transparent);
+    background-color: var(--mantine-color-gray-0);
+
+    @mixin dark {
+      background-color: color-mix(in srgb, var(--mantine-color-gray-0) 5%, transparent);
+    }
   }
 }

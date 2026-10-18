@@ -5,9 +5,9 @@ import { useTranslations } from 'use-intl';
 import { IconTrash } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
+import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
-import type { I18nProjectTree } from '@/shared/lib/mantine/getI18nProjectData';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {

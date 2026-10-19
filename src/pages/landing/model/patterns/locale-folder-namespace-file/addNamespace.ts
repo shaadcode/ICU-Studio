@@ -7,7 +7,7 @@ import type { I18nProjectTree } from '../types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type AddNamespaceContext = {
-  namespaceName: string;
+  namespace: string;
   setSelectedProjectData: NonNullable<
     I18nManagerStore['actions']['setSelectedProjectData']
   >;
@@ -19,28 +19,28 @@ export type AddNamespaceContext = {
  */
 export async function addNamespaceFolderNamespaceFile(params: AddNamespaceContext) {
   const result = await attemptAsync(async () => {
-    const { namespaceName, setSelectedProjectData, ...projectData } = params;
+    const { namespace, setSelectedProjectData, ...projectData } = params;
 
     await Promise.all(
       projectData.locales.map(async (locale) => {
-        const newNamespaceFilePath = await join(locale.path, `${namespaceName}.json`);
+        const newNamespaceFilePath = await join(locale.path, `${namespace}.json`);
         const content = '{}\n';
 
         await writeTextFile(newNamespaceFilePath, content);
       }),
     );
-    const updatedTree = projectData.tree.map((node) => {
+    const updatedTree = await Promise.all(projectData.tree.map(async (node) => {
       if (!node.isLocale) {
         return node;
       }
 
-      const newNamespaceFilePath = `${node.fullPath}/${namespaceName}`;
+      const newNamespaceFilePath = await join(node.fullPath, `${namespace}.json`);
 
       const newChild: I18nProjectTree = {
         isLocale: false,
+        label: namespace,
         isNamespace: true,
         isDirectory: false,
-        label: namespaceName,
         value: newNamespaceFilePath,
         fullPath: newNamespaceFilePath,
       };
@@ -49,12 +49,15 @@ export async function addNamespaceFolderNamespaceFile(params: AddNamespaceContex
         ...node,
         children: [...(node.children ?? []), newChild],
       };
-    });
+    }));
 
     setSelectedProjectData({
       ...projectData,
       tree: updatedTree,
-      namespaces: [...projectData.namespaces, namespaceName],
+      namespaces: [...projectData.namespaces, {
+        name: namespace,
+        path: newNamespaceFilePath,
+      }],
     });
   });
   return result;

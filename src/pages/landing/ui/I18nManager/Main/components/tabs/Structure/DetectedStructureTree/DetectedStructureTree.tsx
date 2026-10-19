@@ -63,7 +63,7 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                                 ? (
                                     <CountryFlagRounded
                                       size={20}
-                                      code={typedNode.localeInfo?.region ?? 'un'}
+                                      code={typedNode.locale?.region ?? 'un'}
                                     />
                                   )
                                 : (

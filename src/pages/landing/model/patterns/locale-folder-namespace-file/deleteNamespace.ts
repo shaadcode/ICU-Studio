@@ -44,7 +44,7 @@ export async function deleteNamespaceFolderNamespaceFile(params: DeleteNamespace
     setSelectedProjectData({
       ...projectData,
       tree: updatedTree,
-      namespaces: projectData.namespaces.filter(ns => ns !== namespaceName),
+      namespaces: projectData.namespaces.filter(ns => ns.name !== namespaceName),
     });
   });
 

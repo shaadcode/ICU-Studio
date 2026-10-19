@@ -36,20 +36,19 @@ export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
 
     const files = await Promise.all(
       projectData.namespaces.map(async (ns) => {
-        const newNamespaceFilePath = await join(localeFolderPath, `${ns}.json`);
         const content = '{}\n';
 
-        await writeTextFile(newNamespaceFilePath, content);
+        await writeTextFile(ns.path, content);
         const namespaceTreeNode = {
-          label: ns,
+          label: ns.name,
+          value: ns.path,
           isLocale: false,
           isNamespace: true,
+          fullPath: ns.path,
           isDirectory: false,
-          value: newNamespaceFilePath,
-          fullPath: newNamespaceFilePath,
         } as const satisfies I18nProjectTree;
         localeTreeNode.children.push(namespaceTreeNode);
-        return { content, path: newNamespaceFilePath };
+        return { content, path: ns.path };
       }),
     );
     const parsedLocale = parseLocale(newLocaleCode);
@@ -64,8 +63,10 @@ export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
         ...projectData.locales,
         {
           path: localeFolderPath,
-          code: localeInfo.languageCode,
+          country: localeInfo.country,
+          region: parsedLocale.region,
           native: localeInfo.languageData.native,
+          language: { ...localeInfo.languageData, code: localeInfo.languageCode },
         },
       ],
     });

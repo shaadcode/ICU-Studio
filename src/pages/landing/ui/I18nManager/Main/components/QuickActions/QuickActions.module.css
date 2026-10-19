@@ -1,6 +1,7 @@
 .quick-action-item {
+  cursor: pointer;
+
   @mixin light {
-    cursor: pointer;
     border-color: var(--mantine-color-gray-2);
   }
 }

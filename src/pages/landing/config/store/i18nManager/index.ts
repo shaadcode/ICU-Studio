@@ -2,74 +2,48 @@ import { create } from 'zustand';
 import { attemptAsync } from 'es-toolkit';
 import type { Store } from '@tauri-apps/plugin-store';
 import { notifications } from '@mantine/notifications';
-import type { TCountryCode, TLanguageCode } from 'countries-list';
 
+import type { Project } from './types';
 import { storeKeys } from '@/shared/config/tauri';
 import type { Translator } from '@/shared/config/reactI18n/types';
 import { createSelectors } from '@/shared/config/zustand/createSelector';
-import type { ProjectSchema } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
-import type { I18nProjectTree, ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
+import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
+import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 import type { I18nManagerTabKey } from '@/pages/landing/ui/I18nManager/Main/useHandleI18nManagerMain';
 
 export type I18nManagerStore = {
   isDirty: boolean;
   activeTab: I18nManagerTabKey;
-  projects: Array<ProjectSchema>;
+  projects: Array<BaseProjectInfo>;
   actions: I18nManagerStoreActions;
   initialContent: string | undefined;
+  selectedProjectData: Project | undefined;
   i18nManagerLocalStore: Store | undefined;
-  selectedProject: undefined | ProjectSchema;
+  selectedProject: undefined | BaseProjectInfo;
   selectedProjectAnalysis: undefined | ProjectAnalysisResult;
-  selectedProjectData: undefined | {
-    /**
-     * project full path
-     */
-    path: string;
-    recentScan: Date;
-    baseLocale: string;
-    filesAmount: number;
-    namespaces: Array<string>;
-    tree: Array<I18nProjectTree>;
-    structureType: ProjectSchema['structureType'];
-    messages: {
-      missing: number;
-      translated: number;
-    };
-    locales: Array<{
-      path: string;
-      native: string;
-      /**
-       * fa, en, en-gb ...
-       */
-      code: TLanguageCode;
-      /**
-       * ir , us ...
-       */
-      region?: TCountryCode;
-    }>;
-  };
 };
 
 type I18nManagerStoreActions = {
   setI18nManagerStore: (value: Store) => void;
   setProjectAnalysis: (v: ProjectAnalysisResult) => void;
   setActiveTab: (v: I18nManagerStore['activeTab']) => void;
+  setSelectedProjectData: (value: Project | undefined) => void;
   setProjects: (projects: I18nManagerStore['projects']) => void;
-  setSelectedProject: (value: undefined | ProjectSchema) => void;
-  setSelectedProjectData: (v: I18nManagerStore['selectedProjectData']) => void;
+  setSelectedProject: (value: undefined | BaseProjectInfo) => void;
   addProject: (params: {
-    project: ProjectSchema;
+    project: BaseProjectInfo;
     tCommon: Translator<'common'>;
     tI18nManager: Translator<'i18nManager'>;
   }) => Promise<void>;
   deleteProject: (project: {
-    project: ProjectSchema;
+    project: BaseProjectInfo;
     tCommon: Translator<'common'>;
     tI18nManager: Translator<'i18nManager'>;
   }) => Promise<void>;
   updateSelectedProject: (params: {
-    updatedProject: ProjectSchema;
     tCommon: Translator<'common'>;
+    updatedProject: BaseProjectInfo;
     tI18nManager: Translator<'i18nManager'>;
   }) => Promise<void>;
 };
@@ -87,8 +61,8 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
     setProjects: projects => set({ projects }),
     setActiveTab: tab => set({ activeTab: tab }),
     setProjectAnalysis: v => set({ selectedProjectAnalysis: v }),
-    setSelectedProjectData: v => set({ selectedProjectData: v }),
     setSelectedProject: value => set({ selectedProject: value }),
+    setSelectedProjectData: data => set({ selectedProjectData: data }),
     setI18nManagerStore: store => set({ i18nManagerLocalStore: store }),
     deleteProject: async (params) => {
       const store = get().i18nManagerLocalStore;
@@ -103,7 +77,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
 
       await attemptAsync(async () => {
         const existingProjects
-          = (await store.get<ProjectSchema[]>(storeKeys.i18nManager.projects)) ?? [];
+          = (await store.get<BaseProjectInfo[]>(storeKeys.i18nManager.projects)) ?? [];
 
         const updatedProjects = existingProjects.filter(
           p => p.baseDirectoryPath !== params.project.baseDirectoryPath,
@@ -128,7 +102,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
       }
 
       const existingProjects
-        = (await store.get<ProjectSchema[]>(storeKeys.i18nManager.projects)) ?? [];
+        = (await store.get<Array<BaseProjectInfo>>(storeKeys.i18nManager.projects)) ?? [];
 
       const isDuplicate = existingProjects.some(
         p => p.baseDirectoryPath === params.project.baseDirectoryPath,
@@ -145,13 +119,27 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         });
         return;
       }
+      const patternAction = i18nManagerPatternsActions[params.project.structureType];
+      const projectData = await patternAction.getProjectData({
+        project: params.project,
+        onWatch: patternAction.handleWatch,
+        setProjectAnalysis: get().actions.setProjectAnalysis,
+      });
+
+      const newProject = {
+        ...params.project,
+        ...projectData,
+      };
 
       await attemptAsync(async () => {
-        const updatedProjects = [...existingProjects, params.project];
+        const updatedProjects = [...existingProjects, newProject];
         await store.set(storeKeys.i18nManager.projects, updatedProjects);
         await store.save();
 
-        set({ projects: updatedProjects, selectedProject: params.project });
+        set({
+          projects: updatedProjects,
+          selectedProject: newProject,
+        });
       });
     },
     updateSelectedProject: async (params) => {
@@ -166,7 +154,7 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
       }
 
       const existingProjects
-        = (await store.get<ProjectSchema[]>(storeKeys.i18nManager.projects)) ?? [];
+        = (await store.get<Array<BaseProjectInfo>>(storeKeys.i18nManager.projects)) ?? [];
 
       const targetIndex = existingProjects.findIndex(
         p => p.baseDirectoryPath === params.updatedProject.baseDirectoryPath,
@@ -194,10 +182,21 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         const currentSelected = get().selectedProject;
         const shouldUpdateSelected
           = currentSelected?.baseDirectoryPath === params.updatedProject.baseDirectoryPath;
+        const patternAction = i18nManagerPatternsActions[params.updatedProject.structureType];
+        const projectData = await patternAction.getProjectData({
+          project: params.updatedProject,
+          onWatch: patternAction.handleWatch,
+          setProjectAnalysis: get().actions.setProjectAnalysis,
+        });
 
         set({
           projects: updatedProjects,
-          ...(shouldUpdateSelected && { selectedProject: params.updatedProject }),
+          ...(shouldUpdateSelected && {
+            selectedProject: {
+              ...params.updatedProject,
+              ...projectData,
+            },
+          }),
         });
       });
     },

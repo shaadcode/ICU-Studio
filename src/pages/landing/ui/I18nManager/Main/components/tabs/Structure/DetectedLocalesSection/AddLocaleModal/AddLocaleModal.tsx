@@ -98,12 +98,12 @@ export const AddLocaleModal = (params: Props) => {
                   <ScrollArea.Autosize mah={180}>
                     <Stack gap={4} pl="md">
                       {previewFiles.map(ns => (
-                        <Group gap={6} key={ns} wrap="nowrap">
+                        <Group gap={6} key={ns.name} wrap="nowrap">
                           <IconFileText
                             size={12}
                             color="var(--mantine-color-blue-6)"
                           />
-                          <Text size="xs">{ns}</Text>
+                          <Text size="xs">{ns.name}</Text>
                         </Group>
                       ))}
                     </Stack>

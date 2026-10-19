@@ -41,9 +41,9 @@ export const DetectedLocalesSection = (props: Props) => {
                   radius="sm"
                   color="blue"
                   variant="light"
-                  key={locale.code}
+                  key={locale.language.code}
                 >
-                  {locale.code}
+                  {locale.language.code}
                 </Badge>
               ))}
               <Box mis="auto">

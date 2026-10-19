@@ -2,11 +2,11 @@ import { useTranslations } from 'use-intl';
 import { IconDots, IconTrash, IconFolder } from '@tabler/icons-react';
 import { Box, Text, Menu, Group, Paper, ActionIcon } from '@mantine/core';
 
-import type { ProjectSchema } from './CreateNewProject/types';
+import type { BaseProjectInfo } from './CreateNewProject/types';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  project: ProjectSchema;
+  project: BaseProjectInfo;
 };
 
 export const ProjectItem = ({ project }: Props) => {

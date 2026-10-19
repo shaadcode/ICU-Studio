@@ -34,6 +34,7 @@ export default antfu(
       'sort-imports': 'off',
       'ts/ban-ts-comment': 'off',
       'antfu/imports/order': 'off',
+      'ts/no-misused-promises': 'off',
       'style/jsx-sort-props': ['off'],
       'antfu/no-top-level-await': 'off', // Allow top-level await
       // 'node/prefer-global/process': 'off', // Allow using `process.env`

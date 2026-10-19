@@ -1,5 +1,6 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
+import type { UnwatchFn } from '@tauri-apps/plugin-fs';
 import { notifications } from '@mantine/notifications';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -14,6 +15,7 @@ export const useHandleI18nManagerMain = () => {
   const selectedProjectData = i18nManagerStore.use.selectedProjectData();
   const projects = i18nManagerStore.use.projects();
   const setSelectedProjectData = i18nManagerStore.use.actions().setSelectedProjectData;
+  const setProjectAnalysis = i18nManagerStore.use.actions().setProjectAnalysis;
   const setBaseLocale = () => {};
 
   const handlers = {
@@ -73,14 +75,27 @@ export const useHandleI18nManagerMain = () => {
   };
 
   useEffect(() => {
+    let stopWatchingState: undefined | Array<UnwatchFn>;
     if (selectedProject) {
       (async () => {
         const patternActions = i18nManagerPatternsActions[selectedProject.structureType];
 
-        const data = await patternActions.getProjectData(selectedProject);
-        setSelectedProjectData(data);
+        const { stopWatching, data: project } = await patternActions.getProjectData({
+          setProjectAnalysis,
+          project: selectedProject,
+          onWatch: patternActions.handleWatch,
+        });
+
+        stopWatchingState = stopWatching;
+        setSelectedProjectData(project);
       })();
     }
+
+    return () => {
+      if (stopWatchingState) {
+        Promise.all(stopWatchingState.map(unWatchFn => unWatchFn()));
+      }
+    };
   }, [selectedProject]);
 
   return {

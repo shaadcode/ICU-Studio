@@ -16,13 +16,18 @@ export const RecentScans = (params: Props) => {
   const t = useTranslations('i18nManager');
   const format = useFormatter();
   const setSelectedProjectData = i18nManagerStore.use.actions().setSelectedProjectData;
+  const setProjectAnalysis = i18nManagerStore.use.actions().setProjectAnalysis;
   const now = useNow({ updateInterval: 1000 * 30 });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRescan = async () => {
     setIsLoading(true);
     const patternActions = i18nManagerPatternsActions[params.projectData.structureType];
-    const data = await patternActions.getProjectData(params.project);
+    const { data } = await patternActions.getProjectData({
+      setProjectAnalysis,
+      project: params.project,
+      onWatch: patternActions.handleWatch,
+    });
     setSelectedProjectData(data);
     setIsLoading(false);
   };

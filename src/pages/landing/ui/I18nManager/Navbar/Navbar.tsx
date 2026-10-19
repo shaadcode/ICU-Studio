@@ -13,7 +13,7 @@ import {
 
 import { ProjectItem } from './ProjectItem';
 import { storeKeys } from '@/shared/config/tauri';
-import type { ProjectSchema } from './CreateNewProject/types';
+import type { BaseProjectInfo } from './CreateNewProject/types';
 import { CreateNewProject } from './CreateNewProject/CreateNewProject';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -31,7 +31,7 @@ const I18nManagerNavbar = () => {
       setI18nManagerStore(store);
 
       const savedProjects
-        = (await store.get<ProjectSchema[]>(storeKeys.i18nManager.projects))
+        = (await store.get<BaseProjectInfo[]>(storeKeys.i18nManager.projects))
           ?? [];
 
       setProjects(savedProjects);

@@ -26,14 +26,14 @@ export const useHandleAddNamespaceModal = (rootParams: Params) => {
       namespaceName: '',
     },
     validate: {
-      namespaceName: (value) => {
-        if (!value.trim()) {
+      namespaceName: (newNamespace) => {
+        if (!newNamespace.trim()) {
           return t('structure.validation.namespaceRequired');
         }
-        if (rootParams.projectData.namespaces.includes(value.trim())) {
+        if (rootParams.projectData.namespaces.some(ns => ns.name === newNamespace.trim())) {
           return t('structure.validation.namespaceExists');
         }
-        if (!/^[a-z0-9-]+$/i.test(value.trim())) {
+        if (!/^[a-z0-9-]+$/i.test(newNamespace.trim())) {
           return t('structure.validation.namespaceInvalid');
         }
         return null;
@@ -47,7 +47,7 @@ export const useHandleAddNamespaceModal = (rootParams: Params) => {
     const [error] = await patternActions.addNamespace({
       ...rootParams.projectData,
       setSelectedProjectData,
-      namespaceName: params.namespaceName,
+      namespace: params.namespaceName,
     });
 
     if (error) {

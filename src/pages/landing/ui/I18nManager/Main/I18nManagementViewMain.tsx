@@ -7,6 +7,7 @@ import { EmptyProjectsState } from './components/EmptyProjectState';
 import { useHandleI18nManagerMain } from './useHandleI18nManagerMain';
 import { EmptySelectionState } from './components/EmptySelectionState';
 import { StructureTab } from './components/tabs/Structure/StructureTab';
+import { LocalesOverview } from './components/tabs/Locales/LocalesOverview';
 
 const I18nManagementViewMain = () => {
   const {
@@ -25,7 +26,7 @@ const I18nManagementViewMain = () => {
   }
 
   return (
-    <Stack gap="md" h="100%">
+    <Stack flex={1} gap="md" h="100%">
       <ViewHeader
         title={t('i18nManager.header.title')}
         scanLabel={t('i18nManager.header.scanProject')}
@@ -53,7 +54,7 @@ const I18nManagementViewMain = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="locales">
-              <Box>{t('i18nManager.tabs.localesContent')}</Box>
+              <LocalesOverview />
             </Tabs.Panel>
 
             <Tabs.Panel value="namespaces">

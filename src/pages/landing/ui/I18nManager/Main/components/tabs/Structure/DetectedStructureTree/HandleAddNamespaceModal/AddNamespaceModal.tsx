@@ -1,17 +1,6 @@
 // components/modals/AddNamespaceModal.tsx
 import { IconPlus, IconFolder, IconFileText } from '@tabler/icons-react';
-import {
-  Box,
-  Text,
-  Group,
-  Modal,
-  Stack,
-  Button,
-  Divider,
-  Tooltip,
-  TextInput,
-  ScrollArea,
-} from '@mantine/core';
+import { Box, Text, Group, Modal, Stack, Button, Divider, Tooltip, TextInput, ScrollArea } from '@mantine/core';
 
 import { useHandleAddNamespaceModal } from './useHandleAddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -105,12 +94,12 @@ export const AddNamespaceModal = (params: Props) => {
                   <ScrollArea.Autosize mah={150}>
                     <Stack gap={4} pl="md">
                       {params.projectData.locales.map(locale => (
-                        <Group gap={6} wrap="nowrap" key={locale.code}>
+                        <Group gap={6} wrap="nowrap" key={locale.language.code}>
                           <IconFolder
                             size={12}
                             color="var(--mantine-color-yellow-6)"
                           />
-                          <Text size="xs">{locale.code}</Text>
+                          <Text size="xs">{locale.language.code}</Text>
                         </Group>
                       ))}
                     </Stack>

@@ -50,5 +50,10 @@
     "src/**/*.tsx",
     ".storybook/**/*"
   ],
-  "exclude": ["node_modules/**", "vite.config.ts", "src-tauri/target/**"]
+  "exclude": [
+    "node_modules/**",
+    "vite.config.ts",
+    "src-tauri/target/**",
+    "dist"
+  ]
 }

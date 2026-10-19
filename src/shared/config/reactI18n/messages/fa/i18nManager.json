@@ -57,6 +57,50 @@
   },
   "loadingState": "درحال بارگذاری پروژه ها...",
   "locales": "زبان ها",
+  "localesTab": {
+    "addLocale": "افزودن زبان",
+    "searchLocales": "جستجوی زبان‌ها...",
+    "locales": "زبان‌ها",
+    "emptyLocales": "هنوز هیچ زبانی به این پروژه اضافه نشده است.",
+    "noSearchResults": "هیچ زبانی با این مشخصات یافت نشد.",
+    "localesDescription": "مدیریت زبان‌های پروژه و تنظیمات آن‌ها",
+    "localesTitle": "زبان‌ها",
+    "pinAsBase": "پین کردن به‌عنوان زبان پایه",
+    "pinBaseLocale": "سنجاق زبان پایه",
+    "pinned": "به‌عنوان زبان پایه پین شده است",
+    "searchNamespaces": "جستجوی فضاهای نام...",
+    "sortAscending": "صعودی",
+    "sortBy": "مرتب‌سازی بر اساس",
+    "sortDescending": "نزولی",
+    "sortDirection": "جهت",
+    "status": {
+      "active": "فعال",
+      "complete": "کامل",
+      "default": "پیش‌فرض",
+      "incomplete": "ناقص",
+      "missing": "ناقص",
+      "partial": "نیمه‌کامل"
+    },
+    "summary": {
+      "acrossNamespaces": "در تمام فضاهای نام",
+      "active": "فعال",
+      "defaultLocale": "زبان پیش‌فرض",
+      "english": "انگلیسی",
+      "incomplete": "ناقص",
+      "totalLocales": "کل زبان‌ها"
+    },
+    "table": {
+      "completion": "درصد تکمیل",
+      "files": "فایل‌ها",
+      "language": "نام زبان",
+      "lastUpdated": "آخرین بروزرسانی",
+      "locale": "زبان",
+      "namespace": "فضای نام",
+      "namespaces": "فضاهای نام",
+      "region": "منطقه",
+      "status": "وضعیت"
+    }
+  },
   "namespaces": "محیط ها",
   "notifications": {
     "exportStarted": {
@@ -148,11 +192,11 @@
         "noResults": "زبانی یافت نشد",
         "previewLabel": "پیش‌نمایش",
         "previewTotal": "{count} فایل ساخته خواهد شد",
+        "regionalHint": "اگر می‌خواهید لوکالی مانند en-AU یا en-GB (ترجمه‌ی منطقه‌ای) اضافه کنید، بهتر است آن را به‌صورت دستی ایجاد کنید.",
+        "regionalHintTitle": "مناطق ترجمه‌ای",
         "sameAsBaseWarning": "زبان انتخاب‌شده با زبان پایه یکسان است",
         "submit": "افزودن زبان",
-        "title": "افزودن زبان جدید",
-        "regionalHintTitle": "مناطق ترجمه‌ای",
-        "regionalHint": "اگر می‌خواهید لوکالی مانند en-AU یا en-GB (ترجمه‌ی منطقه‌ای) اضافه کنید، بهتر است آن را به‌صورت دستی ایجاد کنید."
+        "title": "افزودن زبان جدید"
       },
       "addNamespace": {
         "description": "یک فضای‌نام جدید برای سازماندهی فایل‌های ترجمه خود ایجاد کنید.",

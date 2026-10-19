@@ -38,7 +38,7 @@ export const useHandleAddLocaleModal = (rootParams: Params) => {
         if (!value) {
           return t('structure.validation.localeRequired');
         }
-        if (rootParams.projectData.locales.some(l => l.code === value)) {
+        if (rootParams.projectData.locales.some(l => l.language.code === value)) {
           return t('structure.validation.localeExists');
         }
         return null;
@@ -78,7 +78,7 @@ export const useHandleAddLocaleModal = (rootParams: Params) => {
   const availableLocaleOptions = useMemo(
     () =>
       ALL_LOCALE_OPTIONS.filter(
-        opt => !rootParams.projectData.locales.some(l => opt.value === l.code),
+        opt => !rootParams.projectData.locales.some(l => opt.value === l.language.code),
       ),
     [rootParams.projectData.locales],
   );

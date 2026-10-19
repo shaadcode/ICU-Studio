@@ -29,9 +29,9 @@ export const BaseLocaleSelect = (props: Props) => {
     () =>
       props.projectData.locales.map((locale) => {
         return {
-          value: locale.code,
           countryCode: locale.region,
-          label: `${locale.native} — ${locale.region} (${locale.code})`,
+          value: locale.language.code,
+          label: `${locale.native} — ${locale.region} (${locale.language.code})`,
         } as LocaleSelectOption;
       }),
     [props.projectData.locales],

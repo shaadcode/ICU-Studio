@@ -14,7 +14,6 @@ type Props = {
   onClose: () => void;
   node: I18nProjectTree;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
-
 };
 
 export const DeleteLocaleMenuItem = (props: Props) => {
@@ -41,12 +40,15 @@ export const DeleteLocaleMenuItem = (props: Props) => {
         </Text>
       ),
       onConfirm: async () => {
+        if (!props.node.locale) {
+          return;
+        }
         setIsLoading(true);
         const patternActions = i18nManagerPatternsActions[props.projectData.structureType];
         const [error] = await patternActions.deleteLocale({
           ...props.projectData,
           setSelectedProjectData,
-          localeNode: props.node,
+          locale: props.node.locale,
         });
         setIsLoading(false);
 

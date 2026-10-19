@@ -57,6 +57,50 @@
   },
   "loadingState": "Loading projects...",
   "locales": "locales",
+  "localesTab": {
+    "addLocale": "Add Locale",
+    "searchLocales": "search locales...",
+    "locales": "Locales",
+    "emptyLocales": "No locales have been added to this project yet.",
+    "noSearchResults": "No locales found matching your search.",
+    "localesDescription": "Manage your project's locales and configure their settings.",
+    "localesTitle": "Locales",
+    "pinAsBase": "Pin as base locale",
+    "pinBaseLocale": "pin base locale",
+    "pinned": "Pinned as base",
+    "searchNamespaces": "Search namespaces...",
+    "sortAscending": "Ascending",
+    "sortBy": "Sort by",
+    "sortDescending": "Descending",
+    "sortDirection": "Direction",
+    "status": {
+      "active": "Active",
+      "complete": "Complete",
+      "default": "Default",
+      "incomplete": "Incomplete",
+      "missing": "Missing",
+      "partial": "Partial"
+    },
+    "summary": {
+      "acrossNamespaces": "Across all namespaces",
+      "active": "Active",
+      "defaultLocale": "Default Locale",
+      "english": "English",
+      "incomplete": "Incomplete",
+      "totalLocales": "Total Locales"
+    },
+    "table": {
+      "completion": "Completion",
+      "files": "Files",
+      "language": "Language",
+      "lastUpdated": "Last Updated",
+      "locale": "Locale",
+      "namespace": "Namespace",
+      "namespaces": "Namespaces",
+      "region": "Region",
+      "status": "Status"
+    }
+  },
   "namespaces": "namespaces",
   "notifications": {
     "exportStarted": {
@@ -149,11 +193,11 @@
         "noResults": "No language found",
         "previewLabel": "Preview",
         "previewTotal": "{count} files will be created",
+        "regionalHint": "If you want to add a locale like en-AU or en-GB (regional translation), it's better to create it manually.",
+        "regionalHintTitle": "Regional translations",
         "sameAsBaseWarning": "The selected locale is the same as the base locale",
         "submit": "Add Locale",
-        "title": "Add new locale",
-        "regionalHintTitle": "Regional translations",
-        "regionalHint": "If you want to add a locale like en-AU or en-GB (regional translation), it's better to create it manually."
+        "title": "Add new locale"
       },
       "addNamespace": {
         "description": "Create a new namespace to organize your translation files.",

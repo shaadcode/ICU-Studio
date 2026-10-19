@@ -28,7 +28,7 @@ export const StructureTab = ({
 
           <DetectedLocalesSection projectData={projectData} />
 
-          <NamespacesTable namespaces={projectData.namespaces} />
+          <NamespacesTable projectData={projectData} />
 
           <BaseLocaleSelect
             project={project}

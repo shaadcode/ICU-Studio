@@ -1,34 +1,27 @@
+import { uniqBy } from 'es-toolkit';
 // components/tabs/Structure/NamespacesTable.tsx
-import { useMemo } from 'react';
 import { useTranslations } from 'use-intl';
 import { useSelection } from '@mantine/hooks';
-import { IconTrash, IconStackPop } from '@tabler/icons-react';
-import { Card, Text, Group, Table, Stack, Center, ThemeIcon, ActionIcon } from '@mantine/core';
+import { IconSquare, IconStackPop, IconCheckbox } from '@tabler/icons-react';
+import { Card, Text, Group, Table, Stack, Center, Tooltip, ThemeIcon, ActionIcon } from '@mantine/core';
 
 import { NamespaceRow } from './NamespaceRow';
-import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import OpenDeleteNamespacesConfirm from './DeleteNamespacesConfirmModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  namespaces: NonNullable<I18nManagerStore['selectedProjectData']>['namespaces'];
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const NamespacesTable = ({ namespaces }: Props) => {
+export const NamespacesTable = (params: Props) => {
+  const tCommon = useTranslations('common');
   const t = useTranslations('i18nManager');
-  const projectData = i18nManagerStore.use.selectedProjectData();
-
-  const data = useMemo(() => namespaces, [namespaces]);
-
+  const namespaces = params.projectData.namespaces;
+  const uniqueNamespaces = uniqBy(namespaces, ns => ns.name);
+  const isEmpty = uniqueNamespaces.length === 0;
   const [selection, selectionHandlers] = useSelection({
-    data,
-    resetSelectionOnDataChange: true,
+    data: uniqueNamespaces.map(ns => ns.name),
   });
-
-  if (!projectData) {
-    return null;
-  }
-
-  const isEmpty = namespaces.length === 0;
 
   return (
     <Card withBorder radius="md" padding="md">
@@ -36,20 +29,48 @@ export const NamespacesTable = ({ namespaces }: Props) => {
         <Text fw={600} size="sm">
           {t('structure.namespaces')}
         </Text>
-        {selection.length > 0 && (
-          <ActionIcon
-            size="sm"
-            color="red"
-            variant="subtle"
-            aria-label={t('structure.modals.deleteNamespace.title')}
 
-            onClick={() => {
-              console.log('delete selected:', selection);
-            }}
-          >
-            <IconTrash size={14} />
-          </ActionIcon>
-        )}
+        <Group gap="xs">
+
+          {selection.length > 0 && (
+            <>
+              <Tooltip
+                label={
+                  selectionHandlers.isAllSelected()
+                    ? tCommon('deselectAll')
+                    : tCommon('selectAll')
+                }
+              >
+                <ActionIcon
+                  size="sm"
+                  color="gray"
+                  variant="subtle"
+                  aria-label={
+                    tCommon(selectionHandlers.isAllSelected()
+                      ? 'deselectAll'
+                      : 'selectAll')
+                  }
+
+                  onClick={() => {
+                    if (selectionHandlers.isAllSelected()) {
+                      selectionHandlers.resetSelection();
+                    } else {
+                      selectionHandlers.setSelection(uniqueNamespaces.map(ns => ns.name));
+                    }
+                  }}
+                >
+                  {selectionHandlers.isAllSelected()
+                    ? <IconSquare size={14} />
+                    : <IconCheckbox size={14} />}
+                </ActionIcon>
+              </Tooltip>
+              <OpenDeleteNamespacesConfirm
+                selection={selection}
+                projectData={params.projectData}
+              />
+            </>
+          )}
+        </Group>
       </Group>
 
       {isEmpty
@@ -74,15 +95,15 @@ export const NamespacesTable = ({ namespaces }: Props) => {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {namespaces.map((ns) => {
-                  const isSelected = selection.includes(ns);
+                {uniqueNamespaces.map((ns) => {
+                  const isSelected = selection.includes(ns.name);
                   return (
                     <NamespaceRow
-                      key={ns}
-                      namespaceName={ns}
+                      key={ns.name}
+                      namespace={ns}
                       isSelected={isSelected}
-                      projectData={projectData}
                       selectionState={selection}
+                      projectData={params.projectData}
                       selectionHandlers={selectionHandlers}
                     />
                   );

@@ -6,10 +6,10 @@ import { Text, Stack, Group, Alert, ScrollAreaAutosize } from '@mantine/core';
 import { STRUCTURE_OPTIONS } from './constants';
 import { StructurePreview } from './StructurePreview';
 import { StructureOptionCard } from './StructureOptionCard';
-import type { StructureType, ProjectSchema } from './types';
+import type { StructureType, BaseProjectInfo } from './types';
 
 type Props = {
-  form: UseFormReturnType<ProjectSchema>;
+  form: UseFormReturnType<BaseProjectInfo>;
   onStructureSelect: (value: StructureType) => void;
 };
 

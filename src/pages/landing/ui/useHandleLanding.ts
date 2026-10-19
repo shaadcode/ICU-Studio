@@ -4,8 +4,8 @@ import type { AppShellProps } from '@mantine/core';
 import { useHotkeys, useMediaQuery } from '@mantine/hooks';
 
 import { appStore } from '../config/store/app';
-import { MOBILE_BREAKPOINT } from '@/shared/lib/mantine';
 import { hotkeys } from '@/shared/config/mantine/hotKeys';
+import { MOBILE_BREAKPOINT, TABLET_BREAKPOINT } from '@/shared/lib/mantine';
 
 // ─────────────────────────────────────────────────────────────
 // Types
@@ -59,15 +59,21 @@ const createI18nManagerViewLayout: LayoutFactory = ({ navbarOpened, sidebarOpene
   layout: 'default',
   footer: undefined,
   header: { height: 60, collapsed: false },
-  aside: {
-    width: 400,
-    breakpoint: MOBILE_BREAKPOINT,
-    collapsed: { desktop: false, mobile: !sidebarOpened },
-  },
   navbar: {
     width: 300,
-    breakpoint: MOBILE_BREAKPOINT,
-    collapsed: { desktop: false, mobile: !navbarOpened },
+    breakpoint: TABLET_BREAKPOINT,
+    collapsed: {
+      mobile: !navbarOpened,
+      desktop: !navbarOpened,
+    },
+  },
+  aside: {
+    width: 400,
+    breakpoint: TABLET_BREAKPOINT,
+    collapsed: {
+      mobile: !sidebarOpened,
+      desktop: !sidebarOpened,
+    },
   },
 });
 
@@ -82,6 +88,7 @@ export const useHandleLanding = () => {
   const navbarOpened = appStore.use.navbar();
   const sidebarOpened = appStore.use.sidebar();
   const toggle = appStore.use.actions().toggle;
+  // const open = appStore.use.actions().open;
   const theme = useMantineTheme();
   const isBelowMd = useMediaQuery(`(max-width: ${theme.breakpoints[MOBILE_BREAKPOINT]})`);
 

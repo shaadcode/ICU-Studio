@@ -3,7 +3,7 @@ import { useTranslations } from 'use-intl';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
 
 import { hotkeys } from '@/shared/config/mantine/hotKeys';
-import type { FileFormat, StructureType, ProjectSchema } from './types';
+import type { FileFormat, StructureType, BaseProjectInfo } from './types';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export const useCreateProjectHandlers = () => {
@@ -13,7 +13,7 @@ export const useCreateProjectHandlers = () => {
   const i18nManagerLocalStore = i18nManagerStore.use.i18nManagerLocalStore();
   const addProject = i18nManagerStore.use.actions().addProject;
 
-  const form = useForm<ProjectSchema>({
+  const form = useForm<BaseProjectInfo>({
     mode: 'uncontrolled',
     validate: {
       name: value =>
@@ -28,7 +28,7 @@ export const useCreateProjectHandlers = () => {
     },
   });
 
-  const handleCreateProject = async (values: ProjectSchema) => {
+  const handleCreateProject = async (values: BaseProjectInfo) => {
     if (!i18nManagerLocalStore) {
       return;
     }

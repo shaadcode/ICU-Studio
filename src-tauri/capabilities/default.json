@@ -21,7 +21,8 @@
     "fs:allow-create",
     "fs:allow-mkdir",
     "core:window:allow-close",
-    "core:window:allow-destroy"
+    "core:window:allow-destroy",
+    "fs:allow-watch"
   ],
   "platforms": ["windows", "linux", "macOS"]
 }

@@ -1,4 +1,3 @@
-import type { LocaleInfo } from '@/shared/lib/icu/constants';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type PatternActionResult = {
@@ -48,6 +47,19 @@ export type BasePatternContext = {
   >;
 };
 
+export type NamespaceAnalysis = {
+  /** Name of the namespace (e.g., "common" or "common.json") */
+  name: string;
+  /** Total number of translation keys in this namespace (based on the base locale) */
+  totalKeys: number;
+  /** Number of keys that are not translated in this locale */
+  missingKeys: number;
+  /** Number of keys that are translated in this locale */
+  translatedKeys: number;
+  /** Completion percentage of translations (0 to 100) */
+  completionPercentage: number;
+};
+
 export type I18nProjectTree = {
   /**
    * full path dir or file(just for rendering and state management)
@@ -68,20 +80,7 @@ export type I18nProjectTree = {
   /**
    * There is a case where `isLocale` is `true`.
    */
-  localeInfo?: undefined | LocaleInfo;
-};
-
-export type NamespaceAnalysis = {
-  /** Name of the namespace (e.g., "common" or "common.json") */
-  name: string;
-  /** Total number of translation keys in this namespace (based on the base locale) */
-  totalKeys: number;
-  /** Number of keys that are not translated in this locale */
-  missingKeys: number;
-  /** Number of keys that are translated in this locale */
-  translatedKeys: number;
-  /** Completion percentage of translations (0 to 100) */
-  completionPercentage: number;
+  locale?: undefined | NonNullable<I18nManagerStore['selectedProjectData']>['locales'][number];
 };
 
 export type ProjectAnalysisResult = {

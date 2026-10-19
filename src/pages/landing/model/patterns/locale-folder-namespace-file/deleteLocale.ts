@@ -2,11 +2,10 @@
 import { attemptAsync } from 'es-toolkit';
 import { remove } from '@tauri-apps/plugin-fs';
 
-import type { I18nProjectTree } from '../types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type DeleteLocaleContext = {
-  localeNode: I18nProjectTree;
+  locale: NonNullable<I18nManagerStore['selectedProjectData']>['locales'][number];
   setSelectedProjectData: NonNullable<
     I18nManagerStore['actions']['setSelectedProjectData']
   >;
@@ -18,22 +17,21 @@ export type DeleteLocaleContext = {
  */
 export async function deleteLocaleFolderNamespaceFile(params: DeleteLocaleContext) {
   const result = await attemptAsync(async () => {
-    const { localeNode, setSelectedProjectData, ...projectData } = params;
-    const localeCode = String(localeNode.label);
+    const { locale, setSelectedProjectData, ...projectData } = params;
 
-    await remove(localeNode.fullPath, { recursive: true });
+    await remove(locale.path, { recursive: true });
 
     const updatedTree = projectData.tree.filter(
-      node => node.fullPath !== localeNode.fullPath,
+      node => node.fullPath !== locale.path,
     );
 
     const updatedLocales = projectData.locales.filter(
-      l => l.code !== localeCode,
+      l => l.language.code !== locale.language.code,
     );
 
     const updatedBaseLocale
-      = projectData.baseLocale === localeCode
-        ? updatedLocales[0]?.code ?? ''
+      = projectData.baseLocale === locale.language.code
+        ? updatedLocales[0]!.language.code
         : projectData.baseLocale;
 
     setSelectedProjectData({
@@ -42,8 +40,6 @@ export async function deleteLocaleFolderNamespaceFile(params: DeleteLocaleContex
       locales: updatedLocales,
       baseLocale: updatedBaseLocale,
     });
-
-    return { localeCode };
   });
 
   return result;

@@ -19,9 +19,8 @@ export const TranslationCompleteness = ({ projectData }: Props) => {
   useEffect(() => {
     const run = async () => {
       setIsLoading(true);
-
       const patternActions = i18nManagerPatternsActions[projectData.structureType];
-      const result = await patternActions.analyze(projectData);
+      const result = await patternActions.analyzeProject(projectData);
       setProjectAnalysis(result);
       setIsLoading(false);
     };

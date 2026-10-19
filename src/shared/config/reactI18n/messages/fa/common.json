@@ -2,20 +2,27 @@
   "add": "اضافه کردن",
   "afternoon": "بعدازظهر",
   "am": "AM",
+  "browse": "انتخاب",
+  "cancel": "انصراف",
   "collapse": "جمع کردن",
   "copied": "کپی شد",
   "copy": "کپی",
+  "create": "ایجاد",
   "cut": "برش",
   "date": "تاریخ",
   "dateAndTime": "تاریخ و زمان",
   "delete": "حذف",
   "deleteAll": "حذف همه",
+  "deselectAll": "لغو انتخاب همه",
   "duplicate": "تکثیر",
   "editor": "ویرایشگر",
-  "browse": "انتخاب",
-  "cancel": "انصراف",
-  "create": "ایجاد",
   "error": "خطا",
+  "errors": {
+    "storeNotInitialized": {
+      "message": "این یک خطا داخلی است. لطفا این خطا را گزارش دهید",
+      "title": "استور مقداردهی اولیه نشده!"
+    }
+  },
   "evening": "عصر",
   "expand": "باز کردن",
   "github": "گیت هاب",
@@ -23,6 +30,7 @@
   "morning": "صبح",
   "navbar": "نوار ناوبری",
   "number": "عدد",
+  "other": "متفرقه",
   "paste": "چسباندن",
   "pm": "PM",
   "preset": "{count,plural,other{ پیش‌تنظیم ها} =1{پیش‌تنظیم}}",
@@ -33,6 +41,7 @@
   "result": "نتیجه",
   "saveAndContinue": "ذخیره و ادامه",
   "search": "جست و جو",
+  "selectAll": "انتخاب همه",
   "selectDefinition": "انتخاب تعریف",
   "sidebar": "نوار کناری",
   "smart": "هوشمند",
@@ -46,11 +55,5 @@
   "value": "مقدار",
   "variable": "{count, select,single {متغیر}plural {متغیر ها}other {}}",
   "view": "نما",
-  "warning": "هشدار",
-  "errors": {
-    "storeNotInitialized": {
-      "title": "استور مقداردهی اولیه نشده!",
-      "message": "این یک خطا داخلی است. لطفا این خطا را گزارش دهید"
-    }
-  }
+  "warning": "هشدار"
 }

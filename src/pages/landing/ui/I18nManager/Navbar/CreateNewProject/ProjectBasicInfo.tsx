@@ -4,10 +4,10 @@ import type { UseFormReturnType } from '@mantine/form';
 import { IconFolder, IconInfoCircle, IconFolderOpen } from '@tabler/icons-react';
 import { Text, Stack, Group, Textarea, TextInput, ActionIcon } from '@mantine/core';
 
-import type { ProjectSchema } from './types';
+import type { BaseProjectInfo } from './types';
 
 type Props = {
-  form: UseFormReturnType<ProjectSchema>;
+  form: UseFormReturnType<BaseProjectInfo>;
 };
 
 export const ProjectBasicInfo = (props: Props) => {

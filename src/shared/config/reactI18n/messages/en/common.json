@@ -2,26 +2,35 @@
   "add": "add",
   "afternoon": "a   fternoon",
   "am": "AM",
+  "browse": "browse",
   "cancel": "cancel",
   "collapse": "collapse",
   "copied": "copied",
   "copy": "copy",
+  "create": "create",
   "cut": "cut",
   "date": "date",
   "dateAndTime": "date and time",
   "delete": "delete",
   "deleteAll": "delete all",
+  "deselectAll": "Deselect all",
   "duplicate": "duplicate",
   "editor": "editor",
   "error": "error",
+  "errors": {
+    "storeNotInitialized": {
+      "message": "this is an internal error. please report this issue.",
+      "title": "store not initialized!"
+    }
+  },
   "evening": "evening",
-  "browse": "browse",
   "expand": "expand",
   "github": "github",
   "messages": "{count, plural, =1 {message} other {messages}}",
   "morning": "morning",
   "navbar": "navigation bar",
   "number": "number",
+  "other": "other",
   "paste": "paste",
   "pm": "PM",
   "preset": "{count,plural,other{ presets} =1{preset}}",
@@ -32,6 +41,7 @@
   "result": "result",
   "saveAndContinue": "save and continue",
   "search": "search",
+  "selectAll": "Select all",
   "selectDefinition": "select definition",
   "sidebar": "sidebar",
   "smart": "smart",
@@ -45,11 +55,5 @@
   "value": "value",
   "variable": "{count, select,single {variable}plural {variables}other {}}",
   "view": "view",
-  "warning": "warning",
-  "errors": {
-    "storeNotInitialized": {
-      "title": "store not initialized!",
-      "message": "this is an internal error. please report this issue."
-    }
-  }
+  "warning": "warning"
 }

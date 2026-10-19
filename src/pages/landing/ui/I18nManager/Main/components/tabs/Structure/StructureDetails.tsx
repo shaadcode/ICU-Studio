@@ -22,7 +22,7 @@ export const StructureDetails = (props: Props) => {
       icon: <IconFileText size={16} />,
       value: t('structure.fromFolderName'),
       label: t('structure.localeDetection'),
-      hint: `(${props.projectData.locales.map(l => l.code).join(',')})`,
+      hint: `(${props.projectData.locales.map(l => l.language.code).join(',')})`,
     },
     {
       color: 'green',

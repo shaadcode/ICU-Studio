@@ -7,7 +7,7 @@ export const EmptyProjectsState = () => {
   const t = useTranslations('i18nManager.emptyState');
 
   return (
-    <Center h="100%" mih={400}>
+    <Center flex={1} h="100%" mih={400}>
       <Stack gap="md" maw={420} align="center">
         <ThemeIcon size={80} radius="xl" color="blue" variant="light">
           <IconFolderSearch size={40} />

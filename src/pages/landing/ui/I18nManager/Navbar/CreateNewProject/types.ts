@@ -13,7 +13,7 @@ export type StructureOption = {
   icon: React.ReactNode;
 };
 
-export type ProjectSchema = {
+export type BaseProjectInfo = {
   name: string;
   baseLocale: string;
   description: string;

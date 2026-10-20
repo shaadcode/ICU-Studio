@@ -10,18 +10,15 @@ export type Project = {
   path: string;
   recentScan: Date;
   description: string;
-  filesAmount: number;
   baseLocale: TLanguageCode;
   tree: Array<I18nProjectTree>;
   structureType: StructureType;
   namespaces: Array<{
     name: string;
     path: string;
+    fileName: string;
+    lastModified: Date | null;
   }>;
-  messages: {
-    missing: number;
-    translated: number;
-  };
   locales: Array<{
     path: string;
     native: string;

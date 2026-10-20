@@ -9,6 +9,7 @@ import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { isNamespaceNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData';
 
 type Props = {
   onClose: () => void;
@@ -25,7 +26,6 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
     props.onClose();
 
     const namespaceName = String(props.node.label).replace(/\.json$/, '');
-
     modals.openConfirmModal({
       centered: true,
       title: t('structure.modals.deleteNamespace.title'),
@@ -43,13 +43,17 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
         </Text>
       ),
       onConfirm: async () => {
+        if (!isNamespaceNode(props.node)) {
+          console.error('namespace is not found in DeleteNamespaceMenuItem');
+          return;
+        }
         setIsLoading(true);
         const patternActions = i18nManagerPatternsActions[props.projectData.structureType];
 
         const [error] = await patternActions.deleteNamespace({
           ...props.projectData,
-          namespaceName,
           setSelectedProjectData,
+          namespace: props.node.namespace,
         });
 
         setIsLoading(false);
@@ -74,7 +78,7 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
     });
   };
 
-  if (!props.node.isNamespace) {
+  if (props.node.type !== 'namespace') {
     return null;
   }
 

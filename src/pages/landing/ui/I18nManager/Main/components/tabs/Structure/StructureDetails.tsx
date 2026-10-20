@@ -22,6 +22,7 @@ export const StructureDetails = (props: Props) => {
       icon: <IconFileText size={16} />,
       value: t('structure.fromFolderName'),
       label: t('structure.localeDetection'),
+      hasHint: !!props.projectData.locales.length,
       hint: `(${props.projectData.locales.map(l => l.language.code).join(',')})`,
     },
     {
@@ -29,7 +30,8 @@ export const StructureDetails = (props: Props) => {
       icon: <IconFileCode size={16} />,
       value: t('structure.fromFileName'),
       label: t('structure.namespaceDetection'),
-      hint: `(${props.projectData.namespaces.join(',')})`,
+      hasHint: !!props.projectData.namespaces.length,
+      hint: `(${props.projectData.namespaces.map(s => s.name).join(',')})`,
     },
   ];
 
@@ -53,7 +55,7 @@ export const StructureDetails = (props: Props) => {
             <Text fw={500} size="sm">
               {item.value}
             </Text>
-            {item.hint && (
+            {item.hasHint && (
               <Text truncate size="xs" c="dimmed">
                 {item.hint}
               </Text>

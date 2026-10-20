@@ -1,7 +1,10 @@
+import type { LanguageCode } from 'iso-639-1';
+import { CountryFlagRounded } from '@appica/country-flags-react';
 // components/modals/AddLocaleModal.tsx
 import { IconPlus, IconFolder, IconFileText, IconInfoCircle } from '@tabler/icons-react';
 import { Box, Text, Group, Modal, Stack, Alert, Button, Select, Divider, ScrollArea } from '@mantine/core';
 
+import { localeInfoMap } from '@/shared/lib/icu';
 import { useHandleAddLocaleModal } from './useHandleAddLocaleModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -70,6 +73,19 @@ export const AddLocaleModal = (params: Props) => {
               label={t('structure.modals.addLocale.codeLabel')}
               placeholder={t('structure.modals.addLocale.codePlaceholder')}
               nothingFoundMessage={t('structure.modals.addLocale.noResults')}
+              renderOption={({ option }) => {
+                const localeInfo = localeInfoMap[option.value as LanguageCode];
+
+                return (
+                  <Group gap="sm">
+                    <CountryFlagRounded
+                      size={20}
+                      code={localeInfo?.region ?? 'un'}
+                    />
+                    <Text size="sm">{option.label}</Text>
+                  </Group>
+                );
+              }}
               {...form.getInputProps('localeCode')}
             />
 

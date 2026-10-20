@@ -9,6 +9,7 @@ import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { isLocaleNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData';
 
 type Props = {
   onClose: () => void;
@@ -40,7 +41,8 @@ export const DeleteLocaleMenuItem = (props: Props) => {
         </Text>
       ),
       onConfirm: async () => {
-        if (!props.node.locale) {
+        if (!isLocaleNode(props.node)) {
+          console.error('locale node not found in deleteMenuItem');
           return;
         }
         setIsLoading(true);
@@ -72,7 +74,7 @@ export const DeleteLocaleMenuItem = (props: Props) => {
     });
   };
 
-  if (!props.node.isLocale) {
+  if (props.node.type !== 'locale') {
     return null;
   }
 

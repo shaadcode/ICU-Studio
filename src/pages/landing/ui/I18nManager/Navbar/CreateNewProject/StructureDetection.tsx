@@ -3,14 +3,13 @@ import type { UseFormReturnType } from '@mantine/form';
 import { IconWand, IconSparkles } from '@tabler/icons-react';
 import { Text, Stack, Group, Alert, ScrollAreaAutosize } from '@mantine/core';
 
+import type { BaseProjectInfo } from './types';
 import { STRUCTURE_OPTIONS } from './constants';
 import { StructurePreview } from './StructurePreview';
 import { StructureOptionCard } from './StructureOptionCard';
-import type { StructureType, BaseProjectInfo } from './types';
 
 type Props = {
   form: UseFormReturnType<BaseProjectInfo>;
-  onStructureSelect: (value: StructureType) => void;
 };
 
 export const StructureDetection = (props: Props) => {
@@ -52,7 +51,7 @@ export const StructureDetection = (props: Props) => {
               key={opt.value}
               isSelected={props.form.values.structureType === opt.value}
 
-              onSelect={props.onStructureSelect}
+              onSelect={v => props.form.setFieldValue('structureType', v)}
             />
           ))}
         </Stack>

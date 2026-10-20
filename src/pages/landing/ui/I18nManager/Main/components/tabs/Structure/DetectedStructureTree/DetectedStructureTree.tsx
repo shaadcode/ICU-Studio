@@ -9,6 +9,7 @@ import { TreeNodeContextMenu } from './TreeNodeContextMenu';
 import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { AddNamespaceModal } from './HandleAddNamespaceModal/AddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { isLocaleNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData';
 
 type Props = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
@@ -36,13 +37,12 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                   withLines
                   tree={treeHandlers}
                   data={projectData.tree}
-                  renderNode={({ node, level, hasChildren, elementProps }) => {
+                  renderNode={({ node, level, elementProps }) => {
                     const typedNode = node as I18nProjectTree;
                     return (
                       <TreeNodeContextMenu
                         node={typedNode}
                         projectData={projectData}
-                        isLocale={typedNode.isLocale}
                       >
                         {({ ref, children: _, className: __, ...otherProps }) => {
                           const mergedProps = {
@@ -59,7 +59,7 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                               classNames={{ root: classes['treeNodeRoot'] }}
                               {...mergedProps}
                             >
-                              {hasChildren || typedNode.isDirectory || typedNode.isLocale
+                              {isLocaleNode(typedNode)
                                 ? (
                                     <CountryFlagRounded
                                       size={20}

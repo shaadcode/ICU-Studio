@@ -2,13 +2,13 @@
 import type { LanguageCode } from 'iso-639-1';
 import type { TLanguageCode } from 'countries-list';
 import { join, extname } from '@tauri-apps/api/path';
-import { watch, readDir } from '@tauri-apps/plugin-fs';
 import type { UnwatchFn } from '@tauri-apps/plugin-fs';
+import { stat, watch, readDir } from '@tauri-apps/plugin-fs';
 
-import type { I18nProjectTree } from '../types';
 import type { HandleWatchParams } from './handleWatch';
 import type { LocaleInfo } from '@/shared/lib/icu/constants';
 import { parseLocale, localeInfoMap } from '@/shared/lib/icu';
+import type { TreeNode, LocaleTreeNode, NamespaceTreeNode } from '../types';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
@@ -20,70 +20,79 @@ type GetProjectDataContext = {
 
 };
 type Locales = NonNullable<I18nManagerStore['selectedProjectData']>['locales'];
-
+/**
+ * get project data
+ * Pattern: `locale-folder-namespace-file`
+ */
 export async function getProjectDataLocaleFolderNamespaceFile({
   project,
   onWatch,
   setProjectAnalysis,
 }: GetProjectDataContext) {
   const locales: Locales = [];
-  const namespacesSet = new Set<{
-    name: string;
-    path: string;
-  }>();
+  const namespacesSet = new Set<Project['namespaces'][number]>();
   const stopWatching: Array<UnwatchFn> = [];
   let localeData: undefined | Locales[number];
 
-  const buildTree = async (dirPath: string, depth = 0): Promise<I18nProjectTree[]> => {
+  const buildTree = async (dirPath: string, depth = 0): Promise<TreeNode[]> => {
     const entries = await readDir(dirPath);
-    const nodes: I18nProjectTree[] = [];
+    const nodes: TreeNode[] = [];
+
     for (const entry of entries) {
       if (entry.name.startsWith('.')) {
         continue;
       }
+
       const fullPath = await join(dirPath, entry.name);
-      const isDir = entry.isDirectory ?? false;
       const entryName = entry.name.split('.')[0] as string;
-      if (depth === 0 && isDir) {
+      const baseNode = {
+        value: fullPath,
+        label: entryName,
+        isDirectory: entry.isDirectory,
+      } as const satisfies Partial<TreeNode>;
+      if (depth === 0 && entry.isDirectory) {
         const resolved = resolveLocale(entryName, fullPath);
         if (resolved) {
-          localeData = resolved;
           locales.push(resolved);
+
+          const children = await buildTree(fullPath, depth + 1);
+
+          const localeNode: LocaleTreeNode = {
+            ...baseNode,
+            type: 'locale',
+            locale: resolved,
+            children: children.filter(isNamespaceNode),
+          };
+
+          nodes.push(localeNode);
+          continue;
         }
       }
 
-      const node: I18nProjectTree = {
-        fullPath,
-        value: fullPath,
-        isLocale: isDir,
-        label: entryName,
-        isDirectory: isDir,
-        isNamespace: !isDir,
-        locale: isDir && localeData
-          ? localeData
-          : undefined,
-      };
+      const ext = entry.isDirectory ? '' : await extname(entry.name);
+      if (!entry.isDirectory && ext === 'json') {
+        const fileStat = await stat(fullPath);
+        const namespace: Project['namespaces'][number] = {
+          path: fullPath,
+          name: entryName,
+          fileName: entry.name,
+          lastModified: fileStat.mtime,
+        };
+        const namespaceNode: NamespaceTreeNode = {
+          ...baseNode,
+          namespace,
+          type: 'namespace',
+        };
 
-      const ext = isDir ? '' : await extname(entry.name);
-      if (isDir) {
-        node.children = await buildTree(fullPath, depth + 1);
-      } else {
-        if (ext === 'json') {
-          namespacesSet.add({
-            path: fullPath,
-            name: entryName,
-          });
-        }
-      }
-      if (isDir || ext === 'json') {
-        nodes.push(node);
+        namespacesSet.add(namespace);
+        nodes.push(namespaceNode);
       }
     }
 
     return nodes;
   };
 
-  const tree = await buildTree(project.baseDirectoryPath);
+  const tree = await buildTree(project.projectPath);
   const namespaces = [...namespacesSet];
 
   await Promise.all(
@@ -114,41 +123,40 @@ export async function getProjectDataLocaleFolderNamespaceFile({
       locales,
       namespaces,
       recentScan: new Date(),
-      filesAmount: namespaces.length,
-      path: project.baseDirectoryPath,
-      baseLocale: project.baseLocale ?? '',
+      path: project.projectPath,
+      baseLocale: project.baseLocale,
       structureType: 'locale-folder-namespace-file',
     } as Project,
   };
 }
 
-function resolveLocale(
-  entryName: string,
-  fullPath: string,
+export function resolveLocale(
+  localeCode: string,
+  localePath: string,
 ): undefined | Locales[number] {
-  const directMatch = localeInfoMap[entryName as LanguageCode];
+  const directMatch = localeInfoMap[localeCode as LanguageCode];
   if (directMatch) {
     return {
-      path: fullPath,
+      path: localePath,
       region: directMatch.region,
       country: directMatch.country,
       native: directMatch.languageData.native,
       language: {
         ...directMatch.languageData,
-        code: entryName === directMatch.languageCode
+        code: localeCode === directMatch.languageCode
           ? directMatch.languageCode
-          : entryName as TLanguageCode,
+          : localeCode as TLanguageCode,
       },
     };
   }
 
-  const parsed = parseLocale(entryName);
+  const parsed = parseLocale(localeCode);
   const parsedInfo = parsed.language
     ? localeInfoMap[parsed.language as LanguageCode]
     : undefined;
 
   if (!parsedInfo) {
-    console.warn('locale is invalid:', entryName);
+    console.warn('locale is invalid:', localeCode);
     return undefined;
   }
 
@@ -161,14 +169,22 @@ function resolveLocale(
 
   return {
     region,
-    path: fullPath,
+    path: localePath,
     country: localeInfo.country,
     native: parsedInfo.languageData.native,
     language: {
       ...localeInfo.languageData,
-      code: entryName === parsedInfo.languageCode
+      code: localeCode === parsedInfo.languageCode
         ? parsedInfo.languageCode
-        : entryName as TLanguageCode,
+        : localeCode as TLanguageCode,
     },
   };
+}
+
+export function isLocaleNode(node: TreeNode): node is LocaleTreeNode {
+  return node.type === 'locale';
+}
+
+export function isNamespaceNode(node: TreeNode): node is NamespaceTreeNode {
+  return node.type === 'namespace';
 }

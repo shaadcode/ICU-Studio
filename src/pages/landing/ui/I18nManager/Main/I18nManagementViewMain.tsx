@@ -11,8 +11,8 @@ import { LocalesOverview } from './components/tabs/Locales/LocalesOverview';
 
 const I18nManagementViewMain = () => {
   const {
-    t,
     projects,
+    tI18nManager,
     selectedProject,
     selectedProjectData,
   } = useHandleI18nManagerMain();
@@ -28,10 +28,10 @@ const I18nManagementViewMain = () => {
   return (
     <Stack flex={1} gap="md" h="100%">
       <ViewHeader
-        title={t('i18nManager.header.title')}
-        scanLabel={t('i18nManager.header.scanProject')}
-        settingsLabel={t('i18nManager.header.settings')}
-        description={t('i18nManager.header.description')}
+        title={tI18nManager('header.title')}
+        scanLabel={tI18nManager('header.scanProject')}
+        settingsLabel={tI18nManager('header.settings')}
+        description={tI18nManager('header.description')}
 
       />
 
@@ -58,15 +58,15 @@ const I18nManagementViewMain = () => {
             </Tabs.Panel>
 
             <Tabs.Panel value="namespaces">
-              <Box>{t('i18nManager.tabs.namespacesContent')}</Box>
+              <Box>{tI18nManager('tabs.namespacesContent')}</Box>
             </Tabs.Panel>
 
             <Tabs.Panel value="analysis">
-              <Box>{t('i18nManager.tabs.analysisContent')}</Box>
+              <Box>{tI18nManager('tabs.analysisContent')}</Box>
             </Tabs.Panel>
 
             <Tabs.Panel value="settings">
-              <Box>{t('i18nManager.tabs.settingsContent')}</Box>
+              <Box>{tI18nManager('tabs.settingsContent')}</Box>
             </Tabs.Panel>
           </ScrollArea>
         </Group>

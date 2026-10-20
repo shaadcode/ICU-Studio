@@ -1,8 +1,7 @@
 import { useTranslations } from 'use-intl';
-import { useState, useEffect } from 'react';
-import { Box, Card, Text, Group, Stack, Center, Loader, RingProgress } from '@mantine/core';
+import { IconInfoCircle } from '@tabler/icons-react';
+import { Box, Card, Text, Group, Stack, Alert, Center, Loader, RingProgress } from '@mantine/core';
 
-import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -10,29 +9,33 @@ type Props = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const TranslationCompleteness = ({ projectData }: Props) => {
+export const TranslationCompleteness = (_props: Props) => {
   const t = useTranslations('i18nManager');
-  const setProjectAnalysis = i18nManagerStore.use.actions().setProjectAnalysis;
+  const isAnalyzing = i18nManagerStore.use.isAnalyzing();
   const selectedProjectAnalysis = i18nManagerStore.use.selectedProjectAnalysis();
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const run = async () => {
-      setIsLoading(true);
-      const patternActions = i18nManagerPatternsActions[projectData.structureType];
-      const result = await patternActions.analyzeProject(projectData);
-      setProjectAnalysis(result);
-      setIsLoading(false);
-    };
-
-    run();
-  }, [projectData]);
-
-  if (isLoading || !selectedProjectAnalysis) {
+  if (isAnalyzing) {
     return (
       <Center py="xl">
         <Loader size="sm" type="dots" />
       </Center>
+    );
+  }
+
+  if (!selectedProjectAnalysis) {
+    return (
+      <Card withBorder radius="md" padding="md">
+        <Alert
+          color="blue"
+          variant="light"
+          icon={<IconInfoCircle size={16} />}
+          title={t('analysis.noAnalysisTitle')}
+        >
+          <Text size="sm">
+            {t('analysis.noAnalysisMessage')}
+          </Text>
+        </Alert>
+      </Card>
     );
   }
 

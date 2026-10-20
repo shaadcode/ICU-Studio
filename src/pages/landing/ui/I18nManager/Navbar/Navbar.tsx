@@ -80,7 +80,7 @@ const I18nManagerNavbar = () => {
                 {projects.map(project => (
                   <ProjectItem
                     project={project}
-                    key={project.baseDirectoryPath}
+                    key={project.projectPath}
                   />
                 ))}
               </Stack>

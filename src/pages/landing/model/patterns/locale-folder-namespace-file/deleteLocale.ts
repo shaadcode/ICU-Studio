@@ -15,32 +15,23 @@ export type DeleteLocaleContext = {
  * Delete a locale folder with all its namespace files.
  * Pattern: `locale-folder-namespace-file`
  */
-export async function deleteLocaleFolderNamespaceFile(params: DeleteLocaleContext) {
-  const result = await attemptAsync(async () => {
-    const { locale, setSelectedProjectData, ...projectData } = params;
+export async function deleteLocale(params: DeleteLocaleContext) {
+  const { locale, setSelectedProjectData, ...projectData } = params;
 
+  return attemptAsync(async () => {
     await remove(locale.path, { recursive: true });
-
-    const updatedTree = projectData.tree.filter(
-      node => node.fullPath !== locale.path,
-    );
 
     const updatedLocales = projectData.locales.filter(
       l => l.language.code !== locale.language.code,
     );
 
-    const updatedBaseLocale
-      = projectData.baseLocale === locale.language.code
-        ? updatedLocales[0]!.language.code
-        : projectData.baseLocale;
-
     setSelectedProjectData({
       ...projectData,
-      tree: updatedTree,
       locales: updatedLocales,
-      baseLocale: updatedBaseLocale,
+      tree: projectData.tree.filter(node => node.value !== locale.path),
+      baseLocale: projectData.baseLocale === locale.language.code
+        ? updatedLocales[0]!.language.code
+        : projectData.baseLocale,
     });
   });
-
-  return result;
 }

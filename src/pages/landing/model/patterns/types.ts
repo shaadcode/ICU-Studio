@@ -1,3 +1,5 @@
+/* eslint-disable perfectionist/sort-modules */
+import type { Project } from '../../config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type PatternActionResult = {
@@ -60,29 +62,6 @@ export type NamespaceAnalysis = {
   completionPercentage: number;
 };
 
-export type I18nProjectTree = {
-  /**
-   * full path dir or file(just for rendering and state management)
-   */
-  value: string;
-  /**
-   * file or directory path
-   */
-  fullPath: string;
-  isLocale: boolean;
-  isNamespace: boolean;
-  isDirectory: boolean;
-  /**
-   * file or dir name(namespace)
-   */
-  label: React.ReactNode;
-  children?: I18nProjectTree[];
-  /**
-   * There is a case where `isLocale` is `true`.
-   */
-  locale?: undefined | NonNullable<I18nManagerStore['selectedProjectData']>['locales'][number];
-};
-
 export type ProjectAnalysisResult = {
   /** Total number of translation keys in the base locale (reference) */
   totalKeys: number;
@@ -116,3 +95,38 @@ export type LocaleAnalysis = {
   /** Analysis for each namespace within this locale */
   namespaces: Record<string, NamespaceAnalysis>;
 };
+
+export type BaseTreeNode = {
+  /**
+   * file or folder full path
+   */
+  value: string;
+  isDirectory: boolean;
+  /**
+   * file or folder name (without format)
+   */
+  label: React.ReactNode;
+};
+
+export type LocaleTreeNode = BaseTreeNode & {
+  type: 'locale';
+  children: NamespaceTreeNode[];
+  /**
+   * Full locale information (language, country, region, native name, and path).
+   * Extracted from the `locales` array in `Project`.
+   */
+  locale: Project['locales'][number];
+};
+
+export type NamespaceTreeNode = BaseTreeNode & {
+  type: 'namespace';
+  /**
+   * Namespace file information (name and full path to the JSON file).
+   * Extracted from the `namespaces` array in `Project`.
+   */
+  namespace: Project['namespaces'][number];
+};
+
+export type TreeNode = LocaleTreeNode | NamespaceTreeNode;
+
+export type I18nProjectTree = TreeNode;

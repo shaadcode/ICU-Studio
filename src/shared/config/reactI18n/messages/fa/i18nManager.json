@@ -5,7 +5,9 @@
     "errors": "خطاها",
     "missing": "جامانده",
     "title": "تحلیل",
-    "translated": "ترجمه‌شده"
+    "translated": "ترجمه‌شده",
+    "noAnalysisTitle": "آنالیزی موجود نیست",
+    "noAnalysisMessage": "اطلاعات آنالیز این پروژه هنوز آماده نشده است. لطفاً منتظر بمانید یا صفحه را دوباره بارگذاری کنید."
   },
   "basicInfo": {
     "defaultLocale": "Locale پیش‌فرض",
@@ -44,6 +46,10 @@
     "projectNotFound": {
       "message": "پروژه‌ای با مسیر \"{path}\" یافت نشد.",
       "title": "پروژه یافت نشد"
+    },
+    "projectSelectedNotFound": {
+      "title": "پروژه یافت نشد",
+      "message": "مسیر پروژه «{path}» در سیستم شما وجود ندارد. لطفاً آن را دوباره انتخاب کنید یا از لیست حذف کنید."
     }
   },
   "header": {
@@ -59,6 +65,7 @@
   "locales": "زبان ها",
   "localesTab": {
     "addLocale": "افزودن زبان",
+    "openWithEditor": "باز کردن با ادیتور پیش‌فرض",
     "searchLocales": "جستجوی زبان‌ها...",
     "locales": "زبان‌ها",
     "emptyLocales": "هنوز هیچ زبانی به این پروژه اضافه نشده است.",
@@ -73,6 +80,8 @@
     "sortBy": "مرتب‌سازی بر اساس",
     "sortDescending": "نزولی",
     "sortDirection": "جهت",
+    "noBaseLocaleTitle": "زبان پایه انتخاب نشده است",
+    "noBaseLocaleMessage": "برای مشاهده‌ی اطلاعات و آمار ترجمه، لطفاً ابتدا از تنظیمات پروژه، زبان پایه (Base Locale) را انتخاب کنید.",
     "status": {
       "active": "فعال",
       "complete": "کامل",
@@ -197,6 +206,10 @@
         "sameAsBaseWarning": "زبان انتخاب‌شده با زبان پایه یکسان است",
         "submit": "افزودن زبان",
         "title": "افزودن زبان جدید"
+      },
+      "deleteProject": {
+        "title": "حذف پروژه",
+        "message": "آیا مطمئن هستید که می‌خواهید پروژه «{projectName}» را حذف کنید؟ این عمل قابل بازگشت نیست."
       },
       "addNamespace": {
         "description": "یک فضای‌نام جدید برای سازماندهی فایل‌های ترجمه خود ایجاد کنید.",

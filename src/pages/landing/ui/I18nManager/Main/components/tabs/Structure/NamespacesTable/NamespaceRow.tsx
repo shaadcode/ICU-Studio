@@ -52,8 +52,8 @@ export const NamespaceRow = (props: Props) => {
       <Table.Td h={45}>
         {!isSelectedMode && (
           <NamespaceRowMenu
+            namespace={props.namespace}
             projectData={props.projectData}
-            namespaceName={props.namespace.name}
           />
         )}
       </Table.Td>

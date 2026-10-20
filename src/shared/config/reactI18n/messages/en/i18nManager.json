@@ -5,7 +5,9 @@
     "errors": "Errors",
     "missing": "Missing",
     "title": "Analysis",
-    "translated": "Translated"
+    "translated": "Translated",
+    "noAnalysisTitle": "No analysis available",
+    "noAnalysisMessage": "The analysis data for this project is not ready yet. Please wait or reload the page."
   },
   "basicInfo": {
     "defaultLocale": "Default Locale",
@@ -15,6 +17,9 @@
     "projectNamePlaceholder": "E-commerce App",
     "repository": "Repository (Optional)",
     "title": "Basic Information",
+    "baseLocale": "Base Locale",
+    "baseLocalePlaceholder": "Select base locale",
+    "noLocalesFound": "No valid locales found in this directory.",
     "validation": {
       "localeRequired": "Default locale is required",
       "nameRequired": "Project name is required"
@@ -44,6 +49,10 @@
     "projectNotFound": {
       "message": "No project was found with path \"{path}\".",
       "title": "Project not found"
+    },
+    "projectSelectedNotFound": {
+      "title": "Project not found",
+      "message": "The project path \"{path}\" does not exist on your system. Please select it again or remove it from the list."
     }
   },
   "header": {
@@ -61,6 +70,7 @@
     "addLocale": "Add Locale",
     "searchLocales": "search locales...",
     "locales": "Locales",
+    "openWithEditor": "Open with default editor",
     "emptyLocales": "No locales have been added to this project yet.",
     "noSearchResults": "No locales found matching your search.",
     "localesDescription": "Manage your project's locales and configure their settings.",
@@ -73,6 +83,9 @@
     "sortBy": "Sort by",
     "sortDescending": "Descending",
     "sortDirection": "Direction",
+
+    "noBaseLocaleTitle": "No base locale selected",
+    "noBaseLocaleMessage": "To view translation statistics and details, please select a base locale from the project settings first.",
     "status": {
       "active": "Active",
       "complete": "Complete",
@@ -219,6 +232,10 @@
         "confirm": "delete",
         "message": "are you sure you want to delete the \"{namespace}\" namespace? this will remove the file from all {count} locales. this action cannot be undone.",
         "title": "delete namespace"
+      },
+      "deleteProject": {
+        "title": "Delete project",
+        "message": "Are you sure you want to delete the project \"{projectName}\"? This action cannot be undone."
       }
     },
     "namespaceDetection": "Namespace Detection",

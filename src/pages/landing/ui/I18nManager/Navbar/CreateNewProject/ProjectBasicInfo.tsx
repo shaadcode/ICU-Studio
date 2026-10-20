@@ -1,29 +1,53 @@
+import { useState } from 'react';
 import { useTranslations } from 'use-intl';
+import type { LanguageCode } from 'iso-639-1';
 import { open } from '@tauri-apps/plugin-dialog';
+import type { ComboboxItem } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
-import { IconFolder, IconInfoCircle, IconFolderOpen } from '@tabler/icons-react';
-import { Text, Stack, Group, Textarea, TextInput, ActionIcon } from '@mantine/core';
+import { CountryFlagRounded } from '@appica/country-flags-react';
+import { IconWorld, IconFolder, IconInfoCircle, IconFolderOpen } from '@tabler/icons-react';
+import { Text, Stack, Group, Select, Loader, Button, Textarea, TextInput } from '@mantine/core';
 
-import type { BaseProjectInfo } from './types';
+import { localeInfoMap } from '@/shared/lib/icu';
+import type { StructureType, BaseProjectInfo } from './types';
+import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 
 type Props = {
   form: UseFormReturnType<BaseProjectInfo>;
+  setHasLocale: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+async function getLocales(structureType: StructureType, projectPath: string) {
+  const patternAction = i18nManagerPatternsActions[structureType];
+  return patternAction.getLocales({ projectPath });
+}
 
 export const ProjectBasicInfo = (props: Props) => {
   const t = useTranslations('i18nManager');
-  const tCommon = useTranslations('common');
+  const [isLocaleScanning, setIsLocaleScanning] = useState(false);
+  const [locales, setLocales] = useState<Array<ComboboxItem<string>>>([]);
 
   const handleSelectBaseDirectory = async () => {
-    const localesFolderPath = await open({
+    const projectPath = await open({
       multiple: false,
       directory: true,
       recursive: true,
     });
-    if (localesFolderPath) {
-      props.form.setFieldValue('baseDirectoryPath', localesFolderPath);
+    if (projectPath) {
+      props.form.setFieldValue('projectPath', projectPath);
+      const structureType = props.form.getValues().structureType;
+      setIsLocaleScanning(true);
+      const localesData = await getLocales(structureType, projectPath);
+      setIsLocaleScanning(false);
+      const data = localesData.map(l => ({
+        value: l.language.code,
+        label: `${l.language.native} - ${l.language.code}`,
+      }));
+      setLocales(data);
+      props.setHasLocale(!!data.length);
     }
   };
+
   return (
     <Stack gap="md">
       <Group gap="xs">
@@ -48,25 +72,45 @@ export const ProjectBasicInfo = (props: Props) => {
         {...props.form.getInputProps('description')}
       />
 
-      <TextInput
-        withAsterisk
-        placeholder="path/to/messages"
+      <Button
+        fullWidth
+        variant="default"
+        justify="space-between"
         leftSection={<IconFolder size={16} />}
-        label={t('projectSettings.baseDirectory')}
-        rightSection={(
-          <ActionIcon
-            bdrs={5}
-            size="sm"
-            variant="subtle"
-            aria-label={tCommon('browse')}
+        rightSection={<IconFolderOpen size={16} />}
 
-            onClick={handleSelectBaseDirectory}
-          >
-            <IconFolderOpen size={16} />
-          </ActionIcon>
-        )}
-        {...props.form.getInputProps('baseDirectoryPath')}
-      />
+        onClick={handleSelectBaseDirectory}
+      >
+        {props.form.values.projectPath || t('projectSettings.baseDirectory')}
+      </Button>
+
+      {!!locales.length && (
+        <Select
+          searchable
+          withAsterisk
+          data={locales}
+          allowDeselect={false}
+          label={t('basicInfo.baseLocale')}
+          leftSection={<IconWorld size={16} />}
+          placeholder={t('basicInfo.baseLocalePlaceholder')}
+          nothingFoundMessage={t('basicInfo.noLocalesFound')}
+          disabled={isLocaleScanning || locales.length === 0}
+          rightSection={isLocaleScanning ? <Loader size="xs" /> : undefined}
+          renderOption={({ option }) => {
+            const localeInfo = localeInfoMap[option.value as LanguageCode];
+            return (
+              <Group gap="sm">
+                <CountryFlagRounded
+                  size={20}
+                  code={localeInfo?.region ?? 'un'}
+                />
+                <Text size="sm">{option.label}</Text>
+              </Group>
+            );
+          }}
+          {...props.form.getInputProps('baseLocale')}
+        />
+      )}
     </Stack>
   );
 };

@@ -1,9 +1,8 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Box, Text, Modal, SimpleGrid, ActionIcon } from '@mantine/core';
+import { Box, Text, Modal, Group, Button, SimpleGrid, ActionIcon } from '@mantine/core';
 
 import { ProjectBasicInfo } from './ProjectBasicInfo';
 import { StructureDetection } from './StructureDetection';
-import { ProjectModalFooter } from './ProjectModalFooter';
 import { useCreateProjectHandlers } from './useCreateProjectHandlers';
 
 export const CreateNewProject = () => {
@@ -36,25 +35,37 @@ export const CreateNewProject = () => {
           </Box>
         )}
 
-        onClose={h.modalHandlers.close}
+        onExitTransitionEnd={h.form.reset}
+        onClose={() => {
+          if (!h.form.submitting) {
+            h.modalHandlers.close();
+          }
+        }}
       >
         <SimpleGrid spacing="xl" cols={{ md: 2, base: 1 }}>
-          <ProjectBasicInfo form={h.form} />
+          <ProjectBasicInfo form={h.form} setHasLocale={h.setHasLocale} />
 
-          <StructureDetection
-            form={h.form}
-
-            onStructureSelect={h.handleStructureSelect}
-          />
+          <StructureDetection form={h.form} />
         </SimpleGrid>
 
-        <ProjectModalFooter
-          cancelLabel={h.tCommon('cancel')}
-          submitLabel={h.t('createNewProject.submit')}
+        <Group mt="xl" justify="flex-end">
+          <Button
+            variant="default"
+            disabled={h.form.submitting}
 
-          onCancel={h.modalHandlers.close}
-          onSubmit={() => h.form.onSubmit(h.handleCreateProject)()}
-        />
+            onClick={h.modalHandlers.close}
+          >
+            {h.tCommon('cancel')}
+          </Button>
+          <Button
+            loading={h.form.submitting}
+            disabled={!h.form.isValid()}
+
+            onClick={() => h.form.onSubmit(h.handleCreateProject)()}
+          >
+            {h.t('createNewProject.submit')}
+          </Button>
+        </Group>
       </Modal>
     </>
   );

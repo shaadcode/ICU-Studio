@@ -1,3 +1,6 @@
+import type { LiteralUnion } from 'type-fest';
+import type { TCountryCode } from 'countries-list';
+
 export type FileFormat = 'json' | 'yaml' | 'nested-json';
 
 export type StructureType
@@ -15,8 +18,8 @@ export type StructureOption = {
 
 export type BaseProjectInfo = {
   name: string;
-  baseLocale: string;
   description: string;
-  baseDirectoryPath: string;
+  projectPath: string;
   structureType: StructureType;
+  baseLocale: LiteralUnion<TCountryCode, string>;
 };

@@ -8,11 +8,12 @@ import { notifications } from '@mantine/notifications';
 
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
   onClose: () => void;
-  namespaceName: string;
+  namespace: Project['namespaces'][number];
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
@@ -35,7 +36,7 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
       children: (
         <Text size="sm">
           {t('structure.modals.deleteNamespace.message', {
-            namespace: props.namespaceName,
+            namespace: props.namespace.name,
             count: props.projectData.locales.length,
           })}
         </Text>
@@ -47,7 +48,7 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
         const [error] = await patternActions.deleteNamespace({
           ...props.projectData,
           setSelectedProjectData,
-          namespaceName: props.namespaceName,
+          namespace: props.namespace,
         });
 
         setIsLoading(false);
@@ -65,7 +66,7 @@ export const DeleteNamespaceMenuItem = (props: Props) => {
           color: 'green',
           title: t('structure.notifications.namespaceDeleted.title'),
           message: t('structure.notifications.namespaceDeleted.message', {
-            namespace: props.namespaceName,
+            namespace: props.namespace.name,
           }),
         });
       },

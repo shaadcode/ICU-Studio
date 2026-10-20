@@ -10,7 +10,6 @@ declare module 'use-intl' {
   }
 }
 
-export type Translator<Prefix> = ReturnType<
-  // @ts-expect-error
-    typeof useTranslations<Prefix>
->;
+export type CommonTranslator = ReturnType<typeof useTranslations<'common'>>;
+export type EditorTranslator = ReturnType<typeof useTranslations<'editor'>>;
+export type I18nManagerTranslator = ReturnType<typeof useTranslations<'i18nManager'>>;

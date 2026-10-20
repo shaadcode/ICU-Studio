@@ -1,5 +1,6 @@
 import ISO6391 from 'iso-639-1';
 import { useMemo } from 'react';
+import { remove } from 'es-toolkit';
 import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
 import { useDisclosure } from '@mantine/hooks';
@@ -76,10 +77,13 @@ export const useHandleAddLocaleModal = (rootParams: Params) => {
     };
 
   const availableLocaleOptions = useMemo(
-    () =>
-      ALL_LOCALE_OPTIONS.filter(
-        opt => !rootParams.projectData.locales.some(l => opt.value === l.language.code),
-      ),
+    () => remove(
+      [...ALL_LOCALE_OPTIONS],
+      ({ value: code }) => !rootParams
+        .projectData
+        .locales
+        .some(l => l.language.code === code),
+    ),
     [rootParams.projectData.locales],
   );
 
@@ -97,7 +101,6 @@ export const useHandleAddLocaleModal = (rootParams: Params) => {
     form.reset();
     close();
   };
-
   const normalizedCode = form.values.localeCode;
   const previewFiles = normalizedCode ? rootParams.projectData.namespaces : [];
 

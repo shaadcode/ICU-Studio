@@ -1,17 +1,16 @@
 import { useDisclosure } from '@mantine/hooks';
-// components/tabs/Structure/NamespaceRowMenu.tsx
 import { Menu, ActionIcon } from '@mantine/core';
 import { IconDotsVertical } from '@tabler/icons-react';
 
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import { DeleteNamespaceMenuItem } from './menu-items/DeleteNamespaceMenuItem';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type Props = {
-  namespaceName: string;
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  projectData: Project;
+  namespace: Project['namespaces'][number];
 };
 
-export const NamespaceRowMenu = ({ projectData, namespaceName }: Props) => {
+export const NamespaceRowMenu = ({ namespace, projectData }: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
@@ -39,9 +38,10 @@ export const NamespaceRowMenu = ({ projectData, namespaceName }: Props) => {
       </Menu.Target>
 
       <Menu.Dropdown>
+
         <DeleteNamespaceMenuItem
+          namespace={namespace}
           projectData={projectData}
-          namespaceName={namespaceName}
 
           onClose={close}
         />

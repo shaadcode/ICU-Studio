@@ -1,9 +1,10 @@
-import { useForm } from '@mantine/form';
+import { useState } from 'react';
 import { useTranslations } from 'use-intl';
+import { useForm, isNotEmpty } from '@mantine/form';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
 
+import type { BaseProjectInfo } from './types';
 import { hotkeys } from '@/shared/config/mantine/hotKeys';
-import type { FileFormat, StructureType, BaseProjectInfo } from './types';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export const useCreateProjectHandlers = () => {
@@ -11,20 +12,27 @@ export const useCreateProjectHandlers = () => {
   const tCommon = useTranslations('common');
   const [opened, modalHandlers] = useDisclosure(false);
   const i18nManagerLocalStore = i18nManagerStore.use.i18nManagerLocalStore();
+  const [hasLocale, setHasLocale] = useState(false);
   const addProject = i18nManagerStore.use.actions().addProject;
 
   const form = useForm<BaseProjectInfo>({
     mode: 'uncontrolled',
-    validate: {
-      name: value =>
-        value.trim().length === 0 ? t('validation.createNewProject.nameRequired') : null,
-    },
+    validateInputOnBlur: true,
     initialValues: {
       name: '',
       baseLocale: '',
       description: '',
-      baseDirectoryPath: '',
+      projectPath: '',
       structureType: 'locale-folder-namespace-file',
+    },
+    validate: {
+      baseLocale: value => hasLocale ? isNotEmpty()(value) : null,
+      name: value =>
+        value
+          .trim()
+          .length === 0
+          ? t('validation.createNewProject.nameRequired')
+          : null,
     },
   });
 
@@ -33,28 +41,15 @@ export const useCreateProjectHandlers = () => {
       return;
     }
     if (values.structureType === 'locale-folder-namespace-file') {
-      addProject({ tCommon, project: values, tI18nManager: t });
+      await addProject({ tCommon, project: values, tI18nManager: t });
     }
 
     modalHandlers.close();
     form.reset();
   };
 
-  const handleStructureSelect = (structure: StructureType) => {
-    form.setFieldValue('structureType', structure);
-  };
-
-  const handleFormatSelect = (format: FileFormat) => {
-    form.setFieldValue('fileFormat', format);
-  };
-
   useHotkeys(
-    [
-      [
-        hotkeys.i18nManager.newProject,
-        modalHandlers.open,
-      ],
-    ],
+    [[hotkeys.i18nManager.newProject, modalHandlers.open]],
     [],
     true,
   );
@@ -64,9 +59,9 @@ export const useCreateProjectHandlers = () => {
     form,
     opened,
     tCommon,
+    hasLocale,
+    setHasLocale,
     modalHandlers,
-    handleFormatSelect,
     handleCreateProject,
-    handleStructureSelect,
   };
 };

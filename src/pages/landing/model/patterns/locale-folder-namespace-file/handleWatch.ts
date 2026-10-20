@@ -14,8 +14,15 @@ export type HandleWatchParams = {
   setProjectAnalysis: NonNullable<I18nManagerStore['actions']>['setProjectAnalysis'];
 };
 
+/**
+ * Watches file system changes (locale/namespace), invalidates cache, and re-analyzes the project.
+ * Pattern: `locale-folder-namespace-file`
+ */
 export async function handleWatchLocaleFolderNamespaceFile(params: HandleWatchParams) {
   readAndFlattenJsonFile.cache.delete(params.path);
+  if (!params.baseLocale) {
+    return console.warn('base locale is undefined');
+  }
   const analyzedProject = await analyzeLocaleFolderNamespaceFile(params);
   params.setProjectAnalysis(analyzedProject);
 }

@@ -14,6 +14,7 @@
     "fs:allow-read-text-file",
     "dialog:default",
     "store:default",
+    "fs:allow-stat",
     "fs:allow-write-file",
     "fs:allow-exists",
     "fs:allow-remove",
@@ -22,6 +23,7 @@
     "fs:allow-mkdir",
     "core:window:allow-close",
     "core:window:allow-destroy",
+    "opener:allow-open-path",
     "fs:allow-watch"
   ],
   "platforms": ["windows", "linux", "macOS"]

@@ -3,6 +3,7 @@ import { IconDotsVertical } from '@tabler/icons-react';
 
 import { DeleteLocaleMenuItem } from './DeleteLocaleConfirmModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import { RevealInExplorerMenuItem } from '../../Structure/DetectedStructureTree/context-menu-items/RevealInExplorerMenuItem';
 
 type Props = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
@@ -24,6 +25,7 @@ export const LocaleRowMenu = ({ locale, projectData }: Props) => {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
+        <RevealInExplorerMenuItem path={locale.path} />
         <DeleteLocaleMenuItem locale={locale} projectData={projectData} />
       </Menu.Dropdown>
     </Menu>

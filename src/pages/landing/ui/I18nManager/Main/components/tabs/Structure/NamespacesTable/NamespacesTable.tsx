@@ -87,29 +87,32 @@ export const NamespacesTable = (params: Props) => {
             </Center>
           )
         : (
-            <Table verticalSpacing="sm" horizontalSpacing="md">
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>{t('structure.table.name')}</Table.Th>
-                  <Table.Th w={40} />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {uniqueNamespaces.map((ns) => {
-                  const isSelected = selection.includes(ns.name);
-                  return (
-                    <NamespaceRow
-                      key={ns.name}
-                      namespace={ns}
-                      isSelected={isSelected}
-                      selectionState={selection}
-                      projectData={params.projectData}
-                      selectionHandlers={selectionHandlers}
-                    />
-                  );
-                })}
-              </Table.Tbody>
-            </Table>
+            <Table.ScrollContainer minWidth={500} maxHeight={300}>
+              <Table stickyHeader>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>{t('structure.table.name')}</Table.Th>
+                    <Table.Th w={40} />
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {uniqueNamespaces.map((ns) => {
+                    const isSelected = selection.includes(ns.name);
+                    return (
+                      <NamespaceRow
+                        key={ns.name}
+                        namespace={ns}
+                        isSelected={isSelected}
+                        selectionState={selection}
+                        projectData={params.projectData}
+                        selectionHandlers={selectionHandlers}
+                      />
+                    );
+                  })}
+                </Table.Tbody>
+              </Table>
+            </Table.ScrollContainer>
+
           )}
     </Card>
   );

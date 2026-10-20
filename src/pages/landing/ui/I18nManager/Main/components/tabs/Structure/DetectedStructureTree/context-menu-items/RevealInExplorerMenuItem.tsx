@@ -6,21 +6,18 @@ import { IconFolderOpen } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { revealItemInDir } from '@tauri-apps/plugin-opener';
 
-import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
-
 type Props = {
-  onClose: () => void;
-  node: I18nProjectTree;
+  path: string;
+  onClose?: () => void;
 };
 
-export const RevealInExplorerMenuItem = ({ node, onClose }: Props) => {
+export const RevealInExplorerMenuItem = ({ path, onClose }: Props) => {
   const t = useTranslations('i18nManager');
 
   const handleClick = async () => {
-    onClose();
-
     const [error] = await attemptAsync(async () => {
-      await revealItemInDir(node.fullPath);
+      await revealItemInDir(path);
+      onClose?.();
     });
 
     if (error) {

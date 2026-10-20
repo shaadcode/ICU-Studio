@@ -16,7 +16,7 @@ export const CopyPathMenuItem = ({ node, onClose }: Props) => {
   const clipboard = useClipboard({ timeout: 1500 });
 
   const handleClick = () => {
-    clipboard.copy(node.fullPath);
+    clipboard.copy(node.value);
     onClose();
   };
 

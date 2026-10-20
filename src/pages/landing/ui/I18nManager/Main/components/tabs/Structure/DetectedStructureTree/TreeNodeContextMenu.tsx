@@ -10,7 +10,6 @@ import { DeleteNamespaceMenuItem } from './context-menu-items/DeleteNamespaceMen
 import { RevealInExplorerMenuItem } from './context-menu-items/RevealInExplorerMenuItem';
 
 type Props = {
-  isLocale: boolean;
   node: I18nProjectTree;
   children: (props: React.ComponentProps<any>) => React.JSX.Element;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
@@ -43,7 +42,7 @@ export const TreeNodeContextMenu = (props: Props) => {
 
       <Menu.Dropdown>
         <RevealInExplorerMenuItem
-          node={props.node}
+          path={props.node.value}
 
           onClose={contextMenuHandlers.close}
         />

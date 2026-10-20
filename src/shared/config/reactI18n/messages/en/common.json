@@ -21,6 +21,10 @@
     "storeNotInitialized": {
       "message": "this is an internal error. please report this issue.",
       "title": "store not initialized!"
+    },
+    "unexpectedError": {
+      "title": "Unexpected error",
+      "message": "An unexpected error occurred while loading the project. Please try again."
     }
   },
   "evening": "evening",

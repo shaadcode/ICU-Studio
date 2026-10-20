@@ -22,12 +22,19 @@ export default function OpenDeleteNamespacesConfirm(params: Props) {
     const patternActions = i18nManagerPatternsActions[params.projectData.structureType];
     await Promise.all(
       params.selection.map(
-        async namespaceName => await patternActions.deleteNamespace({
-          ...params.projectData,
-          namespaceName,
-          setSelectedProjectData,
+        async (namespaceName) => {
+          const targetNamespace = params.projectData.namespaces.find(ns => ns.name === namespaceName);
 
-        }),
+          if (!targetNamespace) {
+            console.error('namespace not found in deleteNamespace');
+            return;
+          }
+          await patternActions.deleteNamespace({
+            ...params.projectData,
+            setSelectedProjectData,
+            namespace: targetNamespace,
+          });
+        },
       ),
     );
   }

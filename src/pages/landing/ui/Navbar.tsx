@@ -41,7 +41,13 @@ const Navbar = () => {
       <GridCol span={2}>
         <Stack justify="center">
           {navItems.map(item => (
-            <Tooltip key={item.label} label={item.label}>
+            <Tooltip
+              fz={10}
+              tt="capitalize"
+              position="right"
+              key={item.label}
+              label={item.label}
+            >
               <ActionIcon
                 size="lg"
                 bd="none"

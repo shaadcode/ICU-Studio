@@ -1,18 +1,67 @@
+import dayjs from 'dayjs';
+import { uniqBy } from 'es-toolkit';
+// components/tabs/Structure/NamespacesTable.tsx
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { IconFileText, IconDotsVertical } from '@tabler/icons-react';
-import { Box, Text, Card, Table, Group, Divider, Progress, Checkbox, TextInput, ActionIcon, ScrollArea } from '@mantine/core';
+import { IconFileText, IconSearchOff } from '@tabler/icons-react';
+import { Box, Text, Card, Table, Group, Stack, Center, Divider, Progress, Checkbox, ThemeIcon, ScrollArea } from '@mantine/core';
 
+import { NamespaceSearch } from './NamespaceSearch';
+import { SortNamespacesMenu } from './SortNamespacesMenu';
+import { NamespaceTableRowMenu } from './NamespaceRowMenu';
 import type { LocaleAnalysis } from '@/pages/landing/model/patterns/types';
+import type { SortDirection, NamespaceSortColumn } from './SortNamespacesMenu';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+
+type SortState = {
+  direction: SortDirection;
+  column: NamespaceSortColumn;
+};
 
 type Props = {
   localeCode?: string;
   localeAnalysis: undefined | LocaleAnalysis;
-  uniqueNamespaces: NonNullable<I18nManagerStore['selectedProjectData']>['namespaces'];
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }: Props) => {
+export const NamespacesTable = ({ localeCode, projectData, localeAnalysis }: Props) => {
   const t = useTranslations('i18nManager');
+  const uniqueNamespaces = useMemo(() => uniqBy(projectData.namespaces, ns => ns.name), [projectData.namespaces]);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sort, setSort] = useState<SortState>({ column: 'name', direction: 'asc' });
+
+  const filteredAndSortedNamespaces = useMemo(() => {
+    let list = uniqueNamespaces;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      list = list.filter(ns => ns.name.toLowerCase().includes(query));
+    }
+
+    const sorted = [...list].sort((a, b) => {
+      const dir = sort.direction === 'asc' ? 1 : -1;
+
+      switch (sort.column) {
+        case 'name':
+          return a.name.localeCompare(b.name) * dir;
+        case 'completion': {
+          const aC = localeAnalysis?.namespaces[a.name]?.completionPercentage ?? 0;
+          const bC = localeAnalysis?.namespaces[b.name]?.completionPercentage ?? 0;
+          return (aC - bC) * dir;
+        }
+        case 'files':
+          return 1 * dir;
+        default:
+          return 0;
+      }
+    });
+
+    return sorted;
+  }, [uniqueNamespaces, searchQuery, sort, localeAnalysis]);
+
+  const isSearchEmpty = uniqueNamespaces.length > 0 && filteredAndSortedNamespaces.length === 0;
+
   return (
     <Card withBorder radius="md" padding="md">
       <Group mb="md" justify="space-between">
@@ -31,10 +80,14 @@ export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }
           )}
         </Group>
 
-        <TextInput
-          size="xs"
-          placeholder={t('localesTab.searchNamespaces')}
-        />
+        <Group gap="xs" wrap="nowrap">
+          <NamespaceSearch onSearch={setSearchQuery} />
+          <SortNamespacesMenu
+            sort={sort}
+
+            onSortChange={setSort}
+          />
+        </Group>
       </Group>
 
       <ScrollArea>
@@ -51,7 +104,7 @@ export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {uniqueNamespaces.map((ns) => {
+            {filteredAndSortedNamespaces.map((ns) => {
               const nsAnalysis = localeAnalysis?.namespaces[ns.name];
               const completion = nsAnalysis?.completionPercentage ?? 0;
 
@@ -64,7 +117,9 @@ export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }
                 status = 'partial';
                 statusColor = 'yellow';
               }
-
+              const formattedDate = ns.lastModified
+                ? dayjs(ns.lastModified).format('MMM DD, YYYY - HH:mm')
+                : undefined;
               return (
                 <Table.Tr key={ns.path}>
                   <Table.Td><Checkbox /></Table.Td>
@@ -86,22 +141,15 @@ export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }
                   </Table.Td>
                   <Table.Td>
                     <Group gap={6}>
-                      <Box
-                        w={8}
-                        h={8}
-                        bdrs={99}
-                        bg={statusColor}
-                      />
+                      <Box w={8} h={8} bdrs={99} bg={statusColor} />
                       <Text size="sm" tt="capitalize">{t(`localesTab.status.${status}`)}</Text>
                     </Group>
                   </Table.Td>
                   <Table.Td>
-                    <Text size="xs" c="dimmed">{'Apr 28, 2025 - 14:32'}</Text>
+                    <Text size="xs" c="dimmed">{formattedDate ?? '-'}</Text>
                   </Table.Td>
                   <Table.Td>
-                    <ActionIcon size="sm" color="gray" variant="subtle">
-                      <IconDotsVertical size={14} />
-                    </ActionIcon>
+                    <NamespaceTableRowMenu namespace={ns} projectData={projectData} />
                   </Table.Td>
                 </Table.Tr>
               );
@@ -109,6 +157,19 @@ export const NamespacesTable = ({ localeCode, localeAnalysis, uniqueNamespaces }
           </Table.Tbody>
         </Table>
       </ScrollArea>
+
+      {isSearchEmpty && (
+        <Center py="xl">
+          <Stack gap="sm" align="center">
+            <ThemeIcon size={50} radius="xl" color="gray" variant="light">
+              <IconSearchOff size={26} />
+            </ThemeIcon>
+            <Text size="sm" c="dimmed" ta="center">
+              {t('localesTab.noSearchResults')}
+            </Text>
+          </Stack>
+        </Center>
+      )}
     </Card>
   );
 };

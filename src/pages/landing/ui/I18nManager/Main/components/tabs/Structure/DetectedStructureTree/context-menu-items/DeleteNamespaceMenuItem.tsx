@@ -9,7 +9,7 @@ import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
-import { isNamespaceNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData';
+import { isNamespaceNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData/getProjectData';
 
 type Props = {
   onClose: () => void;

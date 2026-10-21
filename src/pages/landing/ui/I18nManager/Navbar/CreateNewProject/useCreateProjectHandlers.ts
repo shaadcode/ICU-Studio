@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { useForm } from '@mantine/form';
 import { useTranslations } from 'use-intl';
-import { useForm, isNotEmpty } from '@mantine/form';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
 
 import type { BaseProjectInfo } from './types';
@@ -8,8 +8,8 @@ import { hotkeys } from '@/shared/config/mantine/hotKeys';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export const useCreateProjectHandlers = () => {
-  const t = useTranslations('i18nManager');
   const tCommon = useTranslations('common');
+  const t = useTranslations('i18nManager');
   const [opened, modalHandlers] = useDisclosure(false);
   const i18nManagerLocalStore = i18nManagerStore.use.i18nManagerLocalStore();
   const [hasLocale, setHasLocale] = useState(false);
@@ -20,19 +20,27 @@ export const useCreateProjectHandlers = () => {
     validateInputOnBlur: true,
     initialValues: {
       name: '',
-      baseLocale: '',
+      path: '',
       description: '',
-      projectPath: '',
+      baseLocale: undefined,
       structureType: 'locale-folder-namespace-file',
     },
     validate: {
-      baseLocale: value => hasLocale ? isNotEmpty()(value) : null,
+      path: value =>
+        value.trim().length === 0
+          ? t('validation.createNewProject.pathRequired')
+          : null,
       name: value =>
         value
           .trim()
           .length === 0
           ? t('validation.createNewProject.nameRequired')
           : null,
+      baseLocale: (value) => {
+        return hasLocale && !value
+          ? t('validation.createNewProject.baseLocaleRequired')
+          : null;
+      },
     },
   });
 

@@ -32,7 +32,7 @@ export const StructurePreview = (props: Props) => {
               {t('structureDetection.wellDetect')}
             </Text>
             {preview.detectItems.map(item => (
-              <Group gap={4} key={item}>
+              <Group gap={4} key={item} wrap="nowrap">
                 <IconCheck size={14} color="var(--mantine-color-green-6)" />
                 <Text size="xs">{item}</Text>
               </Group>

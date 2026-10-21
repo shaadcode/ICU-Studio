@@ -44,7 +44,6 @@ export const TreeNodeContextMenu = (props: Props) => {
         <RevealInExplorerMenuItem
           path={props.node.value}
 
-          onClose={contextMenuHandlers.close}
         />
         <CopyPathMenuItem
           node={props.node}

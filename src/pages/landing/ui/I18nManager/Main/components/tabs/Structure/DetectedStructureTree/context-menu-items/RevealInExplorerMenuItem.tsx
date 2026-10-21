@@ -8,16 +8,14 @@ import { revealItemInDir } from '@tauri-apps/plugin-opener';
 
 type Props = {
   path: string;
-  onClose?: () => void;
 };
 
-export const RevealInExplorerMenuItem = ({ path, onClose }: Props) => {
+export const RevealInExplorerMenuItem = ({ path }: Props) => {
   const t = useTranslations('i18nManager');
 
   const handleClick = async () => {
     const [error] = await attemptAsync(async () => {
       await revealItemInDir(path);
-      onClose?.();
     });
 
     if (error) {

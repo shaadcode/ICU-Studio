@@ -43,9 +43,9 @@ export const SummaryCards = ({ analysis, totalLocales }: Props) => {
     },
     {
       color: 'indigo',
-      value: analysis.baseLocale,
       icon: <IconFlag size={24} />,
       title: t('structure.baseLocale'),
+      value: analysis.baseLocale?.language.code ?? '-',
     },
   ];
 

@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 // components/modals/AddNamespaceModal.tsx
 import { IconPlus, IconFolder, IconFileText } from '@tabler/icons-react';
 import { Box, Text, Group, Modal, Stack, Button, Divider, Tooltip, TextInput, ScrollArea } from '@mantine/core';
@@ -10,6 +11,7 @@ type ProjectData = NonNullable<I18nManagerStore['selectedProjectData']>;
 type Props = {
   projectData: ProjectData;
   onSuccess?: (namespace: string) => void;
+  buttonProps?: ComponentProps<typeof Button<'button'>>;
 };
 
 export const AddNamespaceModal = (params: Props) => {
@@ -41,6 +43,7 @@ export const AddNamespaceModal = (params: Props) => {
           leftSection={<IconPlus size={14} />}
 
           onClick={openModal}
+          {...params.buttonProps}
         >
           {t('structure.addNamespace')}
         </Button>

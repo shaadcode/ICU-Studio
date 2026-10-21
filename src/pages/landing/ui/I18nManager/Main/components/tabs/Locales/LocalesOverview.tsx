@@ -1,27 +1,54 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { Text, Stack, Alert, Center } from '@mantine/core';
+import { Box, Text, Stack, Alert, Center, Loader } from '@mantine/core';
 
 import { SummaryCards } from './SummaryCards';
 import { LocalesTable } from './LocalesTable/LocalesTable';
 import { NamespacesTable } from './NamespacesTable/NamespacesTable';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
+import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
-export const LocalesOverview = () => {
+type Props = {
+  baseLocale: Locale;
+  project: NonNullable<I18nManagerStore['selectedProject']>;
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+};
+
+export const LocalesOverview = (props: Props) => {
   const t = useTranslations('i18nManager');
-  const projectData = i18nManagerStore.use.selectedProjectData();
   const analysis = i18nManagerStore.use.selectedProjectAnalysis();
+  const analyzeProject = i18nManagerStore.use.actions().analyzeProject;
+  const isAnalyzing = i18nManagerStore.use.isAnalyzing();
 
-  const [selectedLocaleCode, setSelectedLocaleCode] = useState<string | undefined>(
-    analysis?.baseLocale,
+  const [selectedLocale, setSelectedLocale] = useState<Locale>(
+    props.baseLocale,
   );
 
   useEffect(() => {
-    setSelectedLocaleCode(analysis?.baseLocale ?? undefined);
-  }, [analysis?.baseLocale]);
+    if (!analysis) {
+      analyzeProject();
+    }
+    setSelectedLocale(props.baseLocale ?? undefined);
+  }, [props.baseLocale]);
 
-  const hasBaseLocale = Boolean(analysis?.baseLocale);
+  if (isAnalyzing) {
+    return (
+      <Box flex={1}>
+        <Center>
+          <Stack gap="sm" align="center">
+            <Loader size="md" />
+            <Text size="sm" c="dimmed">
+              {t('analysis.analyzing')}
+            </Text>
+          </Stack>
+        </Center>
+      </Box>
+    );
+  }
+
+  const hasBaseLocale = Boolean(props.baseLocale.language.code);
 
   if (!hasBaseLocale) {
     return (
@@ -41,31 +68,30 @@ export const LocalesOverview = () => {
     );
   }
 
-  if (!projectData || !analysis) {
+  if (!analysis || !props.projectData) {
     return null;
   }
 
-  const activeLocaleCode = selectedLocaleCode ?? analysis.baseLocale;
-  const activeLocaleAnalysis = analysis.locales[activeLocaleCode];
+  const activeLocaleAnalysis = analysis.locales[selectedLocale.language.code];
 
   return (
     <Stack>
       <SummaryCards
         analysis={analysis}
-        totalLocales={projectData.locales.length}
+        totalLocales={props.projectData.locales.length}
       />
 
       <LocalesTable
         analysis={analysis}
-        projectData={projectData}
-        selectedLocaleCode={activeLocaleCode}
+        projectData={props.projectData}
+        selectedLocale={selectedLocale}
 
-        onSelectLocale={setSelectedLocaleCode}
+        onSelectLocale={setSelectedLocale}
       />
 
       <NamespacesTable
-        projectData={projectData}
-        localeCode={activeLocaleCode}
+        projectData={props.projectData}
+        selectedLocale={selectedLocale}
         localeAnalysis={activeLocaleAnalysis}
       />
     </Stack>

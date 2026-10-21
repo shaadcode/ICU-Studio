@@ -1,7 +1,7 @@
 import { useTranslations } from 'use-intl';
+import { IconSparkles } from '@tabler/icons-react';
 import type { UseFormReturnType } from '@mantine/form';
-import { IconWand, IconSparkles } from '@tabler/icons-react';
-import { Text, Stack, Group, Alert, ScrollAreaAutosize } from '@mantine/core';
+import { Text, Stack, Group, ScrollAreaAutosize } from '@mantine/core';
 
 import type { BaseProjectInfo } from './types';
 import { STRUCTURE_OPTIONS } from './constants';
@@ -24,20 +24,6 @@ export const StructureDetection = (props: Props) => {
       <Text size="sm" c="dimmed">
         {t('structureDetection.description')}
       </Text>
-
-      <Alert
-        radius="md"
-        color="grape"
-        variant="light"
-        icon={<IconWand size={16} />}
-        title={t('structureDetection.autoDetect')}
-      >
-        <Group wrap="nowrap" align="flex-start" justify="space-between">
-          <Text size="xs" c="dimmed">
-            {t('structureDetection.autoDetectDesc')}
-          </Text>
-        </Group>
-      </Alert>
 
       <Text fw={500} size="sm">
         {t('structureDetection.manualSelection')}

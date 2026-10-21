@@ -7,6 +7,7 @@ import { Text, Card, Table, Group, Stack, Center, Checkbox, ThemeIcon, ScrollAre
 import { SortMenu } from './SortMenu';
 import { LocaleRow } from './LocaleTableRow';
 import { LocaleSearch } from './LocaleSearch';
+import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
 import { AddLocaleModal } from '../../Structure/DetectedLocalesSection/AddLocaleModal/AddLocaleModal';
@@ -17,13 +18,18 @@ type SortState = {
 };
 
 type Props = {
-  selectedLocaleCode: string;
+  selectedLocale: Locale;
   analysis: ProjectAnalysisResult;
-  onSelectLocale: (code: string) => void;
+  onSelectLocale: (code: Locale) => void;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const LocalesTable = ({ analysis, projectData, onSelectLocale, selectedLocaleCode }: Props) => {
+export const LocalesTable = ({
+  analysis,
+  projectData,
+  onSelectLocale,
+  selectedLocale,
+}: Props) => {
   const t = useTranslations('i18nManager');
   const [isPinnedBaseLocale, setIsPinnedBaseLocale] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,8 +41,6 @@ export const LocalesTable = ({ analysis, projectData, onSelectLocale, selectedLo
     column: 'locale',
     direction: 'asc',
   });
-
-  const baseLocaleCode = analysis.baseLocale;
 
   const filteredAndSortedLocales = useMemo(() => {
     const list = !searchQuery
@@ -68,14 +72,15 @@ export const LocalesTable = ({ analysis, projectData, onSelectLocale, selectedLo
     });
 
     if (isPinnedBaseLocale) {
-      const baseLocaleIndex = list.findIndex(l => l.language.code === baseLocaleCode);
+      const baseLocaleIndex = list
+        .findIndex(l => l.language.code === projectData.baseLocale?.language.code);
       if (baseLocaleIndex > 0) {
         const [baseLocale] = list.splice(baseLocaleIndex, 1);
         baseLocale && list.unshift(baseLocale);
       }
     }
     return list;
-  }, [sort, analysis, baseLocaleCode, isPinnedBaseLocale, projectData.locales, searchQuery]);
+  }, [sort, analysis, isPinnedBaseLocale, projectData.baseLocale, projectData.locales, searchQuery]);
 
   const isProjectEmpty = projectData.locales.length === 0;
   const isSearchEmpty = !isProjectEmpty && filteredAndSortedLocales.length === 0;
@@ -137,12 +142,12 @@ export const LocalesTable = ({ analysis, projectData, onSelectLocale, selectedLo
                   projectData={projectData}
                   key={locale.language.code}
                   isPinnedBaseLocale={isPinnedBaseLocale}
-                  isBase={locale.language.code === baseLocaleCode}
                   isSelected={selection.includes(locale.language.code)}
-                  isActive={locale.language.code === selectedLocaleCode}
+                  isActive={locale.language.code === selectedLocale?.language.code}
+                  isBase={locale.language.code === projectData.baseLocale?.language.code}
 
+                  onClick={() => onSelectLocale(locale)}
                   onToggleSelect={selectionHandlers.toggle}
-                  onClick={() => onSelectLocale(locale.language.code)}
                 />
               ))}
             </Table.Tbody>

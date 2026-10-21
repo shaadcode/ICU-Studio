@@ -19,6 +19,8 @@ type Params = {
 export const useHandleAddNamespaceModal = (rootParams: Params) => {
   const t = useTranslations('i18nManager');
   const setSelectedProjectData = i18nManagerStore.use.actions().setSelectedProjectData;
+  const setStopWatchingLocalesAndNamespacesFns = i18nManagerStore.use.actions().setStopWatchingLocalesAndNamespacesFns;
+  const setProjectAnalysis = i18nManagerStore.use.actions().setProjectAnalysis;
   const [opened, { open, close }] = useDisclosure(false);
 
   const form = useForm<FormValues>({
@@ -46,8 +48,10 @@ export const useHandleAddNamespaceModal = (rootParams: Params) => {
 
     const [error] = await patternActions.addNamespace({
       ...rootParams.projectData,
+      setProjectAnalysis,
       setSelectedProjectData,
       namespace: params.namespaceName,
+      setStopWatchingLocalesAndNamespacesFns,
     });
 
     if (error) {

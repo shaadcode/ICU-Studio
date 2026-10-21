@@ -1,5 +1,4 @@
-import type { LiteralUnion } from 'type-fest';
-import type { TCountryCode } from 'countries-list';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 
 export type FileFormat = 'json' | 'yaml' | 'nested-json';
 
@@ -18,8 +17,8 @@ export type StructureOption = {
 
 export type BaseProjectInfo = {
   name: string;
+  path: string;
   description: string;
-  projectPath: string;
   structureType: StructureType;
-  baseLocale: LiteralUnion<TCountryCode, string>;
+  baseLocale?: Project['baseLocale'];
 };

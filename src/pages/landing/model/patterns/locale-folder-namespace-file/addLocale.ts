@@ -2,7 +2,7 @@ import { attemptAsync } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
 import { stat, mkdir, writeTextFile } from '@tauri-apps/plugin-fs';
 
-import { resolveLocale } from './getProjectData';
+import { resolveLocale } from './getProjectData/getProjectData';
 import type { LocaleTreeNode, NamespaceTreeNode } from '../types';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -20,15 +20,15 @@ export type AddLocaleContext = {
 export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
   const result = await attemptAsync(async () => {
     const { newLocaleCode, setSelectedProjectData, ...projectData } = params;
-
     const localePath = await join(projectData.path, newLocaleCode);
-    await mkdir(localePath);
     const localeData = resolveLocale(newLocaleCode, localePath);
 
     if (!localeData) {
       console.error('newLocaleCode is invalid');
       return;
     }
+
+    await mkdir(localePath);
 
     const localeTreeNode = {
       type: 'locale',
@@ -42,12 +42,13 @@ export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
     const files = await Promise.all(
       projectData.namespaces.map(async (ns) => {
         const namespaceFileName = `${ns.name}.json`;
-        await writeTextFile(localePath, '{}\n');
         const newNamespaceFilePath = await join(localePath, namespaceFileName);
+        await writeTextFile(newNamespaceFilePath, '{}\n');
         const namespaceStat = await stat(newNamespaceFilePath);
 
         const newNamespace: Project['namespaces'][number] = {
           name: ns.name,
+          locale: localeData,
           path: newNamespaceFilePath,
           fileName: namespaceFileName,
           lastModified: namespaceStat.mtime,

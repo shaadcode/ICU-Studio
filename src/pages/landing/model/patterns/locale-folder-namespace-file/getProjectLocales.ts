@@ -2,7 +2,7 @@ import { attemptAsync } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
 import { readDir } from '@tauri-apps/plugin-fs';
 
-import { resolveLocale } from './getProjectData';
+import { resolveLocale } from './getProjectData/getProjectData';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
@@ -29,7 +29,6 @@ export async function getLocalesLocaleFolderNamespaceFile({
       const fullPath = await join(projectPath, entry.name);
 
       const resolved = resolveLocale(entry.name, fullPath);
-
       if (resolved) {
         locales.push(resolved);
       }

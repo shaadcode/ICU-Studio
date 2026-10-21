@@ -1,21 +1,40 @@
-import { Box, Tabs, Group, Stack, ScrollArea } from '@mantine/core';
+import { Box, Tabs, Text, Stack, Center, Loader, ScrollArea } from '@mantine/core';
 
 import { ViewHeader } from './components/ViewHeader';
 import { StatsCards } from './components/StatsCards';
 import { ViewTabs } from './components/tabs/ViewTabs';
+import { EmptyBaseLocaleState } from './EmptyBaseLocaleState';
 import { EmptyProjectsState } from './components/EmptyProjectState';
 import { useHandleI18nManagerMain } from './useHandleI18nManagerMain';
 import { EmptySelectionState } from './components/EmptySelectionState';
 import { StructureTab } from './components/tabs/Structure/StructureTab';
+import { SettingsTab } from './components/tabs/Settings/SettingsOverview';
 import { LocalesOverview } from './components/tabs/Locales/LocalesOverview';
 
 const I18nManagementViewMain = () => {
   const {
     projects,
+    baseLocale,
     tI18nManager,
+    loadingProject,
     selectedProject,
     selectedProjectData,
   } = useHandleI18nManagerMain();
+
+  if (loadingProject) {
+    return (
+      <Box flex={1}>
+        <Center h="100%">
+          <Stack gap="sm" align="center" justify="center">
+            <Loader size="lg" />
+            <Text size="sm" c="dimmed">
+              {tI18nManager('loading.project')}
+            </Text>
+          </Stack>
+        </Center>
+      </Box>
+    );
+  }
 
   if (projects.length === 0) {
     return <EmptyProjectsState />;
@@ -25,53 +44,61 @@ const I18nManagementViewMain = () => {
     return <EmptySelectionState />;
   }
 
+  if (!baseLocale) {
+    return <EmptyBaseLocaleState />;
+  }
+
   return (
-    <Stack flex={1} gap="md" h="100%">
-      <ViewHeader
-        title={tI18nManager('header.title')}
-        scanLabel={tI18nManager('header.scanProject')}
-        settingsLabel={tI18nManager('header.settings')}
-        description={tI18nManager('header.description')}
+    <Box flex={1}>
+      <Stack gap="md" h="100%">
+        <ViewHeader
+          title={tI18nManager('header.title')}
+          scanLabel={tI18nManager('header.scanProject')}
+          settingsLabel={tI18nManager('header.settings')}
+          description={tI18nManager('header.description')}
 
-      />
+        />
 
-      <StatsCards />
+        <StatsCards />
 
-      <ViewTabs>
-        <Group
-          mt="md"
-          gap="md"
-          wrap="nowrap"
-          align="flex-start"
-        >
-          <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
-            <Tabs.Panel value="structure">
-              <StructureTab
-                project={selectedProject}
-                projectData={selectedProjectData}
+        <ViewTabs>
+          <Box pt="xs">
+            <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
+              <Tabs.Panel value="structure">
+                <StructureTab
+                  project={selectedProject}
+                  projectData={selectedProjectData}
 
-              />
-            </Tabs.Panel>
+                />
+              </Tabs.Panel>
 
-            <Tabs.Panel value="locales">
-              <LocalesOverview />
-            </Tabs.Panel>
+              <Tabs.Panel value="locales">
+                <LocalesOverview
+                  baseLocale={baseLocale}
+                  project={selectedProject}
+                  projectData={selectedProjectData}
+                />
+              </Tabs.Panel>
 
-            <Tabs.Panel value="namespaces">
-              <Box>{tI18nManager('tabs.namespacesContent')}</Box>
-            </Tabs.Panel>
+              <Tabs.Panel value="namespaces">
+                <Box>{tI18nManager('tabs.namespacesContent')}</Box>
+              </Tabs.Panel>
 
-            <Tabs.Panel value="analysis">
-              <Box>{tI18nManager('tabs.analysisContent')}</Box>
-            </Tabs.Panel>
+              <Tabs.Panel value="analysis">
+                <Box>{tI18nManager('tabs.analysisContent')}</Box>
+              </Tabs.Panel>
 
-            <Tabs.Panel value="settings">
-              <Box>{tI18nManager('tabs.settingsContent')}</Box>
-            </Tabs.Panel>
-          </ScrollArea>
-        </Group>
-      </ViewTabs>
-    </Stack>
+              <Tabs.Panel value="settings">
+                <SettingsTab
+                  project={selectedProject}
+                  projectData={selectedProjectData}
+                />
+              </Tabs.Panel>
+            </ScrollArea>
+          </Box>
+        </ViewTabs>
+      </Stack>
+    </Box>
   );
 };
 

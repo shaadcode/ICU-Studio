@@ -48,7 +48,6 @@ const TestPluralField = (props: Props) => {
           </Text>
         </Group>
         <Text size="xs" c="dimmed" tt="capitalize">
-          {/* @ts-expect-error */}
           {t(`messageFormatEnum.${String(variable.enumType)}`)}
         </Text>
       </Stack>

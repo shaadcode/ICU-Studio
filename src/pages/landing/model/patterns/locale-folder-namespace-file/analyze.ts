@@ -1,9 +1,9 @@
-import { join } from '@tauri-apps/api/path';
 import { readTextFile } from '@tauri-apps/plugin-fs';
 import { uniqBy, attempt, memoize, attemptAsync, flattenObject } from 'es-toolkit';
 
 import { analyzeSingleNamespace } from './analyzeNamespace';
 import type { LocaleAnalysis, ProjectAnalysisResult } from '../types';
+import type { Namespace } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type AnalyzeContext = NonNullable<I18nManagerStore['selectedProjectData']>;
@@ -15,6 +15,28 @@ export const readAndFlattenJsonFile = memoize(readAndFlattenJsonFileRaw, {
 export function invalidateJsonFileCache(path: string) {
   readAndFlattenJsonFile.cache.delete(path);
 }
+
+export async function extractBaseLocaleKeys(
+  namespaces: Array<Namespace>,
+) {
+  const baseLocaleKeys: Record<string, Record<string, any>> = {};
+  let totalBaseKeys = 0;
+
+  await Promise.all(
+    namespaces.map(async (ns) => {
+      const keys = await readAndFlattenJsonFile(ns.path);
+
+      if (keys) {
+        baseLocaleKeys[ns.name] = keys;
+        totalBaseKeys += Object.keys(keys).length;
+      } else {
+        baseLocaleKeys[ns.name] = {};
+      }
+    }),
+  );
+
+  return { totalBaseKeys, baseLocaleKeys };
+};
 
 export async function readAndFlattenJsonFileRaw(path: string): Promise<undefined | Record<string, any>> {
   const [readError, content] = await attemptAsync(() => readTextFile(path));
@@ -34,30 +56,6 @@ export async function readAndFlattenJsonFileRaw(path: string): Promise<undefined
   }
 
   return flattened;
-};
-
-export async function extractBaseLocaleKeys(
-  baseLocalePath: string,
-  namespaces: NonNullable<I18nManagerStore['selectedProjectData']>['namespaces'],
-) {
-  const baseLocaleKeys: Record<string, Record<string, any>> = {};
-  let totalBaseKeys = 0;
-
-  await Promise.all(
-    namespaces.map(async (ns) => {
-      const filePath = await join(baseLocalePath, `${ns.name}.json`);
-      const keys = await readAndFlattenJsonFile(filePath);
-
-      if (keys) {
-        baseLocaleKeys[ns.name] = keys;
-        totalBaseKeys += Object.keys(keys).length;
-      } else {
-        baseLocaleKeys[ns.name] = {};
-      }
-    }),
-  );
-
-  return { totalBaseKeys, baseLocaleKeys };
 }
 
 export async function analyzeLocaleFolderNamespaceFile(
@@ -65,14 +63,17 @@ export async function analyzeLocaleFolderNamespaceFile(
 ): Promise<ProjectAnalysisResult> {
   const { locales, baseLocale, namespaces } = projectData;
   const uniqueNamespaces = uniqBy(namespaces, ns => ns.name);
-  const baseLocaleData = locales.find(l => l.language.code === baseLocale);
+  const baseLocaleData = locales.find(l => l.language.code === baseLocale?.language.code);
+
   if (!baseLocaleData) {
     throw new Error(`Base locale "${baseLocale}" not found in project.`);
   }
 
+  const baseLocaleNamespaces = projectData
+    .namespaces
+    .filter(ns => ns.locale.language.code === projectData.baseLocale?.language.code);
   const { totalBaseKeys, baseLocaleKeys } = await extractBaseLocaleKeys(
-    baseLocaleData.path,
-    uniqueNamespaces,
+    baseLocaleNamespaces,
   );
 
   const analyzedLocales: Record<string, LocaleAnalysis> = {};

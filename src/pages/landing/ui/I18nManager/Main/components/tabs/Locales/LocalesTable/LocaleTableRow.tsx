@@ -32,7 +32,6 @@ export const LocaleRow = memo(({
   projectData,
   onToggleSelect,
   isPinnedBaseLocale,
-
 }: Props) => {
   const t = useTranslations('i18nManager');
   const localeAnalysis = analysis.locales[locale.language.code];

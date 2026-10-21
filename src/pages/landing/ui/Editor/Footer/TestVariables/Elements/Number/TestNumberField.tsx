@@ -51,7 +51,6 @@ const TestNumberField = (props: Props) => {
           <NumberSkeletons style={variable.config?.numberStyle} />
         </Group>
         <Text size="xs" c="dimmed" tt="capitalize">
-          {/* @ts-expect-error */}
           {t(`messageFormatEnum.${String(variable.enumType)}`)}
         </Text>
       </Stack>

@@ -2,17 +2,10 @@ import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { load } from '@tauri-apps/plugin-store';
 import { IconMessageOff } from '@tabler/icons-react';
-import {
-  Text,
-  Group,
-  Stack,
-  Center,
-  Loader,
-  ThemeIcon,
-} from '@mantine/core';
+import { Text, Group, Stack, Center, Loader, ThemeIcon } from '@mantine/core';
 
-import { ProjectItem } from './ProjectItem';
 import { storeKeys } from '@/shared/config/tauri';
+import { ProjectItem } from './ProjectItem/ProjectItem';
 import type { BaseProjectInfo } from './CreateNewProject/types';
 import { CreateNewProject } from './CreateNewProject/CreateNewProject';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -33,16 +26,19 @@ const I18nManagerNavbar = () => {
       const savedProjects
         = (await store.get<BaseProjectInfo[]>(storeKeys.i18nManager.projects))
           ?? [];
-
       setProjects(savedProjects);
       setIsLoading(false);
     })();
-  }, [setI18nManagerStore]);
+  }, []);
 
   return (
     <Stack>
+
       <Group wrap="nowrap" justify="space-between">
-        <Text fw={600} tt="capitalize">
+        <Text
+          fw={600}
+          tt="capitalize"
+        >
           {t('project', { count: 2 })}
         </Text>
         <CreateNewProject />
@@ -80,7 +76,7 @@ const I18nManagerNavbar = () => {
                 {projects.map(project => (
                   <ProjectItem
                     project={project}
-                    key={project.projectPath}
+                    key={project.path}
                   />
                 ))}
               </Stack>

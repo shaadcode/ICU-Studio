@@ -29,8 +29,8 @@ export async function deleteLocale(params: DeleteLocaleContext) {
       ...projectData,
       locales: updatedLocales,
       tree: projectData.tree.filter(node => node.value !== locale.path),
-      baseLocale: projectData.baseLocale === locale.language.code
-        ? updatedLocales[0]!.language.code
+      baseLocale: projectData.baseLocale?.language.code === locale.language.code
+        ? updatedLocales[0]
         : projectData.baseLocale,
     });
   });

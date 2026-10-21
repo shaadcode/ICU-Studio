@@ -1,7 +1,5 @@
 // Widgets/Variables/ConvertAllToButton.tsx
 import { memo } from 'react';
-import type { Paths } from 'type-fest';
-import type { Messages } from 'use-intl';
 import { forEachRight } from 'es-toolkit';
 import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
@@ -27,8 +25,8 @@ const CONVERT_TARGETS = [
   { value: 'select', labelKey: 'controls.snippets.select' },
   { value: 'selectordinal', labelKey: 'controls.snippets.selectordinal' },
 ] as const satisfies Array<{
+  labelKey: string;
   value: MessageElementsTypeKeyword;
-  labelKey: Paths<Messages['editor']>;
 }>;
 
 export const ConvertAllToButton = memo((props: Props) => {

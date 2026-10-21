@@ -2,24 +2,35 @@
   "addDirPath": "Add folder path",
   "addProjectName": "add project name",
   "analysis": {
+    "analyzing": "Analyzing project...",
     "errors": "Errors",
     "missing": "Missing",
-    "title": "Analysis",
-    "translated": "Translated",
+    "noAnalysisMessage": "The analysis information for this project is not ready yet. Please select a base locale.",
     "noAnalysisTitle": "No analysis available",
-    "noAnalysisMessage": "The analysis data for this project is not ready yet. Please wait or reload the page."
+    "title": "Analysis",
+    "translated": "Translated"
+  },
+  "loading": {
+    "project": "Loading project..."
+  },
+  "emptyBaseLocale": {
+    "title": "No base locale selected",
+    "description": "To start managing translations, you need to choose a base locale for this project.",
+    "selectAction": "Select base locale"
   },
   "basicInfo": {
+    "duplicateProjectTitle": "Project already exists",
+    "duplicateProjectMessage": "A project with this path is already registered: {path}",
+    "baseLocale": "Base Locale",
+    "baseLocalePlaceholder": "Select base locale",
     "defaultLocale": "Default Locale",
     "description": "Description",
     "descriptionPlaceholder": "Internationalization setup for our e-commerce platform with support for multiple locales and namespaces.",
+    "noLocalesFound": "No valid locales found in this directory.",
     "projectName": "Project Name",
     "projectNamePlaceholder": "E-commerce App",
     "repository": "Repository (Optional)",
     "title": "Basic Information",
-    "baseLocale": "Base Locale",
-    "baseLocalePlaceholder": "Select base locale",
-    "noLocalesFound": "No valid locales found in this directory.",
     "validation": {
       "localeRequired": "Default locale is required",
       "nameRequired": "Project name is required"
@@ -46,13 +57,17 @@
       "message": "project with path \"{path}\" already exists.",
       "title": "duplicate project"
     },
+    "duplicateProjectName": {
+      "title": "Duplicate project name",
+      "message": "A project named \"{name}\" already exists."
+    },
     "projectNotFound": {
       "message": "No project was found with path \"{path}\".",
       "title": "Project not found"
     },
     "projectSelectedNotFound": {
-      "title": "Project not found",
-      "message": "The project path \"{path}\" does not exist on your system. Please select it again or remove it from the list."
+      "message": "The project path \"{path}\" does not exist on your system. Please select it again or remove it from the list.",
+      "title": "Project not found"
     }
   },
   "header": {
@@ -68,24 +83,24 @@
   "locales": "locales",
   "localesTab": {
     "addLocale": "Add Locale",
-    "searchLocales": "search locales...",
-    "locales": "Locales",
-    "openWithEditor": "Open with default editor",
     "emptyLocales": "No locales have been added to this project yet.",
-    "noSearchResults": "No locales found matching your search.",
+    "locales": "Locales",
     "localesDescription": "Manage your project's locales and configure their settings.",
     "localesTitle": "Locales",
+    "noBaseLocaleMessage": "To view translation statistics and details, please select a base locale from the project settings first.",
+    "noBaseLocaleTitle": "No base locale selected",
+    "noNamespacesFound": "No namespaces found in this project.",
+    "noSearchResults": "No locales found matching your search.",
+    "openWithEditor": "Open with default editor",
     "pinAsBase": "Pin as base locale",
     "pinBaseLocale": "pin base locale",
     "pinned": "Pinned as base",
+    "searchLocales": "search locales...",
     "searchNamespaces": "Search namespaces...",
     "sortAscending": "Ascending",
     "sortBy": "Sort by",
     "sortDescending": "Descending",
     "sortDirection": "Direction",
-
-    "noBaseLocaleTitle": "No base locale selected",
-    "noBaseLocaleMessage": "To view translation statistics and details, please select a base locale from the project settings first.",
     "status": {
       "active": "Active",
       "complete": "Complete",
@@ -112,6 +127,41 @@
       "namespaces": "Namespaces",
       "region": "Region",
       "status": "Status"
+    }
+  },
+  "settingsTab": {
+    "projectInformation": {
+      "title": "Project Information",
+      "description": "Basic information about your localization project.",
+      "fields": {
+        "name": {
+          "label": "Project Name",
+          "placeholder": "Enter project name..."
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter project description..."
+        }
+      },
+      "i18n": {
+        "title": "Internationalization",
+        "description": "Manage your locales, namespaces and translations efficiently."
+      },
+      "errors": {
+        "nameRequired": "Project name is required."
+      }
+    },
+    "defaultLocale": {
+      "title": "Default Locale",
+      "description": "Set the default language for your project.",
+      "options": {
+        "en": "🇬🇧 en - English",
+        "fa": "🇮🇷 fa - Persian",
+        "de": "🇩🇪 de - German"
+      },
+      "errors": {
+        "localeRequired": "Default locale is required."
+      }
     }
   },
   "namespaces": "namespaces",
@@ -234,8 +284,12 @@
         "title": "delete namespace"
       },
       "deleteProject": {
-        "title": "Delete project",
-        "message": "Are you sure you want to delete the project \"{projectName}\"? This action cannot be undone."
+        "message": "Are you sure you want to delete the project \"{projectName}\"? This action cannot be undone.",
+        "title": "Delete project"
+      },
+      "renameProject": {
+        "title": "Rename project",
+        "message": "Enter a new name for \"{projectName}\":"
       }
     },
     "namespaceDetection": "Namespace Detection",
@@ -326,7 +380,13 @@
       "nameMinLength": "Project name must be at least {min} characters",
       "nameRequired": "Project name is required",
       "repositoryInvalid": "Repository URL is not valid",
-      "structureRequired": "Please select a project structure"
+      "structureRequired": "Please select a project structure",
+      "baseLocaleRequired": "Please select a base locale",
+      "pathRequired": "Project path is required"
+    },
+    "renameProject": {
+      "required": "This field is required",
+      "sameName": "New name must be different from the current name"
     }
   }
 }

@@ -1,5 +1,7 @@
 /* eslint-disable perfectionist/sort-modules */
-import type { Project } from '../../config/store/i18nManager/types';
+import type { TLanguageCode } from 'countries-list';
+
+import type { Locale, Project } from '../../config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type PatternActionResult = {
@@ -65,18 +67,18 @@ export type NamespaceAnalysis = {
 export type ProjectAnalysisResult = {
   /** Total number of translation keys in the base locale (reference) */
   totalKeys: number;
-  /** Code of the base locale (e.g., "en") */
-  baseLocale: string;
   /** Total number of keys missing across all locales */
   missingKeys: number;
   /** Total number of keys translated across all locales */
   translatedKeys: number;
   /** Total number of namespaces in the project */
   totalNamespaces: number;
+  /** Code of the base locale (e.g., "en") */
+  baseLocale: Locale | undefined;
   /** Overall completion percentage across all locales (0 to 100) */
   overallCompletionPercentage: number;
   /** Analysis for each locale in the project */
-  locales: Record<string, LocaleAnalysis>;
+  locales: Record<TLanguageCode, LocaleAnalysis>;
 };
 
 export type LocaleAnalysis = {

@@ -9,7 +9,7 @@ import { TreeNodeContextMenu } from './TreeNodeContextMenu';
 import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { AddNamespaceModal } from './HandleAddNamespaceModal/AddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
-import { isLocaleNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData';
+import { isLocaleNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData/getProjectData';
 
 type Props = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;

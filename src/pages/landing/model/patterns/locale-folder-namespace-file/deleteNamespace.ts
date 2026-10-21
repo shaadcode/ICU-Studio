@@ -3,8 +3,8 @@ import { attemptAsync } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
 import { remove } from '@tauri-apps/plugin-fs';
 
-import { isLocaleNode } from './getProjectData';
 import { readAndFlattenJsonFile } from './analyze';
+import { isLocaleNode } from './getProjectData/getProjectData';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 

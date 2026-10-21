@@ -63,8 +63,8 @@ const createI18nManagerViewLayout: LayoutFactory = ({ navbarOpened, sidebarOpene
     width: 300,
     breakpoint: TABLET_BREAKPOINT,
     collapsed: {
+      desktop: undefined,
       mobile: !navbarOpened,
-      desktop: !navbarOpened,
     },
   },
   aside: {

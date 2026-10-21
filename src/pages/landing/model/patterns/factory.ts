@@ -7,8 +7,8 @@ import { analyzeLocaleFolderNamespaceFile } from './locale-folder-namespace-file
 import { handleWatchLocaleFolderNamespaceFile } from './locale-folder-namespace-file/handleWatch';
 import { deleteNamespaceFolderNamespaceFile } from './locale-folder-namespace-file/deleteNamespace';
 import { getLocalesLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectLocales';
-import { getProjectDataLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectData';
 import { handleWatchProjectLocaleFolderNamespaceFile } from './locale-folder-namespace-file/handleWatchProject';
+import { getProjectDataLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectData/getProjectData';
 
 type PatternActionsWithAnalyzer = {
   [K in I18nPatternActions]: any;

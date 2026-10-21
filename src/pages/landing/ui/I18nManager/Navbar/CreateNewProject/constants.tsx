@@ -36,7 +36,6 @@ export const LOCALE_OPTIONS = [
   { value: 'ar', label: '🇸🇦 Arabic (ar)' },
 ];
 
-// ─── پیش‌نمایش و آیتم‌های تشخیص به ازای هر ساختار ────────────────
 export const STRUCTURE_PREVIEWS: Record<
   StructureType,
   {
@@ -45,7 +44,7 @@ export const STRUCTURE_PREVIEWS: Record<
   }
 > = {
   'locale-file-nested-namespaces': {
-    tree: `locales/
+    tree: `messages/
 ├── en.json
 └── fa.json
 
@@ -69,7 +68,7 @@ export const STRUCTURE_PREVIEWS: Record<
       'Folder per locale',
       'Default locale',
     ],
-    tree: `locales/
+    tree: `messages/
 ├── en/
 │   ├── common.json
 │   ├── checkout.json
@@ -86,7 +85,7 @@ export const STRUCTURE_PREVIEWS: Record<
       'Nested folder structure',
       'Default locale',
     ],
-    tree: `locales/
+    tree: `messages/
 ├── en/
 │   ├── common.json
 │   └── dashboard/

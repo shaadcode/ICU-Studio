@@ -37,7 +37,6 @@ const TestSimpleVariableField = (props: Props) => {
           {variable.name}
         </Text>
         <Text size="xs" c="dimmed" tt="capitalize">
-          {/* @ts-expect-error */}
           {t(String(variable.enumType))}
         </Text>
       </Stack>

@@ -5,12 +5,12 @@ import { IconLanguageOff } from '@tabler/icons-react';
 import { CountryFlagRounded } from '@appica/country-flags-react';
 import { Card, Text, Stack, Group, Select, Center, ThemeIcon } from '@mantine/core';
 
-import { parseLocale } from '@/shared/lib/icu';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 type LocaleSelectOption = {
-  countryCode: string;
+  locale: Locale;
 } & ComboboxItem<string>;
 
 type Props = {
@@ -29,7 +29,7 @@ export const BaseLocaleSelect = (props: Props) => {
     () =>
       props.projectData.locales.map((locale) => {
         return {
-          countryCode: locale.region,
+          locale,
           value: locale.language.code,
           label: `${locale.native} — ${locale.region} (${locale.language.code})`,
         } as LocaleSelectOption;
@@ -37,10 +37,15 @@ export const BaseLocaleSelect = (props: Props) => {
     [props.projectData.locales],
   );
 
-  const baseLocaleRegion = useMemo(() => {
-    const parsed = parseLocale(props.projectData.baseLocale);
-    return parsed.region;
-  }, [props.projectData.baseLocale]);
+  async function handleUpdateBaseLocale(newBaseLocale: Locale) {
+    await updateSelectedProject({
+      tCommon,
+      tI18nManager: t,
+      updatedProject: { ...props.project, baseLocale: newBaseLocale },
+    });
+  }
+
+  const baseLocale = props.project.baseLocale;
   return (
     <Card withBorder radius="md" padding="md">
       <Text
@@ -72,34 +77,30 @@ export const BaseLocaleSelect = (props: Props) => {
               searchable
               data={data}
               allowDeselect={false}
-              value={props.project.baseLocale}
+              value={baseLocale?.language.code}
               placeholder={t('structure.baseLocalePlaceholder')}
               leftSection={(
                 <CountryFlagRounded
                   size={20}
-                  code={baseLocaleRegion ?? 'un'}
+                  code={baseLocale?.region ?? 'un'}
                 />
               )}
               renderOption={({ option }) => {
                 const typedOption = option as LocaleSelectOption;
                 return (
-                  <Group gap="sm">
+                  <Group
+                    gap="sm"
+
+                    onClick={() => handleUpdateBaseLocale(typedOption.locale)}
+                  >
                     <CountryFlagRounded
                       size={20}
-                      code={typedOption['countryCode'] ?? 'un'}
+                      code={typedOption.locale.region ?? 'un'}
                     />
                     <Text size="sm">{typedOption.label}</Text>
                   </Group>
                 );
               }}
-
-              onChange={v =>
-                v
-                && updateSelectedProject({
-                  tCommon,
-                  tI18nManager: t,
-                  updatedProject: { ...props.project, baseLocale: v },
-                })}
             />
           )}
     </Card>

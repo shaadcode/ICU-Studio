@@ -112,7 +112,10 @@
       "namespace": "فضای نام",
       "namespaces": "فضاهای نام",
       "region": "منطقه",
-      "status": "وضعیت"
+      "status": "وضعیت",
+      "keys": "کلیدها",
+      "missing": "مانده",
+      "extra": "اضافی"
     }
   },
   "namespaces": "محیط ها",

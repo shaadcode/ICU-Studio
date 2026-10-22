@@ -28,16 +28,16 @@ export type Locale = {
 };
 
 export type Project = {
-  name: string;
-  /**
-   * project full path
-   */
-  path: string;
+  // name: string;
+  // /**
+  //  * project full path
+  //  */
+  // path: string;
   recentScan: Date;
-  description: string;
+  // description: string;
   locales: Array<Locale>;
   tree: Array<I18nProjectTree>;
   structureType: StructureType;
   namespaces: Array<Namespace>;
-  baseLocale: Locale | undefined;
+  // baseLocale: Locale | undefined;
 };

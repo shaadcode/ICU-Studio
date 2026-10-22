@@ -104,28 +104,6 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         set({ stopWatchingLocalesAndNamespacesFns: [] });
       }
     },
-    analyzeProject: async () => {
-      const { actions, selectedProjectData } = get();
-
-      if (!selectedProjectData) {
-        console.error('project not found in analyze Project');
-        return;
-      }
-
-      await attemptAsync(async () => {
-        actions.setIsAnalyzing(true);
-        const patternActions = i18nManagerPatternsActions[selectedProjectData.structureType];
-
-        readAndFlattenJsonFile.cache.clear();
-        const result = await patternActions.analyzeProject({
-          locales: selectedProjectData.locales,
-          baseLocale: selectedProjectData.baseLocale,
-          namespaces: selectedProjectData.namespaces,
-        });
-        actions.setProjectAnalysis(result);
-        actions.setIsAnalyzing(false);
-      });
-    },
     deleteProject: async (params) => {
       const store = get().i18nManagerLocalStore;
       if (!store) {
@@ -149,6 +127,33 @@ const i18nManagerStoreBase = create<I18nManagerStore>()((set, get) => ({
         await store.save();
 
         set({ projects: updatedProjects, selectedProject: undefined });
+      });
+    },
+    analyzeProject: async () => {
+      const { actions, selectedProject, selectedProjectData } = get();
+
+      if (!selectedProjectData || !selectedProject) {
+        console.error('project not found in analyze Project');
+        return;
+      }
+      const baseLocale = selectedProject.baseLocale;
+      if (!baseLocale) {
+        console.error('base locale is undefined');
+        return;
+      }
+
+      await attemptAsync(async () => {
+        actions.setIsAnalyzing(true);
+        const patternActions = i18nManagerPatternsActions[selectedProjectData.structureType];
+
+        readAndFlattenJsonFile.cache.clear();
+        const result = await patternActions.analyzeProject({
+          baseLocale,
+          locales: selectedProjectData.locales,
+          namespaces: selectedProjectData.namespaces,
+        });
+        actions.setProjectAnalysis(result);
+        actions.setIsAnalyzing(false);
       });
     },
     addProject: async (params) => {

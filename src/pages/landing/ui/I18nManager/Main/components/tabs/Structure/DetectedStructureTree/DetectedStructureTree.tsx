@@ -9,13 +9,15 @@ import { TreeNodeContextMenu } from './TreeNodeContextMenu';
 import type { I18nProjectTree } from '@/pages/landing/model/patterns/types';
 import { AddNamespaceModal } from './HandleAddNamespaceModal/AddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 import { isLocaleNode } from '@/pages/landing/model/patterns/locale-folder-namespace-file/getProjectData/getProjectData';
 
 type Props = {
+  project: BaseProjectInfo;
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
-export const DetectedStructureTree = ({ projectData }: Props) => {
+export const DetectedStructureTree = ({ project, projectData }: Props) => {
   const t = useTranslations('i18nManager');
   const treeHandlers = useTree();
   const isEmpty = !projectData.tree || projectData.tree.length === 0;
@@ -88,7 +90,7 @@ export const DetectedStructureTree = ({ projectData }: Props) => {
                 />
               </ScrollArea>
             )}
-        <AddNamespaceModal projectData={projectData} />
+        <AddNamespaceModal project={project} projectData={projectData} />
       </Stack>
     </Card>
   );

@@ -1,11 +1,11 @@
-// shared/config/i18n/patterns/locale-folder-namespace-file/deleteLocale.ts
 import { attemptAsync } from 'es-toolkit';
 import { remove } from '@tauri-apps/plugin-fs';
 
+import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 
 export type DeleteLocaleContext = {
-  locale: NonNullable<I18nManagerStore['selectedProjectData']>['locales'][number];
+  locale: Locale;
   setSelectedProjectData: NonNullable<
     I18nManagerStore['actions']['setSelectedProjectData']
   >;
@@ -29,9 +29,6 @@ export async function deleteLocale(params: DeleteLocaleContext) {
       ...projectData,
       locales: updatedLocales,
       tree: projectData.tree.filter(node => node.value !== locale.path),
-      baseLocale: projectData.baseLocale?.language.code === locale.language.code
-        ? updatedLocales[0]
-        : projectData.baseLocale,
     });
   });
 }

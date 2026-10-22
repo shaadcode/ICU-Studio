@@ -101,6 +101,31 @@
     "sortBy": "Sort by",
     "sortDescending": "Descending",
     "sortDirection": "Direction",
+    "missingKeysTable": {
+      "title": "Missing keys",
+      "summary": "{missing} missing · {empty} empty",
+      "searchPlaceholder": "Search key or value…",
+      "noSearchResults": "No keys match your search",
+      "emptyState": "No missing keys",
+      "table": {
+        "key": "Key",
+        "baseValue": "Base value",
+        "translatedValue": "Translated value",
+        "status": "Status",
+        "statusTooltip": "missing = key not present at all · empty = key exists but value is empty · translated = has a value"
+      },
+      "status": {
+        "missing": "Missing",
+        "empty": "Empty",
+        "translated": "Translated"
+      },
+      "sort": {
+        "label": "Sort",
+        "sortBy": "Sort by",
+        "ascending": "Ascending",
+        "descending": "Descending"
+      }
+    },
     "status": {
       "active": "Active",
       "complete": "Complete",
@@ -118,6 +143,7 @@
       "totalLocales": "Total Locales"
     },
     "table": {
+      "translatedKeysTooltip": "Number of translated keys in this locale relative to the base locale keys",
       "completion": "Completion",
       "files": "Files",
       "language": "Language",
@@ -126,7 +152,14 @@
       "namespace": "Namespace",
       "namespaces": "Namespaces",
       "region": "Region",
-      "status": "Status"
+      "status": "Status",
+      "keys": "Keys",
+      "translatedKeys": {
+        "label": "Translated / Total Keys",
+        "tooltip": "Number of translated keys in this namespace relative to the base locale keys"
+      },
+      "missing": "Missing",
+      "extra": "Extra"
     }
   },
   "settingsTab": {

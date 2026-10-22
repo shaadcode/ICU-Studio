@@ -68,7 +68,6 @@ export async function getProjectDataLocaleFolderNamespaceFile({
       namespaces,
       path: project.path,
       recentScan: new Date(),
-      baseLocale: project.baseLocale,
       structureType: 'locale-folder-namespace-file',
     } as Project,
   };

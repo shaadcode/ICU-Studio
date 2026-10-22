@@ -19,7 +19,7 @@ export const StructureTab = ({
   return (
     <Grid gap="md">
       <Grid.Col span={{ lg: 4, base: 12 }}>
-        <DetectedStructureTree projectData={projectData} />
+        <DetectedStructureTree project={project} projectData={projectData} />
       </Grid.Col>
 
       <Grid.Col span={{ lg: 8, base: 12 }}>

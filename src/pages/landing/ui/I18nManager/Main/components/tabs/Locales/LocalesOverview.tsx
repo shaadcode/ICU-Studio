@@ -6,6 +6,7 @@ import { Box, Text, Stack, Alert, Center, Loader } from '@mantine/core';
 import { SummaryCards } from './SummaryCards';
 import { LocalesTable } from './LocalesTable/LocalesTable';
 import { NamespacesTable } from './NamespacesTable/NamespacesTable';
+import { MissingKeysTable } from './MissingKeysTable/MissingKeysTable';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -35,7 +36,7 @@ export const LocalesOverview = (props: Props) => {
 
   if (isAnalyzing) {
     return (
-      <Box flex={1}>
+      <Box mt="xl" h="100%" flex={1}>
         <Center>
           <Stack gap="sm" align="center">
             <Loader size="md" />
@@ -78,11 +79,13 @@ export const LocalesOverview = (props: Props) => {
     <Stack>
       <SummaryCards
         analysis={analysis}
+        project={props.project}
         totalLocales={props.projectData.locales.length}
       />
 
       <LocalesTable
         analysis={analysis}
+        project={props.project}
         projectData={props.projectData}
         selectedLocale={selectedLocale}
 
@@ -90,9 +93,16 @@ export const LocalesOverview = (props: Props) => {
       />
 
       <NamespacesTable
+        project={props.project}
         projectData={props.projectData}
         selectedLocale={selectedLocale}
         localeAnalysis={activeLocaleAnalysis}
+      />
+
+      <MissingKeysTable
+        analysis={analysis}
+        baseLocale={props.baseLocale}
+        selectedLocale={selectedLocale}
       />
     </Stack>
   );

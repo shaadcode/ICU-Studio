@@ -7,7 +7,6 @@ import { analyzeLocaleFolderNamespaceFile } from './locale-folder-namespace-file
 import { handleWatchLocaleFolderNamespaceFile } from './locale-folder-namespace-file/handleWatch';
 import { deleteNamespaceFolderNamespaceFile } from './locale-folder-namespace-file/deleteNamespace';
 import { getLocalesLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectLocales';
-import { handleWatchProjectLocaleFolderNamespaceFile } from './locale-folder-namespace-file/handleWatchProject';
 import { getProjectDataLocaleFolderNamespaceFile } from './locale-folder-namespace-file/getProjectData/getProjectData';
 
 type PatternActionsWithAnalyzer = {
@@ -16,7 +15,6 @@ type PatternActionsWithAnalyzer = {
   handleWatch: (data: any) => Promise<any>;
   analyzeProject?: (projectData: any) => Promise<any>;
   getLocales: (baseDirectoryPath: any) => Promise<any>;
-  handleWatchProject: (projectPath: any) => Promise<any>;
 };
 
 export const i18nManagerPatternsActions = {
@@ -24,7 +22,6 @@ export const i18nManagerPatternsActions = {
     deleteLocale,
     addNamespace,
     handleWatch: async () => {},
-    handleWatchProject: async () => {},
     addLocale: addLocaleFolderNamespaceFile,
     getLocales: getLocalesLocaleFolderNamespaceFile,
     analyzeProject: analyzeLocaleFolderNamespaceFile,
@@ -35,7 +32,6 @@ export const i18nManagerPatternsActions = {
     deleteLocale,
     addNamespace,
     handleWatch: async () => {},
-    handleWatchProject: async () => {},
     addLocale: addLocaleFolderNamespaceFile,
     getLocales: getLocalesLocaleFolderNamespaceFile,
     analyzeProject: analyzeLocaleFolderNamespaceFile,
@@ -51,6 +47,5 @@ export const i18nManagerPatternsActions = {
     handleWatch: handleWatchLocaleFolderNamespaceFile,
     deleteNamespace: deleteNamespaceFolderNamespaceFile,
     getProjectData: getProjectDataLocaleFolderNamespaceFile,
-    handleWatchProject: handleWatchProjectLocaleFolderNamespaceFile,
   },
 } as const satisfies Record<StructureType, PatternActionsWithAnalyzer>;

@@ -59,7 +59,9 @@ export const LocaleRow = memo(({
 
       <Table.Td>
         <Group gap="xs" wrap="nowrap">
-          {isBase && isPinnedBaseLocale && <IconPinFilled size={14} color="var(--mantine-color-yellow-6)" />}
+          {isBase && isPinnedBaseLocale && (
+            <IconPinFilled size={14} color="var(--mantine-color-yellow-6)" />
+          )}
           <CountryFlagRounded size={20} code={locale.region || 'un'} />
           <Stack gap={0}>
             <Text fw={500} size="sm">{locale.language.code}</Text>
@@ -81,17 +83,43 @@ export const LocaleRow = memo(({
       </Table.Td>
 
       <Table.Td>
+        <Text size="xs" c="dimmed">
+          {localeAnalysis ? `${localeAnalysis.translatedKeys} / ${localeAnalysis.totalKeys}` : '—'}
+        </Text>
+      </Table.Td>
+
+      <Table.Td>
+        <Text size="xs" c={localeAnalysis && localeAnalysis.missingKeys > 0 ? 'red' : 'dimmed'}>
+          {isBase ? '—' : (localeAnalysis?.missingKeys ?? '—')}
+        </Text>
+      </Table.Td>
+
+      <Table.Td>
+        {isBase
+          ? (
+              <Text size="xs" c="dimmed">{'—'}</Text>
+            )
+          : localeAnalysis && localeAnalysis.extraKeys > 0
+            ? (
+                <Text fw={500} size="xs" c="yellow.7">{localeAnalysis.extraKeys}</Text>
+              )
+            : (
+                <Text size="xs" c="dimmed">{'0'}</Text>
+              )}
+      </Table.Td>
+
+      <Table.Td>
         <Group gap="xs" wrap="nowrap">
           <Progress
             size="sm"
             radius="xl"
             value={completion}
             color={progressColor}
-            style={{ flex: 1, minWidth: 60 }}
+            style={{ flex: 1, minWidth: 60, maxWidth: 120 }}
           />
           <Text fw={500} size="xs">
             {completion}
-            {'%\r'}
+            {'%'}
           </Text>
         </Group>
       </Table.Td>

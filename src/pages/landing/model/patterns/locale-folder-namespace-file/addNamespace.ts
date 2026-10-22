@@ -6,25 +6,27 @@ import { stat, watch, writeTextFile } from '@tauri-apps/plugin-fs';
 import type { NamespaceTreeNode } from '../types';
 import { isLocaleNode } from './getProjectData/getProjectData';
 import { handleWatchLocaleFolderNamespaceFile } from './handleWatch';
-import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Locale, Namespace } from '@/pages/landing/config/store/i18nManager/types';
 
 export type AddNamespaceContext = {
   /**
    * namespace name
    */
   namespace: string;
+  baseLocale: Locale;
+  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
   setProjectAnalysis: NonNullable<I18nManagerStore['actions']>['setProjectAnalysis'];
   setSelectedProjectData: NonNullable<I18nManagerStore['actions']['setSelectedProjectData']>;
   setStopWatchingLocalesAndNamespacesFns: NonNullable<I18nManagerStore['actions']['setStopWatchingLocalesAndNamespacesFns']>;
-} & NonNullable<I18nManagerStore['selectedProjectData']>;
+};
 
 /**
  * Add a new namespace file to all locale folders.
  * Pattern: `locale-folder-namespace-file`
  */
 export async function addNamespace(params: AddNamespaceContext) {
-  const { namespace, setProjectAnalysis, setSelectedProjectData, ...projectData } = params;
+  const { namespace, baseLocale, projectData, setProjectAnalysis, setSelectedProjectData } = params;
 
   return attemptAsync(async () => {
     const stopWatchFns: Array<UnwatchFn> = [];
@@ -41,19 +43,25 @@ export async function addNamespace(params: AddNamespaceContext) {
         const stop = await watch(newNamespacePath, (event) => {
           handleWatchLocaleFolderNamespaceFile({
             event,
+            baseLocale,
             isDir: false,
             setProjectAnalysis,
-            ...projectData,
+            path: newNamespacePath,
+            locales: projectData.locales,
+            namespaces: projectData.namespaces,
           });
         });
         stopWatchFns.push(stop);
 
-        return {
+        const newNamespace: Namespace = {
+          locale,
           name: namespace,
           path: newNamespacePath,
           fileName: namespaceFileName,
           lastModified: namespaceStat.mtime,
-        } as Project['namespaces'][number];
+        };
+
+        return newNamespace;
       }),
     );
 

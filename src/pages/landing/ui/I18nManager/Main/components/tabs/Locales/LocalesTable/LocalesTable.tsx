@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { useSelection } from '@mantine/hooks';
-import { IconSearchOff, IconLanguageOff } from '@tabler/icons-react';
-import { Text, Card, Table, Group, Stack, Center, Checkbox, ThemeIcon, ScrollArea } from '@mantine/core';
+import { IconSearchOff, IconInfoCircle, IconLanguageOff } from '@tabler/icons-react';
+import { Text, Card, Table, Group, Stack, Center, Tooltip, Checkbox, ThemeIcon, ScrollArea, ActionIcon } from '@mantine/core';
 
 import { SortMenu } from './SortMenu';
 import { LocaleRow } from './LocaleTableRow';
 import { LocaleSearch } from './LocaleSearch';
-import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
+import type { Locale, Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 import { AddLocaleModal } from '../../Structure/DetectedLocalesSection/AddLocaleModal/AddLocaleModal';
 
 type SortState = {
@@ -18,13 +18,15 @@ type SortState = {
 };
 
 type Props = {
+  projectData: Project;
   selectedLocale: Locale;
+  project: BaseProjectInfo;
   analysis: ProjectAnalysisResult;
   onSelectLocale: (code: Locale) => void;
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
 };
 
 export const LocalesTable = ({
+  project,
   analysis,
   projectData,
   onSelectLocale,
@@ -73,14 +75,14 @@ export const LocalesTable = ({
 
     if (isPinnedBaseLocale) {
       const baseLocaleIndex = list
-        .findIndex(l => l.language.code === projectData.baseLocale?.language.code);
+        .findIndex(l => l.language.code === project.baseLocale?.language.code);
       if (baseLocaleIndex > 0) {
         const [baseLocale] = list.splice(baseLocaleIndex, 1);
         baseLocale && list.unshift(baseLocale);
       }
     }
     return list;
-  }, [sort, analysis, isPinnedBaseLocale, projectData.baseLocale, projectData.locales, searchQuery]);
+  }, [sort, analysis, isPinnedBaseLocale, project.baseLocale, projectData.locales, searchQuery]);
 
   const isProjectEmpty = projectData.locales.length === 0;
   const isSearchEmpty = !isProjectEmpty && filteredAndSortedLocales.length === 0;
@@ -111,7 +113,7 @@ export const LocalesTable = ({
 
       <ScrollArea>
         <Table.ScrollContainer minWidth={500}>
-          <Table>
+          <Table ta="center">
             <Table.Thead>
               <Table.Tr>
                 <Table.Th w={40}>
@@ -129,6 +131,26 @@ export const LocalesTable = ({
                 <Table.Th>{t('localesTab.table.language')}</Table.Th>
                 <Table.Th>{t('localesTab.table.region')}</Table.Th>
                 <Table.Th>{t('localesTab.table.namespaces')}</Table.Th>
+
+                <Table.Th>
+                  <Group gap={4} wrap="nowrap">
+                    <Text inherit>{t('localesTab.table.translatedKeys.label')}</Text>
+                    <Tooltip
+                      w={240}
+                      multiline
+                      withArrow
+                      position="top"
+                      label={t('localesTab.table.translatedKeys.tooltip')}
+                    >
+                      <ActionIcon size="xs" color="gray" variant="subtle" aria-label="more info">
+                        <IconInfoCircle size={14} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Group>
+                </Table.Th>
+
+                <Table.Th>{t('localesTab.table.missing')}</Table.Th>
+                <Table.Th>{t('localesTab.table.extra')}</Table.Th>
                 <Table.Th>{t('localesTab.table.completion')}</Table.Th>
                 <Table.Th>{t('localesTab.table.status')}</Table.Th>
                 <Table.Th w={40} />
@@ -144,7 +166,7 @@ export const LocalesTable = ({
                   isPinnedBaseLocale={isPinnedBaseLocale}
                   isSelected={selection.includes(locale.language.code)}
                   isActive={locale.language.code === selectedLocale?.language.code}
-                  isBase={locale.language.code === projectData.baseLocale?.language.code}
+                  isBase={locale.language.code === project.baseLocale?.language.code}
 
                   onClick={() => onSelectLocale(locale)}
                   onToggleSelect={selectionHandlers.toggle}

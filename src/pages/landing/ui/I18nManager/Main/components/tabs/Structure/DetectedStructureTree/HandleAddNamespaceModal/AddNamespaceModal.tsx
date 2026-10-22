@@ -5,11 +5,13 @@ import { Box, Text, Group, Modal, Stack, Button, Divider, Tooltip, TextInput, Sc
 
 import { useHandleAddNamespaceModal } from './useHandleAddNamespaceModal';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 type ProjectData = NonNullable<I18nManagerStore['selectedProjectData']>;
 
 type Props = {
   projectData: ProjectData;
+  project: BaseProjectInfo;
   onSuccess?: (namespace: string) => void;
   buttonProps?: ComponentProps<typeof Button<'button'>>;
 };

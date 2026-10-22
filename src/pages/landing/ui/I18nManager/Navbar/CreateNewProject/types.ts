@@ -1,4 +1,4 @@
-import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 
 export type FileFormat = 'json' | 'yaml' | 'nested-json';
 
@@ -19,6 +19,6 @@ export type BaseProjectInfo = {
   name: string;
   path: string;
   description: string;
+  baseLocale?: Locale;
   structureType: StructureType;
-  baseLocale?: Project['baseLocale'];
 };

@@ -22,7 +22,7 @@ type DefaultLocaleCardProps = {
   project: BaseProjectInfo;
 };
 
-export function DefaultLocaleCard({ project, projectData }: DefaultLocaleCardProps) {
+export function BaseLocaleCard({ project, projectData }: DefaultLocaleCardProps) {
   const tCommon = useTranslations('i18nManager');
   const t = useTranslations('i18nManager');
   const updateSelectedProject = i18nManagerStore.use.actions().updateSelectedProject;
@@ -68,15 +68,15 @@ export function DefaultLocaleCard({ project, projectData }: DefaultLocaleCardPro
       <Select
         data={localeOptions}
         allowDeselect={false}
-        value={projectData.baseLocale?.language.code}
+        value={project.baseLocale?.language.code}
         placeholder={t('basicInfo.baseLocalePlaceholder')}
         nothingFoundMessage={t('basicInfo.noLocalesFound')}
         disabled={updatingProject || projectData.locales.length === 0}
-        leftSection={projectData.baseLocale
+        leftSection={project.baseLocale
           ? (
               <CountryFlagRounded
                 size={20}
-                code={projectData.baseLocale.region ?? 'un'}
+                code={project.baseLocale.region ?? 'un'}
               />
             )
           : <IconWorld size={16} />}

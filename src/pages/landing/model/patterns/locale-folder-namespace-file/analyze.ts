@@ -3,10 +3,14 @@ import { uniqBy, attempt, memoize, attemptAsync, flattenObject } from 'es-toolki
 
 import { analyzeSingleNamespace } from './analyzeNamespace';
 import type { LocaleAnalysis, ProjectAnalysisResult } from '../types';
-import type { Namespace } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Locale, Namespace } from '@/pages/landing/config/store/i18nManager/types';
 
-type AnalyzeContext = NonNullable<I18nManagerStore['selectedProjectData']>;
+type AnalyzeContext = {
+  baseLocale: Locale;
+  locales: Array<Locale>;
+  namespaces: Array<Namespace>;
+};
 
 export const readAndFlattenJsonFile = memoize(readAndFlattenJsonFileRaw, {
   getCacheKey: path => path,
@@ -59,9 +63,9 @@ export async function readAndFlattenJsonFileRaw(path: string): Promise<undefined
 }
 
 export async function analyzeLocaleFolderNamespaceFile(
-  projectData: Pick<AnalyzeContext, 'locales' | 'namespaces' | 'baseLocale'>,
+  { locales, baseLocale, namespaces }: AnalyzeContext,
+
 ): Promise<ProjectAnalysisResult> {
-  const { locales, baseLocale, namespaces } = projectData;
   const uniqueNamespaces = uniqBy(namespaces, ns => ns.name);
   const baseLocaleData = locales.find(l => l.language.code === baseLocale?.language.code);
 
@@ -69,44 +73,49 @@ export async function analyzeLocaleFolderNamespaceFile(
     throw new Error(`Base locale "${baseLocale}" not found in project.`);
   }
 
-  const baseLocaleNamespaces = projectData
-    .namespaces
-    .filter(ns => ns.locale.language.code === projectData.baseLocale?.language.code);
+  const baseLocaleNamespaces = namespaces
+    .filter(ns => ns.locale.language.code === baseLocale?.language.code);
   const { totalBaseKeys, baseLocaleKeys } = await extractBaseLocaleKeys(
     baseLocaleNamespaces,
   );
 
   const analyzedLocales: Record<string, LocaleAnalysis> = {};
-  let totalTranslatedKeys = 0;
+  let totalTranslatedKeysInAllNamespacesInAllLocales = 0;
 
   await Promise.all(
     locales.map(async (locale) => {
-      const analysis = await analyzeSingleLocale(locale, uniqueNamespaces, baseLocaleKeys);
+      const analysis = await analyzeSingleLocale(
+        locale,
+        uniqueNamespaces,
+        baseLocaleKeys,
+        totalBaseKeys,
+      );
       analyzedLocales[locale.language.code] = analysis;
-      totalTranslatedKeys += analysis.translatedKeys;
+      totalTranslatedKeysInAllNamespacesInAllLocales += analysis.translatedKeys;
     }),
   );
-
   const totalPossibleTranslations = totalBaseKeys * locales.length;
   const overallCompletionPercentage = totalPossibleTranslations > 0
-    ? Math.round((totalTranslatedKeys / totalPossibleTranslations) * 100)
+    ? Math.round((totalTranslatedKeysInAllNamespacesInAllLocales / totalPossibleTranslations) * 100)
     : 100;
 
   return {
     baseLocale,
     locales: analyzedLocales,
     totalKeys: totalBaseKeys,
+    totalPossibleTranslations,
     overallCompletionPercentage,
-    translatedKeys: totalTranslatedKeys,
     totalNamespaces: uniqueNamespaces.length,
-    missingKeys: totalPossibleTranslations - totalTranslatedKeys,
+    translatedKeys: totalTranslatedKeysInAllNamespacesInAllLocales,
+    missingKeys: totalPossibleTranslations - totalTranslatedKeysInAllNamespacesInAllLocales,
   };
 }
 
 async function analyzeSingleLocale(
-  locale: AnalyzeContext['locales'][number],
+  locale: Locale,
   namespaces: NonNullable<I18nManagerStore['selectedProjectData']>['namespaces'],
   baseLocaleKeys: Record<string, Record<string, any>>,
+  totalBaseKeys: number,
 ): Promise<LocaleAnalysis> {
   const localeAnalysis: LocaleAnalysis = {
     totalKeys: 0,
@@ -118,28 +127,29 @@ async function analyzeSingleLocale(
     code: locale.language.code,
   };
 
-  let totalTranslated = 0;
+  let totalTranslatedKeysInCurrentLocale = 0;
 
   await Promise.all(
     namespaces.map(async (ns) => {
       const baseKeysForNs = baseLocaleKeys[ns.name] || {};
-      const { extraKeysCount, translatedCount, namespaceAnalysis } = await analyzeSingleNamespace(
+      const namespaceAnalysis = await analyzeSingleNamespace(
         ns,
         locale.path,
         baseKeysForNs,
       );
 
       localeAnalysis.namespaces[ns.name] = namespaceAnalysis;
-      totalTranslated += translatedCount;
-      localeAnalysis.extraKeys += extraKeysCount;
+      totalTranslatedKeysInCurrentLocale += namespaceAnalysis.translatedKeys;
+      localeAnalysis.missingKeys += namespaceAnalysis.missingKeys;
+      localeAnalysis.extraKeys += namespaceAnalysis.extraKeysCount;
+      localeAnalysis.totalKeys += namespaceAnalysis.totalKeys;
     }),
   );
 
-  localeAnalysis.translatedKeys = totalTranslated;
-  localeAnalysis.totalKeys = Object.values(localeAnalysis.namespaces).reduce((sum, ns) => sum + (ns.totalKeys || 0), 0);
-  localeAnalysis.missingKeys = localeAnalysis.totalKeys - totalTranslated;
-  localeAnalysis.completionPercentage = localeAnalysis.totalKeys > 0
-    ? Math.round((totalTranslated / localeAnalysis.totalKeys) * 100)
+  localeAnalysis.translatedKeys = totalTranslatedKeysInCurrentLocale;
+
+  localeAnalysis.completionPercentage = totalBaseKeys > 0
+    ? Math.round((totalTranslatedKeysInCurrentLocale / totalBaseKeys) * 100)
     : 100;
 
   return localeAnalysis;

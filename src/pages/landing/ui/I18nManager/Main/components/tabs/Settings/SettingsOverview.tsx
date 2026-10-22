@@ -1,6 +1,6 @@
 import { Box, Grid } from '@mantine/core';
 
-import { DefaultLocaleCard } from './DefaultLocaleCard';
+import { BaseLocaleCard } from './BaseLocaleCard';
 import { ProjectInformationCard } from './ProjectInformationCard';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { BaseProjectInfo } from '../../../../Navbar/CreateNewProject/types';
@@ -14,11 +14,11 @@ export function SettingsTab(props: Props) {
     <Box flex={1}>
       <Grid>
         <Grid.Col span={{ md: 7, base: 12 }}>
-          <ProjectInformationCard projectData={props.projectData} />
+          <ProjectInformationCard project={props.project} projectData={props.projectData} />
         </Grid.Col>
 
         <Grid.Col span={{ md: 5, base: 12 }}>
-          <DefaultLocaleCard {...props} />
+          <BaseLocaleCard {...props} />
         </Grid.Col>
       </Grid>
     </Box>

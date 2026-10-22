@@ -1,7 +1,6 @@
 import { Box, Tabs, Text, Stack, Center, Loader, ScrollArea } from '@mantine/core';
 
 import { ViewHeader } from './components/ViewHeader';
-import { StatsCards } from './components/StatsCards';
 import { ViewTabs } from './components/tabs/ViewTabs';
 import { EmptyBaseLocaleState } from './EmptyBaseLocaleState';
 import { EmptyProjectsState } from './components/EmptyProjectState';
@@ -59,7 +58,7 @@ const I18nManagementViewMain = () => {
 
         />
 
-        <StatsCards />
+        {/* <StatsCards /> */}
 
         <ViewTabs>
           <Box pt="xs">

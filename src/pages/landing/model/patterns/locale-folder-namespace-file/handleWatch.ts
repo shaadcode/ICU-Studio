@@ -8,9 +8,9 @@ export type HandleWatchParams = {
   path: string;
   isDir: boolean;
   event: WatchEvent;
+  baseLocale: Locale;
   locales: Array<Locale>;
   namespaces: Array<Namespace>;
-  baseLocale: Locale | undefined;
   setProjectAnalysis: NonNullable<I18nManagerStore['actions']>['setProjectAnalysis'];
 };
 
@@ -20,9 +20,6 @@ export type HandleWatchParams = {
  */
 export async function handleWatchLocaleFolderNamespaceFile(params: HandleWatchParams) {
   readAndFlattenJsonFile.cache.delete(params.path);
-  if (!params.baseLocale) {
-    return console.warn('base locale is undefined');
-  }
   const analyzedProject = await analyzeLocaleFolderNamespaceFile(params);
   params.setProjectAnalysis(analyzedProject);
 }

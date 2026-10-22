@@ -1,67 +1,88 @@
 import { isString } from 'es-toolkit';
 import { join } from '@tauri-apps/api/path';
 
-import type { NamespaceAnalysis } from '../types';
 import { readAndFlattenJsonFile } from './analyze';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { TranslationEntry, NamespaceAnalysis } from '../types';
+import type { Namespace } from '@/pages/landing/config/store/i18nManager/types';
 
 export async function analyzeSingleNamespace(
-  namespace: NonNullable<I18nManagerStore['selectedProjectData']>['namespaces'][number],
+  namespace: Namespace,
   localePath: string,
-  baseNamespaceKeys: Record<string, any>,
-): Promise<{ extraKeysCount: number; translatedCount: number; namespaceAnalysis: NamespaceAnalysis }> {
-  const baseEntries = Object.entries(baseNamespaceKeys);
+  namespaceKeysInBaseLocale: Record<string, any>,
+): Promise<NamespaceAnalysis> {
+  const namespaceKeysInBaseLocaleEntries = Object.entries(namespaceKeysInBaseLocale);
 
   const defaultAnalysis: NamespaceAnalysis = {
     totalKeys: 0,
+    extraKeys: [],
     missingKeys: 0,
     translatedKeys: 0,
+    extraKeysCount: 0,
+    missingEntries: [],
     name: namespace.name,
     completionPercentage: 100,
   };
 
-  if (baseEntries.length === 0) {
-    return { extraKeysCount: 0, translatedCount: 0, namespaceAnalysis: defaultAnalysis };
+  if (namespaceKeysInBaseLocaleEntries.length === 0) {
+    return defaultAnalysis;
   }
   const namespacePath = await join(localePath, `${namespace.name}.json`);
 
-  const targetKeys = await readAndFlattenJsonFile(namespacePath);
+  const targetNamespaceKeys = await readAndFlattenJsonFile(namespacePath);
 
-  if (!targetKeys) {
+  if (!targetNamespaceKeys) {
     return {
-      extraKeysCount: 0,
-      translatedCount: 0,
-      namespaceAnalysis: {
-        ...defaultAnalysis,
-        completionPercentage: 0,
-        missingKeys: baseEntries.length,
-      },
+      ...defaultAnalysis,
+      completionPercentage: 0,
+      missingKeys: namespaceKeysInBaseLocaleEntries.length,
+      missingEntries: namespaceKeysInBaseLocaleEntries.map(([key, baseValue]) => ({
+        key,
+        namespace,
+        status: 'missing',
+        baseValue: isString(baseValue) ? baseValue : String(baseValue),
+      })),
     };
   }
 
   let translatedCount = 0;
-  let extraKeysCount = 0;
+  const missingEntries: TranslationEntry[] = [];
+  for (const [key, baseValue] of namespaceKeysInBaseLocaleEntries) {
+    const targetValue = targetNamespaceKeys[key];
 
-  baseEntries.forEach(([key, value]) => {
-    if (isString(value) && targetKeys[key]) {
+    if (!isString(baseValue)) {
+      continue;
+    }
+
+    const isMissing
+      = targetValue === undefined
+        || targetValue === null
+        || !isString(targetValue)
+        || targetValue.trim() === '';
+
+    if (isMissing) {
+      missingEntries.push({
+        key,
+        baseValue,
+        namespace,
+        status: 'missing',
+      });
+    } else {
       translatedCount++;
     }
-  });
+  }
 
-  extraKeysCount = Object.keys(targetKeys).filter(key => !baseNamespaceKeys[key]).length;
+  const extraKeys = Object.keys(targetNamespaceKeys).filter(key => !namespaceKeysInBaseLocale[key]);
 
-  const missingCount = baseEntries.length - translatedCount;
-  const completionPercentage = Math.round((translatedCount / baseEntries.length) * 100);
+  const completionPercentage = Math.round((translatedCount / namespaceKeysInBaseLocaleEntries.length) * 100);
 
   return {
-    extraKeysCount,
-    translatedCount,
-    namespaceAnalysis: {
-      name: namespace.name,
-      completionPercentage,
-      missingKeys: missingCount,
-      translatedKeys: translatedCount,
-      totalKeys: Object.keys(targetKeys).length,
-    },
+    extraKeys,
+    missingEntries,
+    name: namespace.name,
+    completionPercentage,
+    translatedKeys: translatedCount,
+    extraKeysCount: extraKeys.length,
+    missingKeys: missingEntries.length,
+    totalKeys: Object.keys(targetNamespaceKeys).length,
   };
 }

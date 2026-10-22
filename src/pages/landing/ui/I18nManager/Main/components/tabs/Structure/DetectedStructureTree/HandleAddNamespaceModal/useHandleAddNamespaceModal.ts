@@ -6,14 +6,16 @@ import { notifications } from '@mantine/notifications';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 type FormValues = {
   namespaceName: string;
 };
 
 type Params = {
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  projectData: Project;
+  project: BaseProjectInfo;
 };
 
 export const useHandleAddNamespaceModal = (rootParams: Params) => {
@@ -46,12 +48,18 @@ export const useHandleAddNamespaceModal = (rootParams: Params) => {
   const addNamespace = async (params: { namespaceName: string }) => {
     const patternActions = i18nManagerPatternsActions[rootParams.projectData.structureType];
 
+    if (!rootParams.project.baseLocale) {
+      console.error('baseLocale is undefined for add namespace');
+      return;
+    }
+
     const [error] = await patternActions.addNamespace({
-      ...rootParams.projectData,
       setProjectAnalysis,
       setSelectedProjectData,
       namespace: params.namespaceName,
+      projectData: rootParams.projectData,
       setStopWatchingLocalesAndNamespacesFns,
+      baseLocale: rootParams.project.baseLocale,
     });
 
     if (error) {

@@ -1,8 +1,8 @@
 /* eslint-disable perfectionist/sort-modules */
 import type { TLanguageCode } from 'countries-list';
 
-import type { Locale, Project } from '../../config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Locale, Project, Namespace } from '../../config/store/i18nManager/types';
 
 export type PatternActionResult = {
   affectedPaths: string[];
@@ -44,6 +44,14 @@ export type I18nPatternActions
     | 'getProjectData'
     | 'deleteNamespace';
 
+export type TranslationEntry = {
+  key: string;
+  baseValue: string;
+  namespace: Namespace;
+  translatedValue?: string;
+  status: 'empty' | 'missing' | 'translated';
+};
+
 export type BasePatternContext = {
   projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
   setSelectedProjectData: NonNullable<
@@ -58,10 +66,15 @@ export type NamespaceAnalysis = {
   totalKeys: number;
   /** Number of keys that are not translated in this locale */
   missingKeys: number;
+  extraKeys?: string[];
+  /** Number of keys present in this locale but not in the base locale */
+  extraKeysCount: number;
   /** Number of keys that are translated in this locale */
   translatedKeys: number;
   /** Completion percentage of translations (0 to 100) */
   completionPercentage: number;
+  missingEntries?: TranslationEntry[];
+  // translatedEntries?: TranslationEntry[];
 };
 
 export type ProjectAnalysisResult = {
@@ -75,6 +88,7 @@ export type ProjectAnalysisResult = {
   totalNamespaces: number;
   /** Code of the base locale (e.g., "en") */
   baseLocale: Locale | undefined;
+  totalPossibleTranslations: number;
   /** Overall completion percentage across all locales (0 to 100) */
   overallCompletionPercentage: number;
   /** Analysis for each locale in the project */

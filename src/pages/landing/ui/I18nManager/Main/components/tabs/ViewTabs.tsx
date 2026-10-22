@@ -23,6 +23,7 @@ export const ViewTabs = ({ children }: Props) => {
   return (
     <Tabs
       flex={1}
+      h="100%"
       defaultValue="structure"
 
       onChange={v => v && setActiveTab(v as I18nManagerTabKey)}

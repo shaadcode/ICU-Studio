@@ -3,14 +3,16 @@ import { useTranslations } from 'use-intl';
 import { Card, Text, Group, Stack, ThemeIcon, SimpleGrid } from '@mantine/core';
 import { IconFlag, IconWorld, IconCheck, IconAlertTriangle } from '@tabler/icons-react';
 
+import type { BaseProjectInfo } from '../../../../Navbar/CreateNewProject/types';
 import type { ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
 
 type Props = {
   totalLocales: number;
+  project: BaseProjectInfo;
   analysis: ProjectAnalysisResult;
 };
 
-export const SummaryCards = ({ analysis, totalLocales }: Props) => {
+export const SummaryCards = ({ project, analysis, totalLocales }: Props) => {
   const t = useTranslations('i18nManager');
 
   const incompleteCount = Object.values(analysis.locales).filter(
@@ -45,7 +47,7 @@ export const SummaryCards = ({ analysis, totalLocales }: Props) => {
       color: 'indigo',
       icon: <IconFlag size={24} />,
       title: t('structure.baseLocale'),
-      value: analysis.baseLocale?.language.code ?? '-',
+      value: project.baseLocale?.language.code ?? '-',
     },
   ];
 

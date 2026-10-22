@@ -57,6 +57,7 @@
   "template": "template",
   "time": "time",
   "title": "title",
+  "update": "update",
   "valid": "valid",
   "value": "value",
   "variable": "{count, select,single {variable}plural {variables}other {}}",

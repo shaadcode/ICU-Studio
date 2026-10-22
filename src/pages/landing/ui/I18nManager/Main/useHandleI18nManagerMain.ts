@@ -23,17 +23,7 @@ export const useHandleI18nManagerMain = () => {
         await loadSelectedProject({ tCommon, tI18nManager });
       })();
     }
-  }, [selectedProject]);
-
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     (async () => {
-  //       const patternActions = i18nManagerPatternsActions[selectedProject.structureType];
-
-  //       await patternActions.handleWatchProject({ projectPath: selectedProject.projectPath });
-  //     })();
-  //   }
-  // }, [selectedProject]);
+  }, [selectedProject?.path]);
 
   return {
     projects,

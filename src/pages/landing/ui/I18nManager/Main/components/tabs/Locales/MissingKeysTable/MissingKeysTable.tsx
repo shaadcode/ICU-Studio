@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { useSelection } from '@mantine/hooks';
 import { IconKeyOff, IconSearchOff, IconInfoCircle } from '@tabler/icons-react';
-import { Text, Card, Table, Group, Stack, Center, Tooltip, Checkbox, ThemeIcon, ScrollArea, ActionIcon } from '@mantine/core';
+import { Text, Card, Table, Group, Stack, Center, Tooltip, ThemeIcon, ScrollArea, ActionIcon } from '@mantine/core';
 
-import { MissingKeyRow } from './MissingKeyRow';
 import { MissingKeysSearch } from './MissingKeysSearch';
 import { MissingKeysSortMenu } from './MissingKeysSortMenu';
+import { MissingKeyRow } from './MissingKeyRow/MissingKeyRow';
 import type { Locale } from '@/pages/landing/config/store/i18nManager/types';
 import type { TranslationEntry, ProjectAnalysisResult } from '@/pages/landing/model/patterns/types';
 
@@ -21,42 +20,25 @@ type SortState = {
   column: 'key' | 'status' | 'baseValue' | 'translatedValue';
 };
 
-export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props) => {
+export const MissingKeysTable = ({ analysis, selectedLocale }: Props) => {
   const t = useTranslations('i18nManager');
   const [searchQuery, setSearchQuery] = useState('');
-  const [onlyMissing, setOnlyMissing] = useState(true);
   const entries = Object
     .entries(analysis
-      .locales[baseLocale.language.code].namespaces)
+      .locales[selectedLocale.language.code].namespaces)
     .reduce((acc, [_namespaceName, nsAnalysis]) => {
       return [...acc, ...(nsAnalysis?.missingEntries ?? [])];
     }, [] as Array<TranslationEntry>);
 
-  console.log(entries);
-  console.log(analysis
-    .locales[baseLocale.language.code].namespaces);
   const [sort, setSort] = useState<SortState>({
     column: 'key',
     direction: 'asc',
-  });
-
-  const actionableEntries = useMemo(
-    () => entries.filter(e => e.status !== 'translated'),
-    [entries],
-  );
-
-  const [selection, selectionHandlers] = useSelection({
-    data: actionableEntries.map(e => e.key),
   });
 
   const filteredAndSorted = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
     let list = entries;
-
-    if (onlyMissing) {
-      list = list.filter(e => e.status !== 'translated');
-    }
 
     if (query) {
       list = list.filter(e =>
@@ -81,7 +63,7 @@ export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props
           return 0;
       }
     });
-  }, [entries, searchQuery, sort, onlyMissing]);
+  }, [entries, searchQuery, sort]);
 
   const isSourceEmpty = entries.length === 0;
   const isSearchEmpty = !isSourceEmpty && filteredAndSorted.length === 0;
@@ -98,9 +80,7 @@ export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props
             </Text>
             {selectedLocale && (
               <Text size="xs" c="dimmed">
-                {'('}
-                {selectedLocale.language.code}
-                {')\r'}
+                {`(${selectedLocale.language.code})`}
               </Text>
             )}
           </Group>
@@ -111,10 +91,7 @@ export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props
 
         <Group gap="xs" wrap="nowrap">
           <MissingKeysSearch
-            onSearch={(query) => {
-              setSearchQuery(query);
-              selectionHandlers.resetSelection();
-            }}
+            onSearch={setSearchQuery}
           />
           <MissingKeysSortMenu
             sort={sort}
@@ -126,21 +103,9 @@ export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props
 
       <ScrollArea>
         <Table.ScrollContainer minWidth={640}>
-          <Table ta="center">
+          <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th w={40}>
-                  <Checkbox
-                    checked={selectionHandlers.isAllSelected()}
-                    indeterminate={selectionHandlers.isSomeSelected()}
-
-                    onChange={() =>
-                      selectionHandlers.isAllSelected()
-                        ? selectionHandlers.resetSelection()
-                        : selectionHandlers.setSelection(actionableEntries.map(e => e.key))}
-                  />
-                </Table.Th>
-
                 <Table.Th>{t('localesTab.missingKeysTable.table.key')}</Table.Th>
                 <Table.Th>{t('localesTab.missingKeysTable.table.baseValue')}</Table.Th>
                 <Table.Th>{t('localesTab.missingKeysTable.table.translatedValue')}</Table.Th>
@@ -168,13 +133,7 @@ export const MissingKeysTable = ({ analysis, baseLocale, selectedLocale }: Props
 
             <Table.Tbody>
               {filteredAndSorted.map(entry => (
-                <MissingKeyRow
-                  entry={entry}
-                  key={entry.key}
-                  isSelected={selection.includes(entry.key)}
-
-                  onToggleSelect={selectionHandlers.toggle}
-                />
+                <MissingKeyRow entry={entry} key={entry.key} />
               ))}
             </Table.Tbody>
           </Table>

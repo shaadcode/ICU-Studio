@@ -31,7 +31,7 @@ const I18nManagerSidebar = () => {
       {/* <TranslationCompleteness projectData={selectedProjectData} /> */}
 
       <QuickActions
-        projectData={selectedProjectData}
+        project={selectedProject}
       />
       <RecentScans project={selectedProject} projectData={selectedProjectData} />
     </Stack>

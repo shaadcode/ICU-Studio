@@ -1,5 +1,5 @@
 import { readTextFile } from '@tauri-apps/plugin-fs';
-import { uniqBy, attempt, memoize, attemptAsync, flattenObject } from 'es-toolkit';
+import { attempt, memoize, attemptAsync, flattenObject } from 'es-toolkit';
 
 import { analyzeSingleNamespace } from './analyzeNamespace';
 import type { LocaleAnalysis, ProjectAnalysisResult } from '../types';
@@ -54,7 +54,10 @@ export async function readAndFlattenJsonFileRaw(path: string): Promise<undefined
     return undefined;
   }
 
-  const [flattenError, flattened] = attempt(() => flattenObject(json));
+  const [flattenError, flattened] = attempt(() => flattenObject(
+    json,
+    { preserveArrays: true },
+  ));
   if (flattenError || !flattened) {
     return undefined;
   }
@@ -66,7 +69,6 @@ export async function analyzeLocaleFolderNamespaceFile(
   { locales, baseLocale, namespaces }: AnalyzeContext,
 
 ): Promise<ProjectAnalysisResult> {
-  const uniqueNamespaces = uniqBy(namespaces, ns => ns.name);
   const baseLocaleData = locales.find(l => l.language.code === baseLocale?.language.code);
 
   if (!baseLocaleData) {
@@ -81,12 +83,12 @@ export async function analyzeLocaleFolderNamespaceFile(
 
   const analyzedLocales: Record<string, LocaleAnalysis> = {};
   let totalTranslatedKeysInAllNamespacesInAllLocales = 0;
-
   await Promise.all(
     locales.map(async (locale) => {
+      const namespacesByLocale = namespaces.filter(ns => ns.locale.language.code === locale.language.code);
       const analysis = await analyzeSingleLocale(
         locale,
-        uniqueNamespaces,
+        namespacesByLocale,
         baseLocaleKeys,
         totalBaseKeys,
       );
@@ -105,7 +107,7 @@ export async function analyzeLocaleFolderNamespaceFile(
     totalKeys: totalBaseKeys,
     totalPossibleTranslations,
     overallCompletionPercentage,
-    totalNamespaces: uniqueNamespaces.length,
+    totalNamespaces: namespaces.length,
     translatedKeys: totalTranslatedKeysInAllNamespacesInAllLocales,
     missingKeys: totalPossibleTranslations - totalTranslatedKeysInAllNamespacesInAllLocales,
   };
@@ -126,7 +128,6 @@ async function analyzeSingleLocale(
     completionPercentage: 0,
     code: locale.language.code,
   };
-
   let totalTranslatedKeysInCurrentLocale = 0;
 
   await Promise.all(
@@ -137,7 +138,6 @@ async function analyzeSingleLocale(
         locale.path,
         baseKeysForNs,
       );
-
       localeAnalysis.namespaces[ns.name] = namespaceAnalysis;
       totalTranslatedKeysInCurrentLocale += namespaceAnalysis.translatedKeys;
       localeAnalysis.missingKeys += namespaceAnalysis.missingKeys;

@@ -6,7 +6,7 @@ import { revealItemInDir } from '@tauri-apps/plugin-opener';
 import { Card, Text, Stack, Group, Paper, ThemeIcon } from '@mantine/core';
 
 import classes from './QuickActions.module.css';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { BaseProjectInfo } from '../../../Navbar/CreateNewProject/types';
 
 const icons = {
   // download: IconDownload,
@@ -14,7 +14,7 @@ const icons = {
   // convert: IconFileArrowRight,
 };
 type Props = {
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  project: BaseProjectInfo;
 };
 export const QuickActions = (props: Props) => {
   const t = useTranslations('i18nManager');
@@ -39,7 +39,7 @@ export const QuickActions = (props: Props) => {
       description: t('quickActions.openExplorer.description'),
       async action() {
         const [error] = await attemptAsync(async () => {
-          await revealItemInDir(props.projectData.path);
+          await revealItemInDir(props.project.path);
         });
 
         if (error) {

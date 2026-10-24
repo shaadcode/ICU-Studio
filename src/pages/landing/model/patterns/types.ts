@@ -49,7 +49,7 @@ export type TranslationEntry = {
   baseValue: string;
   namespace: Namespace;
   translatedValue?: string;
-  status: 'empty' | 'missing' | 'translated';
+  status: 'empty' | 'missing';
 };
 
 export type BasePatternContext = {

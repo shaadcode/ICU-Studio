@@ -107,7 +107,7 @@ export const LocalesTable = ({
 
             onSortChange={setSort}
           />
-          <AddLocaleModal projectData={projectData} />
+          <AddLocaleModal project={project} projectData={projectData} />
         </Group>
       </Group>
 

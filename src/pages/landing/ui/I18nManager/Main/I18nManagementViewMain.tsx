@@ -2,6 +2,7 @@ import { Box, Tabs, Text, Stack, Center, Loader, ScrollArea } from '@mantine/cor
 
 import { ViewHeader } from './components/ViewHeader';
 import { ViewTabs } from './components/tabs/ViewTabs';
+import JsonEditor from './components/JsonEditor/JsonEditor';
 import { EmptyBaseLocaleState } from './EmptyBaseLocaleState';
 import { EmptyProjectsState } from './components/EmptyProjectState';
 import { useHandleI18nManagerMain } from './useHandleI18nManagerMain';
@@ -18,6 +19,7 @@ const I18nManagementViewMain = () => {
     loadingProject,
     selectedProject,
     selectedProjectData,
+    jsonEditorEntityData,
   } = useHandleI18nManagerMain();
 
   if (loadingProject) {
@@ -49,54 +51,59 @@ const I18nManagementViewMain = () => {
 
   return (
     <Box flex={1}>
-      <Stack gap="md" h="100%">
-        <ViewHeader
-          title={tI18nManager('header.title')}
-          scanLabel={tI18nManager('header.scanProject')}
-          settingsLabel={tI18nManager('header.settings')}
-          description={tI18nManager('header.description')}
+      {jsonEditorEntityData
+        ? <JsonEditor />
+        : (
+            <Stack gap="md" h="100%">
+              <ViewHeader
+                title={tI18nManager('header.title')}
+                scanLabel={tI18nManager('header.scanProject')}
+                settingsLabel={tI18nManager('header.settings')}
+                description={tI18nManager('header.description')}
 
-        />
+              />
 
-        {/* <StatsCards /> */}
+              {/* <StatsCards /> */}
 
-        <ViewTabs>
-          <Box pt="xs">
-            <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
-              <Tabs.Panel value="structure">
-                <StructureTab
-                  project={selectedProject}
-                  projectData={selectedProjectData}
+              <ViewTabs>
+                <Box pt="xs">
+                  <ScrollArea h="100%" style={{ flex: 1, minWidth: 0 }}>
+                    <Tabs.Panel value="structure">
+                      <StructureTab
+                        project={selectedProject}
+                        projectData={selectedProjectData}
 
-                />
-              </Tabs.Panel>
+                      />
+                    </Tabs.Panel>
 
-              <Tabs.Panel value="locales">
-                <LocalesOverview
-                  baseLocale={baseLocale}
-                  project={selectedProject}
-                  projectData={selectedProjectData}
-                />
-              </Tabs.Panel>
+                    <Tabs.Panel value="locales">
+                      <LocalesOverview
+                        baseLocale={baseLocale}
+                        project={selectedProject}
+                        projectData={selectedProjectData}
+                      />
+                    </Tabs.Panel>
 
-              <Tabs.Panel value="namespaces">
-                <Box>{tI18nManager('tabs.namespacesContent')}</Box>
-              </Tabs.Panel>
+                    <Tabs.Panel value="namespaces">
+                      <Box>{tI18nManager('tabs.namespacesContent')}</Box>
+                    </Tabs.Panel>
 
-              <Tabs.Panel value="analysis">
-                <Box>{tI18nManager('tabs.analysisContent')}</Box>
-              </Tabs.Panel>
+                    <Tabs.Panel value="analysis">
+                      <Box>{tI18nManager('tabs.analysisContent')}</Box>
+                    </Tabs.Panel>
 
-              <Tabs.Panel value="settings">
-                <SettingsTab
-                  project={selectedProject}
-                  projectData={selectedProjectData}
-                />
-              </Tabs.Panel>
-            </ScrollArea>
-          </Box>
-        </ViewTabs>
-      </Stack>
+                    <Tabs.Panel value="settings">
+                      <SettingsTab
+                        project={selectedProject}
+                        projectData={selectedProjectData}
+                      />
+                    </Tabs.Panel>
+                  </ScrollArea>
+                </Box>
+              </ViewTabs>
+            </Stack>
+          )}
+
     </Box>
   );
 };

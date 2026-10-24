@@ -14,7 +14,7 @@ const I18nManagerNavbar = () => {
   const t = useTranslations('i18nManager');
   const [isLoading, setIsLoading] = useState(true);
 
-  const setI18nManagerStore = i18nManagerStore.use.actions().setI18nManagerStore;
+  const setI18nManagerStore = i18nManagerStore.use.actions().setI18nManagerLocalStore;
   const setProjects = i18nManagerStore.use.actions().setProjects;
   const projects = i18nManagerStore.use.projects();
 

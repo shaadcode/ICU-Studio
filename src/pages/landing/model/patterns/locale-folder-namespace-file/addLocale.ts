@@ -6,12 +6,15 @@ import { resolveLocale } from './getProjectData/getProjectData';
 import type { LocaleTreeNode, NamespaceTreeNode } from '../types';
 import type { Project } from '@/pages/landing/config/store/i18nManager/types';
 import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 export type AddLocaleContext = {
+  projectData: Project;
   newLocaleCode: string;
   newLocaleLabel: string;
+  project: BaseProjectInfo;
   setSelectedProjectData: NonNullable<I18nManagerStore['actions']['setSelectedProjectData']>;
-} & NonNullable<I18nManagerStore['selectedProjectData']>;
+};
 
 /**
  * add a locale folder with all its namespace files.
@@ -19,8 +22,8 @@ export type AddLocaleContext = {
  */
 export async function addLocaleFolderNamespaceFile(params: AddLocaleContext) {
   const result = await attemptAsync(async () => {
-    const { newLocaleCode, setSelectedProjectData, ...projectData } = params;
-    const localePath = await join(projectData.path, newLocaleCode);
+    const { projectData, newLocaleCode, setSelectedProjectData } = params;
+    const localePath = await join(params.project.path, newLocaleCode);
     const localeData = resolveLocale(newLocaleCode, localePath);
 
     if (!localeData) {

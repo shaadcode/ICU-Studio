@@ -7,10 +7,8 @@
   "collapse": "collapse",
   "copied": "copied",
   "copy": "copy",
-  "save": "save",
   "create": "create",
   "cut": "cut",
-  "rename": "rename",
   "date": "date",
   "dateAndTime": "date and time",
   "delete": "delete",
@@ -25,8 +23,8 @@
       "title": "store not initialized!"
     },
     "unexpectedError": {
-      "title": "Unexpected error",
-      "message": "An unexpected error occurred while loading the project. Please try again."
+      "message": "An unexpected error occurred while loading the project. Please try again.",
+      "title": "Unexpected error"
     }
   },
   "evening": "evening",
@@ -44,7 +42,9 @@
   "problem": "{count,plural,other{problems} =1{problem}}",
   "project": "{count, plural, =1 {project} other {projects}}",
   "remove": "remove",
+  "rename": "rename",
   "result": "result",
+  "save": "save",
   "saveAndContinue": "save and continue",
   "search": "search",
   "selectAll": "Select all",

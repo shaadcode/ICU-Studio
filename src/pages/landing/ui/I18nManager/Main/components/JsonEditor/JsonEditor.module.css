@@ -1,0 +1,96 @@
+textarea[class='jer-input-text'],
+input[class='jer-input-number'] {
+  color: var(--input-color) !important;
+  background-color: var(--mantine-color-body) !important;
+  border-radius: var(--mantine-radius-default) !important;
+  height: var(--mantine-spacing-lg) !important;
+  border: 1px solid var(--mantine-color-default-border) !important;
+
+  &:focus-within {
+    border-color: var(--mantine-primary-color-filled) !important;
+  }
+}
+
+input[class='jer-input-number'] {
+  padding: var(--mantine-spacing-xs) !important;
+  height: var(--mantine-spacing-lg) !important;
+}
+
+span[class='jer-key-text'] {
+  color: var(--mantine-color-text) !important;
+}
+
+div[class='jer-collection-item-count jer-visible'] {
+  color: var(--mantine-color-green-9) !important;
+  font-size: var(--mantine-font-size-sm) !important;
+}
+
+div[class='jer-value-string'] {
+  color: var(--mantine-color-green-9) !important;
+
+  @mixin dark {
+    color: var(--mantine-color-green-text) !important;
+  }
+}
+
+div[class='jer-value-null'] {
+  color: var(--mantine-color-red-filled) !important;
+  font-weight: var(--mantine-font-weight-regular) !important;
+  font-size: var(--mantine-font-size-lg) !important;
+}
+
+div[class='jer-value-boolean'] {
+  display: none !important;
+  color: var(--mantine-color-orange-filled) !important;
+}
+
+div[class='jer-select'] {
+  background: var(--mantine-color-body) !important;
+  border-radius: var(--mantine-radius-default) !important;
+  height: 30 !important;
+  border: 1px solid var(--mantine-color-default-border) !important;
+}
+
+select[class='jer-select-inner'] {
+  color: var(--mantine-color-text) !important;
+
+  option {
+    display: inline-block !important;
+    color: var(--mantine-color-text) !important;
+    margin: 10px !important;
+    height: 50px !important;
+    background-color: var(--mantine-color-body) !important;
+  }
+}
+
+input[class='jer-input-boolean'] {
+  appearance: none;
+  -webkit-appearance: none; /* برای سازگاری با Safari */
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-sm) !important;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  position: relative;
+
+  &:checked {
+    background-color: var(--mantine-color-yellow-5);
+
+    @mixin dark {
+      background-color: var(--mantine-color-yellow-7);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 4px;
+      height: 8px;
+      border: 1px solid var(--mantine-color-white);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+}

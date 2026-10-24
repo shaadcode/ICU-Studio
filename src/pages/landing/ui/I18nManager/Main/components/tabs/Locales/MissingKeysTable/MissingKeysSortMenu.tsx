@@ -21,7 +21,7 @@ export const MissingKeysSortMenu = ({ sort, onSortChange }: Props) => {
     onSortChange({ ...sort, direction: sort.direction === 'asc' ? 'desc' : 'asc' });
 
   return (
-    <Menu withArrow shadow="md" width={200} position="bottom-end">
+    <Menu withArrow shadow="md" width={200} position="bottom-end" closeOnItemClick={false}>
       <Menu.Target>
         <Tooltip withArrow label={t('localesTab.missingKeysTable.sort.label')}>
           <ActionIcon color="gray" variant="light" aria-label="sort">
@@ -35,7 +35,11 @@ export const MissingKeysSortMenu = ({ sort, onSortChange }: Props) => {
         {columns.map(col => (
           <Menu.Item
             key={col}
-            rightSection={sort.column === col ? <IconSortAscending size={14} /> : null}
+            rightSection={sort.column === col
+              ? sort.direction === 'asc'
+                ? <IconSortAscending size={14} />
+                : <IconSortDescending size={14} />
+              : null}
 
             onClick={() => onSortChange({ column: col, direction: sort.direction })}
           >

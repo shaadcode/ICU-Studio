@@ -1,38 +1,37 @@
 import { memo } from 'react';
 import { useTranslations } from 'use-intl';
-import { Text, Code, Table, Badge, Tooltip, Checkbox } from '@mantine/core';
-import { IconCheck, IconMinus, IconAlertTriangle } from '@tabler/icons-react';
+import { Text, Table, Badge } from '@mantine/core';
+import { IconMinus, IconAlertTriangle } from '@tabler/icons-react';
 
+import classes from './MissingKeyRow.module.css';
+import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import type { TranslationEntry } from '@/pages/landing/model/patterns/types';
 
 type Props = {
-  isSelected: boolean;
   entry: TranslationEntry;
-  onToggleSelect: (key: string) => void;
 };
 
-export const MissingKeyRow = memo(({ entry, isSelected, onToggleSelect }: Props) => {
+export const MissingKeyRow = memo(({ entry }: Props) => {
   const t = useTranslations('i18nManager');
-
   const isMissing = entry.status === 'missing';
   const isEmpty = entry.status === 'empty';
-  const isTranslated = entry.status === 'translated';
-
+  const setEntityData = i18nManagerStore.use.actions().setEntityData;
   return (
     <Table.Tr>
       <Table.Td>
-        <Checkbox
-          checked={isSelected}
-          disabled={isTranslated}
+        <Text
+          fz="sm"
+          truncate
+          maw={200}
+          td="underline"
+          ff="monospace"
+          style={{ cursor: 'pointer' }}
+          className={classes['entry-key']}
 
-          onChange={() => onToggleSelect(entry.key)}
-        />
-      </Table.Td>
-
-      <Table.Td>
-        <Tooltip withArrow openDelay={400} label={entry.key} position="top-start">
-          <Code style={{ whiteSpace: 'nowrap' }}>{entry.key}</Code>
-        </Tooltip>
+          onClick={() => setEntityData(entry.namespace)}
+        >
+          {entry.key}
+        </Text>
       </Table.Td>
 
       <Table.Td>
@@ -62,11 +61,6 @@ export const MissingKeyRow = memo(({ entry, isSelected, onToggleSelect }: Props)
         {isEmpty && (
           <Badge size="sm" color="yellow" variant="light" leftSection={<IconMinus size={12} />}>
             {t('localesTab.missingKeysTable.status.empty')}
-          </Badge>
-        )}
-        {isTranslated && (
-          <Badge size="sm" color="teal" variant="light" leftSection={<IconCheck size={12} />}>
-            {t('localesTab.missingKeysTable.status.translated')}
           </Badge>
         )}
       </Table.Td>

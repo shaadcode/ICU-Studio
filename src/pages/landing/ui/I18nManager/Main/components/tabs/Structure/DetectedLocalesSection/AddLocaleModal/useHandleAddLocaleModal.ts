@@ -8,7 +8,8 @@ import { notifications } from '@mantine/notifications';
 
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
 import { i18nManagerPatternsActions } from '@/pages/landing/model/patterns';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 type FormValues = {
   localeCode: string;
@@ -22,7 +23,8 @@ const ALL_LOCALE_OPTIONS = ISO6391
   }));
 
 type Params = {
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  projectData: Project;
+  project: BaseProjectInfo;
 };
 
 export const useHandleAddLocaleModal = (rootParams: Params) => {
@@ -50,10 +52,11 @@ export const useHandleAddLocaleModal = (rootParams: Params) => {
     = async (params: { localeCode: string; localeName: string }) => {
       const patternActions = i18nManagerPatternsActions[rootParams.projectData.structureType];
       const [error] = await patternActions.addLocale({
-        ...rootParams.projectData,
         setSelectedProjectData,
+        project: rootParams.project,
         newLocaleCode: params.localeCode,
         newLocaleLabel: params.localeName,
+        projectData: rootParams.projectData,
       });
 
       if (error) {

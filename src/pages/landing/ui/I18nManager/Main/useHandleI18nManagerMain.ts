@@ -13,6 +13,7 @@ export const useHandleI18nManagerMain = () => {
   const selectedProjectData = i18nManagerStore.use.selectedProjectData();
   const projects = i18nManagerStore.use.projects();
   const loadSelectedProject = i18nManagerStore.use.actions().loadSelectedProject;
+  const jsonEditorEntityData = i18nManagerStore.use.entityData();
   const clearStopWatchingFns = i18nManagerStore.use.actions().clearStopWatchingFns;
   const loadingProject = i18nManagerStore.use.loadingProject();
   const baseLocale = selectedProject?.baseLocale;
@@ -34,5 +35,6 @@ export const useHandleI18nManagerMain = () => {
     loadingProject,
     selectedProject,
     selectedProjectData,
+    jsonEditorEntityData,
   };
 };

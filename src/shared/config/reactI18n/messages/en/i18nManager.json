@@ -10,6 +10,20 @@
     "title": "Analysis",
     "translated": "Translated"
   },
+  "jsonEditor": {
+    "save": "Save",
+    "saved": "Saved",
+    "unsaved": "Unsaved changes",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "addRootKey": "Add root key",
+    "addKeyHere": "Add key here",
+    "editKey": "Edit key",
+    "editValue": "Edit value",
+    "emptyValue": "(empty)",
+    "delete": "Delete",
+    "keyExists": "A key with that name already exists"
+  },
   "loading": {
     "project": "Loading project..."
   },

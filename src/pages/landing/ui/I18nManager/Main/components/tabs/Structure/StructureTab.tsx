@@ -3,13 +3,14 @@ import { Grid, Stack } from '@mantine/core';
 import { StructureDetails } from './StructureDetails';
 import { BaseLocaleSelect } from './BaseLocaleSelect';
 import { NamespacesTable } from './NamespacesTable/NamespacesTable';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '../../../../Navbar/CreateNewProject/types';
 import { DetectedStructureTree } from './DetectedStructureTree/DetectedStructureTree';
 import { DetectedLocalesSection } from './DetectedLocalesSection/DetectedLocalesSection';
 
 type Props = {
-  project: NonNullable<I18nManagerStore['selectedProject']>;
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  projectData: Project;
+  project: BaseProjectInfo;
 };
 
 export const StructureTab = ({
@@ -26,7 +27,10 @@ export const StructureTab = ({
         <Stack gap="md">
           <StructureDetails projectData={projectData} />
 
-          <DetectedLocalesSection projectData={projectData} />
+          <DetectedLocalesSection
+            project={project}
+            projectData={projectData}
+          />
 
           <NamespacesTable projectData={projectData} />
 

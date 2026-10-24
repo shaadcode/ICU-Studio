@@ -3,10 +3,12 @@ import { IconFolderOff } from '@tabler/icons-react';
 import { Box, Card, Text, Badge, Group, Stack, Center, ThemeIcon } from '@mantine/core';
 
 import { AddLocaleModal } from './AddLocaleModal/AddLocaleModal';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 type Props = {
-  projectData: NonNullable<I18nManagerStore['selectedProjectData']>;
+  projectData: Project;
+  project: BaseProjectInfo;
 };
 
 export const DetectedLocalesSection = (props: Props) => {
@@ -29,7 +31,7 @@ export const DetectedLocalesSection = (props: Props) => {
                 <Text size="sm" c="dimmed" ta="center">
                   {t('structure.emptyLocales')}
                 </Text>
-                <AddLocaleModal projectData={props.projectData} />
+                <AddLocaleModal project={props.project} projectData={props.projectData} />
               </Stack>
             </Center>
           )
@@ -47,7 +49,7 @@ export const DetectedLocalesSection = (props: Props) => {
                 </Badge>
               ))}
               <Box mis="auto">
-                <AddLocaleModal projectData={props.projectData} />
+                <AddLocaleModal project={props.project} projectData={props.projectData} />
               </Box>
             </Group>
           )}

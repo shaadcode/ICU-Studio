@@ -6,12 +6,12 @@ import { Box, Text, Group, Modal, Stack, Alert, Button, Select, Divider, ScrollA
 
 import { localeInfoMap } from '@/shared/lib/icu';
 import { useHandleAddLocaleModal } from './useHandleAddLocaleModal';
-import type { I18nManagerStore } from '@/pages/landing/config/store/i18nManager';
-
-type ProjectData = NonNullable<I18nManagerStore['selectedProjectData']>;
+import type { Project } from '@/pages/landing/config/store/i18nManager/types';
+import type { BaseProjectInfo } from '@/pages/landing/ui/I18nManager/Navbar/CreateNewProject/types';
 
 type Props = {
-  projectData: ProjectData;
+  projectData: Project;
+  project: BaseProjectInfo;
   onSuccess?: (locale: string) => void;
 };
 

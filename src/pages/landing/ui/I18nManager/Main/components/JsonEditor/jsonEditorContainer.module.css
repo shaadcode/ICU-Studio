@@ -12,93 +12,69 @@
   box-shadow: 0 1px 3px rgb(0, 0, 0, 0.04);
 }
 
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-bottom: 1px solid light-dark(#e9ecef, #2c2e33);
-  background: light-dark(#fff, #25262b);
-  flex-shrink: 0;
-}
-
-.toolbarSpacer {
-  flex: 1;
-}
-
-.searchInput {
-  max-width: 260px;
-  flex: 1;
-}
-
-.searchInput input {
-  border-radius: 8px;
-  font-size: 13px;
-  height: 34px;
-}
-
 .editorWrapper {
-  flex: 1;
-  overflow: auto;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-  font-size: 13px;
-  line-height: 1.6;
+  /* stylelint-disable-next-line scss/no-global-function-names */
+  background-color: darken(var(--mantine-color-body), 0.01);
+
+  @mixin dark {
+    /* stylelint-disable-next-line scss/no-global-function-names */
+    background-color: darken(var(--mantine-color-body), 0.2);
+  }
+  color: red !important;
+
+  &[data-is-editing] {
+    div[class='jer-collection-header-row'],
+    div[class='jer-clickzone'] {
+      display: none !important;
+    }
+
+    div[class='jer-editor-container '] {
+      width: 100% !important;
+      max-width: unset !important;
+    }
+
+    div[class='jer-component jer-collection-component'] {
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    div[class='jer-collection-inner'],
+    div[class='jer-collection-text-edit'] {
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    div[class='jer-collection-text-edit'] {
+      grid-template-rows: 1fr auto !important;
+    }
+
+    div[class='jer-collection-text-edit'] > div:nth-child(1) {
+      textarea {
+        border: none !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        padding-inline-start: 0px;
+      }
+
+      textarea,
+      span {
+        height: 100% !important;
+        width: 100% !important;
+      }
+      height: 100% !important;
+      width: 100% !important;
+    }
+
+    div[class='jer-collection-input-button-row'] {
+      height: fit-content !important;
+    }
+  }
 }
 
-/* اسکرول‌بار مدرن */
-.editorWrapper::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-.editorWrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.editorWrapper::-webkit-scrollbar-thumb {
-  background: light-dark(#ced4da, #495057);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-.editorWrapper::-webkit-scrollbar-thumb:hover {
-  background: light-dark(#adb5bd, #5c5f66);
-  background-clip: content-box;
-}
-
-/* استایل داخلی json-edit-react برای زیباتر شدن */
-.editorWrapper :global(.json-edit-react) {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.editorWrapper :global(.json-edit-react .jer-editor-container) {
-  background: light-dark(#fff, #1a1b1e);
-}
-
-/* شمارنده تعداد آیتم‌ها - ظاهر مدرن‌تر */
-.editorWrapper :global(.jer-count) {
-  font-size: 11px;
-  padding: 1px 6px;
-  border-radius: 6px;
-  background: light-dark(#e7f5ff, #1c3a4d);
-  color: light-dark(#1971c2, #74c0fc);
-  font-weight: 500;
-}
-
-/* حالت خطا و لودینگ */
 .stateWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 200px;
   padding: 24px;
-}
-
-.editorWrapper :global(.jer-value:focus),
-.editorWrapper :global(.jer-value:focus-visible) {
-  outline: 2px solid light-dark(#228be6, #4dabf7);
-  outline-offset: 1px;
-  border-radius: 4px;
 }

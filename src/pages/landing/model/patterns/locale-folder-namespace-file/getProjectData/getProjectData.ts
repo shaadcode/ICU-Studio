@@ -18,7 +18,8 @@ type GetProjectDataContext = {
   project: BaseProjectInfo;
   onWatch: (e: HandleWatchParams) => void;
   setProjectAnalysis: NonNullable<I18nManagerStore['actions']>['setProjectAnalysis'];
-
+  setChangedJsonFileInWatch: NonNullable<I18nManagerStore['actions']>['setChangedJsonFileInWatch'];
+  setChangedJsonFilePathInOut: NonNullable<I18nManagerStore['actions']>['setChangedJsonFilePathInOut'];
 };
 /**
  * get project data
@@ -28,6 +29,8 @@ export async function getProjectDataLocaleFolderNamespaceFile({
   project,
   onWatch,
   setProjectAnalysis,
+  setChangedJsonFileInWatch,
+  setChangedJsonFilePathInOut,
 }: GetProjectDataContext) {
   const locales: Array<Locale> = [];
   const namespacesSet = new Set<Project['namespaces'][number]>();
@@ -54,6 +57,8 @@ export async function getProjectDataLocaleFolderNamespaceFile({
       namespaces,
       isDir: false,
       setProjectAnalysis,
+      setChangedJsonFileInWatch,
+      setChangedJsonFilePathInOut,
       path: event.paths[0] as string,
       baseLocale: project.baseLocale,
     });

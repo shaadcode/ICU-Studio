@@ -1,52 +1,17 @@
-import { useTranslations } from 'use-intl';
-import { useState, useEffect } from 'react';
-import { readTextFile } from '@tauri-apps/plugin-fs';
 import { JsonEditor as JsonEditorReact } from 'json-edit-react';
-import { IconSearch, IconFileCode, IconArrowLeft } from '@tabler/icons-react';
+import { Box, Text, Paper, Loader, ScrollAreaAutosize } from '@mantine/core';
 
-import './JsonEditor.module.css';
-import { Box, Text, Group, Paper, Loader, TextInput, ActionIcon } from '@mantine/core';
-
-import { mantineJsonTheme } from './theme';
+import { CopyPathButton } from './CopyPathButton';
 import classes from './jsonEditorContainer.module.css';
+import './JsonEditor.module.css';
 import { useHandleJsonEditor } from './useHandleJsonEditor';
+import { ROOT_LAYOUT_HEADER_HEIGHT } from '@/pages/landing/ui/useHandleLanding';
+import { JsonEditorHeader, JSON_EDITOR_HEADER_HEIGHT } from './JsonEditorHeader/JsonEditorHeader';
 
 const JsonEditor = () => {
-  const { setEntityData, jsonEditorEntityData } = useHandleJsonEditor();
-  const [jsonData, setJsonData] = useState<Record<string, any>>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<null | string>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const t = useTranslations('common');
+  const h = useHandleJsonEditor();
 
-  useEffect(() => {
-    async function loadData() {
-      if (!jsonEditorEntityData) {
-        setJsonData({});
-        setError(null);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const fileContent = await readTextFile(jsonEditorEntityData.path);
-        const parsedJson = JSON.parse(fileContent);
-        setJsonData(parsedJson);
-      } catch (err) {
-        console.error('Error loading JSON:', err);
-        setError('خطای غیرمنتظره در بارگذاری فایل.');
-        setJsonData({});
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadData();
-  }, [jsonEditorEntityData]);
-
-  if (isLoading) {
+  if (h.isLoading) {
     return (
       <Box className={classes['container']}>
         <Box className={classes['stateWrapper']}>
@@ -56,61 +21,80 @@ const JsonEditor = () => {
     );
   }
 
-  if (error) {
+  if (h.error) {
     return (
       <Box className={classes['container']}>
         <Box className={classes['stateWrapper']}>
-          <Text c="red" fw={500}>
-            {error}
-          </Text>
+          <Text c="red" fw={500}>{h.error}</Text>
         </Box>
       </Box>
     );
   }
 
   return (
-    <Paper withBorder style={{ overflow: 'hidden' }}>
-      <Box className={classes['toolbar']}>
-        <ActionIcon
-          size="md"
-          variant="transparent"
+    <Paper
+      flex={1}
+      withBorder
+      display="flex"
+      style={{ overflow: 'hidden', flexDirection: 'column' }}
+    >
+      <JsonEditorHeader
+        canUndo={h.canUndo}
+        canRedo={h.canRedo}
+        fileName={h.fileName}
+        editorRef={h.editorRef}
+        filterMode={h.filterMode}
 
-          onClick={() => setEntityData(undefined)}
-        >
-          <IconArrowLeft size={16} />
-        </ActionIcon>
-
-        <Group gap={6} wrap="nowrap">
-          <IconFileCode size={16} opacity={0.6} />
-          <Text fw={500} truncate size="sm" opacity={0.8}>
-            {jsonEditorEntityData?.path?.split(/[\\/]/).pop() ?? 'JSON'}
-          </Text>
-        </Group>
-
-        <Box className={classes['toolbarSpacer']} />
-
-        <TextInput
-          size="xs"
-          value={searchQuery}
-          placeholder={t('search')}
-          className={classes['searchInput']}
-          leftSection={<IconSearch size={14} />}
-          styles={{
-            input: { fontSize: 12 },
-          }}
-
-          onChange={e => setSearchQuery(e.currentTarget.value)}
-        />
-      </Box>
-      <Box className={classes['editorWrapper']}>
+        onUndo={h.undo}
+        onRedo={h.redo}
+        onBack={h.onBack}
+        onSearch={h.setSearchQuery}
+        onFilterChange={h.setFilterMode}
+        onExpandAll={() =>
+          h.editorRef.current?.collapse({
+            path: [],
+            collapsed: false,
+            includeChildren: true,
+          })}
+        onCollapseAll={() =>
+          h.editorRef.current?.collapse({
+            path: [],
+            collapsed: true,
+            includeChildren: true,
+          })}
+      />
+      <ScrollAreaAutosize
+        h="100%"
+        className={classes['editorWrapper']}
+        data-is-editing={h.isEditing || undefined}
+        mah={`calc(100dvh - ${JSON_EDITOR_HEADER_HEIGHT + ROOT_LAYOUT_HEADER_HEIGHT + 35}px)`}
+        styles={h.isEditing
+          ? {
+              root: { height: '100%' },
+              content: { height: '100%' },
+              viewport: { height: '100%' },
+            }
+          : undefined}
+      >
         <JsonEditorReact
           rootName={''}
-          data={jsonData}
-          setData={setJsonData}
-          theme={mantineJsonTheme}
-          searchText={searchQuery}
+          data={h.jsonData}
+          searchDebounceTime={0}
+          editorRef={h.editorRef}
+          setData={h.setJsonData}
+          collapseAnimationTime={0}
+          theme={h.mantineJsonTheme}
+          searchText={h.searchQuery}
+          searchFilter={h.filterMode}
+          customButtons={[{ Element: CopyPathButton }]}
+
+          onUpdate={({ newData }) => console.log(newData)}
+          onEditEvent={(params) => {
+            h.setIsEditing(params.event === 'startEdit' && !params.path.length);
+          }}
         />
-      </Box>
+      </ScrollAreaAutosize>
+
     </Paper>
   );
 };

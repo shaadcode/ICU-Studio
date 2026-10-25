@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { Store } from '@tauri-apps/plugin-store';
+import { subscribeWithSelector } from 'zustand/middleware';
 
 import type { ProjectsSlice } from './porject/projectSlice';
 import { createProjectsSlice } from './porject/projectSlice';
@@ -19,22 +20,24 @@ type Core = {
   };
 };
 
-export const i18nManagerStoreBase = create<I18nManagerStore>()((...rest) => {
-  const [set] = rest;
-  const projectSlice = createProjectsSlice(...rest);
-  const jsonEditorSlice = createJsonEditorSlice(...rest);
-  return {
-    ...projectSlice,
-    ...jsonEditorSlice,
-    activeTab: 'structure',
-    i18nManagerLocalStore: undefined,
-    actions: {
-      ...projectSlice.actions,
-      ...jsonEditorSlice.actions,
-      setActiveTab: tab => set({ activeTab: tab }),
-      setI18nManagerLocalStore: v => set({ i18nManagerLocalStore: v }),
-    },
-  };
-});
+export const i18nManagerStoreBase = create<I18nManagerStore>()(
+  subscribeWithSelector((...rest) => {
+    const [set] = rest;
+    const projectSlice = createProjectsSlice(...rest);
+    const jsonEditorSlice = createJsonEditorSlice(...rest);
+    return {
+      ...projectSlice,
+      ...jsonEditorSlice,
+      activeTab: 'structure',
+      i18nManagerLocalStore: undefined,
+      actions: {
+        ...projectSlice.actions,
+        ...jsonEditorSlice.actions,
+        setActiveTab: tab => set({ activeTab: tab }),
+        setI18nManagerLocalStore: v => set({ i18nManagerLocalStore: v }),
+      },
+    };
+  }),
+);
 
 export const i18nManagerStore = createSelectors(i18nManagerStoreBase);

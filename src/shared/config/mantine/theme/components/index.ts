@@ -1,9 +1,10 @@
 import type { MantineThemeComponents } from '@mantine/core';
-import { Loader, MenuItem, ActionIcon } from '@mantine/core';
+import { Loader, Tooltip, MenuItem, ActionIcon } from '@mantine/core';
 
 import actionIconClasses from './ActionIcon.module.css';
 
 export const components = {
+  Tooltip: Tooltip.extend({ defaultProps: { fz: 'xs' } }),
   Loader: Loader.extend({
     defaultProps: { type: 'bars' },
   }),

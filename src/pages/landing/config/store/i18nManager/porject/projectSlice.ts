@@ -86,7 +86,6 @@ export const createProjectsSlice: ZustandSlice<
     setStopWatchingLocalesAndNamespacesFns: cb => set(state => ({
       stopWatchingLocalesAndNamespacesFns: cb(state.stopWatchingLocalesAndNamespacesFns),
     })),
-
     clearStopWatchingFns: async () => {
       const currentStopWatching = get().stopWatchingLocalesAndNamespacesFns;
 
@@ -95,7 +94,6 @@ export const createProjectsSlice: ZustandSlice<
         set({ stopWatchingLocalesAndNamespacesFns: [] });
       }
     },
-
     deleteProject: async (params) => {
       const store = get().i18nManagerLocalStore;
       if (!store) {
@@ -121,7 +119,6 @@ export const createProjectsSlice: ZustandSlice<
         set({ projects: updatedProjects, selectedProject: undefined });
       });
     },
-
     analyzeProject: async () => {
       const { actions, selectedProject, selectedProjectData } = get();
 
@@ -149,7 +146,6 @@ export const createProjectsSlice: ZustandSlice<
         actions.setIsAnalyzing(false);
       });
     },
-
     addProject: async (params) => {
       const store = get().i18nManagerLocalStore;
 
@@ -191,7 +187,6 @@ export const createProjectsSlice: ZustandSlice<
         });
       });
     },
-
     loadSelectedProject: async (params) => {
       const { tCommon, tI18nManager } = params;
       const { actions, selectedProject } = get();
@@ -223,6 +218,8 @@ export const createProjectsSlice: ZustandSlice<
           project: selectedProject,
           onWatch: patternActions.handleWatch,
           setProjectAnalysis: actions.setProjectAnalysis,
+          setChangedJsonFileInWatch: actions.setChangedJsonFileInWatch,
+          setChangedJsonFilePathInOut: actions.setChangedJsonFilePathInOut,
         });
         set({
           selectedProjectData: projectData,
@@ -242,7 +239,6 @@ export const createProjectsSlice: ZustandSlice<
       }
       actions.setLoadingProject(false);
     },
-
     updateSelectedProject: async (params) => {
       const store = get().i18nManagerLocalStore;
       if (!store) {
@@ -275,6 +271,8 @@ export const createProjectsSlice: ZustandSlice<
         return;
       }
 
+      const { actions, selectedProject } = get();
+
       await attemptAsync(async () => {
         const updatedProjects = [...existingProjects];
         updatedProjects[targetIndex] = params.updatedProject;
@@ -282,14 +280,15 @@ export const createProjectsSlice: ZustandSlice<
         await store.set(storeKeys.i18nManager.projects, updatedProjects);
         await store.save();
 
-        const currentSelected = get().selectedProject;
         const shouldUpdateSelected
-          = currentSelected?.path === params.updatedProject.path;
+          = selectedProject?.path === params.updatedProject.path;
         const patternAction = i18nManagerPatternsActions[params.updatedProject.structureType];
         const projectData = await patternAction.getProjectData({
           project: params.updatedProject,
           onWatch: patternAction.handleWatch,
-          setProjectAnalysis: get().actions.setProjectAnalysis,
+          setProjectAnalysis: actions.setProjectAnalysis,
+          setChangedJsonFileInWatch: actions.setChangedJsonFileInWatch,
+          setChangedJsonFilePathInOut: actions.setChangedJsonFilePathInOut,
         });
 
         set({
@@ -304,7 +303,6 @@ export const createProjectsSlice: ZustandSlice<
         });
       });
     },
-
     renameProject: async (params) => {
       const store = get().i18nManagerLocalStore;
       if (!store) {

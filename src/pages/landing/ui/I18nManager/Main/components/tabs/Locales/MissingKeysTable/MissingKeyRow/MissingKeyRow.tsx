@@ -15,7 +15,7 @@ export const MissingKeyRow = memo(({ entry }: Props) => {
   const t = useTranslations('i18nManager');
   const isMissing = entry.status === 'missing';
   const isEmpty = entry.status === 'empty';
-  const setEntityData = i18nManagerStore.use.actions().setEntityData;
+  const setJsonData = i18nManagerStore.use.actions().setJsonData;
   return (
     <Table.Tr>
       <Table.Td>
@@ -28,7 +28,7 @@ export const MissingKeyRow = memo(({ entry }: Props) => {
           style={{ cursor: 'pointer' }}
           className={classes['entry-key']}
 
-          onClick={() => setEntityData(entry.namespace)}
+          onClick={() => setJsonData(entry.namespace)}
         >
           {entry.key}
         </Text>

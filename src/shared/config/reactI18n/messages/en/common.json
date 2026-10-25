@@ -62,5 +62,7 @@
   "value": "value",
   "variable": "{count, select,single {variable}plural {variables}other {}}",
   "view": "view",
-  "warning": "warning"
+  "warning": "warning",
+  "saveAndClose": "Save & close",
+  "discardChanges": "Discard changes"
 }

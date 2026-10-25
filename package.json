@@ -41,6 +41,7 @@
     "@appica/country-flags-react": "^1.1.0",
     "@formatjs/icu-messageformat-parser": "^3.5.17",
     "@formatjs/intl-localematcher": "^0.9.0",
+    "@json-edit-react/utils": "^1.0.0",
     "@mantine/core": "^9.7.3",
     "@mantine/dates": "^9.7.3",
     "@mantine/dropzone": "^9.7.3",

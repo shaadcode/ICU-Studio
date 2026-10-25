@@ -27,10 +27,12 @@ type AppShellHandlers = {
   navbar: AppShellProps['navbar'];
 };
 
+export const ROOT_LAYOUT_HEADER_HEIGHT = 60;
+
 const createEditorViewLayout: LayoutFactory = ({ isBelowMd }) => ({
   layout: 'alt',
-  header: { height: 60, collapsed: false },
   footer: { height: 400, collapsed: isBelowMd },
+  header: { collapsed: false, height: ROOT_LAYOUT_HEADER_HEIGHT },
   aside: {
     width: 400,
     breakpoint: MOBILE_BREAKPOINT,
@@ -43,8 +45,8 @@ const createEditorViewLayout: LayoutFactory = ({ isBelowMd }) => ({
 
 const createMessagesViewLayout: LayoutFactory = ({ isBelowMd }) => ({
   layout: 'alt',
-  header: { height: 60, collapsed: false },
   footer: { height: 400, collapsed: isBelowMd },
+  header: { collapsed: false, height: ROOT_LAYOUT_HEADER_HEIGHT },
   aside: {
     width: 400,
     breakpoint: MOBILE_BREAKPOINT,
@@ -58,7 +60,7 @@ const createMessagesViewLayout: LayoutFactory = ({ isBelowMd }) => ({
 const createI18nManagerViewLayout: LayoutFactory = ({ navbarOpened, sidebarOpened }) => ({
   layout: 'default',
   footer: undefined,
-  header: { height: 60, collapsed: false },
+  header: { collapsed: false, height: ROOT_LAYOUT_HEADER_HEIGHT },
   navbar: {
     width: 300,
     breakpoint: TABLET_BREAKPOINT,

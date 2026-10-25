@@ -1,4 +1,4 @@
-import { Box, Tabs, Text, Stack, Center, Loader, ScrollArea } from '@mantine/core';
+import { Box, Tabs, Text, Flex, Stack, Center, Loader, ScrollArea } from '@mantine/core';
 
 import { ViewHeader } from './components/ViewHeader';
 import { ViewTabs } from './components/tabs/ViewTabs';
@@ -50,7 +50,7 @@ const I18nManagementViewMain = () => {
   }
 
   return (
-    <Box flex={1}>
+    <Flex flex={1} direction="column">
       {jsonEditorEntityData
         ? <JsonEditor />
         : (
@@ -104,7 +104,7 @@ const I18nManagementViewMain = () => {
             </Stack>
           )}
 
-    </Box>
+    </Flex>
   );
 };
 

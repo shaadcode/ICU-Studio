@@ -12,6 +12,8 @@ export type HandleWatchParams = {
   locales: Array<Locale>;
   namespaces: Array<Namespace>;
   setProjectAnalysis: NonNullable<I18nManagerStore['actions']>['setProjectAnalysis'];
+  setChangedJsonFileInWatch: NonNullable<I18nManagerStore['actions']>['setChangedJsonFileInWatch'];
+  setChangedJsonFilePathInOut: NonNullable<I18nManagerStore['actions']>['setChangedJsonFilePathInOut'];
 };
 
 /**
@@ -19,6 +21,12 @@ export type HandleWatchParams = {
  * Pattern: `locale-folder-namespace-file`
  */
 export async function handleWatchLocaleFolderNamespaceFile(params: HandleWatchParams) {
+  const firstJsonFilePath = params.event.paths.find(p => p.endsWith('.json'));
+  if (firstJsonFilePath) {
+    params.setChangedJsonFilePathInOut(firstJsonFilePath);
+    params.setChangedJsonFileInWatch(prev => prev + 1);
+  }
+
   readAndFlattenJsonFile.cache.delete(params.path);
   const analyzedProject = await analyzeLocaleFolderNamespaceFile(params);
   params.setProjectAnalysis(analyzedProject);

@@ -65,7 +65,6 @@ select[class='jer-select-inner'] {
 
 input[class='jer-input-boolean'] {
   appearance: none;
-  -webkit-appearance: none; /* برای سازگاری با Safari */
   background: var(--mantine-color-body);
   border: 1px solid var(--mantine-color-default-border);
   border-radius: var(--mantine-radius-sm) !important;
@@ -92,5 +91,19 @@ input[class='jer-input-boolean'] {
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
+  }
+}
+
+textarea[class='jer-collection-text-area'] {
+  color: var(--mantine-color-text) !important;
+}
+
+div[class='jer-edit-buttons'] button {
+  @mixin hover {
+    transform: unset !important;
+  }
+
+  &::after {
+    display: none !important;
   }
 }

@@ -22,7 +22,30 @@
     "editValue": "Edit value",
     "emptyValue": "(empty)",
     "delete": "Delete",
-    "keyExists": "A key with that name already exists"
+    "add": "Add",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "copyPath": "Copy path",
+    "copy": "Copy",
+    "undo": "Undo",
+    "redo": "Redo",
+    "ok": "Confirm",
+    "keyExists": "A key with that name already exists",
+    "loadError": "Unexpected error while loading the file",
+    "editRoot": "Edit root",
+    "modals": {
+      "unsavedChanges": {
+        "unsavedChangesTitle": "Unsaved changes",
+        "unsavedChangesMessage": "You have unsaved changes. What would you like to do?"
+      }
+    },
+    "search": {
+      "searchJsonContent": "Search key or value...",
+      "searchIn": "Search in",
+      "searchFilterAll": "All",
+      "searchFilterKey": "Key",
+      "searchFilterValue": "Value"
+    }
   },
   "loading": {
     "project": "Loading project..."

@@ -11,6 +11,12 @@
 
 <br>
 
+<div align="center">
+  <img src="./resource/cover.png" alt="ICU Studio Main Interface" width="100%" style="border-radius: 8px; border: 1px solid #30363d;">
+</div>
+
+<br>
+
 We've supercharged ICU Studio with powerful widgets, smarter previews, and a completely revamped copy system to make your i18n workflow faster than ever.
 
 ### 📋 4-Way Smart Copy System
@@ -77,6 +83,7 @@ Everything you need to perfect your messages, right at your fingertips.
     </td>
   </tr>
 </table>
+
 ## 🤝 Contributing
 
 We welcome contributions from the community! Whether it's fixing a bug, adding a new feature, or improving documentation, every bit helps.

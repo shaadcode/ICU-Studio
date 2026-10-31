@@ -129,14 +129,6 @@ export const VariableItem = memo(({
               onDoubleClick={handleSelectDefinition}
             >
               {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
-              {variable.name}
             </Text>
           </Group>
 

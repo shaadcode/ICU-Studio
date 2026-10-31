@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslations } from 'use-intl';
 import type { Editor } from '@tiptap/react';
 import { IconTarget } from '@tabler/icons-react';
-import { Text, Stack, Group, Button } from '@mantine/core';
+import { Text, Stack, Group, Button, ScrollAreaAutosize } from '@mantine/core';
 
 import CodeSnippet from '../CodeSnippet/CodeSnippet';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
@@ -38,45 +38,47 @@ export const InvalidState = memo(({ editor, errorLocation, validationError }: Pr
   };
 
   return (
-    <Stack h="100%">
-      <Text size="sm">
-        {t(`parsingErrors.${validationError.message}`)}
-      </Text>
+    <ScrollAreaAutosize h={'100%'} offsetScrollbars>
+      <Stack h="100%">
+        <Text size="sm" textWrap="wrap">
+          {t(`parsingErrors.${validationError.message}`)}
+        </Text>
 
-      <CodeSnippet
-        editor={editor}
-        errorLocation={errorLocation}
-        validationError={validationError}
-      />
-
-      <Text size="sm" textWrap="wrap">
-        {t(`parsingErrorsDescription.${validationError.message}`)}
-      </Text>
-
-      <Group mt="auto">
-        <FixButton
-          context={{
-            editor,
-            errorLocation,
-            validationError,
-            rawMessage: editor?.state.doc.textContent ?? '',
-          }}
-
-          onFixed={handleOnFixed}
+        <CodeSnippet
+          editor={editor}
+          errorLocation={errorLocation}
+          validationError={validationError}
         />
 
-        <Button
-          size="xs"
-          color="blue"
-          variant="light"
-          leftSection={<IconTarget size={14} />}
+        <Text size="sm" textWrap="wrap">
+          {t(`parsingErrorsDescription.${validationError.message}`)}
+        </Text>
 
-          onClick={handleSelectError}
-        >
-          {t('validation.selectError')}
-        </Button>
-      </Group>
-    </Stack>
+        <Group mt="auto">
+          <FixButton
+            context={{
+              editor,
+              errorLocation,
+              validationError,
+              rawMessage: editor?.state.doc.textContent ?? '',
+            }}
+
+            onFixed={handleOnFixed}
+          />
+
+          <Button
+            size="xs"
+            color="blue"
+            variant="light"
+            leftSection={<IconTarget size={14} />}
+
+            onClick={handleSelectError}
+          >
+            {t('validation.selectError')}
+          </Button>
+        </Group>
+      </Stack>
+    </ScrollAreaAutosize>
   );
 });
 

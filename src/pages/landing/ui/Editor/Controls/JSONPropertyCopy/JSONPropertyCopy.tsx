@@ -1,33 +1,25 @@
 import { useTranslations } from 'use-intl';
 import { useClipboard } from '@mantine/hooks';
 import { IconCheck, IconCodeDots } from '@tabler/icons-react';
-import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
-import { minimalParser } from '@/shared/lib/icu';
 import classes from './JSONPropertyCopy.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const JSONPropertyCopy = () => {
-  const parserError = icuEditorStore.use.validationError();
+  const isFormatted = icuEditorStore.use.isFormatted();
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
 
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();
-    const [_error, parsedMessage] = minimalParser(rawMessage);
-
-    if (parsedMessage) {
-      const oneLineMessage = printAST(parsedMessage);
-
-      return clipboard.copy(`"": "${oneLineMessage}",`);
-    }
+    clipboard.copy(`"": "${rawMessage.replace(/\n/g, '')}",`);
   };
 
   return (
     <RichTextEditor.Control
-      disabled={!!parserError}
+      disabled={!isFormatted}
       className={classes['control']}
       title={t('controls.jsonPropertyCopy')}
       aria-label={t('controls.jsonPropertyCopy')}

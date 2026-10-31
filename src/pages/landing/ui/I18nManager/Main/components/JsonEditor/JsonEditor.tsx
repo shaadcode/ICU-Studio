@@ -88,7 +88,6 @@ const JsonEditor = () => {
           searchFilter={h.filterMode}
           customButtons={[{ Element: CopyPathButton }]}
 
-          onUpdate={({ newData }) => console.log(newData)}
           onEditEvent={(params) => {
             h.setIsEditing(params.event === 'startEdit' && !params.path.length);
           }}

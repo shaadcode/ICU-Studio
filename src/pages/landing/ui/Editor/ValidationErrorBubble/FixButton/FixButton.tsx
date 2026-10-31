@@ -19,7 +19,6 @@ type Props = {
 export const FixButton = ({ context, onFixed }: Props) => {
   const t = useTranslations('editor');
   const validationError = icuEditorStore.use.validationError();
-
   const availableFixers = useMemo(() => {
     if (!context || !validationError) {
       return [];
@@ -86,7 +85,10 @@ export const FixButton = ({ context, onFixed }: Props) => {
               tt="capitalize"
               leftSection={<IconWand size={14} />}
 
-              onClick={() => handleApply(availableFixers[0]!)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApply(availableFixers[0]!);
+              }}
             >
               {t('validation.fix')}
             </Button>

@@ -39,7 +39,6 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
 
   const editor = useEditor({
     parseOptions: { preserveWhitespace: 'full' },
-    // onSelectionUpdate: ({ editor }) => console.log(editor.state.selection.$anchor.pos),
     onMount: (params) => {
       rootParams.onMountEditor?.(params);
       formatContent({

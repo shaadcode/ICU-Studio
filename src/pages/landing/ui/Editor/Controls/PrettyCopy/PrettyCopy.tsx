@@ -12,7 +12,7 @@ const PrettyCopyControl = () => {
   const t = useTranslations('editor');
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
-  const parserError = icuEditorStore.use.validationError();
+  const isFormatted = icuEditorStore.use.isFormatted();
 
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();
@@ -24,7 +24,7 @@ const PrettyCopyControl = () => {
 
   return (
     <RichTextEditor.Control
-      disabled={!!parserError}
+      disabled={!isFormatted}
       className={classes['control']}
       title={t('controls.prettyCopy')}
       aria-label={t('controls.prettyCopy')}

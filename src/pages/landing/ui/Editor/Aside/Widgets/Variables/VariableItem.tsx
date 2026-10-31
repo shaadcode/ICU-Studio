@@ -1,6 +1,7 @@
-import { useTranslations } from 'use-intl';
 // Widgets/Variables/VariableItem.tsx
-import { memo, useRef, useCallback } from 'react';
+import { memo, useCallback } from 'react';
+import { useTranslations } from 'use-intl';
+import { useLongPress } from '@mantine/hooks';
 import { IconCheck, IconDotsVertical } from '@tabler/icons-react';
 import {
   Text,
@@ -42,9 +43,6 @@ export const VariableItem = memo(({
   const colorScheme = useComputedColorScheme('light');
   const colorValue = makeColorValue(color, colorScheme);
 
-  const timerRef = useRef<null | ReturnType<typeof setTimeout>>(null);
-  const isLongPressRef = useRef(false);
-
   const handleSelectDefinition = useCallback(() => {
     if (editor && variable.location) {
       editor
@@ -58,49 +56,17 @@ export const VariableItem = memo(({
     }
   }, [editor, variable.location]);
 
-  const handlePointerDown = useCallback(() => {
-    isLongPressRef.current = false;
-
-    if (isSelected) {
-      return;
-    }
-
-    timerRef.current = setTimeout(() => {
-      isLongPressRef.current = true;
-      onSelect(variable.referenceId);
-    }, LONG_PRESS_THRESHOLD);
-  }, [isSelected, onSelect, variable.referenceId]);
-
-  const handlePointerUp = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
-  const handlePointerLeave = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
-  const handleClick = useCallback(() => {
-    if (isLongPressRef.current) {
-      isLongPressRef.current = false;
-      return;
-    }
-
-    if (!hasSelection) {
-      return;
-    }
-
-    if (isSelected) {
-      onToggleSelect(variable.referenceId);
-    } else {
-      onSelect(variable.referenceId);
-    }
-  }, [hasSelection, isSelected, onSelect, onToggleSelect, variable.referenceId]);
+  const longPressHandlers = useLongPress(
+    () => onSelect(variable.referenceId),
+    {
+      threshold: LONG_PRESS_THRESHOLD,
+      onStart: () => {
+        if (hasSelection) {
+          onToggleSelect(variable.referenceId);
+        }
+      },
+    },
+  );
 
   if (!editor) {
     return null;
@@ -120,43 +86,56 @@ export const VariableItem = memo(({
         }),
       }}
 
-      onClick={handleClick}
-      onPointerUp={handlePointerUp}
-      onPointerDown={handlePointerDown}
-      onPointerLeave={handlePointerLeave}
+      {...longPressHandlers}
     >
       <Stack gap={6}>
         <Group gap="xs" wrap="nowrap" justify="space-between">
           <Group gap={6} wrap="nowrap">
             {isSelected && <IconCheck size={14} color={colorValue} />}
 
-            <VariableActions
-              editor={editor}
-              eventTrigger="click"
-              elementType={variable.keywordType}
-              referenceId={variable.referenceId}
-            >
-              {({ ref, children: _, className: __, ...otherProps }) => (
-                <ActionIcon
-                  size="sm"
-                  ref={ref}
-                  color="gray"
-                  variant="subtle"
-                  {...otherProps}
-                >
-                  <IconDotsVertical size={14} />
-                </ActionIcon>
-              )}
-            </VariableActions>
+            {!hasSelection && (
+              <VariableActions
+                editor={editor}
+                eventTrigger="click"
+                elementType={variable.keywordType}
+                referenceId={variable.referenceId}
+              >
+                {({
+                  ref,
+                  children: _,
+                  className: __,
+                  ...otherProps
+                }) => (
+                  <ActionIcon
+                    size="sm"
+                    ref={ref}
+                    color="gray"
+                    variant="subtle"
+                    {...otherProps}
+                  >
+                    <IconDotsVertical size={14} />
+                  </ActionIcon>
+                )}
+              </VariableActions>
+            )}
 
             <Text
               fw={600}
               truncate
               size="sm"
-              style={{ cursor: 'pointer', color: colorValue }}
+              maw="200px"
+              style={{ cursor: 'pointer', color: colorValue, userSelect: 'none' }}
 
-              onClick={handleSelectDefinition}
+              onDoubleClick={handleSelectDefinition}
             >
+              {variable.name}
+              {variable.name}
+              {variable.name}
+              {variable.name}
+              {variable.name}
+              {variable.name}
+              {variable.name}
+              {variable.name}
               {variable.name}
             </Text>
           </Group>

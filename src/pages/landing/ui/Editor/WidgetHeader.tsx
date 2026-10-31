@@ -16,7 +16,7 @@ const WidgetHeader = (props: Props) => {
         <props.icon
           size={16}
         />
-        <Text span fz="sm" fw={600} tt="capitalize">
+        <Text span fz="sm" fw={600} textWrap="wrap" tt="capitalize">
           {props.label}
         </Text>
       </Group>

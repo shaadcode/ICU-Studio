@@ -41,6 +41,7 @@ export async function addNamespace(params: AddNamespaceContext) {
         const namespaceStat = await stat(newNamespacePath);
 
         const stop = await watch(newNamespacePath, (event) => {
+          // @ts-expect-error
           handleWatchLocaleFolderNamespaceFile({
             event,
             baseLocale,
@@ -49,6 +50,7 @@ export async function addNamespace(params: AddNamespaceContext) {
             path: newNamespacePath,
             locales: projectData.locales,
             namespaces: projectData.namespaces,
+
           });
         });
         stopWatchFns.push(stop);

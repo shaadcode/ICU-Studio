@@ -1,35 +1,29 @@
 import { useTranslations } from 'use-intl';
 import { useClipboard } from '@mantine/hooks';
-import { parse } from '@formatjs/icu-messageformat-parser';
+import { RichTextEditor } from '@mantine/tiptap';
 import { IconCheck, IconFunction } from '@tabler/icons-react';
-import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './TFunctionCopy.module.css';
 import { icuEditorStore } from '@/pages/landing/config/store/editor';
-import { collectVariables } from '@/shared/lib/icu/collectVariables';
 
 const TFunctionCopyControl = () => {
-  const parserError = icuEditorStore.use.validationError();
+  const isFormatted = icuEditorStore.use.isFormatted();
+  const variables = icuEditorStore.use.variables();
 
   const t = useTranslations('editor');
-  const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
 
   const handleCopy = () => {
-    const rawMessage = (editor?.getText() ?? '').trim();
-    const parsedMessage = parse(rawMessage);
-    const collectedVariables = collectVariables(parsedMessage);
-    const justVariablesName = collectedVariables.variables.map(variable => variable[1].name);
-
-    if (!justVariablesName.length) {
-      return clipboard.copy(`t('')`);
-    }
-    return clipboard.copy(`t('', { ${justVariablesName.join(', ')} })`);
+    const variablesName = variables.map(variable => variable.name);
+    const hasVariable = !!variablesName.length;
+    return clipboard.copy(`t(''${hasVariable
+      ? `, { ${variablesName.join(', ')} }`
+      : ''})`);
   };
 
   return (
     <RichTextEditor.Control
-      disabled={!!parserError}
+      disabled={!isFormatted}
       className={classes['control']}
       title={t('controls.tFunctionCopy')}
       aria-label={t('controls.tFunctionCopy')}

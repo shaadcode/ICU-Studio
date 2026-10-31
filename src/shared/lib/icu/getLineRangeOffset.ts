@@ -11,7 +11,8 @@ export const getLineRangeOffsetByOneLine = (editor: Editor, line: number): undef
 
   const startNode = hardBreaks?.[Math.max(line - 2, 0)];
   const endNode = hardBreaks?.[Math.max(line - 1, 0)];
-  if (startNode) {
+
+  if (hardBreaks?.length && startNode) {
     const $pos = rootNode!.node.resolve(startNode.pos);
     const parentIndex = $pos.index(0);
     return {
@@ -21,8 +22,8 @@ export const getLineRangeOffsetByOneLine = (editor: Editor, line: number): undef
   }
 
   return {
-    end: rootNode!.to,
-    start: rootNode!.from,
+    end: rootNode!.range.to,
+    start: rootNode!.range.from,
   };
 };
 

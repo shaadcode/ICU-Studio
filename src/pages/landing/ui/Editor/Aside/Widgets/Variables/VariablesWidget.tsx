@@ -111,7 +111,7 @@ export const VariablesWidget = memo(() => {
         />
 
         <Collapse expanded={opened}>
-          <Stack gap="xs">
+          <Stack gap="xs" h="calc(400px - 52px)">
             {!isEmpty && (
               <Group gap={4} wrap="wrap">
                 {Object.entries(counts).map(([keywordType, count]) => {
@@ -143,7 +143,7 @@ export const VariablesWidget = memo(() => {
                   <VariablesEmptyState />
                 )
               : (
-                  <ScrollAreaAutosize mih={0} mr="-xs" mah={340} offsetScrollbars>
+                  <ScrollAreaAutosize mr="-xs" scrollbars="y" offsetScrollbars>
                     <Stack gap="xs">
                       {variables.map(variable => (
                         <VariableItem

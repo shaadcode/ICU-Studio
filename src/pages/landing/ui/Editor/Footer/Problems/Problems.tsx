@@ -47,7 +47,7 @@ const ICUEditorProblemsWidgets = () => {
   };
 
   return (
-    <WidgetContainer mod={{ 'data-footer-widget': true }}>
+    <WidgetContainer pr={0} mod={{ 'data-footer-widget': true }}>
       <Stack h="100%">
         <WidgetHeader
           label={t('problem', { count: problemCount })}

@@ -1,8 +1,6 @@
 import { useTranslations } from 'use-intl';
 import { useClipboard } from '@mantine/hooks';
-import { parse } from '@formatjs/icu-messageformat-parser';
 import { IconCheck, IconLineDashed } from '@tabler/icons-react';
-import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
 import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap';
 
 import classes from './OneLineCopy.module.css';
@@ -10,20 +8,18 @@ import { icuEditorStore } from '@/pages/landing/config/store/editor';
 
 const OneLineCopyControl = () => {
   const t = useTranslations('editor');
-  const parserError = icuEditorStore.use.validationError();
+  const isFormatted = icuEditorStore.use.isFormatted();
   const { editor } = useRichTextEditorContext();
   const clipboard = useClipboard({ timeout: 750 });
 
   const handleCopy = () => {
     const rawMessage = (editor?.getText() ?? '').trim();
-    const parsedMessage = parse(rawMessage);
-    const oneLineMessage = printAST(parsedMessage);
-    return clipboard.copy(oneLineMessage);
+    return clipboard.copy(rawMessage.replace(/\n/g, ''));
   };
 
   return (
     <RichTextEditor.Control
-      disabled={!!parserError}
+      disabled={!isFormatted}
       className={classes['control']}
       title={t('controls.oneLineCopy')}
       aria-label={t('controls.oneLineCopy')}

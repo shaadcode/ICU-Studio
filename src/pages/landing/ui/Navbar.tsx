@@ -1,6 +1,6 @@
 import { useTranslations } from 'use-intl';
+import { IconPencil } from '@tabler/icons-react';
 import { Grid, Stack, GridCol, Tooltip, ActionIcon } from '@mantine/core';
-import { IconPencil, IconFolders, IconMessage2 } from '@tabler/icons-react';
 
 import { appStore } from '../config/store/app';
 import MessagesNavbar from './Messages/Navbar/Messages';
@@ -20,16 +20,16 @@ const Navbar = () => {
       icon: IconPencil,
       label: t('editor'),
     },
-    {
-      value: 'messages',
-      icon: IconMessage2,
-      label: t('messages', { count: 2 }),
-    },
-    {
-      icon: IconFolders,
-      value: 'i18nManager',
-      label: t('project', { count: 2 }),
-    },
+    // {
+    //   value: 'messages',
+    //   icon: IconMessage2,
+    //   label: t('messages', { count: 2 }),
+    // },
+    // {
+    //   icon: IconFolders,
+    //   value: 'i18nManager',
+    //   label: t('project', { count: 2 }),
+    // },
   ] as const satisfies Array<{
     icon: any;
     label: string;

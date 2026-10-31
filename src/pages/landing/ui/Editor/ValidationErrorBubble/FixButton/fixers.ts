@@ -1,4 +1,5 @@
 /* eslint-disable perfectionist/sort-objects */
+import { rApply } from 'ranges-apply';
 import { forEachRight } from 'es-toolkit';
 import type { Editor } from '@tiptap/react';
 import { closest } from 'fastest-levenshtein';
@@ -31,6 +32,15 @@ const VALID_ARGUMENT_TYPES = [
   // 'select',
   // 'selectordinal',
 ] as const;
+
+// const PLURAL_SELECTOR_KEYWORDS = [
+//   'zero',
+//   'one',
+//   'two',
+//   'few',
+//   'many',
+//   'other',
+// ];
 
 // @ts-expect-error
 export const fixers: FixerMap = {
@@ -414,6 +424,312 @@ export const fixers: FixerMap = {
       },
     },
 
+  ],
+  EXPECT_SELECT_ARGUMENT_OPTIONS: [
+    {
+      id: 'add-empty-select-options',
+      labelKey: 'validation.fixes.expectSelectArgumentOptions.addEmptyOptions',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ',other {}')
+          .run();
+      },
+    },
+    {
+      id: 'add-default-select-options',
+      labelKey: 'validation.fixes.expectSelectArgumentOptions.addDefaultOptions',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ',male {…} other {…}')
+          .run();
+      },
+    },
+    {
+      id: 'remove-select-keyword',
+      labelKey: 'validation.fixes.expectSelectArgumentOptions.removeSelect',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, cleanedLineText)
+          .run();
+      },
+    },
+  ],
+  EXPECT_SELECT_ARGUMENT_SELECTOR: [
+    {
+      id: 'add-other-selector',
+      labelKey: 'validation.fixes.expectSelectArgumentSelector.addOtherSelector',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, 'other {}')
+          .run();
+      },
+    },
+    {
+      id: 'add-default-selectors',
+      labelKey: 'validation.fixes.expectSelectArgumentSelector.addDefaultSelectors',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, 'male {…} other {…}')
+          .run();
+      },
+    },
+    {
+      id: 'remove-select-keyword',
+      labelKey: 'validation.fixes.expectSelectArgumentSelector.removeSelect',
+      apply: ({ editor, errorLocation, validationError }) => {
+        const { start, end } = errorLocation.lineRangeOffset;
+        const lineText = editor.state.doc.textBetween(start, end);
+
+        const cleanedLineText = dropRightUntilPattern(
+          lineText.split(''),
+          validationError.location.end.column - 1,
+          [','],
+        ).join('');
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, cleanedLineText)
+          .run();
+      },
+    },
+  ],
+  EXPECT_SELECT_ARGUMENT_SELECTOR_FRAGMENT: [
+    {
+      id: 'add-empty-selector-fragment',
+      labelKey: 'validation.fixes.expectSelectArgumentSelectorFragment.addEmptyFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {}')
+          .run();
+      },
+    },
+    {
+      id: 'add-placeholder-selector-fragment',
+      labelKey: 'validation.fixes.expectSelectArgumentSelectorFragment.addPlaceholderFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {…}')
+          .run();
+      },
+    },
+    {
+      id: 'add-other-selector-with-fragment',
+      labelKey: 'validation.fixes.expectSelectArgumentSelectorFragment.addOtherWithFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {…} other {…}')
+          .run();
+      },
+    },
+  ],
+  EXPECT_PLURAL_ARGUMENT_SELECTOR_FRAGMENT: [
+    {
+      id: 'add-empty-plural-selector-fragment',
+      labelKey: 'validation.fixes.expectPluralArgumentSelectorFragment.addEmptyFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {}')
+          .run();
+      },
+    },
+    {
+      id: 'add-placeholder-plural-selector-fragment',
+      labelKey: 'validation.fixes.expectPluralArgumentSelectorFragment.addPlaceholderFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {…}')
+          .run();
+      },
+    },
+    {
+      id: 'add-other-selector-with-fragment',
+      labelKey: 'validation.fixes.expectPluralArgumentSelectorFragment.addOtherWithFragment',
+      apply: ({ editor, errorLocation }) => {
+        const { start, end } = errorLocation;
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({ from: start, to: end }, ' {…} other {…}')
+          .run();
+      },
+    },
+  ],
+  // EXPECT_PLURAL_ARGUMENT_SELECTOR: [
+  //   {
+  //     id: 'replace-with-other-selector',
+  //     labelKey: 'validation.fixes.invalidPluralArgumentSelector.replaceWithOther',
+  //     apply: ({ editor, errorLocation, validationError }) => {
+  //       const { start, end } = errorLocation;
+  //       console.log(errorLocation);
+  //       console.log(validationError.location);
+
+  //       // editor
+  //       //   .chain()
+  //       //   .focus()
+  //       //   .setMeta('skipUpdate', true)
+  //       //   .insertContentAt({ from: start, to: end }, 'other')
+  //       //   .run();
+  //     },
+  //   },
+  //   {
+  //     id: 'replace-with-equals-one',
+  //     labelKey: 'validation.fixes.invalidPluralArgumentSelector.replaceWithEqualsOne',
+  //     apply: ({ editor, errorLocation }) => {
+  //       const { start, end } = errorLocation;
+
+  //       editor
+  //         .chain()
+  //         .focus()
+  //         .setMeta('skipUpdate', true)
+  //         .insertContentAt({ from: start, to: end }, '=1')
+  //         .run();
+  //     },
+  //   },
+  //   {
+  //     id: 'replace-with-closest-selector',
+  //     labelKey: 'validation.fixes.invalidPluralArgumentSelector.replaceWithClosest',
+  //     apply: ({ editor, errorLocation }) => {
+  //       const { start, end } = errorLocation;
+  //       const invalidSelector = editor.state.doc.textBetween(start, end);
+
+  //       editor
+  //         .chain()
+  //         .focus()
+  //         .setMeta('skipUpdate', true)
+  //         .insertContentAt(
+  //           { from: start, to: end },
+  //           closest(invalidSelector, PLURAL_SELECTOR_KEYWORDS),
+  //         )
+  //         .run();
+  //     },
+  //   },
+  // ],
+  // DUPLICATE_PLURAL_ARGUMENT_SELECTOR: [
+  //   {
+  //     id: 'remove-duplicate-selector',
+  //     labelKey: 'validation.fixes.duplicatePluralArgumentSelector.removeDuplicate',
+  //     apply: ({ editor, errorLocation, validationError }) => {
+  //       const { start, end } = errorLocation;
+  //       console.log(errorLocation);
+  //       console.log(validationError.location);
+  //       // editor
+  //       //   .chain()
+  //       //   .focus()
+  //       //   .setMeta('skipUpdate', true)
+  //       //   .insertContentAt({ from: start, to: end }, '')
+  //       //   .run();
+  //     },
+  //   },
+  //   {
+  //     id: 'remove-duplicate-selector-with-comma',
+  //     labelKey: 'validation.fixes.duplicatePluralArgumentSelector.removeDuplicateWithComma',
+  //     apply: ({ editor, errorLocation, validationError }) => {
+  //       const { start, end } = errorLocation.lineRangeOffset;
+  //       const lineText = editor.state.doc.textBetween(start, end);
+  //       const chars = lineText.split('');
+
+  //       const cleanedText = dropRightUntilPattern(
+  //         chars,
+  //         validationError.location.end.column - 1,
+  //         [',', ','],
+  //       ).join('');
+
+  //       editor
+  //         .chain()
+  //         .focus()
+  //         .setMeta('skipUpdate', true)
+  //         .insertContentAt({ from: start, to: end }, cleanedText)
+  //         .run();
+  //     },
+  //   },
+  // ],
+  INVALID_TAG: [
+    {
+      id: 'escape-invalid-tag-as-literal',
+      labelKey: 'validation.fixes.invalidTag.escapeAsLiteral',
+      apply: ({ editor, errorLocation }) => {
+        const { lineRangeOffset } = errorLocation;
+        const lineText = editor.state.doc.textBetween(lineRangeOffset.start, lineRangeOffset.end);
+
+        const closeTagIndex = (lineText
+          .slice(errorLocation.end - 1)
+          .indexOf('>') - 1) + errorLocation.end;
+
+        const clearedText = rApply(lineText, [
+          errorLocation.end - 1,
+          closeTagIndex,
+        ]);
+
+        editor
+          .chain()
+          .focus()
+          .setMeta('skipUpdate', true)
+          .insertContentAt({
+            from: errorLocation.lineRangeOffset.start,
+            to: errorLocation.lineRangeOffset.end,
+          }, clearedText)
+          .run();
+      },
+    },
   ],
 };
 

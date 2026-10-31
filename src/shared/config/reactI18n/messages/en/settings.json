@@ -1,4 +1,29 @@
 {
   "file": "file",
-  "view": "view"
+  "view": "view",
+  "keyboardShortcuts": "Keyboard Shortcuts",
+  "shortcutsDescription": "Master the app with these handy keyboard shortcuts.",
+  "action": "Action",
+  "shortcut": "Shortcut",
+  "help": "help",
+  "general": "GENERAL",
+  "toggleTheme": "Toggle Theme",
+  "toggleNavbar": "Toggle Navbar",
+  "toggleSideBar": "Toggle Sidebar",
+  "openFloatingMenu": "Open Floating Menu",
+
+  "editor": "EDITOR",
+  "fixError": "Fix Error",
+  "formatting": "Format Code",
+
+  "i18nManager": "I18N MANAGER",
+  "newProject": "New Project",
+
+  "messages": "MESSAGES",
+  "saveMessage": "Save Message",
+  "openNewMessage": "Open New Message",
+  "createNewMessage": "Create New Message",
+
+  "jsonEditor": "JSON EDITOR",
+  "saveChanges": "Save Changes"
 }

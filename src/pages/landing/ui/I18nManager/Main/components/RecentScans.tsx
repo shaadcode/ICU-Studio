@@ -23,6 +23,7 @@ export const RecentScans = (params: Props) => {
   const handleRescan = async () => {
     setIsLoading(true);
     const patternActions = i18nManagerPatternsActions[params.projectData.structureType];
+    // @ts-expect-error
     const { data } = await patternActions.getProjectData({
       setProjectAnalysis,
       project: params.project,

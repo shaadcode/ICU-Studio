@@ -1,11 +1,11 @@
 import { type } from 'arktype';
 import { useTranslations } from 'use-intl';
 import { open } from '@tauri-apps/plugin-dialog';
-import { join, basename } from '@tauri-apps/api/path';
 import { notifications } from '@mantine/notifications';
 import { useForm, schemaResolver } from '@mantine/form';
 import { useHotkeys, useDisclosure } from '@mantine/hooks';
-import { create, exists, readTextFile, BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
+import { join, basename, appDataDir } from '@tauri-apps/api/path';
+import { exists, readTextFile, BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 
 import type { MessageSchema } from './CreateMessage';
 import { hotkeys } from '@/shared/config/mantine/hotKeys';
@@ -35,10 +35,12 @@ export function useCreateMessageHandlers() {
     if (!messagesLocalStore) {
       throw new Error('messages store is undefined');
     }
-    await messagesLocalStore.set(newMessageData.dirPath, newMessageData);
+
+    const allMessages = await messagesLocalStore.get<Array<MessageSchema>>('messages') ?? [];
+    const updatedMessages = [...allMessages, newMessageData];
+    await messagesLocalStore.set('messages', updatedMessages);
     await messagesLocalStore.save();
-    const newMessages = await messagesLocalStore.entries<MessageSchema>() ?? [];
-    setMessages(newMessages);
+    setMessages(updatedMessages);
   };
 
   const openCreateMode = () => {
@@ -53,8 +55,9 @@ export function useCreateMessageHandlers() {
       await createMessagesDir();
 
       const fileName = `${formData.name}.txt`;
-      const relativePath = await join(MESSAGES_DIR, fileName);
-      const isFileExist = await exists(relativePath, { baseDir: BaseDirectory.AppData });
+      const appDataPath = await appDataDir();
+      const fullPath = await join(appDataPath, MESSAGES_DIR, fileName);
+      const isFileExist = await exists(fullPath);
 
       if (isFileExist) {
         return notifications.show({
@@ -63,14 +66,11 @@ export function useCreateMessageHandlers() {
           message: t('notifications.fileExists.message', { name: fileName }),
         });
       }
-
-      const file = await create(relativePath, { baseDir: BaseDirectory.AppData });
-      await file.write(new TextEncoder().encode(`{variable}`));
-      await file.close();
+      await writeTextFile(fullPath, `{variable}`);
 
       await handleAddNewMessageFileInStore({
+        dirPath: fullPath,
         name: formData.name,
-        dirPath: relativePath,
       });
 
       return drawerHandlers.close();

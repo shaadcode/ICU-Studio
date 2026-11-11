@@ -61,9 +61,9 @@ export async function analyzeSingleNamespace(
 
     if (isMissing) {
       missingEntries.push({
-        key,
         baseValue,
         namespace,
+        key: key.trim(),
         status: 'missing',
       });
     } else {

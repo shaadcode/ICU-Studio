@@ -1,9 +1,9 @@
-// components/tabs/Structure/NamespacesTable.tsx
+import { modals } from '@mantine/modals';
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { useSelection } from '@mantine/hooks';
-import { IconFileText, IconSearchOff, IconInfoCircle } from '@tabler/icons-react';
-import { Card, Text, Table, Group, Stack, Center, Divider, Tooltip, Checkbox, ThemeIcon, ScrollArea, ActionIcon } from '@mantine/core';
+import { IconPlus, IconFileText, IconSearchOff, IconInfoCircle } from '@tabler/icons-react';
+import { Card, Text, Table, Group, Stack, Center, Button, Divider, Tooltip, Checkbox, ThemeIcon, ScrollArea, ActionIcon } from '@mantine/core';
 
 import { NamespaceSearch } from './NamespaceSearch';
 import { NamespaceTableRow } from './NamespaceTableRow';
@@ -62,7 +62,6 @@ export const NamespacesTable = ({ project, projectData, localeAnalysis, selected
 
   const isSearchEmpty = namespacesByLocale.length > 0 && filteredAndSortedNamespaces.length === 0;
   const isCompletelyEmpty = namespacesByLocale.length === 0;
-
   return (
     <Card withBorder radius="md" padding="md">
       <Group mb="md" justify="space-between">
@@ -98,6 +97,21 @@ export const NamespacesTable = ({ project, projectData, localeAnalysis, selected
             projectData={projectData}
             buttonProps={{ variant: 'default', styles: { root: { borderStyle: 'dashed' } } }}
           />
+          <Button
+            variant="default"
+            leftSection={<IconPlus size={16} />}
+            styles={{ root: { borderStyle: 'dashed' } }}
+
+            onClick={() => modals.openContextModal({
+              modal: 'addMultipleTranslations',
+              innerProps: {
+                baseLocale: project.baseLocale,
+                ...projectData,
+              },
+            })}
+          >
+            {'Add Key\r'}
+          </Button>
         </Group>
       </Group>
 

@@ -29,6 +29,7 @@
   },
   "evening": "evening",
   "expand": "expand",
+  "back": "back",
   "github": "github",
   "messages": "{count, plural, =1 {message} other {messages}}",
   "morning": "morning",

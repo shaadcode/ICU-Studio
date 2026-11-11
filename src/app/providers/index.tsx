@@ -12,6 +12,7 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { MantineProvider, DirectionProvider } from '@mantine/core';
 
+import modals from '../modals';
 import { theme } from '@/shared/config/mantine/theme/theme';
 import allLocalesMessages from '@/shared/config/reactI18n/messages';
 
@@ -36,7 +37,7 @@ const Providers = ({ children }: Props) => {
             classNamesPrefix="ICU-Studio"
           >
             <Notifications />
-            <ModalsProvider>
+            <ModalsProvider modals={modals}>
               { children}
             </ModalsProvider>
           </MantineProvider>

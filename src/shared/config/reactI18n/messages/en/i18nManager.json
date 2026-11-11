@@ -144,7 +144,9 @@
       "searchPlaceholder": "Search key or value…",
       "noSearchResults": "No keys match your search",
       "emptyState": "No missing keys",
+      "createMessageTitle": "Create message for \"{key}\"",
       "table": {
+        "namespace": "Namespace",
         "key": "Key",
         "baseValue": "Base value",
         "translatedValue": "Translated value",
@@ -161,6 +163,18 @@
         "sortBy": "Sort by",
         "ascending": "Ascending",
         "descending": "Descending"
+      }
+    },
+    "modals": {
+      "addMultiple": {
+        "title": "Add Translation Key",
+        "selectNamespace": "Select Namespace",
+        "translationsLabel": "Translations by Language",
+        "clickToEdit": "Click to edit...",
+        "editorHint": "Click on any input to open the editor and enter the translation.",
+        "editingFor": "Editing for",
+        "applyValue": "Apply to list",
+        "searchKey": "Search in files"
       }
     },
     "status": {

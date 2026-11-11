@@ -106,6 +106,7 @@ export const MissingKeysTable = ({ analysis, selectedLocale }: Props) => {
           <Table>
             <Table.Thead>
               <Table.Tr>
+                <Table.Th>{t('localesTab.missingKeysTable.table.namespace')}</Table.Th>
                 <Table.Th>{t('localesTab.missingKeysTable.table.key')}</Table.Th>
                 <Table.Th>{t('localesTab.missingKeysTable.table.baseValue')}</Table.Th>
                 <Table.Th>{t('localesTab.missingKeysTable.table.translatedValue')}</Table.Th>

@@ -1,7 +1,8 @@
 import { memo } from 'react';
+import { modals } from '@mantine/modals';
 import { useTranslations } from 'use-intl';
-import { Text, Table, Badge } from '@mantine/core';
-import { IconMinus, IconAlertTriangle } from '@tabler/icons-react';
+import { Text, Table, Badge, Tooltip } from '@mantine/core';
+import { IconFile, IconMinus, IconAlertTriangle } from '@tabler/icons-react';
 
 import classes from './MissingKeyRow.module.css';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -16,8 +17,28 @@ export const MissingKeyRow = memo(({ entry }: Props) => {
   const isMissing = entry.status === 'missing';
   const isEmpty = entry.status === 'empty';
   const setJsonData = i18nManagerStore.use.actions().setJsonData;
+
+  const namespaceLabel = entry.namespace.name;
+  const namespacePath = entry.namespace.path; // برای tooltip
+
   return (
     <Table.Tr>
+      <Table.Td>
+        <Tooltip withArrow openDelay={300} label={namespacePath}>
+          <Badge
+            size="sm"
+            color="blue"
+            variant="light"
+            style={{ cursor: 'pointer' }}
+            leftSection={<IconFile size={12} />}
+
+            onClick={() => setJsonData(entry.namespace)}
+          >
+            {namespaceLabel}
+          </Badge>
+        </Tooltip>
+      </Table.Td>
+
       <Table.Td>
         <Text
           fz="sm"
@@ -28,7 +49,20 @@ export const MissingKeyRow = memo(({ entry }: Props) => {
           style={{ cursor: 'pointer' }}
           className={classes['entry-key']}
 
-          onClick={() => setJsonData(entry.namespace)}
+          onClick={() => modals
+            .openContextModal({
+              modal: 'createMessageKey',
+              innerProps: {
+                initialKey: entry.key,
+                namespace: entry.namespace,
+              },
+              title: t(
+                'localesTab.missingKeysTable.createMessageTitle',
+                {
+                  key: entry.key,
+                },
+              ),
+            })}
         >
           {entry.key}
         </Text>

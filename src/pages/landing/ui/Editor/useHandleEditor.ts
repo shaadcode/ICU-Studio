@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useEditor } from '@tiptap/react';
 import { useTranslations } from 'use-intl';
 import type { EditorOptions } from '@tiptap/react';
@@ -17,6 +17,7 @@ export type UseHandleEditorParams = {
   onMountEditor?: EditorOptions['onMount'];
   onUpdateEditor?: EditorOptions['onUpdate'];
   onParserError?: (error: ParserError) => void;
+  onDebounceUpdateEditor?: EditorOptions['onUpdate'];
 };
 
 export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
@@ -35,6 +36,7 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
     setVariables([]);
     setFormatted(false);
     clearValidationError();
+    rootParams.onDebounceUpdateEditor?.(params);
   }, DEBOUNCE_UPDATE_EDITOR);
 
   const editor = useEditor({
@@ -61,11 +63,19 @@ export const useHandleEditor = (rootParams: UseHandleEditorParams) => {
     ],
   });
 
-  useEffect(() => {
-    if (editor) {
-      setEditorInstance(editor);
+  useLayoutEffect(() => {
+    if (!editor) {
+      return;
     }
-  }, [editor]);
+
+    setEditorInstance(editor);
+
+    return () => {
+      if (icuEditorStore.getState().editorInstance === editor) {
+        setEditorInstance(undefined);
+      }
+    };
+  }, [editor, setEditorInstance]);
 
   return {
     t,

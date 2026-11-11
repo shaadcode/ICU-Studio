@@ -1,14 +1,7 @@
 import { Tabs } from '@mantine/core';
-// components/tabs/Structure/ViewTabs.tsx
 import type { ReactNode } from 'react';
 import { useTranslations } from 'use-intl';
-import {
-  IconStack2,
-  IconSitemap,
-  IconLanguage,
-  IconChartDots,
-  IconAdjustments,
-} from '@tabler/icons-react';
+import { IconSitemap, IconLanguage, IconAdjustments } from '@tabler/icons-react';
 
 import type { I18nManagerTabKey } from '../../useHandleI18nManagerMain';
 import { i18nManagerStore } from '@/pages/landing/config/store/i18nManager';
@@ -35,12 +28,12 @@ export const ViewTabs = ({ children }: Props) => {
         <Tabs.Tab value="locales" leftSection={<IconLanguage size={14} />}>
           {t('tabs.locales')}
         </Tabs.Tab>
-        <Tabs.Tab value="namespaces" leftSection={<IconStack2 size={14} />}>
+        {/* <Tabs.Tab value="namespaces" leftSection={<IconStack2 size={14} />}>
           {t('tabs.namespaces')}
-        </Tabs.Tab>
-        <Tabs.Tab value="analysis" leftSection={<IconChartDots size={14} />}>
+        </Tabs.Tab> */}
+        {/* <Tabs.Tab value="analysis" leftSection={<IconChartDots size={14} />}>
           {t('tabs.analysis')}
-        </Tabs.Tab>
+        </Tabs.Tab> */}
         <Tabs.Tab value="settings" leftSection={<IconAdjustments size={14} />}>
           {t('tabs.settings')}
         </Tabs.Tab>

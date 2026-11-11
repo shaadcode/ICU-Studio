@@ -9,7 +9,7 @@ const MessagesMainSection = () => {
 
   if (!handlers.selectedMessage) {
     return (
-      <Stack gap="xs" my="auto" align="center" justify="center">
+      <Stack w="100%" gap="xs" my="auto" align="center" justify="center">
         <ThemeIcon size="lg" color="gray" variant="light">
           <IconMessageCircleQuestion size={20} />
         </ThemeIcon>

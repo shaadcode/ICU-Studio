@@ -1,5 +1,5 @@
 import { useTranslations } from 'use-intl';
-import { IconPencil } from '@tabler/icons-react';
+import { IconPencil, IconMessage2 } from '@tabler/icons-react';
 import { Grid, Stack, GridCol, Tooltip, ActionIcon } from '@mantine/core';
 
 import { appStore } from '../config/store/app';
@@ -20,11 +20,11 @@ const Navbar = () => {
       icon: IconPencil,
       label: t('editor'),
     },
-    // {
-    //   value: 'messages',
-    //   icon: IconMessage2,
-    //   label: t('messages', { count: 2 }),
-    // },
+    {
+      value: 'messages',
+      icon: IconMessage2,
+      label: t('messages', { count: 2 }),
+    },
     // {
     //   icon: IconFolders,
     //   value: 'i18nManager',

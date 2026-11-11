@@ -13,7 +13,7 @@ const ICUEditorFooter = () => {
         container: { width: '100%', height: '100%' },
       }}
     >
-      <Group grow p="xs" w="100%" h="100%" wrap="nowrap">
+      <Group grow p="sm" w="100%" h="100%" wrap="nowrap">
         <ICUEditorProblemsWidgets />
         <TestVariablesWidget />
         <StatisticsWidget />

@@ -16,7 +16,7 @@ const MessagesNavbar = () => {
 
   useEffect(() => {
     (async () => {
-      const messagesStore = await load('messages.json', { autoSave: false });
+      const messagesStore = await load('messages.json');
       setMessagesLocalStore(messagesStore);
       setIsLoading(false);
     })();
@@ -65,7 +65,7 @@ const MessagesNavbar = () => {
               </Center>
             )
           : (
-              messages.map(([_, message], i) => (
+              messages.map((message, i) => (
                 <EveryMessage
                   message={message}
                   key={`${message.name}-${i}`}
